@@ -1,73 +1,28 @@
-import React from "react";
-import Head from "next/head";
-import QnA from "../components/QnA";
+import type { Metadata } from "next";
+import FaqBlock from "../components/FaqBlock";
+import PageHero from "../components/PageHero";
 
-// Shared FAQ Data
-const faqData = [
-  {
-    question: "What is Fantasy Trade Target?",
-    answer:
-      "Fantasy Trade Target is a tool that helps users find optimal fantasy trades and create fun memes for their leagues in minutes.",
-  },
-  {
-    question: "How does the meme generator work?",
-    answer:
-      "The meme generator allows you to select some players to trade for/away, and automatically generate random memes using them.",
-  },
-  {
-    question: "Is Fantasy Trade Target free to use?",
-    answer:
-      "Yes! Fantasy Trade Target is free to use! We may introduce a premium tier or ads in the future, but not for now.",
-  },
-  {
-    question: "Can I use the app on mobile?",
-    answer:
-      "Absolutely! Fantasy Trade Target is fully mobile-responsive and works seamlessly on all devices.",
-  },
-];
-
-const FAQPage: React.FC = () => {
-  // Convert FAQ data to JSON-LD format
-  const schemaMarkup = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqData.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  };
-
-  return (
-    <div className="container mx-auto md:p-4 mt-10">
-      {/* Inject Schema Markup for SEO */}
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
-        />
-        <title>Frequently Asked Questions - Fantasy Trade Target</title>
-        <meta
-          name="description"
-          content="Find answers to common questions about Fantasy Trade Target, including how it works, features, and mobile compatibility."
-        />
-      </Head>
-      <div className="px-8">
-        <h1 className="text-3xl font-bold text-center mb-6">
-          🤔 Frequently Asked Questions
-        </h1>
-        {/* Render Visible FAQs */}
-        <div className="space-y-6">
-          {faqData.map((faq, index) => (
-            <QnA index={index} question={faq.question} answer={faq.answer} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+export const metadata: Metadata = {
+  title: "Fantasy Trade Target FAQ",
+  description: "Answers about fantasy trade values, calculator settings, data updates, rookie picks, privacy, and methodology.",
+  alternates: { canonical: "/faq" },
 };
 
-export default FAQPage;
+const faqs = [
+  { question: "Is Fantasy Trade Target free?", answer: "Yes. The V1 calculator, rankings, value charts, target finder, and meme tool are free and require no account." },
+  { question: "Where do player values come from?", answer: "The site uses the commercially permitted Tradyr public API with visible attribution. Tradyr provides a daily composite market score. Fantasy Trade Target does not scrape or republish private source feeds." },
+  { question: "Does the calculator use artificial intelligence?", answer: "No. Every V1 verdict is deterministic. The same inputs and settings produce the same result, and the roster-cost formula is published in the methodology." },
+  { question: "What settings are supported?", answer: "Dynasty and redraft, 1QB and Superflex, optional tight-end premium, league sizes from 8 to 16 teams, exact rookie picks, and an optional roster-cost adjustment." },
+  { question: "Why does my league value a player differently?", answer: "Market values are a reference point. Scoring, lineup size, manager preferences, team direction, injuries, and available replacements all move the price inside a specific league." },
+  { question: "Can I share a trade?", answer: "Yes. The Share Trade button copies a URL containing both sides and the format settings so another manager can open the same offer." },
+  { question: "Is this affiliated with the NFL or Sleeper?", answer: "No. Fantasy Trade Target is independent and is not affiliated with the NFL, Sleeper, Tradyr, or another fantasy platform." },
+];
+
+export default function FAQPage() {
+  return (
+    <>
+      <PageHero eyebrow="Frequently asked questions" title="No coachspeak." accent="Just answers." description="How the tools work, where the values come from, what the verdict means, and what we deliberately do not collect." primaryHref="#faq" primaryLabel="Read the answers" />
+      <div id="faq"><FaqBlock items={faqs} title="The full FAQ." /></div>
+    </>
+  );
+}

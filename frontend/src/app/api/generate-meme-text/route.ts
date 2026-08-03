@@ -1,83 +1,51 @@
-export const dynamic = "force-dynamic"; // Tell NextJS to make this dynamic
 import { NextRequest, NextResponse } from "next/server";
-import OpenAI from "openai";
 
-import fs from "fs/promises";
-import path from "path";
+const templates = [
+  ["drake", (give: string, send: string) => [`Keeping ${send}`, `Getting ${give}`]],
+  ["buzz", (give: string) => [`${give}`, `${give} everywhere`]],
+  ["db", (give: string, send: string) => [`Trade away ${send}`, `Acquire ${give}`, "Win the league"]],
+  ["oprah", (give: string) => [`You get ${give}`, `You get ${give}`, `Everybody gets ${give}`]],
+  ["gru", (give: string, send: string) => [`Offer ${send}`, `Ask for ${give}`, "They accept", "They accepted?!"]],
+  ["fry", (give: string, send: string) => [`Not sure if fair trade`, `Or ${send} is secretly cooked`]],
+  ["success", (give: string) => [`Trade offer accepted`, `${give} is finally mine`]],
+  ["fine", (_give: string, send: string) => [`My roster after trading ${send}`, "This is fine"]],
+  ["both", (give: string, send: string) => [`Keep ${send}?`, `Trade for ${give}?`, "Why not both?"]],
+  ["wonka", (give: string) => [`Oh, you want ${give}?`, "Tell me more about your waiver-wire package"]],
+  ["icanhas", (give: string) => [`I can has`, `${give}?`]],
+  ["morpheus", (give: string) => [`What if I told you`, `${give} is available for the right price`]],
+] as const;
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || 'NOT SET',
-});
+function clean(value: unknown, fallback: string) {
+  if (typeof value !== "string") return fallback;
+  return value.replace(/[<>]/g, "").trim().slice(0, 80) || fallback;
+}
 
-export async function POST(request: NextRequest): Promise<NextResponse> {
+export async function POST(request: NextRequest) {
   try {
-    const body = await request.json(); // Extract JSON payload from request
-    const { inputText } = body;
+    const body = await request.json();
+    const give = clean(body.give, "your trade target");
+    const send = clean(body.send, "your entire bench");
+    const seed = `${give}|${send}`.split("").reduce((total, char) => total + char.charCodeAt(0), 0);
+    const ordered = [...templates.slice(seed % templates.length), ...templates.slice(0, seed % templates.length)];
 
-    if (!inputText || typeof inputText !== "string") {
-      return NextResponse.json(
-        { error: "Invalid input text. Please provide a valid string." },
-        { status: 400 }
-      );
-    }
-
-    // Reference the file path in the `public` directory
-    const templatesPath = path.join(process.cwd(), "public", "memeTemplates.json");
-    const templatesData = await fs.readFile(templatesPath, "utf-8");
-    const templates = JSON.parse(templatesData);
-
-    // Randomly select 12 meme templates
-    const randomTemplates = templates.sort(() => 0.5 - Math.random()).slice(0, 12);
-
-    // OpenAI API call
-    const params: OpenAI.Chat.ChatCompletionCreateParams = {
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "system",
-          content: `You are a NFL enthusiast and edgy comedian that generates text for memes. Each template includes an "id", "name", and "lines". Use the input text to generate meme captions. Each meme requires "topText" and "bottomText" fields. If the template has only 1 line, use "topText" only.`,
-        },
-        {
-          role: "user",
-          content: `Input Text: "${inputText}"
-  
-          Templates:
-          ${JSON.stringify(randomTemplates, null, 2)}
-  
-          Generate meme text for each template in this format:
-          [
-            { "id": "template_id", "texts": [{ "topText": "line 1", "bottomText": "line 2" }] }
-          ]`,
-        },
-      ]
-    }
-
-    const response = await openai.chat.completions.create(params);
-
-      // Use optional chaining to safely access properties (and trim + drop backticks)
-    const content = response?.choices?.[0]?.message?.content?.trim().replace(/`/g, "");;
-
-    // error handling
-    if (!content) {
-      throw new Error("Content is empty or undefined");
-    }
-
-    // Use nullish coalescing to provide a fallback
-    const memeTexts = content ? JSON.parse(content) : [];
-
-    // Respond with generated meme texts
-    return NextResponse.json({ memeTexts }, { status: 200 });
-  } catch (error: any) {
-    // Log detailed error information
-    console.error("Error details:", {
-      message: error.message,
-      stack: error.stack,
-      response: error.response?.data,
+    const memeTexts = ordered.map(([id, makeLines]) => {
+      const lines = makeLines(give, send);
+      return {
+        id,
+        texts: [
+          {
+            topText: lines[0] || "",
+            bottomText: lines.slice(1).join(" / "),
+          },
+        ],
+      };
     });
 
     return NextResponse.json(
-      { error: "Failed to generate meme texts", details: error.message },
-      { status: 500 }
+      { memeTexts, deterministic: true },
+      { headers: { "Cache-Control": "public, max-age=300" } },
     );
+  } catch {
+    return NextResponse.json({ error: "Invalid meme request" }, { status: 400 });
   }
 }

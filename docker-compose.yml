@@ -1,36 +1,15 @@
-version: "3.9"
 services:
-  backend:
-    build:
-      context: ./backend/.
-      dockerfile: Dockerfile
-    volumes:
-      - ./backend:/app # Mount backend code for hot reloading
-    ports:
-      - "8080:8080"
-    networks:
-      - app_network
-
   frontend:
     build:
-      context: ./frontend/.
+      context: ./frontend
       dockerfile: dev.Dockerfile
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_BACKEND_URL=http://host.docker.internal:8080
       - ENABLE_POSTHOG=0
       - POSTHOG_KEY=
       - POSTHOG_HOST=https://us.i.posthog.com
+      - TRADYR_API_KEY=${TRADYR_API_KEY:-}
     volumes:
-      - ./frontend:/app # Mount frontend code for hot reloading
+      - ./frontend:/app
       - /app/node_modules
-    depends_on:
-      - backend
-    networks:
-      - app_network
-
-# Define the custom network
-networks:
-  app_network:
-    driver: bridge

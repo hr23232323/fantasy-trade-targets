@@ -1,33 +1,37 @@
 # Stage 1: Build the Next.js application
-FROM node:18-alpine AS build
+FROM node:22-alpine AS deps
 
 WORKDIR /app
 
-# Copy package.json and lockfile
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
+RUN npm ci
 
-# Install all dependencies for build
-RUN yarn install --frozen-lockfile
+FROM node:22-alpine AS build
 
-# Copy the rest of the app and build
+WORKDIR /app
+
+ENV NEXT_TELEMETRY_DISABLED=1
+
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN yarn build
+RUN npm run build
 
-# Stage 2: Create Production Image
-FROM node:18-alpine
+FROM node:22-alpine AS runner
 
 WORKDIR /app
 
-# Copy necessary files
-COPY --from=build /app/package.json ./
-COPY --from=build /app/yarn.lock ./
-COPY --from=build /app/.next ./.next
-COPY --from=build /app/node_modules ./node_modules
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
+
 COPY --from=build /app/public ./public
+COPY --from=build --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=build --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Install production dependencies and clean cache
-RUN yarn install --frozen-lockfile --production && yarn cache clean
+USER nextjs
 
-# Expose port and start the app
 EXPOSE 3000
-CMD ["yarn", "start"]
+CMD ["node", "server.js"]

@@ -1,79 +1,36 @@
-import React from "react";
+import type { Metadata } from "next";
 
-const termsData = [
-  {
-    title: "1. Introduction",
-    content:
-      "Welcome to Fantasy Trade Target! By accessing or using our website and services, you agree to comply with and be bound by these Terms of Service. If you do not agree, please refrain from using our services.",
-  },
-  {
-    title: "2. Eligibility",
-    content:
-      "You must be at least 13 years old to use our services. By accessing our platform, you confirm that you meet this age requirement and have the legal capacity to agree to these terms.",
-  },
-  {
-    title: "3. Use of the Services",
-    content:
-      "You may not use Fantasy Trade Target for any unlawful or unauthorized purpose. You agree to use the platform only as intended, which includes generating trade suggestions and memes for personal, non-commercial use.",
-  },
-  {
-    title: "4. User Accounts",
-    content:
-      "If you create an account, you are responsible for maintaining the security of your account and ensuring that the information provided is accurate. We are not liable for any loss or damage resulting from unauthorized access to your account.",
-  },
-  {
-    title: "5. Intellectual Property",
-    content:
-      "All content on Fantasy Trade Target, including logos, trademarks, text, and software, is owned by us or our licensors. You may not reproduce, distribute, or create derivative works without prior written consent.",
-  },
-  {
-    title: "6. Limitation of Liability",
-    content:
-      'Fantasy Trade Target is provided "as is" without any warranties, express or implied. We are not liable for any damages arising from the use or inability to use the platform, including but not limited to trade outcomes or financial losses.',
-  },
-  {
-    title: "7. Changes to the Terms",
-    content:
-      "We reserve the right to modify these Terms of Service at any time. Any changes will be posted on this page, and your continued use of the platform constitutes acceptance of the updated terms.",
-  },
-  {
-    title: "8. Termination",
-    content:
-      "We may terminate or suspend your access to Fantasy Trade Target at our sole discretion, without prior notice, if you breach these terms or engage in any unlawful activity.",
-  },
-  {
-    title: "9. Governing Law",
-    content:
-      "These terms are governed by and construed in accordance with the laws of [Your Country/State]. Any disputes arising from these terms will be subject to the exclusive jurisdiction of the courts in [Your Location].",
-  },
-  {
-    title: "10. Contact Us",
-    content:
-      'If you have any questions about these Terms of Service, please contact us at <a href="mailto:contact@fantasytradetarget.com" class="text-blue-400 hover:underline">contact@fantasytradetarget.com</a>.',
-  },
+export const metadata: Metadata = {
+  title: "Terms of Service",
+  description: "Terms of service for Fantasy Trade Target.",
+  alternates: { canonical: "/terms-of-service" },
+};
+
+const sections = [
+  ["Use of the site", "Fantasy Trade Target provides informational fantasy sports tools. You may use the public site for lawful personal or commercial fantasy-football research, subject to these terms and the rights of third-party data providers."],
+  ["No wagering or financial advice", "Calculator results are entertainment and informational references. They are not guarantees of player performance, contest outcomes, financial return, or a successful trade."],
+  ["Data and availability", "Market values can be delayed, incomplete, or unavailable. Player status and circumstances change quickly. We may modify, suspend, or discontinue any feature without notice."],
+  ["Intellectual property", "The Fantasy Trade Target name, original interface, copy, and trade-engine implementation are protected by applicable law. Third-party names, data, and services remain the property of their respective owners and are used under their applicable terms."],
+  ["Acceptable use", "Do not attack, overload, reverse engineer, bypass rate limits, or use the service to violate another person’s rights. Automated access must respect robots directives and reasonable request rates."],
+  ["Disclaimer", "The service is provided as-is and as-available without warranties of accuracy, availability, merchantability, fitness for a particular purpose, or non-infringement to the maximum extent permitted by law."],
+  ["Limitation of liability", "To the maximum extent permitted by law, Fantasy Trade Target will not be liable for indirect, incidental, special, consequential, or punitive damages arising from use of the site or reliance on a trade result."],
+  ["Changes and contact", "We may update these terms by posting a revised date on this page. Questions can be sent to contact@fantasytradetarget.com."],
 ];
 
-const TermsOfService: React.FC = () => {
+export default function TermsPage() {
   return (
-    <div className="container mx-auto mt-10 p-6 text-gray-300">
-      <h1 className="text-4xl font-bold text-center text-white mb-6">
-        Terms of Service
-      </h1>
-      <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 space-y-6 text-gray-100">
-        {termsData.map((section, index) => (
-          <section key={index}>
-            <h2 className="text-2xl font-semibold text-gray-400">
-              {section.title}
-            </h2>
-            <p
-              dangerouslySetInnerHTML={{ __html: section.content }}
-              className="mt-2"
-            />
+    <article className="page-wrap py-16 sm:py-24">
+      <span className="eyebrow">Legal // terms</span>
+      <h1 className="display-type mt-7 uppercase">Terms of service.</h1>
+      <p className="mt-7 font-mono text-xs uppercase tracking-[0.07em] text-[#69706c]">Last updated August 3, 2026</p>
+      <div className="mt-12 max-w-4xl border-t border-[#171c19]">
+        {sections.map(([title, body], index) => (
+          <section key={title} className="grid gap-4 border-b border-[#171c19] py-7 md:grid-cols-[0.38fr_1fr]">
+            <h2 className="text-xl font-black tracking-[-0.035em]">{index + 1}. {title}</h2>
+            <p className="text-sm leading-7 text-[#59605c]">{body}</p>
           </section>
         ))}
       </div>
-    </div>
+    </article>
   );
-};
-
-export default TermsOfService;
+}

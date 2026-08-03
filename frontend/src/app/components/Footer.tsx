@@ -1,35 +1,75 @@
-const Footer: React.FC = () => {
+import Link from "next/link";
+
+const tools = [
+  ["Dynasty calculator", "/dynasty-trade-calculator"],
+  ["Redraft analyzer", "/fantasy-football-trade-analyzer"],
+  ["Superflex calculator", "/dynasty-superflex-trade-calculator"],
+  ["Dynasty rankings", "/dynasty-rankings"],
+];
+
+const company = [
+  ["Methodology", "/methodology"],
+  ["Data sources", "/data-sources"],
+  ["FAQ", "/faq"],
+  ["Privacy", "/privacy-policy"],
+  ["Terms", "/terms-of-service"],
+];
+
+export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-400 py-6 px-4">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-        {/* Footer Text */}
-        <div className="text-center md:text-left mb-4 md:mb-0">
-          <p className="text-sm">
-            © 2024 Fantasy Trade Target. All rights reserved.
-          </p>
-          <p className="text-sm">
-            Built with ❤️ for Fantasy Football players. Good luck on your next
-            trade!
+    <footer className="mt-24 border-t border-[#171c19] bg-[#171c19] text-white">
+      <div className="page-wrap grid gap-12 py-14 md:grid-cols-[1.35fr_1fr_1fr]">
+        <div>
+          <div className="mb-5 inline-grid h-12 w-12 place-items-center bg-[#dfff4f] font-mono text-sm font-black text-[#171c19]">
+            FTT
+          </div>
+          <h2 className="max-w-md text-3xl font-black tracking-[-0.055em]">
+            Better offers start with better reference points.
+          </h2>
+          <p className="mt-4 max-w-md text-sm leading-6 text-white/60">
+            Independent fantasy football tools. Not affiliated with the NFL,
+            Sleeper, or any fantasy platform.
           </p>
         </div>
-        {/* Footer Links */}
-        <div className="flex space-x-4 text-sm">
+        <FooterLinks title="Tools" links={tools} />
+        <FooterLinks title="Inside the model" links={company} />
+      </div>
+      <div className="border-t border-white/15">
+        <div className="page-wrap flex flex-col gap-2 py-5 font-mono text-[10px] uppercase tracking-[0.08em] text-white/50 sm:flex-row sm:items-center sm:justify-between">
+          <span>© {new Date().getFullYear()} Fantasy Trade Target</span>
           <a
-            href="/privacy-policy"
-            className="hover:text-white transition-colors"
+            href="https://tradyr.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#dfff4f] hover:text-white"
           >
-            Privacy Policy
-          </a>
-          <a
-            href="/terms-of-service"
-            className="hover:text-white transition-colors"
-          >
-            Terms of Service
+            Player market data powered by Tradyr ↗
           </a>
         </div>
       </div>
     </footer>
   );
-};
+}
 
-export default Footer;
+function FooterLinks({
+  title,
+  links,
+}: {
+  title: string;
+  links: string[][];
+}) {
+  return (
+    <div>
+      <h3 className="mono-label mb-4 text-[#dfff4f]">{title}</h3>
+      <ul className="space-y-3 text-sm text-white/70">
+        {links.map(([label, href]) => (
+          <li key={href}>
+            <Link href={href} className="hover:text-white">
+              {label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}

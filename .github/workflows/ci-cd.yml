@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy new BE and FE images to Cloud Run
+    name: Test and deploy Next.js app to Cloud Run
     runs-on: ubuntu-latest
 
     steps:
@@ -27,7 +27,22 @@ jobs:
     - name: Configure Docker to use gcloud as a credential helper
       run: gcloud auth configure-docker
 
-    - name: Deploy Frontend and Backend
+    - name: Use Node.js 22
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        cache: npm
+        cache-dependency-path: frontend/package-lock.json
+
+    - name: Test frontend
+      working-directory: frontend
+      run: |
+        npm ci
+        npm run test
+        npm run typecheck
+        npm run build
+
+    - name: Deploy Frontend
       shell: bash
       run: |
         set -x

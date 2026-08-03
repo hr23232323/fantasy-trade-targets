@@ -1,49 +1,34 @@
-import React from "react";
+import type { Metadata } from "next";
 
-const privacyPolicyData = [
-  {
-    title: "1. Information We Collect",
-    content:
-      "We collect basic information like your name, email address, and usage data when you use our app. This data helps us improve your experience and optimize our features.",
-  },
-  {
-    title: "2. How We Use Your Information",
-    content:
-      "We use your information to provide, improve, and personalize our services. We may also use your data to communicate with you about updates, promotions, and other relevant information.",
-  },
-  {
-    title: "3. Data Protection",
-    content:
-      "Your data is securely stored, and we take appropriate measures to prevent unauthorized access. We do not share your data with third parties without your consent.",
-  },
-  {
-    title: "4. Contact Us",
-    content:
-      'If you have any questions about our Privacy Policy, please contact us at <a href="mailto:privacy@fantasytradetarget.com" class="text-blue-400 hover:underline">privacy@fantasytradetarget.com</a>.',
-  },
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: "Privacy policy for Fantasy Trade Target.",
+  alternates: { canonical: "/privacy-policy" },
+};
+
+const sections = [
+  ["What we collect", "V1 does not require an account and does not ask for your name or email. Standard server logs may contain technical request data such as IP address, browser type, requested URL, and timestamps. If analytics is enabled, it is used to understand aggregate product usage."],
+  ["Trade data", "Trades you build are calculated in your browser. A shared trade is encoded in the URL you choose to copy. Do not place private or sensitive information in a shared URL."],
+  ["Third-party services", "Market data is requested from Tradyr through our server-side cache. The meme page loads generated images from memegen.link. Hosting and infrastructure providers may process technical request data as needed to operate the site."],
+  ["Cookies and analytics", "The application can run without marketing cookies. Product analytics is initialized only when it is explicitly enabled in the production environment. Future advertising or affiliate integrations will require this policy to be updated before launch."],
+  ["Retention and choices", "Infrastructure logs are retained according to the hosting provider configuration. You may block optional analytics with browser privacy controls. Because V1 has no user accounts, there is no account profile to access or delete."],
+  ["Contact", "Questions about this policy can be sent to privacy@fantasytradetarget.com."],
 ];
 
-const PrivacyPolicy: React.FC = () => {
+export default function PrivacyPolicyPage() {
   return (
-    <div className="container mx-auto mt-10 p-6 text-gray-300">
-      <h1 className="text-4xl font-bold text-center text-white mb-6">
-        Privacy Policy
-      </h1>
-      <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 space-y-6 text-gray-100">
-        {privacyPolicyData.map((section, index) => (
-          <section key={index}>
-            <h2 className="text-2xl font-semibold text-gray-400">
-              {section.title}
-            </h2>
-            <p
-              dangerouslySetInnerHTML={{ __html: section.content }}
-              className="mt-2"
-            />
+    <article className="page-wrap py-16 sm:py-24">
+      <span className="eyebrow">Legal // privacy</span>
+      <h1 className="display-type mt-7 uppercase">Privacy policy.</h1>
+      <p className="mt-7 font-mono text-xs uppercase tracking-[0.07em] text-[#69706c]">Last updated August 3, 2026</p>
+      <div className="mt-12 max-w-4xl border-t border-[#171c19]">
+        {sections.map(([title, body]) => (
+          <section key={title} className="grid gap-4 border-b border-[#171c19] py-7 md:grid-cols-[0.38fr_1fr]">
+            <h2 className="text-xl font-black tracking-[-0.035em]">{title}</h2>
+            <p className="text-sm leading-7 text-[#59605c]">{body}</p>
           </section>
         ))}
       </div>
-    </div>
+    </article>
   );
-};
-
-export default PrivacyPolicy;
+}

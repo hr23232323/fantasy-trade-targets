@@ -1,6 +1,5 @@
 "use client";
 import React, { ReactNode, useEffect, useState } from "react";
-import axios from "axios";
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
 export const dynamic = "force-dynamic"; // Tell NextJS to make this dynamic
@@ -15,11 +14,16 @@ export function CSPostHogProvider({ children }: CSPostHogProviderProps) {
   useEffect(() => {
     const initializePostHog = async () => {
       try {
-        const response = await axios.get("/api/posthog-config");
+        const response = await fetch("/api/posthog-config");
+        const config = await response.json();
 
-        const config = response.data;
-
-        if (config.ENABLE_POSTHOG !== "0") {
+        if (
+          config.ENABLE_POSTHOG === "1" &&
+          config.POSTHOG_KEY &&
+          config.POSTHOG_KEY !== "NOT SET" &&
+          config.POSTHOG_HOST &&
+          config.POSTHOG_HOST !== "NOT SET"
+        ) {
           posthog.init(config.POSTHOG_KEY, {
             api_host: config.POSTHOG_HOST,
             person_profiles: "always",

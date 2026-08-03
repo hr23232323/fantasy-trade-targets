@@ -1,74 +1,62 @@
+# Fantasy Trade Target
 
-# Fantasy Football Trade Analyzer
+Deterministic fantasy football trade tools for [fantasytradetarget.com](https://www.fantasytradetarget.com):
 
-This project is a full-stack web application designed to assist fantasy football players in identifying ideal trade targets using powerful filters, analytics, and insights. The app provides a user-friendly interface and is built with Docker for easy setup and deployment.
+- dynasty and redraft trade calculators;
+- 1QB, Superflex, TE premium, and 8–16 team settings;
+- exact rookie-pick values;
+- transparent roster-cost adjustment;
+- searchable dynasty rankings and trade value charts;
+- shareable trade URLs;
+- deterministic trade meme generator.
 
-## Project Structure
+## Stack
 
-- **Backend**: REST API built with Python, providing the necessary endpoints for the frontend to retrieve player statistics, trade recommendations, and analytics.
-- **Frontend**: A Next.js application for an interactive and dynamic web interface.
+- Next.js 16 / React 19 / TypeScript
+- Tailwind CSS
+- Next.js route handlers with six-hour edge-friendly caching
+- Tradyr public API for commercially permitted composite market values
+- Google Cloud Run deployment using the existing `fantasy-trade-targets` GCP project
 
-## Features
+The old Python/KTC-scraping data path is retired and is not deployed.
 
-- **Advanced Filtering**: Narrow down trade targets using filters based on player stats, positions, and trade values.
-- **Analytics & Insights**: Data-driven insights to make informed trade decisions.
-- **Real-Time Updates**: Hot-reloading enabled for development, ensuring that code changes reflect instantly without needing to restart containers.
-
-## Prerequisites
-
-- Docker and Docker Compose installed on your machine.
-- Basic understanding of Docker Compose for managing multi-container applications.
-
-## Getting Started
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/yourusername/fantasy-football-trade-analyzer.git
-cd fantasy-football-trade-analyzer
-```
-
-### 2. Build and Start the Application
-
-Use the provided `Makefile` commands to manage the Docker Compose services easily.
-
-To build and start the application:
+## Local development
 
 ```bash
-make build
-make up
+cd frontend
+npm install
+npm run dev
 ```
 
-### 3. Access the Application
+Open [http://localhost:3000](http://localhost:3000).
 
-- **Frontend**: [http://localhost:3000](http://localhost:3000)
-- **Backend**: [http://localhost:8000](http://localhost:8000)
+An optional free Tradyr API key raises the upstream rate limit:
 
-### Available Commands
+```bash
+TRADYR_API_KEY=try_live_xxxx npm run dev
+```
 
-| Command     | Description                                                     |
-|-------------|-----------------------------------------------------------------|
-| `make build`   | Build all services                                            |
-| `make up`      | Start all services in detached mode                           |
-| `make down`    | Stop and remove all containers and networks                   |
-| `make logs`    | View logs for all services                                    |
-| `make restart` | Restart all services                                          |
-| `make clean`   | Clean up unused Docker resources                              |
-| `make reset`   | Fully reset containers, volumes, networks, and rebuild        |
-| `make help`    | Display help for all available commands                       |
+## Verification
 
-### Development
+```bash
+cd frontend
+npm run test
+npm run typecheck
+npm run build
+```
 
-- **Hot Reloading**: Code changes in the `backend` and `frontend` directories will automatically reflect in the containers.
-- **Docker Volumes**: Volumes are configured to avoid overwriting essential folders like `node_modules` and `__pycache__`.
+## Production
 
-## Troubleshooting
+Pushes to `main` test and deploy the frontend image to the existing Google Cloud Run service through GitHub Actions. Manual deployment uses:
 
-- **Port Conflicts**: Ensure that ports `3000` and `8000` are free before starting the containers.
-- **Network Issues**: Restart containers with `make restart` if services are unable to communicate.
+```bash
+make deploy
+```
 
-## Contributing
+See [docs/DATA_ROADMAP.md](docs/DATA_ROADMAP.md) for the current feed, planned league-aware data layers, refresh cadences, and commercial-use gates.
 
-Feel free to open issues or submit pull requests for improvements, bug fixes, or additional features.
+## Related intelligence engine
 
----
+The public website and the local `sleeper-trader` intelligence engine intentionally remain separate projects. The website owns free generic tools, acquisition, and presentation; the sibling engine owns Sleeper league sync, scoring-aware analysis, trade discovery, and optional AI synthesis.
+
+See [docs/ECOSYSTEM.md](docs/ECOSYSTEM.md) for the repository boundary, integration contract, and a staged connected-league / advisor / MCP paid-tier plan.

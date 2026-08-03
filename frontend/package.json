@@ -4,32 +4,24 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
-    "lint": "next lint",
+    "test": "node --test tests/*.test.mjs",
+    "typecheck": "tsc --noEmit",
     "postbuild": "next-sitemap"
   },
   "dependencies": {
-    "@babel/runtime": "^7.26.0",
-    "@dnd-kit/core": "^6.2.0",
-    "@dnd-kit/modifiers": "^8.0.0",
-    "@dnd-kit/sortable": "^9.0.0",
-    "axios": "^1.7.7",
-    "next": "14.2.16",
+    "next": "16.3.0",
     "next-sitemap": "^4.2.3",
-    "openai": "^4.73.1",
     "posthog-js": "^1.186.1",
-    "react": "^18",
-    "react-dom": "^18",
-    "react-icons": "^5.3.0",
-    "react-masonry-css": "^1.0.16",
-    "react-slider": "^2.0.6"
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "react-icons": "^5.3.0"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "@types/react-slider": "^1.3.6",
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"

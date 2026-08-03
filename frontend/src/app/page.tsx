@@ -1,174 +1,107 @@
-"use client";
+import type { Metadata } from "next";
+import Link from "next/link";
+import CalculatorGuide from "./components/CalculatorGuide";
+import FaqBlock from "./components/FaqBlock";
+import MarketBoard from "./components/MarketBoard";
+import TradeCalculator from "./components/TradeCalculator";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
-import FilterForm from "./components/FilterForm";
-import PlayerTable from "./components/PlayerTable";
-import SortOptions from "./components/SortOptions";
-import LeagueModeToggle from "./components/LeagueModeToggle";
-import { Player } from "./types/Player";
-import SkeletonPlayerTable from "./components/SkeletonPlayerTable"; // Add a skeleton screen for the table
-
-const sortFieldReadable: Record<string, string> = {
-  "oneQBValues.value": "Value (1QB)",
-  "superflexValues.value": "Value (2QB)",
-  age: "Age",
+export const metadata: Metadata = {
+  title: "Fantasy Football Trade Targets, Calculator & Rankings",
+  description:
+    "Find fantasy football trade targets, compare complete offers, and browse daily dynasty values. Free, no login, with Superflex, TE premium, and rookie picks.",
+  alternates: { canonical: "/" },
 };
 
-const Home = () => {
-  const [allPlayers, setAllPlayers] = useState<Player[]>([]);
-  const [players, setPlayers] = useState<Player[]>([]);
-  const [position, setPosition] = useState<string[]>([]);
-  const [minAge, setMinAge] = useState<number>(18);
-  const [maxAge, setMaxAge] = useState<number>(42);
-  const [sortField, setSortField] = useState<string>("oneQBValues.value");
-  const [sortOrder, setSortOrder] = useState<string>("desc");
-  const [isOneQBMode, setIsOneQBMode] = useState(true);
-  const [resultSummary, setResultSummary] = useState<string>("");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true); // Loading state
+const homeFaqs = [
+  {
+    question: "How do I find good fantasy football trade targets?",
+    answer:
+      "Start with players whose age, position, and market tier fit your roster window. Use the trade target finder to narrow the board, then build an offer in the calculator and compare the adjusted package value.",
+  },
+  {
+    question: "Are the fantasy trade values updated?",
+    answer:
+      "Yes. The market feed is refreshed daily and cached for fast, free use. Every calculator result displays the source attribution and update date.",
+  },
+  {
+    question: "Does the calculator support rookie draft picks?",
+    answer:
+      "Yes. Dynasty mode includes exact rookie pick slots for multiple future classes and adjusts those pick values for 1QB or Superflex and league size.",
+  },
+  {
+    question: "Is Fantasy Trade Target affiliated with Sleeper or the NFL?",
+    answer:
+      "No. Fantasy Trade Target is an independent tool and is not affiliated with the NFL, Sleeper, or another fantasy platform.",
+  },
+];
 
-  useEffect(() => {
-    const fetchPlayers = async () => {
-      setLoading(true); // Start loading
-      try {
-        const response = await axios.get<Player[]>("/api/all-players");
-        setAllPlayers(response.data);
-        setPlayers(response.data);
-      } catch (error) {
-        console.error("Error fetching players:", error);
-      } finally {
-        setLoading(false); // End loading
-      }
-    };
-
-    fetchPlayers();
-  }, []);
-
-  useEffect(() => {
-    const filtered = allPlayers
-      .filter(
-        (player) =>
-          (position.length === 0 || position.includes(player.position)) &&
-          player.age >= minAge &&
-          player.age <= maxAge &&
-          player.playerName.toLowerCase().includes(searchQuery.toLowerCase()) // Search by name
-      )
-      .sort((a, b) => {
-        if (sortField === "age") {
-          return sortOrder === "asc" ? a.age - b.age : b.age - a.age;
-        } else if (sortField === "oneQBValues.value") {
-          return sortOrder === "asc"
-            ? a.oneQBValues.value - b.oneQBValues.value
-            : b.oneQBValues.value - a.oneQBValues.value;
-        } else {
-          return sortOrder === "asc"
-            ? a.superflexValues.value - b.superflexValues.value
-            : b.superflexValues.value - a.superflexValues.value;
-        }
-      });
-
-    setPlayers(filtered);
-  }, [position, minAge, maxAge, sortField, sortOrder, allPlayers, searchQuery]);
-
-  useEffect(() => {
-    const updateFilterSummary = () => {
-      const positionText =
-        position.length > 0 ? position.join(", ") : "all positions";
-      const sortText = `${sortFieldReadable[sortField]} in ${
-        sortOrder === "asc" ? "ascending" : "descending"
-      } order`;
-      const searchText = searchQuery
-        ? `, where name contains "${searchQuery}".`
-        : ".";
-      const summary = `Showing ${players.length} players filtered by ${positionText}, aged between ${minAge} and ${maxAge}, sorted by ${sortText}${searchText}`;
-      setResultSummary(summary);
-    };
-
-    updateFilterSummary();
-  }, [
-    position,
-    minAge,
-    maxAge,
-    sortField,
-    sortOrder,
-    players.length,
-    searchQuery,
-  ]);
-
-  const handleAgeRangeChange = (newMinAge: number, newMaxAge: number) => {
-    setMinAge(newMinAge);
-    setMaxAge(newMaxAge);
-  };
-
-  const handleSearch = (nameString: string) => {
-    setSearchQuery(nameString);
-  };
-
-  const toggleQBMode = () => {
-    setIsOneQBMode((prev) => {
-      if (!prev === true) {
-        if (sortField === "superflexValues.value") {
-          setSortField("oneQBValues.value");
-        }
-      } else {
-        if (sortField === "oneQBValues.value") {
-          setSortField("superflexValues.value");
-        }
-      }
-      return !prev;
-    });
-  };
-
+export default function Home() {
   return (
-    <div className="container mx-auto md:p-4">
-      <div className="px-8">
-        <h1 className="text-3xl font-bold text-center mb-4 mt-10">
-          🔍 Dynasty Trade Target Finder
-        </h1>
-        <p className="text-center text-gray-400 mb-10">
-          Find your next big trade target in seconds! Use filters, sort by key
-          metrics, and uncover players to build a winning roster. 🚀
-        </p>
-      </div>
-
-      <div className="flex flex-col mx-4 md:flex-row md:space-x-4 md:mx-10">
-        <FilterForm
-          position={position}
-          minAge={minAge}
-          maxAge={maxAge}
-          onPositionChange={setPosition}
-          onAgeRangeChange={handleAgeRangeChange}
-        />
-
-        <div className="flex flex-col w-full md:w-2/5">
-          <SortOptions
-            sortField={sortField}
-            sortOrder={sortOrder}
-            onSortFieldChange={setSortField}
-            onSortOrderChange={setSortOrder}
-            isOneQBMode={isOneQBMode}
-          />
-          <LeagueModeToggle
-            isOneQBMode={isOneQBMode}
-            toggleQBMode={toggleQBMode}
-          />
+    <>
+      <section className="page-wrap py-14 sm:py-20">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <span className="eyebrow">Daily market intelligence // $0</span>
+          <span className="mono-label text-[#69706c]">Dynasty · redraft · rookie picks</span>
         </div>
+        <h1 className="display-type mt-8 max-w-[1120px] uppercase">
+          Find the target. <span className="text-[#ff6b3d]">Price the move.</span>
+        </h1>
+        <div className="mt-9 grid gap-6 border-t border-[#171c19] pt-6 md:grid-cols-[1fr_auto] md:items-start">
+          <p className="max-w-2xl text-lg font-medium leading-8 text-[#525955]">
+            Free fantasy football trade tools that show their work. Search the market,
+            build the complete offer, and account for the hidden cost of extra roster spots.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="#trade-calculator"
+              className="border border-[#171c19] bg-[#171c19] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em] text-white shadow-[4px_4px_0_#dfff4f]"
+            >
+              Open calculator ↘
+            </Link>
+            <Link
+              href="#trade-targets"
+              className="border border-[#171c19] bg-white/50 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em]"
+            >
+              Find targets
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <div className="page-wrap">
+        <TradeCalculator />
       </div>
 
-      {loading ? (
-        <SkeletonPlayerTable /> // Display skeleton while loading
-      ) : (
-        <PlayerTable
-          players={players}
-          resultSummary={resultSummary}
-          isOneQBMode={isOneQBMode}
-          searchValue={searchQuery}
-          handleSearch={handleSearch}
-        />
-      )}
-    </div>
-  );
-};
+      <CalculatorGuide mode="dynasty" />
 
-export default Home;
+      <div id="trade-targets" className="page-wrap scroll-mt-10">
+        <MarketBoard />
+      </div>
+
+      <section className="page-wrap py-20">
+        <div className="grid gap-px border border-[#171c19] bg-[#171c19] md:grid-cols-3">
+          <Link href="/dynasty-trade-calculator" className="group bg-[#dfff4f] p-7 text-[#171c19] sm:p-9">
+            <span className="mono-label">Tool 01</span>
+            <h2 className="mt-14 text-3xl font-black tracking-[-0.05em]">Dynasty trade calculator</h2>
+            <p className="mt-3 text-sm leading-6 text-[#414742]">Players, exact picks, Superflex, TEP, and package-aware values.</p>
+            <span className="mt-8 inline-block font-mono text-xs font-black uppercase group-hover:translate-x-1">Build a trade →</span>
+          </Link>
+          <Link href="/fantasy-football-trade-analyzer" className="group bg-[#8bcfff] p-7 text-[#171c19] sm:p-9">
+            <span className="mono-label">Tool 02</span>
+            <h2 className="mt-14 text-3xl font-black tracking-[-0.05em]">Redraft trade analyzer</h2>
+            <p className="mt-3 text-sm leading-6 text-[#414742]">Current-season market checkpoints for complete multi-player offers.</p>
+            <span className="mt-8 inline-block font-mono text-xs font-black uppercase group-hover:translate-x-1">Analyze a trade →</span>
+          </Link>
+          <Link href="/dynasty-trade-value-chart" className="group bg-[#ff6b3d] p-7 text-[#171c19] sm:p-9">
+            <span className="mono-label">Tool 03</span>
+            <h2 className="mt-14 text-3xl font-black tracking-[-0.05em]">Dynasty value chart</h2>
+            <p className="mt-3 text-sm leading-6 text-[#414742]">Daily, searchable market scores for players and rookie capital.</p>
+            <span className="mt-8 inline-block font-mono text-xs font-black uppercase group-hover:translate-x-1">Browse values →</span>
+          </Link>
+        </div>
+      </section>
+
+      <FaqBlock items={homeFaqs} />
+    </>
+  );
+}

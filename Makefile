@@ -57,21 +57,16 @@ reset:
 	$(DOCKER_COMPOSE) -f $(COMPOSE_FILE) -p $(PROJECT_NAME) down --volumes --remove-orphans
 	$(DOCKER_COMPOSE) -f $(COMPOSE_FILE) -p $(PROJECT_NAME) up --build -d
 
-# Deploy command that calls both frontend and backend deploy commands
+# Production V1 is a single Next.js Cloud Run service. The legacy Python
+# backend is retained only as archive code and is not deployed.
 deploy:
-	@echo "Deploying Frontend and Backend in parallel..."
-	$(MAKE) -C frontend deploy &
-	$(MAKE) -C backend deploy &
-	wait
+	@echo "Deploying Frontend to Cloud Run..."
+	$(MAKE) -C frontend deploy
 
 deploy-gha:
-	@echo "Deploying Backend..."
-	$(MAKE) -C backend deploy || { echo "Backend deploy failed"; cat backend.log; exit 1; }
-
 	@echo "Deploying Frontend..."
 	$(MAKE) -C frontend deploy || { echo "Frontend deploy failed"; cat frontend.log; exit 1; }
-	
-	@echo "Both deployments finished successfully."
+	@echo "Frontend deployment finished successfully."
 
 # Help menu
 help:
@@ -86,4 +81,4 @@ help:
 	@echo "  restart - Restart all services"
 	@echo "  clean   - Clean up unused Docker resources"
 	@echo "  reset   - Fully reset containers, volumes, and networks, and rebuild everything"
-	@echo "  deploy  - Deploy both the FE and the BE apps to GCS cloud run"
+	@echo "  deploy  - Deploy the Next.js app to Google Cloud Run"

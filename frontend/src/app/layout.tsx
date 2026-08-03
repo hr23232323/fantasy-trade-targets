@@ -1,111 +1,99 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import "./globals.css";
 import { CSPostHogProvider } from "./components/PosthogProvider";
-import Sidebar from "./components/Sidebar";
-import { AppProvider } from "./context/AppContext";
-import FloatingButton from "./components/FloatingButton";
-import Head from "next/head";
+import SiteHeader from "./components/SiteHeader";
 import Footer from "./components/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
+  display: "swap",
 });
+
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Fantasy Trade Targets",
-  description: "Find your next trade target and generate memes.",
+  metadataBase: new URL("https://www.fantasytradetarget.com"),
+  title: {
+    default: "Fantasy Trade Target — Free Fantasy Football Trade Calculator",
+    template: "%s | Fantasy Trade Target",
+  },
+  description:
+    "A free dynasty and redraft fantasy football trade calculator with daily market values, rookie picks, Superflex, and TE premium support.",
+  applicationName: "Fantasy Trade Target",
+  category: "sports",
   openGraph: {
-    title: "Fantasy Trade Targets",
-    description: "Find your next trade target and generate memes.",
+    type: "website",
+    locale: "en_US",
     url: "https://www.fantasytradetarget.com",
-    siteName: "Fantasy Trade Targets",
+    siteName: "Fantasy Trade Target",
+    title: "Fantasy Trade Target",
+    description:
+      "Build a trade. Price every piece. See the roster-cost-adjusted verdict.",
     images: [
       {
-        url: "https://www.fantasytradetarget.com/og-image.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Fantasy Trade Targets Logo",
+        alt: "Fantasy Trade Target trade calculator",
       },
     ],
-    locale: "en_US",
-    type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Fantasy Trade Targets",
-    description: "Find your next trade target and generate memes.",
-    images: ["https://www.fantasytradetarget.com/og-image.png"],
+    title: "Fantasy Trade Target",
+    description:
+      "Free dynasty and redraft trade values, calculators, and rankings.",
+    images: ["/og-image.png"],
   },
-  alternates: {
-    canonical: "https://www.fantasytradetarget.com",
+  robots: {
+    index: true,
+    follow: true,
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#171c19",
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Fantasy Trade Target",
+  url: "https://www.fantasytradetarget.com",
+  description:
+    "Free fantasy football trade calculators, dynasty values, and rankings.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <Head>
-        {/* Viewport */}
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        {/* Structured Data */}
-        <script
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body>
+        <Script
+          id="website-schema"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebApplication",
-              name: "Fantasy Trade Targets",
-              url: "https://www.fantasytradetarget.com",
-              description: "Find your next trade target and generate memes.",
-              applicationCategory: "Game",
-            }),
-          }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
-        {/* Preload Fonts */}
-        <link
-          rel="preload"
-          href="/fonts/GeistVF.woff"
-          as="font"
-          type="font/woff"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/fonts/GeistMonoVF.woff"
-          as="font"
-          type="font/woff"
-          crossOrigin="anonymous"
-        />
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://www.fantasytradetarget.com" />
-      </Head>
-      <CSPostHogProvider>
-        <AppProvider>
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
-          >
-            <div className="flex flex-col md:flex-row flex-1">
-              {/* Sidebar as a semantic navigation element */}
-              <Sidebar />
-              <main className="flex-1 p-4 ml-0">{children}</main>
-            </div>
+        <CSPostHogProvider>
+          <div className="site-shell">
+            <SiteHeader />
+            <main className="min-h-[70vh]">{children}</main>
             <Footer />
-            <FloatingButton />
-          </body>
-        </AppProvider>
-      </CSPostHogProvider>
+          </div>
+        </CSPostHogProvider>
+      </body>
     </html>
   );
 }

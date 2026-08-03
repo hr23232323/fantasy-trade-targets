@@ -1,0 +1,134 @@
+# Fantasy Trade Target data roadmap
+
+Last reviewed: 2026-08-03
+
+This is the living inventory for every dataset we use or may add. A feed does not ship merely because it is technically accessible. Each feed needs a clear product job, stable identifier mapping, update cadence, attribution plan, and commercial-use decision.
+
+## Shipping in V1
+
+### Tradyr public API — market values and rankings
+
+- **Product job:** common market scale for dynasty players, redraft players, rookies, and exact rookie picks.
+- **Endpoints:** `/v1/players`, `/v1/picks`; future player profiles may use `/v1/players/:slug/full`.
+- **Formats:** dynasty/redraft, 1QB/Superflex, TE premium, and league-size-adjusted picks.
+- **Identifier spine:** Tradyr slug plus Sleeper player ID when supplied.
+- **Refresh:** upstream updates daily; our application cache is six hours with a 24-hour stale-while-revalidate window.
+- **Rights:** the [official Tradyr API documentation](https://api.tradyr.app/docs) explicitly permits commercial use with attribution.
+- **Public fields:** name, slug, position, team, age, composite, rank, position rank, confidence, Sleeper ID, and pick metadata.
+- **Do not expose:** upstream source-specific KTC or FantasyCalc payload fields. V1 republishes only the licensed Tradyr composite.
+- **Attribution:** visible “Powered by Tradyr” link on every market-driven surface.
+
+### Local deterministic trade engine
+
+- **Product job:** raw totals, roster-cost-adjusted totals, verdict bands, balancing suggestions, and share URLs.
+- **Refresh:** versioned with application deploys.
+- **Cost:** no inference or third-party calculation request.
+- **Method:** best asset receives 100% weight; later pieces receive 90%, 84%, 79%, 75%, 72%, 70%, and 68%. Verdict bands are documented at `/methodology`.
+
+## V1.1 — league-connected context
+
+### Sleeper public API
+
+- **Product job:** sync league scoring, roster positions, bench/IR/taxi counts, standings, rosters, traded picks, draft state, transactions, and manager identities needed to evaluate a trade inside the actual league.
+- **Core endpoints:** user lookup; user leagues; league; rosters; users; matchups; transactions; traded picks; drafts; draft picks; NFL player directory.
+- **Identifier spine:** `league_id`, `roster_id`, `user_id`, `player_id`, and season.
+- **Refresh:** league settings daily; live drafts/transactions every 15–60 seconds while the relevant screen is open; rosters on page load with a short cache.
+- **Rights gate:** Sleeper publishes a documented read-only API at [docs.sleeper.com](https://docs.sleeper.com/), but the technical documentation does not clearly grant a broad commercial redistribution license. Before monetized league sync ships, confirm acceptable commercial usage and store only the minimum public league data needed for analysis.
+- **Privacy:** username lookup must be user-initiated. Do not index league pages by default. Never ship locally captured private league snapshots in the public application image.
+
+### Derived league features
+
+- League-specific scoring normalized from `scoring_settings`.
+- Starting lineup value vs bench value, with replacement-level baselines per league.
+- Contender / retool / rebuild classification using age, starter strength, depth, draft capital, and standings.
+- Positional need/surplus by comparing usable starters with every other roster.
+- Trade partner discovery: manager needs + surplus + realistic asset availability.
+- Trade outcome delta: starting lineup, bench, draft capital, age curve, and roster cuts before vs after.
+
+## V1.2 — production and usage
+
+### nflverse
+
+- **Product job:** play-by-play, weekly/player stats, snap participation, rosters, schedules, depth context, and IDs for production-vs-market signals.
+- **Rights:** the [nflverse automated data repository](https://github.com/nflverse/nflverse-data) is published under CC BY 4.0; the nflverse software projects also publish license text. Preserve dataset-specific notices and attribution.
+- **Refresh:** weekly/player stats after games; schedules daily; play-by-play after games and corrections.
+- **Identifiers:** `gsis_id` / `nflverse_id` mapped to Sleeper IDs using nflverse player ID files and a manually reviewed exception table.
+- **Derived features:** value vs expected points, routes/targets per snap, weighted opportunities, age-adjusted production, consistency, playoff schedule, and “market has not caught up” trade-target scores.
+- **Validation:** every season ingest records source URL, release tag/hash, downloaded timestamp, schema hash, and row count.
+
+## V1.3 — availability and news
+
+### Injury / practice / transaction feed
+
+- **Product job:** availability status, practice participation, IR/PUP/NFI, suspensions, transactions, and depth-chart movement.
+- **Preferred path:** license a feed that explicitly allows commercial display and derived alerts. Candidates to evaluate include SportsDataIO, Sportradar, or another contracted provider.
+- **Fallback:** link to official reports rather than scraping and republishing protected editorial text.
+- **Refresh:** 5–15 minutes in-season; slower overnight/off-season.
+- **Rules:** store structured facts and source URLs, not full copyrighted articles. Every status needs `reported_at`, `effective_at`, `source`, and confidence.
+
+### News summaries
+
+- **Product job:** explain why value or role changed and attach verified source links to player pages.
+- **Rights:** do not ingest article bodies without a license. Prefer licensed structured feeds, official team/NFL releases, or headline/link metadata within the provider’s terms.
+- **AI policy:** any eventual summary layer is optional and downstream from deterministic facts. Cache by source document hash; show sources; never let generated text alter a player value directly.
+
+## V1.4 — game environment
+
+### Weather
+
+- **Product job:** wind, precipitation, temperature, and severe-weather flags for outdoor games; useful for weekly projections and start/sit, not dynasty value.
+- **Preferred free commercial path:** [National Weather Service API](https://www.weather.gov/documentation/services-web-api) for U.S. locations; NWS describes its API information as open data free for any purpose. Provide a descriptive User-Agent and cache responsibly.
+- **Alternative:** Open-Meteo has strong technical coverage, but its free hosted endpoint is non-commercial. A commercial subscription or self-hosted/licensing review is required before use on a monetized site; see [Open-Meteo pricing](https://open-meteo.com/en/pricing).
+- **Refresh:** stadium forecast at 48h, 24h, 6h, 90m, and 30m before kickoff.
+- **Join:** game ID → venue → coordinates → forecast grid point; dome/retractable-roof status suppresses or qualifies weather impact.
+
+### Schedule and venue metadata
+
+- **Product job:** kickoff, opponent, home/away, surface, roof, timezone, rest/travel, and playoff-week opponents.
+- **Preferred path:** nflverse schedules plus a small reviewed venue table.
+
+## Later commercial layers
+
+- Projection providers with explicit redistribution/derived-work rights.
+- Contract/cap data for multi-year opportunity analysis; verify licensing before use.
+- Real public Sleeper trade corpus for accepted-price distributions, with aggregation and privacy safeguards.
+- ADP from permitted public or partner feeds.
+- Best-ball exposure and portfolio risk for connected users.
+- Betting context only after legal, affiliate, state-targeting, and provider-term review.
+
+## Canonical warehouse shape
+
+The application can begin with JSON caches, but future feeds should land in versioned tables:
+
+```text
+players              canonical_player_id, names, position, birth_date
+player_identifiers   canonical_player_id, provider, provider_id, valid_from, valid_to
+market_values        player_id/asset_id, format, settings_hash, value, rank, observed_at, source
+league_snapshots     league_id, season, settings_json, roster_schema_json, observed_at
+roster_assets        snapshot_id, roster_id, asset_id, reserve_type
+weekly_stats         player_id, season, week, stat columns, source_version
+availability_events  player_id, status, detail, reported_at, source_url, confidence
+news_items           player_id, headline, source_url, published_at, content_hash
+game_weather         game_id, forecast_at, kickoff_delta, weather fields, source
+```
+
+Every derived output should include `model_version`, `settings_hash`, source timestamps, and enough lineage to reproduce it.
+
+## Feed acceptance checklist
+
+1. Commercial use and redistribution/derived-work rights are written down.
+2. Attribution is defined and visible where required.
+3. IDs map to the canonical player table with an exception queue.
+4. Rate limits and cache behavior fit expected September traffic.
+5. Raw payloads are isolated from public response schemas.
+6. Ingests are idempotent, timestamped, schema-checked, and observable.
+7. Missing/stale data fails visibly rather than silently becoming advice.
+8. A feed can be disabled without taking the calculator offline.
+
+## Deliberate non-sources
+
+- No live KeepTradeCut scraping.
+- No FantasyCalc value reuse without direct permission.
+- No copied article bodies or unlicensed injury/news aggregation.
+- No private or personal league snapshots in public builds.
+- No model-generated “facts” in the deterministic data layer.
