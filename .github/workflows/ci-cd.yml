@@ -40,15 +40,19 @@ jobs:
         cache: npm
         cache-dependency-path: frontend/package-lock.json
 
-    - id: refresh
-      name: Refresh public market and team data
+    - id: market_refresh
+      name: Refresh and archive public market data
       working-directory: frontend
       continue-on-error: ${{ github.event_name == 'push' }}
       env:
         TRADYR_API_KEY: ${{ secrets.TRADYR_API_KEY }}
-      run: |
-        npm run data:refresh
-        npm run data:teams
+      run: npm run data:refresh
+
+    - id: team_refresh
+      name: Refresh NFL team and schedule data
+      working-directory: frontend
+      continue-on-error: ${{ github.event_name == 'push' }}
+      run: npm run data:teams
 
     - name: Test frontend
       working-directory: frontend
@@ -70,7 +74,7 @@ jobs:
       run: npm run indexnow:submit
 
     - name: Commit the published release and snapshot
-      if: steps.refresh.outcome == 'success'
+      if: steps.market_refresh.outcome == 'success' || steps.team_refresh.outcome == 'success'
       run: |
         git config user.name "Fantasy Trade Target Data"
         git config user.email "data@fantasytradetarget.com"
