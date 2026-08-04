@@ -8,9 +8,15 @@ const release = JSON.parse(
 const playerPages = JSON.parse(
   await readFile(new URL("../data/player-pages.json", import.meta.url), "utf8"),
 );
+const compactSnapshotHistory = JSON.parse(
+  await readFile(
+    new URL("../../data/player-snapshot-history.json", import.meta.url),
+    "utf8",
+  ),
+);
 
 test("public release contains every supported market variant", () => {
-  assert.equal(release.schemaVersion, 1);
+  assert.equal(release.schemaVersion, 2);
   assert.match(release.releaseId, /^ftt-\d{8}T\d{6}Z$/);
   assert.equal(Object.keys(release.playerMarkets).length, 8);
   assert.equal(Object.keys(release.pickMarkets).length, 10);
@@ -23,14 +29,48 @@ test("public release contains every supported market variant", () => {
 });
 
 test("every configured player page has a validated profile", () => {
+  const currentMarket = release.playerMarkets["dynasty:2:0"].data;
+
   for (const page of playerPages) {
     const profile = release.playerProfiles[page.slug];
+    const currentPlayer = currentMarket.find((player) => player.slug === page.slug);
     assert.ok(profile, `${page.slug} profile exists`);
+    assert.ok(currentPlayer, `${page.slug} exists in the current market`);
     assert.equal(profile.data.slug, page.slug);
     assert.ok(Array.isArray(profile.data.history));
+    const snapshots = release.playerSnapshotHistory[page.slug];
+    assert.ok(Array.isArray(snapshots), `${page.slug} snapshot history exists`);
+    assert.ok(snapshots.length >= 1, `${page.slug} has an FTT observation`);
+    assert.equal(snapshots.at(-1).releaseId, release.releaseId);
+    assert.equal(typeof snapshots.at(-1).value, "number");
+    assert.equal(snapshots.at(-1).value, currentPlayer.composite);
+    assert.equal(snapshots.at(-1).rank, currentPlayer.rank);
+    assert.equal(snapshots.at(-1).posRank, currentPlayer.posRank);
+    assert.equal(
+      new Set(snapshots.map((observation) => observation.releaseId)).size,
+      snapshots.length,
+      `${page.slug} has no duplicate release observations`,
+    );
+    assert.deepEqual(
+      snapshots,
+      [...snapshots].sort(
+        (left, right) => Date.parse(left.observedAt) - Date.parse(right.observedAt),
+      ),
+      `${page.slug} observations are chronological`,
+    );
+    assert.ok(
+      Number.isFinite(Date.parse(snapshots.at(-1).observedAt)),
+      `${page.slug} observation has a valid timestamp`,
+    );
     assert.ok(page.image.src.startsWith("https://upload.wikimedia.org/"));
     assert.ok(page.image.licenseUrl.startsWith("https://creativecommons.org/"));
   }
+});
+
+test("compact snapshot history matches the packaged release", () => {
+  assert.equal(compactSnapshotHistory.schemaVersion, 1);
+  assert.equal(compactSnapshotHistory.updatedAt, release.capturedAt);
+  assert.deepEqual(compactSnapshotHistory.players, release.playerSnapshotHistory);
 });
 
 test("market assets retain reproducible rank and value fields", () => {

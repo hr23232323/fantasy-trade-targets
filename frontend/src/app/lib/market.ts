@@ -8,6 +8,7 @@ import type {
 import type {
   PlayerProfile,
   PlayerProfilePayload,
+  PlayerSnapshotObservation,
 } from "../types/PlayerProfile";
 
 type MarketSettings = {
@@ -65,6 +66,7 @@ type PublicRelease = {
   playerMarkets: Record<string, TradyrResponse<TradyrPlayer[]>>;
   pickMarkets: Record<string, TradyrResponse<TradyrPick[]>>;
   playerProfiles: Record<string, TradyrResponse<PlayerProfile>>;
+  playerSnapshotHistory: Record<string, PlayerSnapshotObservation[]>;
 };
 
 const publicRelease = publicReleaseJson as unknown as PublicRelease;
@@ -161,6 +163,7 @@ export async function getPlayerProfile(
         value: player.composite ?? player.value,
       })),
     },
+    snapshotHistory: publicRelease.playerSnapshotHistory[slug] ?? [],
     meta: {
       version: response.meta.version ?? publicRelease.methodologyVersion,
       generatedAt: response.meta.generatedAt,

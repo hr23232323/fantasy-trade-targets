@@ -1,6 +1,9 @@
 import { getPlayerProfile } from "../../../lib/market";
 import { getPlayerPage, playerPageSlugs } from "../../../lib/player-pages";
-import { normalizeHistory } from "../../../lib/player-insights";
+import {
+  normalizeHistory,
+  selectPublishedHistory,
+} from "../../../lib/player-insights";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -18,12 +21,19 @@ export async function GET(
   if (!page) return new Response("Not found", { status: 404 });
 
   const profile = await getPlayerProfile(slug);
-  const rows = normalizeHistory(profile.data.history).map((point) => [
-    point.parsedDate.toISOString().slice(0, 10),
+  const series = selectPublishedHistory(
+    profile.data.history,
+    profile.snapshotHistory,
+  );
+  const rows = normalizeHistory(series.points).map((point) => [
+    series.source === "ftt"
+      ? point.parsedDate.toISOString()
+      : point.parsedDate.toISOString().slice(0, 10),
     String(point.value),
+    series.sourceLabel,
   ]);
   const csv = [
-    ["observation_date", "market_value"],
+    ["observation_date", "market_value", "series_source"],
     ...rows,
   ]
     .map((row) => row.map(csvCell).join(","))

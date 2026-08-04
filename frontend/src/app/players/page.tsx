@@ -8,7 +8,7 @@ import { playerPages } from "../lib/player-pages";
 export const metadata = buildPageMetadata({
   title: "Dynasty Player Values, History & Trade Research",
   description:
-    "Research dynasty values, ranks, historical charts, production, usage, comparable players, and rookie-pick equivalents.",
+    "Research dynasty values, ranks, recorded market observations, production, usage, comparable players, and rookie-pick equivalents.",
   path: "/players",
 });
 
@@ -30,7 +30,7 @@ export default async function PlayersPage() {
           name: "Fantasy Trade Target player research",
           url: "https://www.fantasytradetarget.com/players",
           description:
-            "Dynasty player values, market history, production, usage, comparable players, and rookie-pick equivalents.",
+            "Dynasty player values, recorded market observations, production, usage, comparable players, and rookie-pick equivalents.",
           mainEntity: {
             "@type": "ItemList",
             itemListElement: players.map(({ page }, index) => ({
@@ -50,7 +50,7 @@ export default async function PlayersPage() {
           </h1>
           <div className="border-l border-[#171c19] pl-5">
             <p className="text-base font-medium leading-7 text-[#515854]">
-              Substantial dynasty player files built for trade research, historical context, and direct answers grounded in visible market evidence.
+              Substantial dynasty player files built for trade research, timestamped market context, and direct answers grounded in visible evidence.
             </p>
             <p className="mt-4 font-mono text-[10px] font-bold uppercase leading-5 tracking-[0.07em] text-[#69706c]">
               Daily composite market · Updated {formatDate(market.meta.generatedAt)}
@@ -103,8 +103,8 @@ export default async function PlayersPage() {
             <h2 className="mt-8 text-2xl font-black tracking-[-0.04em]">Worth, rank, and format context appear immediately.</h2>
           </article>
           <article className="bg-[#8bcfff] p-7">
-            <span className="mono-label">Historical evidence</span>
-            <h2 className="mt-8 text-2xl font-black tracking-[-0.04em]">Recorded values show how the market reached today’s price.</h2>
+            <span className="mono-label">Timestamped evidence</span>
+            <h2 className="mt-8 text-2xl font-black tracking-[-0.04em]">Every page shows its verified record—whether that is a full series or the first FTT observation.</h2>
           </article>
           <article className="bg-[#ffb29a] p-7">
             <span className="mono-label">Honest boundary</span>

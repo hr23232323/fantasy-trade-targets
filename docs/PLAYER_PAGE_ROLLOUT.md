@@ -26,7 +26,10 @@ Every player page must include in initial HTML:
 - a direct answer below the heading;
 - current Superflex, 1QB, TE-premium, and redraft context;
 - overall and positional rank;
-- recorded value history and computed movement;
+- a recorded upstream value series when supplied, otherwise an explicitly dated
+  first-party FTT observation that grows automatically with scheduled snapshots;
+- computed movement only after the selected series spans enough real observation
+  dates;
 - an accessible observation table plus CSV and JSON downloads;
 - position-aware production and usage facts;
 - comparable market-tier players and rookie-pick equivalents;
@@ -46,10 +49,11 @@ Before adding a player to the deployment manifest, verify:
 2. Image cropping, responsive performance, and attribution visibility.
 3. Direct-answer clarity and factual accuracy.
 4. A complete validated profile in the packaged release.
-5. Structured-data validity and exact 404 behavior for missing routes.
-6. Genuine player-specific utility beyond the upstream profile.
-7. Image rights and manifest metadata.
-8. CSV/JSON download integrity.
+5. A current FTT snapshot observation even when the upstream history array is empty.
+6. Structured-data validity and exact 404 behavior for missing routes.
+7. Genuine player-specific utility beyond the upstream profile.
+8. Image rights and manifest metadata.
+9. CSV/JSON download integrity and explicit series provenance.
 
 Expand only with reviewed records. Do not generate scoring-variant doorway pages;
 one substantial canonical page owns each player entity.

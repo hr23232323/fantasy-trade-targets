@@ -1,5 +1,6 @@
 import { getPlayerMarketContexts, getPlayerProfile } from "../../../lib/market";
 import { getPlayerPage, playerPageSlugs } from "../../../lib/player-pages";
+import { selectPublishedHistory } from "../../../lib/player-insights";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -20,12 +21,18 @@ export async function GET(
     getPlayerProfile(slug),
     getPlayerMarketContexts(slug),
   ]);
+  const publishedHistory = selectPublishedHistory(
+    profile.data.history,
+    profile.snapshotHistory,
+  );
 
   return Response.json(
     {
       schemaVersion: 1,
       methodology: "https://www.fantasytradetarget.com/methodology",
       player: profile.data,
+      publishedHistory,
+      fttSnapshotHistory: profile.snapshotHistory,
       marketContexts: {
         dynastySuperflex: contexts.superflex ?? null,
         dynasty1Qb: contexts.oneQb ?? null,

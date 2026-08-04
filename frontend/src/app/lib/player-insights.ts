@@ -1,4 +1,8 @@
-import type { HistoryPoint, PlayerProfile } from "../types/PlayerProfile";
+import type {
+  HistoryPoint,
+  PlayerProfile,
+  PlayerSnapshotObservation,
+} from "../types/PlayerProfile";
 
 export type Movement = {
   label: string;
@@ -8,11 +12,15 @@ export type Movement = {
 };
 
 function parseHistoryDate(value: string) {
-  if (!/^\d{6}$/.test(value)) return null;
-  const year = 2000 + Number(value.slice(0, 2));
-  const month = Number(value.slice(2, 4)) - 1;
-  const day = Number(value.slice(4, 6));
-  const date = new Date(Date.UTC(year, month, day));
+  if (/^\d{6}$/.test(value)) {
+    const year = 2000 + Number(value.slice(0, 2));
+    const month = Number(value.slice(2, 4)) - 1;
+    const day = Number(value.slice(4, 6));
+    const date = new Date(Date.UTC(year, month, day));
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+
+  const date = new Date(value);
   return Number.isNaN(date.getTime()) ? null : date;
 }
 
@@ -24,6 +32,49 @@ export function normalizeHistory(points: HistoryPoint[]) {
         Boolean(point.parsedDate) && Number.isFinite(point.value),
     )
     .sort((a, b) => a.parsedDate.getTime() - b.parsedDate.getTime());
+}
+
+export type PublishedHistorySeries = {
+  points: HistoryPoint[];
+  source: "tradyr" | "ftt";
+  sourceLabel: string;
+  chartable: boolean;
+};
+
+export function selectPublishedHistory(
+  upstreamHistory: HistoryPoint[],
+  snapshotHistory: PlayerSnapshotObservation[],
+): PublishedHistorySeries {
+  const upstreamPoints = normalizeHistory(upstreamHistory).map(
+    ({ date, value }) => ({ date, value }),
+  );
+  const source = upstreamPoints.length >= 2 ? "tradyr" : "ftt";
+  const points =
+    source === "tradyr"
+      ? upstreamPoints
+      : normalizeHistory(
+          snapshotHistory.map((observation) => ({
+            date: observation.observedAt,
+            value: observation.value,
+          })),
+        ).map(({ date, value }) => ({ date, value }));
+  const normalizedPoints = normalizeHistory(points);
+  const firstObserved = normalizedPoints[0]?.parsedDate.getTime();
+  const lastObserved = normalizedPoints.at(-1)?.parsedDate.getTime();
+  const observationSpan =
+    firstObserved !== undefined && lastObserved !== undefined
+      ? lastObserved - firstObserved
+      : 0;
+
+  return {
+    points,
+    source,
+    sourceLabel:
+      source === "tradyr" ? "Tradyr public API" : "Fantasy Trade Target snapshots",
+    chartable:
+      points.length >= 2 &&
+      (source === "tradyr" || observationSpan >= 24 * 60 * 60 * 1_000),
+  };
 }
 
 export function calculateMovement(

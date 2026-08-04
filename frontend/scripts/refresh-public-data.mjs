@@ -15,6 +15,12 @@ const releaseId = `ftt-${capturedAt
   .toISOString()
   .replace(/[-:]/g, "")
   .replace(/\.\d{3}/, "")}`;
+const currentPath = path.resolve("data/public-release.json");
+const snapshotHistoryPath = path.resolve(
+  "..",
+  "data",
+  "player-snapshot-history.json",
+);
 
 const playerPageManifest = JSON.parse(
   await readFile(path.resolve("data/player-pages.json"), "utf8"),
@@ -73,10 +79,32 @@ const playerProfiles = Object.fromEntries(
     .map((response) => [response.key, response.payload]),
 );
 
-validateRelease({ playerMarkets, pickMarkets, playerProfiles });
+const [priorRelease, priorSnapshotHistory] = await Promise.all([
+  readJsonIfPresent(currentPath),
+  readJsonIfPresent(snapshotHistoryPath),
+]);
+const playerSnapshotHistory = buildPlayerSnapshotHistory({
+  existing: priorSnapshotHistory?.players,
+  releases: [
+    priorRelease,
+    {
+      releaseId,
+      capturedAt: capturedAt.toISOString(),
+      playerMarkets,
+    },
+  ],
+  playerSlugs,
+});
+
+validateRelease({
+  playerMarkets,
+  pickMarkets,
+  playerProfiles,
+  playerSnapshotHistory,
+});
 
 const release = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   methodologyVersion: "2026.08.1",
   releaseId,
   capturedAt: capturedAt.toISOString(),
@@ -88,12 +116,23 @@ const release = {
   playerMarkets,
   pickMarkets,
   playerProfiles,
+  playerSnapshotHistory,
 };
 
-const currentPath = path.resolve("data/public-release.json");
 const temporaryPath = `${currentPath}.tmp`;
+const snapshotHistoryTemporaryPath = `${snapshotHistoryPath}.tmp`;
 await mkdir(path.dirname(currentPath), { recursive: true });
+await mkdir(path.dirname(snapshotHistoryPath), { recursive: true });
 await writeFile(temporaryPath, `${JSON.stringify(release)}\n`);
+await writeFile(
+  snapshotHistoryTemporaryPath,
+  `${JSON.stringify({
+    schemaVersion: 1,
+    updatedAt: capturedAt.toISOString(),
+    players: playerSnapshotHistory,
+  })}\n`,
+);
+await rename(snapshotHistoryTemporaryPath, snapshotHistoryPath);
 await rename(temporaryPath, currentPath);
 
 const archiveDate = capturedAt.toISOString().slice(0, 10).split("-");
@@ -165,7 +204,12 @@ async function waitForRequestSlot() {
   if (scheduledAt > now) await delay(scheduledAt - now);
 }
 
-function validateRelease({ playerMarkets, pickMarkets, playerProfiles }) {
+function validateRelease({
+  playerMarkets,
+  pickMarkets,
+  playerProfiles,
+  playerSnapshotHistory,
+}) {
   if (Object.keys(playerMarkets).length !== 8) {
     throw new Error("Release is missing player market variants");
   }
@@ -182,6 +226,89 @@ function validateRelease({ playerMarkets, pickMarkets, playerProfiles }) {
     if (!payload.data || payload.data.slug !== slug) {
       throw new Error(`Player profile ${slug} failed validation`);
     }
+    if (!Array.isArray(payload.data.history)) {
+      throw new Error(`Player profile ${slug} has an invalid history field`);
+    }
+    const observations = playerSnapshotHistory[slug];
+    if (!Array.isArray(observations) || observations.length < 1) {
+      throw new Error(`Player profile ${slug} is missing FTT snapshot history`);
+    }
+    if (
+      observations.some(
+        (observation) =>
+          !observation.releaseId ||
+          !Number.isFinite(observation.value) ||
+          !Number.isFinite(Date.parse(observation.observedAt)),
+      ) ||
+      new Set(observations.map((observation) => observation.releaseId)).size !==
+        observations.length
+    ) {
+      throw new Error(`Player profile ${slug} has invalid FTT observations`);
+    }
+    const latest = observations.at(-1);
+    const currentPlayer = playerMarkets["dynasty:2:0"].data.find(
+      (player) => player.slug === slug,
+    );
+    if (
+      latest.releaseId !== releaseId ||
+      latest.value !== currentPlayer?.composite ||
+      latest.rank !== (currentPlayer?.rank ?? null) ||
+      latest.posRank !== (currentPlayer?.posRank ?? null)
+    ) {
+      throw new Error(`Player profile ${slug} has a stale FTT snapshot history`);
+    }
+  }
+}
+
+function buildPlayerSnapshotHistory({ existing, releases, playerSlugs }) {
+  const histories = Object.fromEntries(
+    playerSlugs.map((slug) => [
+      slug,
+      Array.isArray(existing?.[slug]) ? [...existing[slug]] : [],
+    ]),
+  );
+
+  for (const release of releases) {
+    if (!release?.releaseId || !release?.capturedAt) continue;
+    const market = release.playerMarkets?.["dynasty:2:0"]?.data;
+    if (!Array.isArray(market)) continue;
+
+    for (const slug of playerSlugs) {
+      const player = market.find((candidate) => candidate.slug === slug);
+      if (!player || !Number.isFinite(player.composite)) continue;
+      histories[slug].push({
+        observedAt: release.capturedAt,
+        value: player.composite,
+        rank: player.rank ?? null,
+        posRank: player.posRank ?? null,
+        releaseId: release.releaseId,
+      });
+    }
+  }
+
+  for (const slug of playerSlugs) {
+    histories[slug] = Array.from(
+      new Map(
+        histories[slug].map((observation) => [
+          observation.releaseId,
+          observation,
+        ]),
+      ).values(),
+    ).sort(
+      (left, right) =>
+        new Date(left.observedAt).getTime() - new Date(right.observedAt).getTime(),
+    );
+  }
+
+  return histories;
+}
+
+async function readJsonIfPresent(filePath) {
+  try {
+    return JSON.parse(await readFile(filePath, "utf8"));
+  } catch (error) {
+    if (error?.code === "ENOENT") return null;
+    throw error;
   }
 }
 

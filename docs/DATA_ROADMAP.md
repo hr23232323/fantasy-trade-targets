@@ -14,7 +14,8 @@ This is the living inventory for every dataset we use or may add. A feed does no
 - **Identifier spine:** Tradyr slug plus Sleeper player ID when supplied.
 - **Refresh:** the publisher runs three times daily, validates every supported market variant, and packages the current release with the application.
 - **Rights:** the [official Tradyr API documentation](https://api.tradyr.app/docs) explicitly permits commercial use with attribution.
-- **Public fields:** name, slug, position, team, age, composite, rank, position rank, confidence, Sleeper ID, pick metadata, composite history, derived season/usage metrics, consistency, and similar-market players.
+- **Public fields:** name, slug, position, team, age, composite, rank, position rank, confidence, Sleeper ID, pick metadata, upstream composite history when supplied, derived season/usage metrics, consistency, and similar-market players.
+- **History boundary:** the documented player endpoints may return an empty `history` array and `deltas: null` for an otherwise valid canonical profile. Publication must preserve that distinction instead of treating absent upstream observations as zeroes or inferred history.
 - **Do not expose:** upstream source-specific KTC or FantasyCalc payload fields. V1 republishes only the licensed Tradyr composite.
 - **Attribution:** visible “Powered by Tradyr” link on every market-driven surface.
 
@@ -42,16 +43,20 @@ This is the living inventory for every dataset we use or may add. A feed does no
   recurring research.
 - **Execution model:** a scheduled batch job in this repository. It is not an
   always-running application backend and does not accept user traffic.
-- **Current store:** validated current release in `frontend/data` plus compressed,
-  append-only market snapshots in `data/snapshots`. Move the archive to object
-  storage when repository volume makes that operationally preferable.
+- **Current store:** validated current release in `frontend/data`, a compact
+  first-party player observation index at `data/player-snapshot-history.json`,
+  plus compressed, append-only market snapshots in `data/snapshots`. Move the
+  raw archive to object storage when repository volume makes that operationally
+  preferable.
 - **Snapshot dimensions:** format, quarterback setting, TE premium, supported
   league size, player/pick identity, value, overall and positional rank,
   confidence, upstream freshness, settings hash, and methodology version.
 - **Public releases:** a manifest, current market snapshots, player histories,
   mover reports, and downloadable sanitized CSV/JSON artifacts.
 - **Validation:** reject stale, partial, duplicate, or schema-incompatible input
-  before advancing the `latest` release pointer.
+  before advancing the `latest` release pointer. Every configured player must
+  receive a timestamped FTT observation in the new release; upstream history is
+  validated when present but is not fabricated when absent.
 - **Boundary:** generic public data only. Sleeper usernames, leagues, rosters,
   transactions, and private snapshots belong to the separate connected-league
   service.

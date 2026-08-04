@@ -7,7 +7,7 @@ Deterministic fantasy football trade tools for [fantasytradetarget.com](https://
 - exact rookie-pick values;
 - transparent roster-cost adjustment;
 - searchable dynasty rankings and trade value charts;
-- server-rendered player research pages with downloadable history;
+- server-rendered player research pages with downloadable market records;
 - shareable trade URLs;
 - deterministic trade meme generator.
 
@@ -77,7 +77,9 @@ routes read the same packaged release, so builds and requests do not depend on a
 live upstream response.
 
 CI refreshes and deploys the release three times daily. The checked-in snapshot
-archive starts the proprietary history immediately; it can move to object
+archive starts the proprietary history immediately, while
+`data/player-snapshot-history.json` keeps the compact per-player observation
+series packaged into each public release. The raw archive can move to object
 storage without changing the public release contract as volume grows.
 
 ## Related intelligence engine

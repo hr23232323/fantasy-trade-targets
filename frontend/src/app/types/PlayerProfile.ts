@@ -5,6 +5,14 @@ export type HistoryPoint = {
   value: number;
 };
 
+export type PlayerSnapshotObservation = {
+  observedAt: string;
+  value: number;
+  rank: number | null;
+  posRank: number | null;
+  releaseId: string;
+};
+
 export type DerivedStats = Record<string, number | null | undefined>;
 
 export type ConsistencyProfile = {
@@ -50,6 +58,7 @@ export type PlayerProfile = MarketAsset & {
 
 export type PlayerProfilePayload = {
   data: PlayerProfile;
+  snapshotHistory: PlayerSnapshotObservation[];
   meta: {
     version: string;
     generatedAt: string;

@@ -17,6 +17,7 @@ import {
   formatMetric,
   getProductionCards,
   getUsageCards,
+  selectPublishedHistory,
 } from "../../lib/player-insights";
 import type { MarketAsset } from "../../types/MarketAsset";
 
@@ -36,7 +37,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!page) return {};
 
   const { data: player } = await getPlayerProfile(slug);
-  const description = `${player.name} dynasty value, Superflex and 1QB rank, historical market chart, production profile, comparable players, and rookie-pick equivalents.`;
+  const description = `${player.name} dynasty value, Superflex and 1QB rank, recorded market observations, production profile, comparable players, and rookie-pick equivalents.`;
 
   return {
     title: `${player.name} Dynasty Value, Rank & History`,
@@ -70,13 +71,19 @@ export default async function PlayerPage({ params }: PageProps) {
   const page = getPlayerPage(slug);
   if (!page) notFound();
 
-  const [{ data: profile, meta }, contexts] = await Promise.all([
+  const [profilePayload, contexts] = await Promise.all([
     getPlayerProfile(slug),
     getPlayerMarketContexts(slug),
   ]);
+  const { data: profile, meta, snapshotHistory } = profilePayload;
   const player = contexts.superflex ?? profile;
-  const movement30 = calculateMovement(profile.history, 30);
-  const movement90 = calculateMovement(profile.history, 90);
+  const historySeries = selectPublishedHistory(profile.history, snapshotHistory);
+  const movement30 = historySeries.chartable
+    ? calculateMovement(historySeries.points, 30)
+    : null;
+  const movement90 = historySeries.chartable
+    ? calculateMovement(historySeries.points, 90)
+    : null;
   const pickEquivalents = [...contexts.picks]
     .sort(
       (a, b) =>
@@ -128,7 +135,7 @@ export default async function PlayerPage({ params }: PageProps) {
               href="#history"
               className="border border-[#171c19] bg-white/70 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em]"
             >
-              See value history ↓
+              See market record ↓
             </Link>
           </div>
         </div>
@@ -179,9 +186,9 @@ export default async function PlayerPage({ params }: PageProps) {
         <div className="paper-card p-5 sm:p-8">
           <div className="grid gap-5 border-b border-[#171c19] pb-7 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
-              <span className="mono-label text-[#69706c]">Recorded market history</span>
+              <span className="mono-label text-[#69706c]">Recorded market observations</span>
               <h2 className="mt-2 text-4xl font-black tracking-[-0.055em] sm:text-5xl">
-                {profile.name} value over time
+                {profile.name} market value record
               </h2>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -190,7 +197,7 @@ export default async function PlayerPage({ params }: PageProps) {
             </div>
           </div>
           <div className="pt-8">
-            <PlayerHistoryChart history={profile.history} name={profile.name} />
+            <PlayerHistoryChart series={historySeries} name={profile.name} />
           </div>
           <div className="mt-6 flex flex-wrap gap-3 border-t border-[#c9c5ba] pt-5">
             <a href={`/players/${profile.slug}/history.csv`} download className="border border-[#171c19] bg-[#dfff4f] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">
