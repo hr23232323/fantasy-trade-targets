@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   FiArrowLeft,
@@ -23,6 +24,7 @@ import {
 } from "../lib/trade-share.mjs";
 import { fetchClientMarket } from "../lib/client-market";
 import { captureAnalytics } from "../lib/analytics";
+import { getTradePlayerImage } from "../lib/player-pages";
 import type {
   MarketAsset,
   MarketFormat,
@@ -754,7 +756,8 @@ function AssetPicker({
                   setOpen(false);
                 }}
               >
-                <span className="min-w-0">
+                <AssetThumbnail asset={asset} />
+                <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-bold">{asset.name}</span>
                   <span className="mt-0.5 block font-mono text-[10px] uppercase text-[#69706c]">
                     {asset.position}{asset.team ? ` · ${asset.team}` : ""}{asset.age ? ` · ${asset.age.toFixed(1)} y.o.` : ""}
@@ -777,9 +780,7 @@ function AssetPicker({
 function AssetRow({ asset, onRemove }: { asset: MarketAsset; onRemove: () => void }) {
   return (
     <div className="flex items-center gap-3 border border-white/20 bg-white/[0.045] p-3">
-      <span className={`grid h-10 w-10 shrink-0 place-items-center font-mono text-[10px] font-black text-[#171c19] ${positionColor(asset.position)}`}>
-        {asset.position}
-      </span>
+      <AssetThumbnail asset={asset} onDark />
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-bold">{asset.name}</p>
         <p className="mt-0.5 font-mono text-[10px] uppercase text-white/40">
@@ -860,13 +861,59 @@ function TradeVerdict({
                 onClick={() => onAddSuggestion(weakerSide, asset)}
                 className="inline-flex items-center gap-2 border border-white/20 bg-white/[0.05] px-3 py-2 text-xs font-bold hover:border-[#dfff4f] hover:text-[#dfff4f]"
               >
-                <FiPlus /> {asset.name} <span className="font-mono text-white/40">{asset.value}</span>
+                <FiPlus />
+                <AssetThumbnail asset={asset} compact onDark />
+                {asset.name} <span className="font-mono text-white/40">{asset.value}</span>
               </button>
             ))}
           </div>
         </div>
       )}
     </div>
+  );
+}
+
+function AssetThumbnail({
+  asset,
+  compact = false,
+  onDark = false,
+}: {
+  asset: MarketAsset;
+  compact?: boolean;
+  onDark?: boolean;
+}) {
+  const playerImage = asset.kind === "player" ? getTradePlayerImage(asset.slug) : undefined;
+  const initials = asset.name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("");
+  const dimensions = compact ? "h-8 w-7" : "h-11 w-10";
+  const border = onDark ? "border-white/30" : "border-[#171c19]";
+
+  return (
+    <span
+      className={`relative grid ${dimensions} shrink-0 place-items-center overflow-hidden border ${border} ${playerImage ? "bg-[#dedbd1]" : positionColor(asset.position)}`}
+      aria-hidden="true"
+    >
+      {playerImage ? (
+        <Image
+          src={playerImage.src}
+          alt=""
+          fill
+          className="object-cover object-top"
+          sizes={compact ? "28px" : "40px"}
+        />
+      ) : (
+        <span className="font-mono text-[10px] font-black tracking-[-0.05em] text-[#171c19]">
+          {asset.kind === "pick" ? asset.year?.slice(-2) || "PK" : initials || asset.position}
+        </span>
+      )}
+      <span className={`absolute bottom-0 right-0 border-l border-t border-[#171c19] px-1 font-mono text-[7px] font-black leading-3 text-[#171c19] ${positionColor(asset.position)}`}>
+        {asset.position}
+      </span>
+    </span>
   );
 }
 
