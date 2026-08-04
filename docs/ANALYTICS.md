@@ -27,6 +27,9 @@ Fantasy Trade Target uses PostHog for privacy-conscious, anonymous product analy
 | Calculator | `trade_sides_swapped` | The get/send sides were swapped. |
 | Calculator | `trade_reset` | The trade was cleared. |
 | Calculator | `trade_shared` | A share URL was successfully copied. |
+| Shared trade | `trade_report_viewed` | A dedicated shared trade receipt rendered. |
+| Shared trade | `trade_report_shared` | A receipt was shared with the native share sheet or copied. |
+| Shared trade | `trade_report_edit_opened` | A receipt led back to its prefilled calculator. |
 | Market | `market_board_viewed` | A market board release became usable. |
 | Market | `market_board_load_failed` | Full rankings failed to load. |
 | Market | `market_search_used` | A debounced search was used; only length and result count are captured. |
@@ -50,9 +53,9 @@ PostHog's standard `$pageview`, `$pageleave`, `$autocapture`, exception, and per
 ## Recommended dashboards
 
 1. **Acquisition:** unique visitors and landing pages by referrer/UTM.
-2. **Calculator funnel:** calculator page view → asset added → trade evaluated → trade shared.
+2. **Calculator funnel:** calculator page view → asset added → trade evaluated → trade report created → receipt viewed/shared.
 3. **Research funnel:** player/team research viewed → calculator CTA or data download.
 4. **Content demand:** player and team views, market searches, and downloads by asset/team.
 5. **Reliability:** market load failures, exceptions, slow pages, and retry recovery.
 
-Use `trade_evaluated` as the primary activation event and `trade_shared` as the strongest current completion event.
+Use `trade_evaluated` as the primary activation event, `trade_shared` as report creation, and `trade_report_viewed` as evidence that a recipient opened it.

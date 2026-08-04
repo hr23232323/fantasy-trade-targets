@@ -17,6 +17,10 @@ import {
   evaluateTrade,
   findBalancingAssets,
 } from "../lib/trade-engine.mjs";
+import {
+  buildTradeShareParams,
+  buildTradeShareSlug,
+} from "../lib/trade-share.mjs";
 import { fetchClientMarket } from "../lib/client-market";
 import { captureAnalytics } from "../lib/analytics";
 import type {
@@ -287,17 +291,25 @@ export default function TradeCalculator({
   };
 
   const share = async () => {
-    const url = new URL(window.location.href);
-    url.search = "";
-    url.searchParams.set("format", format);
-    url.searchParams.set("qbs", String(numQbs));
-    if (tep) url.searchParams.set("tep", "1");
-    url.searchParams.set("teams", String(numTeams));
-    if (!rosterPremium) url.searchParams.set("roster", "0");
-    if (sideA.length) url.searchParams.set("get", sideA.map((asset) => asset.id).join(","));
-    if (sideB.length) url.searchParams.set("send", sideB.map((asset) => asset.id).join(","));
-    window.history.replaceState({}, "", url);
-    await navigator.clipboard.writeText(url.toString());
+    if (evaluation.status === "incomplete") return;
+
+    const params = buildTradeShareParams({
+      format,
+      numQbs,
+      tep,
+      numTeams,
+      rosterPremium,
+      sideA,
+      sideB,
+    });
+    const editorUrl = new URL(window.location.href);
+    editorUrl.search = params.toString();
+    window.history.replaceState({}, "", editorUrl);
+
+    const shareSlug = buildTradeShareSlug(sideA, sideB);
+    const reportUrl = new URL(`/trades/${shareSlug}`, window.location.origin);
+    reportUrl.search = params.toString();
+    await navigator.clipboard.writeText(reportUrl.toString());
     captureAnalytics("trade_shared", {
       calculator_format: format,
       num_qbs: numQbs,
@@ -308,6 +320,8 @@ export default function TradeCalculator({
       send_asset_count: sideB.length,
       verdict: evaluation.status,
       percent_difference: evaluation.percentDifference,
+      share_destination: "trade_report",
+      share_slug: shareSlug,
     });
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1800);
@@ -479,10 +493,12 @@ export default function TradeCalculator({
           <button
             type="button"
             onClick={share}
-            className="inline-flex items-center gap-2 bg-[#dfff4f] px-4 py-2 font-mono text-[11px] font-black uppercase tracking-[0.07em] text-[#171c19] hover:bg-white"
+            disabled={evaluation.status === "incomplete"}
+            title={evaluation.status === "incomplete" ? "Add at least one asset to each side" : "Copy a dedicated trade report link"}
+            className="inline-flex items-center gap-2 bg-[#dfff4f] px-4 py-2 font-mono text-[11px] font-black uppercase tracking-[0.07em] text-[#171c19] hover:bg-white disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:bg-[#dfff4f]"
           >
             {copied ? <FiCheck /> : <FiShare2 />}
-            {copied ? "Link copied" : "Share trade"}
+            {copied ? "Report copied" : "Share trade report"}
           </button>
         </div>
       </div>

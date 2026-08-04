@@ -5,6 +5,7 @@ import test from "node:test";
 const files = [
   "../src/app/components/PosthogProvider.tsx",
   "../src/app/components/TradeCalculator.tsx",
+  "../src/app/components/TradeReceiptActions.tsx",
   "../src/app/components/MarketBoard.tsx",
   "../src/app/components/SiteHeader.tsx",
   "../src/app/components/Footer.tsx",
@@ -14,6 +15,7 @@ const files = [
   "../src/app/create-meme/page.tsx",
   "../src/app/players/[slug]/page.tsx",
   "../src/app/teams/[slug]/page.tsx",
+  "../src/app/trades/[slug]/page.tsx",
 ];
 
 const source = (
@@ -61,6 +63,9 @@ test("high-value product events remain instrumented", () => {
     "trade_sides_swapped",
     "trade_reset",
     "trade_shared",
+    "trade_report_viewed",
+    "trade_report_shared",
+    "trade_report_edit_opened",
     "market_board_viewed",
     "market_board_load_failed",
     "market_search_used",
