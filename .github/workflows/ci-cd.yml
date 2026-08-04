@@ -43,7 +43,7 @@ jobs:
     - id: market_refresh
       name: Refresh and archive public market data
       working-directory: frontend
-      continue-on-error: ${{ github.event_name == 'push' }}
+      continue-on-error: true
       env:
         TRADYR_API_KEY: ${{ secrets.TRADYR_API_KEY }}
       run: npm run data:refresh
@@ -51,7 +51,7 @@ jobs:
     - id: team_refresh
       name: Refresh NFL team and schedule data
       working-directory: frontend
-      continue-on-error: ${{ github.event_name == 'push' }}
+      continue-on-error: true
       run: npm run data:teams
 
     - name: Test frontend
@@ -81,3 +81,9 @@ jobs:
         git add frontend/data/public-release.json frontend/data/team-release.json data/player-snapshot-history.json data/snapshots
         git diff --cached --quiet || git commit -m "data: publish ${GITHUB_RUN_ID}"
         git push
+
+    - name: Report scheduled refresh failures
+      if: always() && github.event_name != 'push' && (steps.market_refresh.outcome != 'success' || steps.team_refresh.outcome != 'success')
+      run: |
+        echo "One or more scheduled data refreshes failed; validated releases were preserved."
+        exit 1
