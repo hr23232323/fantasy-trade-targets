@@ -1,5 +1,5 @@
-import Link from "next/link";
 import BrandMark from "./BrandMark";
+import { TrackedLink } from "./TrackedLink";
 
 const tools = [
   ["Dynasty calculator", "/dynasty-trade-calculator"],
@@ -42,12 +42,17 @@ export default function Footer() {
       <div className="border-t border-white/15">
         <div className="page-wrap flex flex-col gap-2 py-5 font-mono text-[10px] uppercase tracking-[0.08em] text-white/50 sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} Fantasy Trade Target</span>
-          <Link
+          <TrackedLink
             href="/data-sources"
             className="text-[#dfff4f] hover:text-white"
+            analyticsEvent="site_navigation_clicked"
+            analyticsProperties={{
+              location: "footer_bottom",
+              destination: "/data-sources",
+            }}
           >
             Sources, licensing & freshness →
-          </Link>
+          </TrackedLink>
         </div>
       </div>
     </footer>
@@ -67,9 +72,18 @@ function FooterLinks({
       <ul className="space-y-3 text-sm text-white/70">
         {links.map(([label, href]) => (
           <li key={href}>
-            <Link href={href} className="hover:text-white">
+            <TrackedLink
+              href={href}
+              className="hover:text-white"
+              analyticsEvent="site_navigation_clicked"
+              analyticsProperties={{
+                location: "footer",
+                destination: href,
+                label,
+              }}
+            >
               {label}
-            </Link>
+            </TrackedLink>
           </li>
         ))}
       </ul>

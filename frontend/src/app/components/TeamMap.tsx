@@ -1,4 +1,7 @@
+"use client";
+
 import { getMapPoint, teams } from "../lib/team-data";
+import { captureAnalytics } from "../lib/analytics";
 
 export default function TeamMap() {
   return (
@@ -22,7 +25,18 @@ export default function TeamMap() {
         {teams.map((team) => {
           const point = getMapPoint(team);
           return (
-            <a key={team.abbr} href={`/teams/${team.slug}`} aria-label={team.name}>
+            <a
+              key={team.abbr}
+              href={`/teams/${team.slug}`}
+              aria-label={team.name}
+              onClick={() =>
+                captureAnalytics("team_map_selected", {
+                  team_slug: team.slug,
+                  team_abbr: team.abbr,
+                  division: team.division,
+                })
+              }
+            >
               <circle
                 cx={point.x}
                 cy={point.y}

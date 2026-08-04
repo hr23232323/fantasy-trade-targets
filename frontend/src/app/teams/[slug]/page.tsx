@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import JsonLd from "../../components/JsonLd";
+import AnalyticsPageView from "../../components/AnalyticsPageView";
+import { TrackedAnchor, TrackedLink } from "../../components/TrackedLink";
 import { getMarket } from "../../lib/market";
 import { getPlayerPage } from "../../lib/player-pages";
 import {
@@ -87,6 +89,19 @@ export default async function TeamPage({ params }: PageProps) {
   return (
     <>
       <JsonLd data={buildSchema(team, assets)} />
+      <AnalyticsPageView
+        eventName="team_research_viewed"
+        properties={{
+          team_slug: team.slug,
+          team_abbr: team.abbr,
+          division: team.division,
+          top_asset_slug: topAsset?.slug ?? null,
+          top_100_asset_count: topHundred,
+          opening_environment: openingLabel,
+          opening_environment_score: openingScore,
+          upcoming_game_count: upcoming.length,
+        }}
+      />
 
       <nav className="page-wrap pt-6 font-mono text-[10px] font-bold uppercase tracking-[0.08em] text-[#69706c]" aria-label="Breadcrumb">
         <Link href="/" className="hover:text-[#171c19]">Home</Link>
@@ -175,7 +190,21 @@ export default async function TeamPage({ params }: PageProps) {
                 <tr key={asset.slug}>
                   <td className="px-5 py-4 font-mono text-xs text-[#69706c]">#{asset.rank ?? "—"}</td>
                   <td className="px-5 py-4 font-bold">
-                    {getPlayerPage(asset.slug) ? <Link href={`/players/${asset.slug}`} className="underline decoration-[#ff6b3d] decoration-2 underline-offset-4 hover:bg-[#dfff4f]">{asset.name} →</Link> : asset.name}
+                    {getPlayerPage(asset.slug) ? (
+                      <TrackedLink
+                        href={`/players/${asset.slug}`}
+                        className="underline decoration-[#ff6b3d] decoration-2 underline-offset-4 hover:bg-[#dfff4f]"
+                        analyticsEvent="team_player_opened"
+                        analyticsProperties={{
+                          team_slug: team.slug,
+                          player_slug: asset.slug,
+                          source: "roster_table",
+                          market_rank: asset.rank ?? null,
+                        }}
+                      >
+                        {asset.name} →
+                      </TrackedLink>
+                    ) : asset.name}
                   </td>
                   <td className="px-5 py-4 font-mono text-xs">{asset.position}{asset.posRank ?? "—"}</td>
                   <td className="px-5 py-4 text-[#69706c]">{asset.age ?? "—"}</td>
@@ -190,7 +219,20 @@ export default async function TeamPage({ params }: PageProps) {
           <div className="mt-5 flex flex-wrap items-center gap-2">
             <span className="mono-label mr-2 text-[#69706c]">Full player research</span>
             {linkedProfiles.map((asset) => (
-              <Link key={asset.slug} href={`/players/${asset.slug}`} className="border border-[#171c19] bg-white/60 px-3 py-2 font-mono text-[9px] font-black uppercase tracking-[0.06em] hover:bg-[#dfff4f]">{asset.name} →</Link>
+              <TrackedLink
+                key={asset.slug}
+                href={`/players/${asset.slug}`}
+                className="border border-[#171c19] bg-white/60 px-3 py-2 font-mono text-[9px] font-black uppercase tracking-[0.06em] hover:bg-[#dfff4f]"
+                analyticsEvent="team_player_opened"
+                analyticsProperties={{
+                  team_slug: team.slug,
+                  player_slug: asset.slug,
+                  source: "profile_links",
+                  market_rank: asset.rank ?? null,
+                }}
+              >
+                {asset.name} →
+              </TrackedLink>
             ))}
           </div>
         )}
@@ -250,7 +292,20 @@ export default async function TeamPage({ params }: PageProps) {
           <span className="mono-label">Take the data with you</span>
           <h2 className="mt-4 text-3xl font-black tracking-[-0.05em]">The full team file is downloadable.</h2>
           <p className="mt-4 text-sm leading-7 text-[#414742]">The JSON release includes all 17 games, model inputs, opponent baselines, current dynasty assets, data timestamps, and version identifiers.</p>
-          <a href={`/teams/${team.slug}/data.json`} download className="mt-8 inline-block border border-[#171c19] bg-white px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] shadow-[4px_4px_0_#171c19]">Download team JSON ↓</a>
+          <TrackedAnchor
+            href={`/teams/${team.slug}/data.json`}
+            download
+            className="mt-8 inline-block border border-[#171c19] bg-white px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] shadow-[4px_4px_0_#171c19]"
+            analyticsEvent="research_downloaded"
+            analyticsProperties={{
+              research_type: "team",
+              team_slug: team.slug,
+              file_format: "json",
+              dataset: "team_file",
+            }}
+          >
+            Download team JSON ↓
+          </TrackedAnchor>
         </div>
       </section>
 

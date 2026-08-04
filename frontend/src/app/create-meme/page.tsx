@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { FiDownload, FiZap } from "react-icons/fi";
+import { captureAnalytics } from "../lib/analytics";
 
 type GeneratedMeme = {
   id: string;
@@ -19,17 +20,32 @@ export default function CreateMemePage() {
   const [send, setSend] = useState("");
   const [memes, setMemes] = useState<GeneratedMeme[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const generate = async () => {
     setLoading(true);
+    setError("");
     try {
       const response = await fetch("/api/generate-meme-text", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ give, send }),
       });
+      if (!response.ok) throw new Error("Meme generation failed");
       const data = await response.json();
-      setMemes(data.memeTexts || []);
+      const generated = data.memeTexts || [];
+      setMemes(generated);
+      captureAnalytics("memes_generated", {
+        meme_count: generated.length,
+        target_length: give.trim().length,
+        offer_length: send.trim().length,
+      });
+    } catch (generationError) {
+      setError("The meme bench missed that one. Try again.");
+      captureAnalytics("meme_generation_failed", {
+        target_length: give.trim().length,
+        offer_length: send.trim().length,
+      });
     } finally {
       setLoading(false);
     }
@@ -77,6 +93,7 @@ export default function CreateMemePage() {
         >
           <FiZap /> {loading ? "Generating…" : "Generate trade memes"}
         </button>
+        {error && <p className="mt-4 text-sm font-bold text-[#a23616]">{error}</p>}
       </section>
 
       <section className="page-wrap py-16">
@@ -114,6 +131,11 @@ export default function CreateMemePage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-3 inline-flex items-center gap-2 px-2 py-2 font-mono text-[10px] font-black uppercase tracking-[0.07em] hover:bg-[#dfff4f]"
+                  onClick={() =>
+                    captureAnalytics("meme_download_opened", {
+                      template_id: meme.id,
+                    })
+                  }
                 >
                   <FiDownload /> Open / download
                 </a>

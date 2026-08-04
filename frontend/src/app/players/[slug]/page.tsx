@@ -3,7 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import JsonLd from "../../components/JsonLd";
+import AnalyticsPageView from "../../components/AnalyticsPageView";
 import PlayerHistoryChart from "../../components/PlayerHistoryChart";
+import { TrackedAnchor, TrackedLink } from "../../components/TrackedLink";
 import {
   getPlayerMarketContexts,
   getPlayerProfile,
@@ -100,6 +102,18 @@ export default async function PlayerPage({ params }: PageProps) {
   return (
     <>
       <JsonLd data={schema} />
+      <AnalyticsPageView
+        eventName="player_research_viewed"
+        properties={{
+          player_slug: profile.slug,
+          player_team: profile.team ?? null,
+          player_position: profile.position,
+          market_rank: player.rank ?? null,
+          market_value: Math.round(player.value),
+          has_history: historySeries.chartable,
+          has_team_page: Boolean(playerTeam),
+        }}
+      />
 
       <nav className="page-wrap pt-6 font-mono text-[10px] font-bold uppercase tracking-[0.08em] text-[#69706c]" aria-label="Breadcrumb">
         <Link href="/" className="hover:text-[#171c19]">Home</Link>
@@ -133,12 +147,18 @@ export default async function PlayerPage({ params }: PageProps) {
             {page.editorialLens} This is a transparent market reference—not a projection or an instruction to accept a trade without considering your roster.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link
+            <TrackedLink
               href={`/dynasty-trade-calculator?format=dynasty&qbs=2&get=${profile.slug}`}
               className="border border-[#171c19] bg-[#171c19] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em] text-white shadow-[4px_4px_0_#ff6b3d]"
+              analyticsEvent="research_cta_clicked"
+              analyticsProperties={{
+                source: "player_hero",
+                destination: "calculator",
+                player_slug: profile.slug,
+              }}
             >
               Build an offer for {firstName(profile.name)} →
-            </Link>
+            </TrackedLink>
             <Link
               href={historySeries.chartable ? "#history" : "#market-context"}
               className="border border-[#171c19] bg-white/70 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em]"
@@ -209,12 +229,34 @@ export default async function PlayerPage({ params }: PageProps) {
               <PlayerHistoryChart series={historySeries} name={profile.name} />
             </div>
             <div className="mt-6 flex flex-wrap gap-3 border-t border-[#c9c5ba] pt-5">
-              <a href={`/players/${profile.slug}/history.csv`} download className="border border-[#171c19] bg-[#dfff4f] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">
+              <TrackedAnchor
+                href={`/players/${profile.slug}/history.csv`}
+                download
+                className="border border-[#171c19] bg-[#dfff4f] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]"
+                analyticsEvent="research_downloaded"
+                analyticsProperties={{
+                  research_type: "player",
+                  player_slug: profile.slug,
+                  file_format: "csv",
+                  dataset: "history",
+                }}
+              >
                 Download history CSV ↓
-              </a>
-              <a href={`/players/${profile.slug}/data.json`} download className="border border-[#171c19] bg-white px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">
+              </TrackedAnchor>
+              <TrackedAnchor
+                href={`/players/${profile.slug}/data.json`}
+                download
+                className="border border-[#171c19] bg-white px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]"
+                analyticsEvent="research_downloaded"
+                analyticsProperties={{
+                  research_type: "player",
+                  player_slug: profile.slug,
+                  file_format: "json",
+                  dataset: "profile",
+                }}
+              >
                 Download player JSON ↓
-              </a>
+              </TrackedAnchor>
             </div>
           </div>
         </section>
@@ -277,12 +319,18 @@ export default async function PlayerPage({ params }: PageProps) {
       <section className="page-wrap py-16 text-center">
         <span className="mono-label text-[#69706c]">Next decision</span>
         <h2 className="mx-auto mt-4 max-w-3xl text-4xl font-black tracking-[-0.055em] sm:text-6xl">Price the complete package.</h2>
-        <Link
+        <TrackedLink
           href={`/dynasty-trade-calculator?format=dynasty&qbs=2&get=${profile.slug}`}
           className="mt-7 inline-block border border-[#171c19] bg-[#dfff4f] px-6 py-4 font-mono text-xs font-black uppercase tracking-[0.08em] shadow-[5px_5px_0_#171c19]"
+          analyticsEvent="research_cta_clicked"
+          analyticsProperties={{
+            source: "player_footer",
+            destination: "calculator",
+            player_slug: profile.slug,
+          }}
         >
           Trade for {profile.name} →
-        </Link>
+        </TrackedLink>
       </section>
 
       <aside className="page-wrap border-t border-[#9d9a91] pt-5 text-[11px] leading-6 text-[#69706c]">

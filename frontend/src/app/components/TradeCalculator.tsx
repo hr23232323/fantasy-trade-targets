@@ -18,6 +18,7 @@ import {
   findBalancingAssets,
 } from "../lib/trade-engine.mjs";
 import { fetchClientMarket } from "../lib/client-market";
+import { captureAnalytics } from "../lib/analytics";
 import type {
   MarketAsset,
   MarketFormat,
@@ -51,6 +52,8 @@ export default function TradeCalculator({
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
   const hydratedFromUrl = useRef(false);
+  const lastEvaluationSignature = useRef("");
+  const lastMarketSignature = useRef("");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -84,6 +87,18 @@ export default function TradeCalculator({
         );
         if (!active) return;
         setMarket(payload);
+        const marketSignature = `${payload.meta.releaseId}:${format}:${numQbs}:${tep}:${numTeams}`;
+        if (lastMarketSignature.current !== marketSignature) {
+          captureAnalytics("calculator_market_loaded", {
+            calculator_format: format,
+            num_qbs: numQbs,
+            te_premium: tep,
+            league_size: numTeams,
+            asset_count: payload.meta.assetCount,
+            release_id: payload.meta.releaseId,
+          });
+          lastMarketSignature.current = marketSignature;
+        }
         setSideA((current) =>
           current
             .map((asset) => payload.assets.find((item) => item.id === asset.id))
@@ -97,6 +112,12 @@ export default function TradeCalculator({
       } catch (loadError) {
         if (active) {
           setError("The market feed took a timeout. Give it one quick retry.");
+          captureAnalytics("calculator_market_load_failed", {
+            calculator_format: format,
+            num_qbs: numQbs,
+            te_premium: tep,
+            league_size: numTeams,
+          });
         }
       } finally {
         if (active) setLoading(false);
@@ -154,18 +175,112 @@ export default function TradeCalculator({
     );
   }, [evaluation, market, selectedIds]);
 
-  const addAsset = (side: "A" | "B", asset: MarketAsset) => {
+  useEffect(() => {
+    if (
+      !settingsHydrated ||
+      !hydratedFromUrl.current ||
+      loading ||
+      evaluation.status === "incomplete" ||
+      !market ||
+      market.meta.format !== format ||
+      market.meta.numQbs !== numQbs ||
+      market.meta.tep !== tep ||
+      market.meta.numTeams !== numTeams
+    ) {
+      return;
+    }
+
+    const signature = JSON.stringify({
+      a: sideA.map((asset) => asset.id),
+      b: sideB.map((asset) => asset.id),
+      format,
+      numQbs,
+      tep,
+      numTeams,
+      rosterPremium,
+    });
+    if (signature === lastEvaluationSignature.current) return;
+
+    captureAnalytics("trade_evaluated", {
+      calculator_format: format,
+      num_qbs: numQbs,
+      te_premium: tep,
+      league_size: numTeams,
+      roster_cost_enabled: rosterPremium,
+      get_asset_count: sideA.length,
+      send_asset_count: sideB.length,
+      get_adjusted_value: evaluation.sideA.adjusted,
+      send_adjusted_value: evaluation.sideB.adjusted,
+      value_gap: evaluation.valueGap,
+      percent_difference: evaluation.percentDifference,
+      verdict: evaluation.status,
+      favored_side:
+        evaluation.winner === "A"
+          ? "get"
+          : evaluation.winner === "B"
+            ? "send"
+            : "even",
+      includes_pick: [...sideA, ...sideB].some((asset) => asset.kind === "pick"),
+    });
+    lastEvaluationSignature.current = signature;
+  }, [
+    evaluation,
+    format,
+    loading,
+    market,
+    numQbs,
+    numTeams,
+    rosterPremium,
+    settingsHydrated,
+    sideA,
+    sideB,
+    tep,
+  ]);
+
+  const addAsset = (
+    side: "A" | "B",
+    asset: MarketAsset,
+    selectionSource: "search" | "balance_suggestion" = "search",
+  ) => {
     if (selectedIds.has(asset.id)) return;
     if (side === "A") setSideA((current) => [...current, asset]);
     else setSideB((current) => [...current, asset]);
+    captureAnalytics("trade_asset_added", {
+      calculator_format: format,
+      num_qbs: numQbs,
+      te_premium: tep,
+      league_size: numTeams,
+      side: side === "A" ? "get" : "send",
+      selection_source: selectionSource,
+      asset_slug: asset.slug,
+      asset_kind: asset.kind,
+      asset_position: asset.position,
+      asset_value: asset.value,
+    });
   };
 
   const removeAsset = (side: "A" | "B", assetId: string) => {
+    const asset = (side === "A" ? sideA : sideB).find((item) => item.id === assetId);
     if (side === "A") setSideA((current) => current.filter((asset) => asset.id !== assetId));
     else setSideB((current) => current.filter((asset) => asset.id !== assetId));
+    if (asset) {
+      captureAnalytics("trade_asset_removed", {
+        calculator_format: format,
+        side: side === "A" ? "get" : "send",
+        asset_slug: asset.slug,
+        asset_kind: asset.kind,
+        asset_position: asset.position,
+      });
+    }
   };
 
   const reset = () => {
+    captureAnalytics("trade_reset", {
+      calculator_format: format,
+      get_asset_count: sideA.length,
+      send_asset_count: sideB.length,
+      had_complete_trade: sideA.length > 0 && sideB.length > 0,
+    });
     setSideA([]);
     setSideB([]);
     window.history.replaceState({}, "", window.location.pathname);
@@ -183,6 +298,17 @@ export default function TradeCalculator({
     if (sideB.length) url.searchParams.set("send", sideB.map((asset) => asset.id).join(","));
     window.history.replaceState({}, "", url);
     await navigator.clipboard.writeText(url.toString());
+    captureAnalytics("trade_shared", {
+      calculator_format: format,
+      num_qbs: numQbs,
+      te_premium: tep,
+      league_size: numTeams,
+      roster_cost_enabled: rosterPremium,
+      get_asset_count: sideA.length,
+      send_asset_count: sideB.length,
+      verdict: evaluation.status,
+      percent_difference: evaluation.percentDifference,
+    });
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1800);
   };
@@ -206,15 +332,50 @@ export default function TradeCalculator({
 
       <LeagueControls
         format={format}
-        setFormat={setFormat}
+        setFormat={(value) => {
+          captureAnalytics("trade_setting_changed", {
+            setting: "format",
+            previous_value: format,
+            selected_value: value,
+          });
+          setFormat(value);
+        }}
         numQbs={numQbs}
-        setNumQbs={setNumQbs}
+        setNumQbs={(value) => {
+          captureAnalytics("trade_setting_changed", {
+            setting: "num_qbs",
+            previous_value: numQbs,
+            selected_value: value,
+          });
+          setNumQbs(value);
+        }}
         tep={tep}
-        setTep={setTep}
+        setTep={(value) => {
+          captureAnalytics("trade_setting_changed", {
+            setting: "te_premium",
+            previous_value: tep,
+            selected_value: value,
+          });
+          setTep(value);
+        }}
         numTeams={numTeams}
-        setNumTeams={setNumTeams}
+        setNumTeams={(value) => {
+          captureAnalytics("trade_setting_changed", {
+            setting: "league_size",
+            previous_value: numTeams,
+            selected_value: value,
+          });
+          setNumTeams(value);
+        }}
         rosterPremium={rosterPremium}
-        setRosterPremium={setRosterPremium}
+        setRosterPremium={(value) => {
+          captureAnalytics("trade_setting_changed", {
+            setting: "roster_cost",
+            previous_value: rosterPremium,
+            selected_value: value,
+          });
+          setRosterPremium(value);
+        }}
       />
 
       {error ? (
@@ -223,7 +384,13 @@ export default function TradeCalculator({
           <button
             type="button"
             className="mt-4 inline-flex items-center gap-2 bg-white px-4 py-2 font-mono text-xs font-bold uppercase text-[#171c19]"
-            onClick={() => setReloadKey((value) => value + 1)}
+            onClick={() => {
+              captureAnalytics("calculator_market_retry", {
+                calculator_format: format,
+                num_qbs: numQbs,
+              });
+              setReloadKey((value) => value + 1);
+            }}
           >
             <FiRefreshCcw /> Retry
           </button>
@@ -247,6 +414,11 @@ export default function TradeCalculator({
               type="button"
               className="absolute left-1/2 top-1/2 z-10 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center border border-[#171c19] bg-white text-[#171c19] shadow-[3px_3px_0_#ff6b3d] transition-transform hover:scale-105"
               onClick={() => {
+                captureAnalytics("trade_sides_swapped", {
+                  calculator_format: format,
+                  get_asset_count: sideA.length,
+                  send_asset_count: sideB.length,
+                });
                 setSideA(sideB);
                 setSideB(sideA);
               }}
@@ -273,7 +445,9 @@ export default function TradeCalculator({
             evaluation={evaluation}
             suggestions={balanceSuggestions}
             weakerSide={evaluation.winner === "A" ? "B" : "A"}
-            onAddSuggestion={addAsset}
+            onAddSuggestion={(side, asset) =>
+              addAsset(side, asset, "balance_suggestion")
+            }
           />
         </>
       )}

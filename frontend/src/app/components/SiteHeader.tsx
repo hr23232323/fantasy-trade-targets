@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
+import { captureAnalytics } from "../lib/analytics";
 import BrandMark from "./BrandMark";
 
 const links = [
@@ -32,7 +33,13 @@ export default function SiteHeader() {
           <Link
             href="/"
             className="group flex items-center gap-3"
-            onClick={() => setOpen(false)}
+            onClick={() => {
+              captureAnalytics("site_navigation_clicked", {
+                location: "header_brand",
+                destination: "/",
+              });
+              setOpen(false);
+            }}
           >
             <BrandMark className="h-11 w-11 shrink-0 shadow-[3px_3px_0_#171c19] transition-transform group-hover:-translate-y-0.5" />
             <span className="leading-none">
@@ -60,6 +67,13 @@ export default function SiteHeader() {
                       ? "bg-[#171c19] text-white"
                       : "hover:bg-[#e4dfd2]"
                   }`}
+                  onClick={() =>
+                    captureAnalytics("site_navigation_clicked", {
+                      location: "desktop_header",
+                      destination: link.href,
+                      label: link.label,
+                    })
+                  }
                 >
                   {link.label}
                 </Link>
@@ -72,7 +86,12 @@ export default function SiteHeader() {
             className="grid h-11 w-11 place-items-center border border-[#171c19] bg-white lg:hidden"
             aria-label={open ? "Close navigation" : "Open navigation"}
             aria-expanded={open}
-            onClick={() => setOpen((value) => !value)}
+            onClick={() => {
+              captureAnalytics("mobile_navigation_toggled", {
+                action: open ? "close" : "open",
+              });
+              setOpen((value) => !value);
+            }}
           >
             {open ? <FiX size={21} /> : <FiMenu size={21} />}
           </button>
@@ -88,7 +107,14 @@ export default function SiteHeader() {
                 key={link.href}
                 href={link.href}
                 className="border-b border-[#bcb9ae] px-1 py-4 font-mono text-xs font-bold uppercase tracking-[0.08em] last:border-0"
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  captureAnalytics("site_navigation_clicked", {
+                    location: "mobile_header",
+                    destination: link.href,
+                    label: link.label,
+                  });
+                  setOpen(false);
+                }}
               >
                 {link.label}
               </Link>

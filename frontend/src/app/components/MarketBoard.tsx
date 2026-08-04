@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FiArrowUpRight, FiSearch } from "react-icons/fi";
+import { captureAnalytics } from "../lib/analytics";
 import { fetchClientMarket } from "../lib/client-market";
 import { hasPlayerPage } from "../lib/player-pages";
 import type {
@@ -42,6 +43,8 @@ export default function MarketBoard({
   const [ageBand, setAgeBand] = useState("all");
   const [limit, setLimit] = useState(initialLimit);
   const [error, setError] = useState("");
+  const lastSearchSignature = useRef("");
+  const lastMarketSignature = useRef("");
 
   useEffect(() => {
     if (initialMarket && !initialIsPartial) return;
@@ -55,6 +58,11 @@ export default function MarketBoard({
       })
       .catch((loadError) => {
         if (!active) return;
+        captureAnalytics("market_board_load_failed", {
+          market_format: format,
+          num_qbs: numQbs,
+          had_server_fallback: Boolean(initialMarket),
+        });
         setError(
           initialMarket
             ? "Showing the latest server-rendered leaders while the full market reloads."
@@ -83,6 +91,39 @@ export default function MarketBoard({
           : true,
       );
   }, [ageBand, includePicks, market, position, query]);
+
+  useEffect(() => {
+    if (!market) return;
+    const signature = `${market.meta.releaseId}:${format}:${numQbs}`;
+    if (signature === lastMarketSignature.current) return;
+    captureAnalytics("market_board_viewed", {
+      market_format: format,
+      num_qbs: numQbs,
+      asset_count: market.meta.assetCount,
+      release_id: market.meta.releaseId,
+      server_rendered: Boolean(initialMarket),
+    });
+    lastMarketSignature.current = signature;
+  }, [format, initialMarket, market, numQbs]);
+
+  useEffect(() => {
+    const normalized = query.trim();
+    if (normalized.length < 2) return;
+    const signature = `${normalized.toLowerCase()}:${position}:${ageBand}:${filtered.length}`;
+    const timer = window.setTimeout(() => {
+      if (signature === lastSearchSignature.current) return;
+      captureAnalytics("market_search_used", {
+        market_format: format,
+        num_qbs: numQbs,
+        query_length: normalized.length,
+        result_count: filtered.length,
+        position_filter: position,
+        age_filter: ageBand,
+      });
+      lastSearchSignature.current = signature;
+    }, 600);
+    return () => window.clearTimeout(timer);
+  }, [ageBand, filtered.length, format, numQbs, position, query]);
 
   return (
     <section className="paper-card">
@@ -115,7 +156,14 @@ export default function MarketBoard({
                 <button
                   type="button"
                   key={item}
-                  onClick={() => setPosition(item)}
+                  onClick={() => {
+                    captureAnalytics("market_filter_changed", {
+                      market_format: format,
+                      filter: "position",
+                      selected_value: item,
+                    });
+                    setPosition(item);
+                  }}
                   className={`px-3 py-2 font-mono text-[10px] font-bold ${
                     position === item ? "bg-[#171c19] text-white" : "hover:bg-[#e7e2d5]"
                   }`}
@@ -129,7 +177,14 @@ export default function MarketBoard({
           <span className="mono-label mb-2 block text-[#69706c]">Age band</span>
           <select
             value={ageBand}
-            onChange={(event) => setAgeBand(event.target.value)}
+            onChange={(event) => {
+              captureAnalytics("market_filter_changed", {
+                market_format: format,
+                filter: "age_band",
+                selected_value: event.target.value,
+              });
+              setAgeBand(event.target.value);
+            }}
             className="h-12 border border-[#171c19] bg-white px-3 text-sm font-bold"
           >
             <option value="all">Any age</option>
@@ -184,7 +239,14 @@ export default function MarketBoard({
         <div className="border-t border-[#171c19] p-4 text-center">
           <button
             type="button"
-            onClick={() => setLimit((value) => value + 40)}
+            onClick={() => {
+              captureAnalytics("market_results_expanded", {
+                market_format: format,
+                previous_limit: limit,
+                result_count: filtered.length,
+              });
+              setLimit((value) => value + 40);
+            }}
             className="border border-[#171c19] bg-[#dfff4f] px-6 py-3 font-mono text-xs font-black uppercase tracking-[0.07em] shadow-[3px_3px_0_#171c19] hover:bg-white"
           >
             Show 40 more
@@ -202,6 +264,12 @@ export default function MarketBoard({
           <Link
             href="/data-sources"
             className="text-[#dfff4f] hover:text-white"
+            onClick={() =>
+              captureAnalytics("research_cta_clicked", {
+                source: "market_board",
+                destination: "data_sources",
+              })
+            }
           >
             Data & methodology →
           </Link>
@@ -233,6 +301,18 @@ function MarketRow({
           <Link
             href={`/players/${asset.slug}`}
             className="block font-bold underline decoration-[#ff6b3d] decoration-2 underline-offset-4 hover:text-[#a23616]"
+            onClick={() =>
+              captureAnalytics("market_asset_opened", {
+                destination: "player_profile",
+                market_format: format,
+                num_qbs: numQbs,
+                asset_slug: asset.slug,
+                asset_kind: asset.kind,
+                asset_position: asset.position,
+                market_rank: displayRank,
+                market_value: asset.value,
+              })
+            }
           >
             {asset.name}
           </Link>
@@ -256,6 +336,18 @@ function MarketRow({
         <Link
           href={`${calculatorPath}?${params}`}
           className="inline-flex items-center gap-2 border border-[#171c19] px-3 py-2 font-mono text-[10px] font-black uppercase tracking-[0.05em] group-hover:bg-[#dfff4f]"
+          onClick={() =>
+            captureAnalytics("market_asset_opened", {
+              destination: "calculator",
+              market_format: format,
+              num_qbs: numQbs,
+              asset_slug: asset.slug,
+              asset_kind: asset.kind,
+              asset_position: asset.position,
+              market_rank: displayRank,
+              market_value: asset.value,
+            })
+          }
         >
           Trade for {asset.kind === "pick" ? "pick" : asset.name.split(" ").at(-1)} <FiArrowUpRight />
         </Link>
