@@ -2,8 +2,8 @@ import PageHero from "../components/PageHero";
 import { buildPageMetadata } from "../lib/metadata";
 
 export const metadata = buildPageMetadata({
-  title: "Trade Calculator Methodology",
-  description: "See exactly how Fantasy Trade Target calculates raw value, roster cost, package-adjusted value, and trade verdict bands.",
+  title: "Fantasy Trade Value & Matchup Methodology",
+  description: "See exactly how Fantasy Trade Target calculates raw value, roster cost, package-adjusted value, verdict bands, and team matchup temperature.",
   path: "/methodology",
 });
 
@@ -43,6 +43,26 @@ export default function MethodologyPage() {
         <div><span className="eyebrow">03 // Verdict bands</span><h2 className="section-title mt-6">A range, not fake precision.</h2></div>
         <div className="grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2">
           {[['0–4%','Fair trade'],['4–10%','Leans one side'],['10–18%','Clear edge'],['18%+','Strong edge']].map(([range,label]) => <div key={range} className="bg-[#f3f0e7] p-6"><span className="font-mono text-2xl font-black text-[#ff6b3d]">{range}</span><h3 className="mt-3 text-lg font-black">{label}</h3></div>)}
+        </div>
+      </section>
+      <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
+        <div><span className="eyebrow">04 // Matchup temperature</span><h2 className="section-title mt-6">The calendar, with a visible baseline.</h2></div>
+        <div className="space-y-5 text-sm leading-7 text-[#59605c]">
+          <p>Team pages grade each scheduled game from 0 to 100. The largest input is the opponent&apos;s prior-season NFL scoring-defense rank: No. 1 allowed the fewest points and creates the cold end of the scale; No. 32 allowed the most and creates the hot end.</p>
+          <div className="border border-[#171c19] bg-[#171c19] p-6 font-mono text-xs font-bold leading-6 text-[#dfff4f] sm:text-sm">
+            SCORE = 50 + (DEFENSE RANK − 16.5) × 2.35<br />
+            + SITE (HOME +4 · AWAY −2 · NEUTRAL 0)<br />
+            + REST DIFFERENCE (CAPPED AT ±4 DAYS) × 1.25<br />
+            FINAL SCORE = CLAMPED TO 0–100
+          </div>
+          <div className="grid grid-cols-5 gap-1 text-center font-mono text-[9px] font-black uppercase text-[#171c19]">
+            <span className="bg-[#d7b6ff] px-1 py-3">Cold<br />0–31</span>
+            <span className="bg-[#8bcfff] px-1 py-3">Cool<br />32–43</span>
+            <span className="bg-[#dfff4f] px-1 py-3">Balanced<br />44–56</span>
+            <span className="bg-[#ffb29a] px-1 py-3">Warm<br />57–67</span>
+            <span className="bg-[#ff6b3d] px-1 py-3">Hot<br />68–100</span>
+          </div>
+          <p>The score describes an overall scoring environment. It does not include positional fantasy points allowed, current injuries, depth-chart changes, weather, or player usage, so it is never presented as a start/sit projection.</p>
         </div>
       </section>
       <section className="page-wrap border-t border-[#171c19] py-14">

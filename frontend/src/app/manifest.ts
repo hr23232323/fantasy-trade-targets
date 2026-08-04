@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Fantasy Trade Target",
     short_name: "FTT",
     description:
-      "Fantasy football market values, player research, rankings, and deterministic trade tools.",
+      "Fantasy football market values, player and team research, NFL schedules, rankings, and deterministic trade tools.",
     start_url: "/",
     display: "standalone",
     background_color: "#f3f0e7",

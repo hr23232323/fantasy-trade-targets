@@ -4,6 +4,7 @@ import BrandMark from "./BrandMark";
 const tools = [
   ["Dynasty calculator", "/dynasty-trade-calculator"],
   ["Player research", "/players"],
+  ["Team outlooks", "/teams"],
   ["Redraft analyzer", "/fantasy-football-trade-analyzer"],
   ["Superflex calculator", "/dynasty-superflex-trade-calculator"],
   ["Dynasty rankings", "/dynasty-rankings"],

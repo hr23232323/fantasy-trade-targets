@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { playerPages } from "./lib/player-pages";
+import { teams } from "./lib/team-data";
 
 const BASE_URL = "https://www.fantasytradetarget.com";
 
@@ -21,6 +22,7 @@ const staticRoutes = [
   "/players",
   "/privacy-policy",
   "/terms-of-service",
+  "/teams",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -30,6 +32,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...playerPages.map((player) => ({
       url: `${BASE_URL}/players/${player.slug}`,
+    })),
+    ...teams.map((team) => ({
+      url: `${BASE_URL}/teams/${team.slug}`,
     })),
   ];
 }

@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     template: "%s | Fantasy Trade Target",
   },
   description:
-    "A free dynasty and redraft fantasy football trade calculator with daily market values, rookie picks, Superflex, and TE premium support.",
+    "Free fantasy football trade tools with daily dynasty values, player research, NFL team outlooks, schedules, rookie picks, Superflex, and TE premium support.",
   applicationName: "Fantasy Trade Target",
   category: "sports",
   appleWebApp: {
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Fantasy Trade Target",
     description:
-      "Free dynasty and redraft trade values, calculators, and rankings.",
+      "Free dynasty and redraft trade values, player and team research, schedules, calculators, and rankings.",
     images: ["/og-image.png"],
   },
   robots: {
@@ -88,7 +88,7 @@ const siteSchema = {
         height: 512,
       },
       description:
-        "Independent fantasy football market research, player values, rankings, and deterministic trade tools.",
+        "Independent fantasy football market research, player values, NFL team and schedule context, rankings, and deterministic trade tools.",
     },
     {
       "@type": "WebSite",
@@ -99,7 +99,7 @@ const siteSchema = {
         "@id": "https://www.fantasytradetarget.com/#organization",
       },
       description:
-        "Free fantasy football trade calculators, dynasty values, player research, and rankings.",
+        "Free fantasy football trade calculators, dynasty values, player and NFL team research, schedules, and rankings.",
     },
   ],
 };

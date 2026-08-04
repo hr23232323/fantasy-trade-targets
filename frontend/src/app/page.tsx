@@ -5,6 +5,7 @@ import MarketBoard from "./components/ServerMarketBoard";
 import TradeCalculator from "./components/TradeCalculator";
 import { buildPageMetadata } from "./lib/metadata";
 import { playerPages } from "./lib/player-pages";
+import { teams } from "./lib/team-data";
 
 export const metadata = buildPageMetadata({
   title: "Fantasy Football Trade Targets, Calculator & Rankings",
@@ -104,6 +105,30 @@ export default function Home() {
                 className="border border-[#171c19] bg-[#171c19] px-3 py-2 font-mono text-[10px] font-black uppercase tracking-[0.06em] text-white hover:bg-[#a23616]"
               >
                 Browse all 50 →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="page-wrap pb-20">
+        <div className="grid gap-8 border-y border-[#171c19] py-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
+          <div>
+            <span className="eyebrow">Team intelligence // full calendar</span>
+            <h2 className="section-title mt-6">32 teams. Every matchup connected.</h2>
+          </div>
+          <div>
+            <p className="max-w-2xl text-sm leading-7 text-[#59605c]">
+              Follow dynasty assets from player to team, then read the complete schedule through opponent scoring defense, site, rest, venue, and division context.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {teams.slice(0, 8).map((team) => (
+                <Link key={team.abbr} href={`/teams/${team.slug}`} className="border border-[#171c19] bg-white/55 px-3 py-2 font-mono text-[10px] font-black uppercase tracking-[0.06em] hover:bg-[#8bcfff]">
+                  {team.abbr} →
+                </Link>
+              ))}
+              <Link href="/teams" className="border border-[#171c19] bg-[#171c19] px-3 py-2 font-mono text-[10px] font-black uppercase tracking-[0.06em] text-white hover:bg-[#a23616]">
+                Browse all 32 →
               </Link>
             </div>
           </div>

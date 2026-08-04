@@ -31,7 +31,7 @@ export default function AboutPage() {
         {[
           ["2024", "The original player-search and trade-target prototype began."],
           ["2026", "The product was rebuilt around licensed market data and a published deterministic calculator."],
-          ["Now", "Player market files combine current values, historical records, on-field evidence, and transparent sourcing in one citable research format."],
+          ["Now", "Player and team market files connect current values, historical records, on-field evidence, the NFL calendar, and transparent sourcing in one citable research system."],
         ].map(([year, body]) => <article key={year} className="bg-[#f3f0e7] p-7"><span className="font-mono text-3xl font-black text-[#ff6b3d]">{year}</span><p className="mt-6 text-sm leading-7 text-[#59605c]">{body}</p></article>)}
       </section>
       <section className="page-wrap py-16"><p className="max-w-3xl text-sm leading-7 text-[#59605c]">Fantasy Trade Target is independent and is not affiliated with the NFL, NFLPA, Sleeper, Tradyr, or another fantasy platform. Read the <Link href="/editorial-policy" className="font-bold underline decoration-[#ff6b3d] underline-offset-4">editorial policy</Link> and <Link href="/data-sources" className="font-bold underline decoration-[#ff6b3d] underline-offset-4">data sources</Link>.</p></section>

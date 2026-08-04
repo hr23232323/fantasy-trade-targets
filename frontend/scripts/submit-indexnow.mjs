@@ -6,10 +6,14 @@ const key = "c9d1b221d61a01ac5aa5f88cebdd31ca";
 const playerPages = JSON.parse(
   await readFile(new URL("../data/player-pages.json", import.meta.url), "utf8"),
 );
+const teamRelease = JSON.parse(
+  await readFile(new URL("../data/team-release.json", import.meta.url), "utf8"),
+);
 
 const changedPaths = [
   "",
   "/players",
+  "/teams",
   "/dynasty-rankings",
   "/dynasty-trade-value-chart",
   "/dynasty-trade-calculator",
@@ -19,6 +23,7 @@ const changedPaths = [
   "/fantasy-football-trade-value-chart",
   "/data-sources",
   ...playerPages.map((player) => `/players/${player.slug}`),
+  ...Object.values(teamRelease.teams).map((team) => `/teams/${team.slug}`),
 ];
 
 const response = await fetch("https://api.indexnow.org/indexnow", {

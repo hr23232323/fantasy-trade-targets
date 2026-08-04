@@ -13,6 +13,16 @@ const nextConfig = {
         hostname: "upload.wikimedia.org",
         pathname: "/wikipedia/commons/**",
       },
+      {
+        protocol: "https",
+        hostname: "a.espncdn.com",
+        pathname: "/i/teamlogos/nfl/500/**",
+      },
+      {
+        protocol: "https",
+        hostname: "a.espncdn.com",
+        pathname: "/i/teamlogos/nfl/500-dark/**",
+      },
     ],
   },
   async redirects() {

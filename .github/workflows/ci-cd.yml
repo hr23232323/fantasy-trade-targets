@@ -41,12 +41,14 @@ jobs:
         cache-dependency-path: frontend/package-lock.json
 
     - id: refresh
-      name: Refresh and archive public market data
+      name: Refresh public market and team data
       working-directory: frontend
       continue-on-error: ${{ github.event_name == 'push' }}
       env:
         TRADYR_API_KEY: ${{ secrets.TRADYR_API_KEY }}
-      run: npm run data:refresh
+      run: |
+        npm run data:refresh
+        npm run data:teams
 
     - name: Test frontend
       working-directory: frontend
@@ -72,6 +74,6 @@ jobs:
       run: |
         git config user.name "Fantasy Trade Target Data"
         git config user.email "data@fantasytradetarget.com"
-        git add frontend/data/public-release.json data/player-snapshot-history.json data/snapshots
+        git add frontend/data/public-release.json frontend/data/team-release.json data/player-snapshot-history.json data/snapshots
         git diff --cached --quiet || git commit -m "data: publish ${GITHUB_RUN_ID}"
         git push

@@ -12,6 +12,7 @@ import {
   getPlayerPage,
   playerPageSlugs,
 } from "../../lib/player-pages";
+import { getTeamByAbbr } from "../../lib/team-data";
 import {
   calculateMovement,
   formatMetric,
@@ -93,6 +94,7 @@ export default async function PlayerPage({ params }: PageProps) {
   const production = getProductionCards(profile);
   const usage = getUsageCards(profile);
   const updated = new Date(meta.generatedAt);
+  const playerTeam = getTeamByAbbr(profile.team);
   const schema = buildSchema(profile, page.image, meta.generatedAt);
 
   return (
@@ -111,9 +113,15 @@ export default async function PlayerPage({ params }: PageProps) {
         <div className="border border-[#171c19] bg-[#dfff4f] p-6 sm:p-10">
           <div className="flex flex-wrap items-center gap-2">
             <span className="eyebrow bg-white">Player market file // research</span>
-            <span className="mono-label border border-[#171c19] px-3 py-2">
-              {profile.team || "NFL"} · {profile.position}
-            </span>
+            {playerTeam ? (
+              <Link href={`/teams/${playerTeam.slug}`} className="mono-label border border-[#171c19] px-3 py-2 hover:bg-white">
+                {playerTeam.name} · {profile.position} →
+              </Link>
+            ) : (
+              <span className="mono-label border border-[#171c19] px-3 py-2">
+                {profile.team || "NFL"} · {profile.position}
+              </span>
+            )}
           </div>
           <h1 className="mt-8 text-[clamp(3rem,7vw,6.6rem)] font-black leading-[0.88] tracking-[-0.075em]">
             What is {profile.name} worth in dynasty?
@@ -363,6 +371,7 @@ function buildSchema(
   dateModified: string,
 ) {
   const url = `https://www.fantasytradetarget.com/players/${player.slug}`;
+  const team = getTeamByAbbr(player.team);
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -378,8 +387,12 @@ function buildSchema(
           name: player.name,
           image: image.src,
           jobTitle: `${player.position} football player`,
-          affiliation: player.team
-            ? { "@type": "SportsTeam", name: player.team }
+          affiliation: team
+            ? {
+                "@type": "SportsTeam",
+                name: team.name,
+                url: `https://www.fantasytradetarget.com/teams/${team.slug}`,
+              }
             : undefined,
         },
         primaryImageOfPage: {

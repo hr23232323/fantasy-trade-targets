@@ -1,6 +1,6 @@
 # Fantasy Trade Target data roadmap
 
-Last reviewed: 2026-08-03
+Last reviewed: 2026-08-04
 
 This is the living inventory for every dataset we use or may add. A feed does not ship merely because it is technically accessible. Each feed needs a clear product job, stable identifier mapping, update cadence, attribution plan, and commercial-use decision.
 
@@ -9,7 +9,7 @@ This is the living inventory for every dataset we use or may add. A feed does no
 ### Tradyr public API — market values and rankings
 
 - **Product job:** common market scale for dynasty players, redraft players, rookies, and exact rookie picks.
-- **Endpoints:** `/v1/players`, `/v1/picks`, and `/v1/players/:slug/full` for configured player research pages.
+- **Endpoints:** `/v1/players`, `/v1/picks`, `/v1/players/:slug`, and the documented `/stats`, `/advanced`, `/bestball`, and `/projection` player subresources.
 - **Formats:** dynasty/redraft, 1QB/Superflex, TE premium, and league-size-adjusted picks.
 - **Identifier spine:** Tradyr slug plus Sleeper player ID when supplied.
 - **Refresh:** the publisher runs three times daily, validates every supported market variant, and packages the current release with the application.
@@ -92,6 +92,7 @@ data library. A failed refresh leaves the previous release intact.
 ### nflverse
 
 - **Product job:** play-by-play, weekly/player stats, snap participation, rosters, schedules, depth context, and IDs for production-vs-market signals.
+- **Shipping now:** all 32 current team identities, the complete current regular-season schedule, venue/surface/roof fields, rest context, and prior-season scoring baselines. The packaged team release records source URLs, SHA-256 hashes, row counts, capture time, and the FTT model version.
 - **Rights:** the [nflverse automated data repository](https://github.com/nflverse/nflverse-data) is published under CC BY 4.0; the nflverse software projects also publish license text. Preserve dataset-specific notices and attribution.
 - **Refresh:** weekly/player stats after games; schedules daily; play-by-play after games and corrections.
 - **Identifiers:** `gsis_id` / `nflverse_id` mapped to Sleeper IDs using nflverse player ID files and a manually reviewed exception table.
@@ -127,7 +128,8 @@ data library. A failed refresh leaves the previous release intact.
 ### Schedule and venue metadata
 
 - **Product job:** kickoff, opponent, home/away, surface, roof, timezone, rest/travel, and playoff-week opponents.
-- **Preferred path:** nflverse schedules plus a small reviewed venue table.
+- **Current path:** nflverse schedules plus a small reviewed team-market coordinate table. Venue names remain feed-driven; the reviewed coordinates are used only for the approximate team directory map.
+- **Derived model:** team matchup temperature uses prior-season scoring-defense rank with small, published home/away and rest adjustments. It is explicitly not a player projection or positional matchup grade.
 
 ## Later commercial layers
 
