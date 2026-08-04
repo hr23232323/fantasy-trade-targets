@@ -30,7 +30,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...playerPages.map((player) => ({
       url: `${BASE_URL}/players/${player.slug}`,
-      images: [player.image.src],
     })),
   ];
 }
