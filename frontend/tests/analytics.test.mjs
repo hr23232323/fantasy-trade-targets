@@ -35,12 +35,14 @@ const memePage = await readFile(
   "utf8",
 );
 
-test("PostHog follows SPA navigation with privacy-safe defaults", () => {
+test("PostHog follows SPA navigation with privacy-safe replay", () => {
   assert.match(provider, /defaults: "2026-05-30"/);
   assert.match(provider, /capture_pageview: "history_change"/);
   assert.match(provider, /capture_pageleave: true/);
   assert.match(provider, /respect_dnt: true/);
-  assert.match(provider, /disable_session_recording: true/);
+  assert.match(provider, /disable_session_recording: false/);
+  assert.match(provider, /session_recording: \{/);
+  assert.match(provider, /maskAllInputs: true/);
   assert.match(provider, /persistence: "localStorage"/);
   assert.match(provider, /element_allowlist: \["a", "button", "form", "select"\]/);
   assert.doesNotMatch(provider, /element_allowlist:[^\n]*"input"/);

@@ -41,7 +41,10 @@ export function CSPostHogProvider({ children }: CSPostHogProviderProps) {
             person_profiles: "identified_only",
             persistence: "localStorage",
             respect_dnt: true,
-            disable_session_recording: true,
+            disable_session_recording: false,
+            session_recording: {
+              maskAllInputs: true,
+            },
             capture_performance: true,
             capture_exceptions: true,
             capture_heatmaps: true,

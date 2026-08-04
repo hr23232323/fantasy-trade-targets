@@ -13,7 +13,7 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "Claude-SearchBot", ...crawlRules },
       { userAgent: "PerplexityBot", ...crawlRules },
     ],
-    sitemap: "https://www.fantasytradetarget.com/sitemap.xml",
-    host: "https://www.fantasytradetarget.com",
+    sitemap: "https://fantasytradetarget.com/sitemap.xml",
+    host: "https://fantasytradetarget.com",
   };
 }

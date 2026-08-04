@@ -6,7 +6,7 @@ Fantasy Trade Target uses PostHog for privacy-conscious, anonymous product analy
 
 - PostHog page views follow Next.js history changes, including client-side navigation.
 - Page leaves, Web Vitals/performance, JavaScript exceptions, heatmaps, and restricted autocapture are enabled.
-- Session replay is disabled.
+- Session replay is enabled, with all input and textarea values masked in the browser before replay data is sent.
 - PostHog persistence uses browser local storage, not cookies.
 - Browser Do Not Track is honored.
 - Autocapture is restricted to links, buttons, forms, and selects. Text inputs and textareas are excluded.
