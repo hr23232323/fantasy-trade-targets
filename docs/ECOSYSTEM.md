@@ -15,6 +15,8 @@ This repository owns:
 - public rankings, value charts, and target discovery;
 - the browser-side deterministic trade engine;
 - generic market-data caching and attribution;
+- the planned batch pipeline for public market snapshots and derived research;
+- sanitized, versioned public data releases and downloads;
 - public analytics, advertising, affiliate, and conversion surfaces;
 - Google Cloud Run deployment for the website.
 
@@ -56,6 +58,11 @@ Keeping them separate provides:
 - a clean boundary between deterministic market facts and personalized advice.
 
 Do not copy the CLI source tree into the Next.js application. Share capability through a documented service contract.
+
+The public batch pipeline is not the league-intelligence service. It may process
+licensed generic market and NFL data, but it must never ingest private or
+user-connected Sleeper league state. Its outputs are public, sanitized release
+artifacts that can be reproduced from recorded source and methodology versions.
 
 ## Product ladder
 
@@ -125,21 +132,32 @@ Good MCP customers could include power users, fantasy content creators, Discord 
 ## Recommended service architecture
 
 ```text
-Public browser
+Scheduled public-data pipeline (this repository)
     |
-    +--> Next.js public routes --> cached market feed
-    |
-    +--> authenticated connected routes
+    +--> licensed generic market and NFL inputs
+    +--> append-only durable snapshots
+    +--> versioned public release artifacts
               |
-              +--> league-intelligence API (Python / sleeper-trader core)
-                        |
-                        +--> Sleeper public API
-                        +--> nflverse and approved market feeds
-                        +--> durable database + job queue
-                        +--> optional advisor provider
+              +--> Next.js server-rendered pages
+              +--> browser-side calculator
+              +--> charts, reports, and downloads
+
+Authenticated connected routes
+    |
+    +--> league-intelligence API (Python / sleeper-trader core)
+              |
+              +--> Sleeper public API
+              +--> approved market and NFL feeds
+              +--> private durable database + job queue
+              +--> optional advisor provider
 
 MCP server -----------> same league-intelligence API
 ```
+
+The public site does not need a separate request-time backend for generic
+market data. A scheduled job should compile validated releases into durable
+object storage. The Next.js application can read those releases on the server
+and serve the small current snapshot needed by interactive clients.
 
 The first production extraction should turn the reusable `sleeper-trader` domain logic into an installable Python package plus a small authenticated API service. Deploy that service separately on Cloud Run. The web app calls it over a versioned internal API; the MCP adapter calls the same API.
 
@@ -194,10 +212,11 @@ Until then, separate repositories plus a versioned interface are simpler and pre
 
 ## Near-term sequence
 
-1. Launch and measure the free web product.
-2. Keep improving `sleeper-trader` locally against real league questions.
-3. Define a sanitized `LeagueSnapshot` and `TradeEvaluation` JSON contract.
-4. Extract the engine package without changing CLI behavior.
-5. Deploy one read-only connected-league endpoint behind an allowlist.
-6. Test willingness to pay before adding AI or MCP infrastructure.
-7. Add the advisor, API, or MCP surface only when user demand selects it.
+1. Start the append-only public market snapshot pipeline.
+2. Publish a versioned release manifest and stable data contracts.
+3. Server-render substantial player pages from the public releases.
+4. Add histories, market movers, and recurring trade-target research.
+5. Keep improving `sleeper-trader` locally against real league questions.
+6. Define sanitized `LeagueSnapshot` and `TradeEvaluation` contracts.
+7. Deploy one read-only connected-league endpoint only after the rights review.
+8. Test willingness to pay before adding advisor, API, or MCP infrastructure.

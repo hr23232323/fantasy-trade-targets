@@ -57,8 +57,7 @@ reset:
 	$(DOCKER_COMPOSE) -f $(COMPOSE_FILE) -p $(PROJECT_NAME) down --volumes --remove-orphans
 	$(DOCKER_COMPOSE) -f $(COMPOSE_FILE) -p $(PROJECT_NAME) up --build -d
 
-# Production V1 is a single Next.js Cloud Run service. The legacy Python
-# backend is retained only as archive code and is not deployed.
+# Production is a single Next.js Cloud Run service.
 deploy:
 	@echo "Deploying Frontend to Cloud Run..."
 	$(MAKE) -C frontend deploy

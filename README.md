@@ -18,7 +18,8 @@ Deterministic fantasy football trade tools for [fantasytradetarget.com](https://
 - Tradyr public API for commercially permitted composite market values
 - Google Cloud Run deployment using the existing `fantasy-trade-targets` GCP project
 
-The old Python/KTC-scraping data path is retired and is not deployed.
+The legacy Python/FastAPI data path has been removed. Production contains a
+single Next.js service and does not deploy a separate application backend.
 
 ## Local development
 
@@ -54,6 +55,18 @@ make deploy
 ```
 
 See [docs/DATA_ROADMAP.md](docs/DATA_ROADMAP.md) for the current feed, planned league-aware data layers, refresh cadences, and commercial-use gates.
+
+## Public data architecture
+
+The current release reads licensed market values through a cached Next.js
+adapter. The next data layer will be a scheduled batch pipeline in this
+repository, not a request-time API server. It will save append-only snapshots,
+derive histories and market reports, and publish sanitized, versioned release
+artifacts for the Next.js application.
+
+The durable historical archive will live outside the application image. The web
+deployment will consume only the latest public release and the precomputed
+history needed for server-rendered pages, charts, calculators, and downloads.
 
 ## Related intelligence engine
 

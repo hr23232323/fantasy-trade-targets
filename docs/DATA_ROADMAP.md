@@ -25,6 +25,34 @@ This is the living inventory for every dataset we use or may add. A feed does no
 - **Cost:** no inference or third-party calculation request.
 - **Method:** best asset receives 100% weight; later pieces receive 90%, 84%, 79%, 75%, 72%, 70%, and 68%. Verdict bands are documented at `/methodology`.
 
+## Immediate data foundation
+
+### Scheduled public snapshot pipeline
+
+- **Product job:** preserve the daily market record and compile the public data
+  releases used by calculators, server-rendered player pages, histories, and
+  recurring research.
+- **Execution model:** a scheduled batch job in this repository. It is not an
+  always-running application backend and does not accept user traffic.
+- **Durable store:** append-only, versioned objects in Google Cloud Storage or an
+  equivalent object store. Application images are consumers, not the source of
+  truth.
+- **Snapshot dimensions:** format, quarterback setting, TE premium, supported
+  league size, player/pick identity, value, overall and positional rank,
+  confidence, upstream freshness, settings hash, and methodology version.
+- **Public releases:** a manifest, current market snapshots, player histories,
+  mover reports, and downloadable sanitized CSV/JSON artifacts.
+- **Validation:** reject stale, partial, duplicate, or schema-incompatible input
+  before advancing the `latest` release pointer.
+- **Boundary:** generic public data only. Sleeper usernames, leagues, rosters,
+  transactions, and private snapshots belong to the separate connected-league
+  service.
+
+The current Next.js market route remains the temporary transport contract. It
+should eventually read the latest validated release rather than depending on a
+live upstream request. Server-rendered pages should consume the same release
+through a shared server-side data library.
+
 ## V1.1 — league-connected context
 
 ### Sleeper public API
