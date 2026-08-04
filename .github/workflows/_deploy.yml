@@ -93,7 +93,7 @@ jobs:
           --quiet
 
     - name: Verify production
-      run: curl --fail --silent --show-error --retry 5 --retry-delay 2 https://www.fantasytradetarget.com/ > /dev/null
+      run: curl --fail --silent --show-error --retry 5 --retry-delay 2 https://fantasytradetarget.com/ > /dev/null
 
     - name: Notify IndexNow
       working-directory: frontend

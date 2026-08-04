@@ -29,7 +29,7 @@ export async function GET(
   return Response.json(
     {
       schemaVersion: 1,
-      methodology: "https://www.fantasytradetarget.com/methodology",
+      methodology: "https://fantasytradetarget.com/methodology",
       player: profile.data,
       publishedHistory,
       fttSnapshotHistory: profile.snapshotHistory,

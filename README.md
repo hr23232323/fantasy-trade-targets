@@ -1,6 +1,6 @@
 # Fantasy Trade Target
 
-Deterministic fantasy football trade tools for [fantasytradetarget.com](https://www.fantasytradetarget.com):
+Deterministic fantasy football trade tools for [fantasytradetarget.com](https://fantasytradetarget.com):
 
 - dynasty and redraft trade calculators;
 - 1QB, Superflex, TE premium, and 8–16 team settings;
@@ -84,8 +84,14 @@ The scheduled data publisher refreshes and deploys the release three times
 daily without blocking ordinary code pushes. The checked-in snapshot archive
 starts the proprietary history immediately, while
 `data/player-snapshot-history.json` keeps the compact per-player observation
-series packaged into each public release. The raw archive can move to object
-storage without changing the public release contract as volume grows.
+series packaged into each public release. Today, Git is the durable store for
+the compressed raw archive: the scheduled workflow commits each new `.json.gz`
+snapshot to `data/snapshots/YYYY/MM/DD/`. The Docker build context is
+`frontend/`, so raw archives are not copied into the production container. At
+three captures per day and roughly 112 KB per current snapshot, the archive is
+about 120 MB per year before Git overhead. Move the raw files to immutable
+object storage before multi-year volume makes repository storage material;
+keep the release and compact-history contracts unchanged.
 
 ## Related intelligence engine
 

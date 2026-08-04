@@ -49,9 +49,12 @@ This is the living inventory for every dataset we use or may add. A feed does no
   data changes invoke the shared deploy workflow only after publication.
 - **Current store:** validated current release in `frontend/data`, a compact
   first-party player observation index at `data/player-snapshot-history.json`,
-  plus compressed, append-only market snapshots in `data/snapshots`. Move the
-  raw archive to object storage when repository volume makes that operationally
-  preferable.
+  plus compressed, append-only market snapshots in `data/snapshots`. The
+  scheduled workflow currently commits those three layers to Git. Because the
+  production Docker context is `frontend/`, complete raw archives remain in the
+  repository rather than the running application image. Move the raw archive
+  to immutable object storage before multi-year volume makes Git operationally
+  expensive; preserve the same release IDs and public compact-history contract.
 - **Snapshot dimensions:** format, quarterback setting, TE premium, supported
   league size, player/pick identity, value, overall and positional rank,
   confidence, upstream freshness, settings hash, and methodology version.

@@ -356,7 +356,7 @@ function contrastText(hex: string) {
 }
 
 function buildSchema(team: TeamProfile, assets: MarketAsset[]) {
-  const url = `https://www.fantasytradetarget.com/teams/${team.slug}`;
+  const url = `https://fantasytradetarget.com/teams/${team.slug}`;
   const topAsset = assets[0];
   return {
     "@context": "https://schema.org",
@@ -370,7 +370,7 @@ function buildSchema(team: TeamProfile, assets: MarketAsset[]) {
         dateModified: teamRelease.capturedAt,
         about: { "@id": `${url}#team` },
         mainEntity: { "@id": `${url}#dataset` },
-        publisher: { "@id": "https://www.fantasytradetarget.com/#organization" },
+        publisher: { "@id": "https://fantasytradetarget.com/#organization" },
       },
       {
         "@type": "SportsTeam",
@@ -389,7 +389,7 @@ function buildSchema(team: TeamProfile, assets: MarketAsset[]) {
         description: `Current dynasty assets and ${teamRelease.season} schedule environment observations for ${team.name}.`,
         url,
         dateModified: teamRelease.capturedAt,
-        creator: { "@id": "https://www.fantasytradetarget.com/#organization" },
+        creator: { "@id": "https://fantasytradetarget.com/#organization" },
         about: { "@id": `${url}#team` },
         variableMeasured: ["dynasty market value", "overall rank", "opponent points allowed per game", "rest differential", "matchup environment score"],
         distribution: [{ "@type": "DataDownload", encodingFormat: "application/json", contentUrl: `${url}/data.json` }],
@@ -397,8 +397,8 @@ function buildSchema(team: TeamProfile, assets: MarketAsset[]) {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.fantasytradetarget.com/" },
-          { "@type": "ListItem", position: 2, name: "Teams", item: "https://www.fantasytradetarget.com/teams" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://fantasytradetarget.com/" },
+          { "@type": "ListItem", position: 2, name: "Teams", item: "https://fantasytradetarget.com/teams" },
           { "@type": "ListItem", position: 3, name: team.name, item: url },
         ],
       },

@@ -149,7 +149,7 @@ export default async function TeamsPage() {
 }
 
 function buildSchema() {
-  const url = "https://www.fantasytradetarget.com/teams";
+  const url = "https://fantasytradetarget.com/teams";
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -160,7 +160,7 @@ function buildSchema() {
         name: "NFL team fantasy outlooks",
         description: `All 32 NFL teams with ${teamRelease.season} schedules, dynasty assets, and matchup environment context.`,
         dateModified: teamRelease.capturedAt,
-        publisher: { "@id": "https://www.fantasytradetarget.com/#organization" },
+        publisher: { "@id": "https://fantasytradetarget.com/#organization" },
         mainEntity: { "@id": `${url}#teams` },
       },
       {
@@ -177,7 +177,7 @@ function buildSchema() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.fantasytradetarget.com/" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://fantasytradetarget.com/" },
           { "@type": "ListItem", position: 2, name: "Teams", item: url },
         ],
       },

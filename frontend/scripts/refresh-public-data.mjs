@@ -30,7 +30,7 @@ const playerSlugs = playerPageManifest.map((player) => player.slug);
 
 const headers = {
   Accept: "application/json",
-  "User-Agent": "FantasyTradeTargetData/1.0 (+https://www.fantasytradetarget.com)",
+  "User-Agent": "FantasyTradeTargetData/1.0 (+https://fantasytradetarget.com)",
   ...(process.env.TRADYR_API_KEY
     ? { Authorization: `Bearer ${process.env.TRADYR_API_KEY}` }
     : {}),

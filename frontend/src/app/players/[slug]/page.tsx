@@ -418,7 +418,7 @@ function buildSchema(
   image: { src: string; width: number; height: number; alt: string },
   dateModified: string,
 ) {
-  const url = `https://www.fantasytradetarget.com/players/${player.slug}`;
+  const url = `https://fantasytradetarget.com/players/${player.slug}`;
   const team = getTeamByAbbr(player.team);
   return {
     "@context": "https://schema.org",
@@ -439,7 +439,7 @@ function buildSchema(
             ? {
                 "@type": "SportsTeam",
                 name: team.name,
-                url: `https://www.fantasytradetarget.com/teams/${team.slug}`,
+                url: `https://fantasytradetarget.com/teams/${team.slug}`,
               }
             : undefined,
         },
@@ -451,14 +451,14 @@ function buildSchema(
           caption: image.alt,
         },
         publisher: {
-          "@id": "https://www.fantasytradetarget.com/#organization",
+          "@id": "https://fantasytradetarget.com/#organization",
         },
         mainEntity: {
           "@id": `${url}#dataset`,
         },
         isPartOf: {
           "@type": "WebSite",
-          "@id": "https://www.fantasytradetarget.com/#website",
+          "@id": "https://fantasytradetarget.com/#website",
           name: "Fantasy Trade Target",
         },
       },
@@ -470,7 +470,7 @@ function buildSchema(
         url,
         dateModified,
         creator: {
-          "@id": "https://www.fantasytradetarget.com/#organization",
+          "@id": "https://fantasytradetarget.com/#organization",
         },
         about: {
           "@id": `${url}#player`,
@@ -497,8 +497,8 @@ function buildSchema(
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.fantasytradetarget.com/" },
-          { "@type": "ListItem", position: 2, name: "Players", item: "https://www.fantasytradetarget.com/players" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://fantasytradetarget.com/" },
+          { "@type": "ListItem", position: 2, name: "Players", item: "https://fantasytradetarget.com/players" },
           { "@type": "ListItem", position: 3, name: player.name, item: url },
         ],
       },

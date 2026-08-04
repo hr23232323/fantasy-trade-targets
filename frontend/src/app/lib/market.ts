@@ -71,6 +71,20 @@ type PublicRelease = {
 
 const publicRelease = publicReleaseJson as unknown as PublicRelease;
 
+export function getMarketReleaseInfo() {
+  return {
+    schemaVersion: publicRelease.schemaVersion,
+    methodologyVersion: publicRelease.methodologyVersion,
+    releaseId: publicRelease.releaseId,
+    capturedAt: publicRelease.capturedAt,
+    source: { ...publicRelease.source },
+  };
+}
+
+export function getPlayerSnapshotHistory() {
+  return publicRelease.playerSnapshotHistory;
+}
+
 function normalizeTeamCount(value: number) {
   return [8, 10, 12, 14, 16].includes(value) ? value : 12;
 }

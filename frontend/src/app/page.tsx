@@ -149,11 +149,11 @@ export default function Home() {
             <p className="mt-3 text-sm leading-6 text-[#414742]">Current-season market checkpoints for complete multi-player offers.</p>
             <span className="mt-8 inline-block font-mono text-xs font-black uppercase group-hover:translate-x-1">Analyze a trade →</span>
           </Link>
-          <Link href="/dynasty-trade-value-chart" className="group bg-[#ff6b3d] p-7 text-[#171c19] sm:p-9">
+          <Link href="/market" className="group bg-[#ff6b3d] p-7 text-[#171c19] sm:p-9">
             <span className="mono-label">Tool 03</span>
-            <h2 className="mt-14 text-3xl font-black tracking-[-0.05em]">Dynasty value chart</h2>
-            <p className="mt-3 text-sm leading-6 text-[#414742]">Daily, searchable market scores for players and rookie capital.</p>
-            <span className="mt-8 inline-block font-mono text-xs font-black uppercase group-hover:translate-x-1">Browse values →</span>
+            <h2 className="mt-14 text-3xl font-black tracking-[-0.05em]">Market data hub</h2>
+            <p className="mt-3 text-sm leading-6 text-[#414742]">Versioned rankings, format checkpoints, recorded movement, and downloadable data.</p>
+            <span className="mt-8 inline-block font-mono text-xs font-black uppercase group-hover:translate-x-1">Open the market →</span>
           </Link>
         </div>
       </section>

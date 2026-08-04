@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { playerPages } from "./lib/player-pages";
 import { teams } from "./lib/team-data";
 
-const BASE_URL = "https://www.fantasytradetarget.com";
+const BASE_URL = "https://fantasytradetarget.com";
 
 const staticRoutes = [
   "",
@@ -19,6 +19,7 @@ const staticRoutes = [
   "/fantasy-trade-calculator",
   "/faq",
   "/methodology",
+  "/market",
   "/players",
   "/privacy-policy",
   "/terms-of-service",

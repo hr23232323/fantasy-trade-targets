@@ -29,6 +29,17 @@ export default function DataSourcesPage() {
           </div>
         </div>
       </section>
+      <section className="page-wrap py-8">
+        <div className="grid gap-px border border-[#171c19] bg-[#171c19] md:grid-cols-3">
+          <article className="bg-[#dfff4f] p-7"><span className="mono-label">Current release</span><h2 className="mt-8 text-2xl font-black tracking-[-0.04em]">Packaged with the application.</h2><p className="mt-4 text-sm leading-7 text-[#3f453f]">The latest validated market variants, player profiles, and compact profile histories live in the versioned public release used by every server-rendered page and calculator.</p></article>
+          <article className="bg-[#8bcfff] p-7"><span className="mono-label">Compact history</span><h2 className="mt-8 text-2xl font-black tracking-[-0.04em]">One series per reviewed player.</h2><p className="mt-4 text-sm leading-7 text-[#3f453f]">Timestamped value, overall rank, position rank, and release ID observations are retained chronologically and exposed through player and market downloads.</p></article>
+          <article className="bg-[#ffb29a] p-7"><span className="mono-label">Full archive</span><h2 className="mt-8 text-2xl font-black tracking-[-0.04em]">Every successful pull is preserved.</h2><p className="mt-4 text-sm leading-7 text-[#3f453f]">Complete market and pick variants are stored as compressed, append-only snapshots in the private build repository. Raw archives are not shipped in the production container and can move to immutable object storage without changing public URLs.</p></article>
+        </div>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <a href="/market" className="border border-[#171c19] bg-[#171c19] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] text-white">Open current market →</a>
+          <a href="/market/data.json" className="border border-[#171c19] bg-white px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">Download public release ↓</a>
+        </div>
+      </section>
       <section className="page-wrap py-20"><span className="eyebrow">Next data layers</span><h2 className="section-title mt-6 max-w-4xl">Current evidence first. New evidence only when it is ready.</h2><div className="mt-10 grid border-l border-t border-[#171c19] sm:grid-cols-2 lg:grid-cols-4">{[['Sleeper league context','Scoring, roster slots, taxi, IR, picks, standings, and manager-specific needs.'],['Market-gap models','FTT-owned comparisons between market movement, opportunity, usage, and production.'],['Availability signals','Injuries, practice reports, transactions, depth charts, and verified news.'],['Accepted trades','An anonymized, rights-reviewed corpus of completed prices by format and league size.']].map(([title,body]) => <article key={title} className="border-b border-r border-[#171c19] bg-white/30 p-6"><h3 className="text-lg font-black tracking-[-0.03em]">{title}</h3><p className="mt-3 text-sm leading-6 text-[#69706c]">{body}</p></article>)}</div></section>
     </>
   );

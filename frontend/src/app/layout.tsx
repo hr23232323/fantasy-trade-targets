@@ -21,7 +21,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.fantasytradetarget.com"),
+  metadataBase: new URL("https://fantasytradetarget.com"),
   title: {
     default: "Fantasy Trade Target — Free Fantasy Football Trade Calculator",
     template: "%s | Fantasy Trade Target",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://www.fantasytradetarget.com",
+    url: "https://fantasytradetarget.com",
     siteName: "Fantasy Trade Target",
     title: "Fantasy Trade Target",
     description:
@@ -76,14 +76,14 @@ const siteSchema = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://www.fantasytradetarget.com/#organization",
+      "@id": "https://fantasytradetarget.com/#organization",
       name: "Fantasy Trade Target Research",
       alternateName: "Fantasy Trade Target",
-      url: "https://www.fantasytradetarget.com",
-      image: "https://www.fantasytradetarget.com/og-image.png",
+      url: "https://fantasytradetarget.com",
+      image: "https://fantasytradetarget.com/og-image.png",
       logo: {
         "@type": "ImageObject",
-        url: "https://www.fantasytradetarget.com/brand-mark-512.png",
+        url: "https://fantasytradetarget.com/brand-mark-512.png",
         width: 512,
         height: 512,
       },
@@ -92,11 +92,11 @@ const siteSchema = {
     },
     {
       "@type": "WebSite",
-      "@id": "https://www.fantasytradetarget.com/#website",
+      "@id": "https://fantasytradetarget.com/#website",
       name: "Fantasy Trade Target",
-      url: "https://www.fantasytradetarget.com",
+      url: "https://fantasytradetarget.com",
       publisher: {
-        "@id": "https://www.fantasytradetarget.com/#organization",
+        "@id": "https://fantasytradetarget.com/#organization",
       },
       description:
         "Free fantasy football trade calculators, dynasty values, player and NFL team research, schedules, and rankings.",

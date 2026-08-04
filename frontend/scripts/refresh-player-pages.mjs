@@ -3,7 +3,7 @@ import path from "node:path";
 
 const PLAYER_COUNT = 50;
 const USER_AGENT =
-  "FantasyTradeTargetData/1.0 (+https://www.fantasytradetarget.com)";
+  "FantasyTradeTargetData/1.0 (+https://fantasytradetarget.com)";
 const manifestPath = path.resolve("data/player-pages.json");
 
 const wikipediaTitleOverrides = {

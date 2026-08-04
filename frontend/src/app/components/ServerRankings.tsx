@@ -29,7 +29,7 @@ export default async function ServerRankings() {
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: "Fantasy Trade Target dynasty rankings",
-          url: "https://www.fantasytradetarget.com/dynasty-rankings",
+          url: "https://fantasytradetarget.com/dynasty-rankings",
           description:
             "Position-by-position dynasty Superflex market rankings for players and rookie picks.",
           mainEntity: {
@@ -41,7 +41,7 @@ export default async function ServerRankings() {
               name: asset.name,
               ...(asset.kind === "player" && hasPlayerPage(asset.slug)
                 ? {
-                    url: `https://www.fantasytradetarget.com/players/${asset.slug}`,
+                    url: `https://fantasytradetarget.com/players/${asset.slug}`,
                   }
                 : {}),
             })),

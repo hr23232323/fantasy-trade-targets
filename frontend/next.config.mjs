@@ -29,8 +29,8 @@ const nextConfig = {
     return [
       {
         source: "/:path*",
-        has: [{ type: "host", value: "fantasytradetarget.com" }],
-        destination: "https://www.fantasytradetarget.com/:path*",
+        has: [{ type: "host", value: "www.fantasytradetarget.com" }],
+        destination: "https://fantasytradetarget.com/:path*",
         permanent: true,
       },
     ];

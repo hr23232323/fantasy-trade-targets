@@ -374,7 +374,7 @@ async function fetchText(url, attempts = 4) {
         headers: {
           Accept: "text/csv",
           "User-Agent":
-            "FantasyTradeTargetData/1.0 (+https://www.fantasytradetarget.com)",
+            "FantasyTradeTargetData/1.0 (+https://fantasytradetarget.com)",
         },
         signal: AbortSignal.timeout(30_000),
       });

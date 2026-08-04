@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 
-const host = "www.fantasytradetarget.com";
+const host = "fantasytradetarget.com";
 const baseUrl = `https://${host}`;
 const key = "c9d1b221d61a01ac5aa5f88cebdd31ca";
 const playerPages = JSON.parse(
@@ -13,6 +13,7 @@ const teamRelease = JSON.parse(
 const changedPaths = [
   "",
   "/players",
+  "/market",
   "/teams",
   "/dynasty-rankings",
   "/dynasty-trade-value-chart",

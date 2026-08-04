@@ -4,12 +4,13 @@ Fantasy Trade Target publishes free, deterministic fantasy football trade tools 
 
 ## Primary resources
 
-- https://www.fantasytradetarget.com/players — player values, history, usage, and downloadable data
-- https://www.fantasytradetarget.com/dynasty-rankings — current dynasty market rankings
-- https://www.fantasytradetarget.com/dynasty-trade-calculator — deterministic dynasty calculator
-- https://www.fantasytradetarget.com/methodology — calculator methodology
-- https://www.fantasytradetarget.com/data-sources — sources, rights, and update cadence
-- https://www.fantasytradetarget.com/editorial-policy — fact, calculation, and interpretation policy
+- https://fantasytradetarget.com/market — current market release, rankings, and downloadable data
+- https://fantasytradetarget.com/players — player values, history, usage, and downloadable data
+- https://fantasytradetarget.com/dynasty-rankings — current dynasty market rankings
+- https://fantasytradetarget.com/dynasty-trade-calculator — deterministic dynasty calculator
+- https://fantasytradetarget.com/methodology — calculator methodology
+- https://fantasytradetarget.com/data-sources — sources, rights, and update cadence
+- https://fantasytradetarget.com/editorial-policy — fact, calculation, and interpretation policy
 
 ## Data notes
 

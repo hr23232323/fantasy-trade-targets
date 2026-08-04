@@ -4,6 +4,7 @@ import { TrackedLink } from "./TrackedLink";
 const tools = [
   ["Dynasty calculator", "/dynasty-trade-calculator"],
   ["Player research", "/players"],
+  ["Market data", "/market"],
   ["Team outlooks", "/teams"],
   ["Redraft analyzer", "/fantasy-football-trade-analyzer"],
   ["Superflex calculator", "/dynasty-superflex-trade-calculator"],

@@ -31,6 +31,7 @@ Fantasy Trade Target uses PostHog for privacy-conscious, anonymous product analy
 | Shared trade | `trade_report_shared` | A receipt was shared with the native share sheet or copied. |
 | Shared trade | `trade_report_edit_opened` | A receipt led back to its prefilled calculator. |
 | Market | `market_board_viewed` | A market board release became usable. |
+| Market | `market_hub_viewed` | The canonical market release and download hub was viewed. |
 | Market | `market_board_load_failed` | Full rankings failed to load. |
 | Market | `market_search_used` | A debounced search was used; only length and result count are captured. |
 | Market | `market_filter_changed` | Position or age filtering changed. |

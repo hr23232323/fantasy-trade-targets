@@ -1,6 +1,6 @@
 import JsonLd from "./JsonLd";
 
-const BASE_URL = "https://www.fantasytradetarget.com";
+const BASE_URL = "https://fantasytradetarget.com";
 
 export default function WebAppSchema({
   name,

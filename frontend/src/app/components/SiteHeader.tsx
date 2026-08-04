@@ -10,9 +10,9 @@ import BrandMark from "./BrandMark";
 const links = [
   { href: "/dynasty-trade-calculator", label: "Calculator" },
   { href: "/players", label: "Players" },
+  { href: "/market", label: "Market" },
   { href: "/teams", label: "Teams" },
   { href: "/dynasty-rankings", label: "Rankings" },
-  { href: "/dynasty-trade-value-chart", label: "Value chart" },
   { href: "/fantasy-trade-calculator", label: "Redraft" },
 ];
 
@@ -57,6 +57,7 @@ export default function SiteHeader() {
               const active =
                 pathname === link.href ||
                 (link.href === "/players" && pathname.startsWith("/players/")) ||
+                (link.href === "/market" && pathname.startsWith("/market/")) ||
                 (link.href === "/teams" && pathname.startsWith("/teams/"));
               return (
                 <Link

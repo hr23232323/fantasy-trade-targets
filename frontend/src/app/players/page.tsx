@@ -30,7 +30,7 @@ export default async function PlayersPage() {
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: "Fantasy Trade Target player research",
-          url: "https://www.fantasytradetarget.com/players",
+          url: "https://fantasytradetarget.com/players",
           description:
             "Dynasty player values, recorded market observations, production, usage, comparable players, and rookie-pick equivalents.",
           mainEntity: {
@@ -39,7 +39,7 @@ export default async function PlayersPage() {
               "@type": "ListItem",
               position: index + 1,
               name: page.name,
-              url: `https://www.fantasytradetarget.com/players/${page.slug}`,
+              url: `https://fantasytradetarget.com/players/${page.slug}`,
             })),
           },
         }}

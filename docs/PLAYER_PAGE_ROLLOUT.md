@@ -3,21 +3,16 @@
 Last reviewed: 2026-08-03
 
 Player research routes are generated from the reviewed manifest at
-`frontend/data/player-pages.json`. The manifest currently contains the pages
-used for template and data validation; it is designed to expand before public
-deployment without changing the route or component architecture.
+`frontend/data/player-pages.json`. The manifest currently contains 50 published
+profiles and is designed to expand in reviewed batches without changing the
+route or component architecture.
 
 ## Current configured routes
 
-- `/players/josh-allen-qb`
-- `/players/bijan-robinson-rb`
-- `/players/jamarr-chase-wr`
-- `/players/brock-bowers-te`
-- `/players/ashton-jeanty-rb`
-
-`generateStaticParams` returns the configured slugs and `dynamicParams` is
-disabled. Market-board links are enabled for the same manifest. An unconfigured
-player URL returns 404 instead of publishing a partial page.
+`generateStaticParams` returns all 50 reviewed manifest slugs and
+`dynamicParams` is disabled. Market-board links are enabled for the same
+manifest. An unconfigured player URL returns 404 instead of publishing a
+partial page.
 
 ## Required page contract
 
