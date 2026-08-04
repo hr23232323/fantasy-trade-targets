@@ -1,15 +1,18 @@
-import type { Metadata } from "next";
 import CalculatorGuide from "../components/CalculatorGuide";
 import FaqBlock from "../components/FaqBlock";
 import PageHero from "../components/PageHero";
 import TradeCalculator from "../components/TradeCalculator";
+import WebAppSchema from "../components/WebAppSchema";
+import { buildPageMetadata } from "../lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Free Fantasy Football Trade Analyzer — Who Wins?",
+const description = "Analyze a fantasy football trade with free, current-season market values. Compare multi-player packages, Superflex, TE premium, and roster costs.";
+
+export const metadata = buildPageMetadata({
+  title: "Fantasy Football Trade Analyzer: Who Wins?",
   description:
-    "Analyze a fantasy football trade with free, current-season market values. Compare multi-player packages, Superflex, TE premium, and roster costs.",
-  alternates: { canonical: "/fantasy-football-trade-analyzer" },
-};
+    description,
+  path: "/fantasy-football-trade-analyzer",
+});
 
 const faqs = [
   {
@@ -32,6 +35,7 @@ const faqs = [
 export default function FantasyFootballTradeAnalyzerPage() {
   return (
     <>
+      <WebAppSchema name="Fantasy Football Trade Analyzer" description={description} path="/fantasy-football-trade-analyzer" />
       <PageHero
         eyebrow="Fantasy football trade analyzer"
         title="Who wins the trade?"

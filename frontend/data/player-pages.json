@@ -1,0 +1,77 @@
+[
+  {
+    "slug": "josh-allen-qb",
+    "name": "Josh Allen",
+    "editorialLens": "The Superflex market anchor: elite quarterback scarcity paired with difference-making rushing production.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Josh_Allen_SEPT2021_%28cropped2%29.jpg/960px-Josh_Allen_SEPT2021_%28cropped2%29.jpg",
+      "width": 900,
+      "height": 1239,
+      "alt": "Josh Allen warming up on the field",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Josh_Allen_SEPT2021_(cropped2).jpg"
+    }
+  },
+  {
+    "slug": "bijan-robinson-rb",
+    "name": "Bijan Robinson",
+    "editorialLens": "A premium dynasty running back whose age, receiving ability, and weekly role keep him near the top of the overall market.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Bijan_Robinson_2025.jpg/960px-Bijan_Robinson_2025.jpg",
+      "width": 900,
+      "height": 1125,
+      "alt": "Bijan Robinson on the field in 2025",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bijan_Robinson_2025.jpg"
+    }
+  },
+  {
+    "slug": "jamarr-chase-wr",
+    "name": "Ja'Marr Chase",
+    "editorialLens": "A cornerstone dynasty wide receiver with elite market liquidity and a production profile built for long competitive windows.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Ja%27Marr_Chase.jpg/960px-Ja%27Marr_Chase.jpg",
+      "width": 900,
+      "height": 1069,
+      "alt": "Ja'Marr Chase in uniform on the sideline",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ja%27Marr_Chase.jpg"
+    }
+  },
+  {
+    "slug": "brock-bowers-te",
+    "name": "Brock Bowers",
+    "editorialLens": "A rare young tight end whose receiving ceiling creates separation at fantasy football’s thinnest premium position.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Brock_Bowers_%282025%29.jpg/960px-Brock_Bowers_%282025%29.jpg",
+      "width": 900,
+      "height": 1262,
+      "alt": "Brock Bowers on the field in 2025",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Brock_Bowers_(2025).jpg"
+    }
+  },
+  {
+    "slug": "ashton-jeanty-rb",
+    "name": "Ashton Jeanty",
+    "editorialLens": "A young running back priced on immediate opportunity, long runway, and the scarcity of high-end dynasty backfields.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Ashton_Jeanty_-_2025_Raiders_vs_Commanders_%28cropped%29.jpg/960px-Ashton_Jeanty_-_2025_Raiders_vs_Commanders_%28cropped%29.jpg",
+      "width": 900,
+      "height": 1289,
+      "alt": "Ashton Jeanty carrying the football in 2025",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ashton_Jeanty_-_2025_Raiders_vs_Commanders_(cropped).jpg"
+    }
+  }
+]

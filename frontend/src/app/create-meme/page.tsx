@@ -79,6 +79,27 @@ export default function CreateMemePage() {
         </button>
       </section>
 
+      <section className="page-wrap py-16">
+        <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
+          <div>
+            <span className="eyebrow">Built for league chat</span>
+            <h2 className="section-title mt-6">A joke with the exact offer attached.</h2>
+          </div>
+          <div className="grid border-l border-t border-[#171c19] sm:grid-cols-3">
+            {[
+              ["Name the target", "Use the player or pick you are trying to acquire so the meme is specific to the negotiation."],
+              ["Describe the package", "Enter the real offer or the funniest honest summary of it. The same inputs always produce the same set."],
+              ["Send the evidence too", "Pair the meme with a shared calculator URL when the group chat inevitably asks whether the trade is fair."],
+            ].map(([title, body]) => (
+              <article key={title} className="border-b border-r border-[#171c19] bg-white/35 p-6">
+                <h3 className="text-lg font-black tracking-[-0.03em]">{title}</h3>
+                <p className="mt-3 text-sm leading-6 text-[#69706c]">{body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {memes.length > 0 && (
         <section className="page-wrap mt-14 columns-1 gap-5 sm:columns-2 lg:columns-3">
           {memes.map((meme) => {

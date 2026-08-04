@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
 import FaqBlock from "../components/FaqBlock";
 import PageHero from "../components/PageHero";
+import { buildPageMetadata } from "../lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = buildPageMetadata({
   title: "Fantasy Trade Target FAQ",
   description: "Answers about fantasy trade values, calculator settings, data updates, rookie picks, privacy, and methodology.",
-  alternates: { canonical: "/faq" },
-};
+  path: "/faq",
+});
 
 const faqs = [
   { question: "Is Fantasy Trade Target free?", answer: "Yes. The V1 calculator, rankings, value charts, target finder, and meme tool are free and require no account." },

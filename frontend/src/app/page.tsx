@@ -1,16 +1,17 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import CalculatorGuide from "./components/CalculatorGuide";
 import FaqBlock from "./components/FaqBlock";
-import MarketBoard from "./components/MarketBoard";
+import MarketBoard from "./components/ServerMarketBoard";
 import TradeCalculator from "./components/TradeCalculator";
+import { buildPageMetadata } from "./lib/metadata";
+import { playerPages } from "./lib/player-pages";
 
-export const metadata: Metadata = {
+export const metadata = buildPageMetadata({
   title: "Fantasy Football Trade Targets, Calculator & Rankings",
   description:
     "Find fantasy football trade targets, compare complete offers, and browse daily dynasty values. Free, no login, with Superflex, TE premium, and rookie picks.",
-  alternates: { canonical: "/" },
-};
+  path: "",
+});
 
 const homeFaqs = [
   {
@@ -79,6 +80,31 @@ export default function Home() {
       </div>
 
       <section className="page-wrap py-20">
+        <div className="grid gap-8 border-y border-[#171c19] py-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
+          <div>
+            <span className="eyebrow">Player research // market files</span>
+            <h2 className="section-title mt-6">Five market files. Fully sourced.</h2>
+          </div>
+          <div>
+            <p className="max-w-2xl text-sm leading-7 text-[#59605c]">
+              Direct dynasty answers, four-format pricing, historical charts, production, usage, comparable players, pick equivalents, and visible source records.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {playerPages.map((player) => (
+                <Link
+                  key={player.slug}
+                  href={`/players/${player.slug}`}
+                  className="border border-[#171c19] bg-white/55 px-3 py-2 font-mono text-[10px] font-black uppercase tracking-[0.06em] hover:bg-[#dfff4f]"
+                >
+                  {player.name} →
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="page-wrap pb-20">
         <div className="grid gap-px border border-[#171c19] bg-[#171c19] md:grid-cols-3">
           <Link href="/dynasty-trade-calculator" className="group bg-[#dfff4f] p-7 text-[#171c19] sm:p-9">
             <span className="mono-label">Tool 01</span>

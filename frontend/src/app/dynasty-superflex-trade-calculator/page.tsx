@@ -1,15 +1,18 @@
-import type { Metadata } from "next";
 import CalculatorGuide from "../components/CalculatorGuide";
 import FaqBlock from "../components/FaqBlock";
 import PageHero from "../components/PageHero";
 import TradeCalculator from "../components/TradeCalculator";
+import WebAppSchema from "../components/WebAppSchema";
+import { buildPageMetadata } from "../lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Dynasty Superflex Trade Calculator — Free 2QB Values",
+const description = "Free dynasty Superflex trade calculator with daily 2QB player values, rookie picks, TE premium, league size, and package adjustments.";
+
+export const metadata = buildPageMetadata({
+  title: "Dynasty Superflex Trade Calculator",
   description:
-    "Free dynasty Superflex trade calculator with daily 2QB player values, rookie picks, TE premium, league size, and package adjustments.",
-  alternates: { canonical: "/dynasty-superflex-trade-calculator" },
-};
+    description,
+  path: "/dynasty-superflex-trade-calculator",
+});
 
 const faqs = [
   {
@@ -32,6 +35,7 @@ const faqs = [
 export default function SuperflexCalculatorPage() {
   return (
     <>
+      <WebAppSchema name="Dynasty Superflex Trade Calculator" description={description} path="/dynasty-superflex-trade-calculator" />
       <PageHero
         eyebrow="Dynasty Superflex trade calculator"
         title="Two QB slots."

@@ -9,14 +9,22 @@ This is the living inventory for every dataset we use or may add. A feed does no
 ### Tradyr public API — market values and rankings
 
 - **Product job:** common market scale for dynasty players, redraft players, rookies, and exact rookie picks.
-- **Endpoints:** `/v1/players`, `/v1/picks`; future player profiles may use `/v1/players/:slug/full`.
+- **Endpoints:** `/v1/players`, `/v1/picks`, and `/v1/players/:slug/full` for configured player research pages.
 - **Formats:** dynasty/redraft, 1QB/Superflex, TE premium, and league-size-adjusted picks.
 - **Identifier spine:** Tradyr slug plus Sleeper player ID when supplied.
-- **Refresh:** upstream updates daily; our application cache is six hours with a 24-hour stale-while-revalidate window.
+- **Refresh:** the publisher runs three times daily, validates every supported market variant, and packages the current release with the application.
 - **Rights:** the [official Tradyr API documentation](https://api.tradyr.app/docs) explicitly permits commercial use with attribution.
-- **Public fields:** name, slug, position, team, age, composite, rank, position rank, confidence, Sleeper ID, and pick metadata.
+- **Public fields:** name, slug, position, team, age, composite, rank, position rank, confidence, Sleeper ID, pick metadata, composite history, derived season/usage metrics, consistency, and similar-market players.
 - **Do not expose:** upstream source-specific KTC or FantasyCalc payload fields. V1 republishes only the licensed Tradyr composite.
 - **Attribution:** visible “Powered by Tradyr” link on every market-driven surface.
+
+### Wikimedia Commons — player images
+
+- **Product job:** recognizable lead photography for reviewed player pages.
+- **Selection:** candidates are discovered through the Wikimedia APIs, then reviewed individually before inclusion.
+- **Rights:** every selected file must expose an applicable Creative Commons license and creator attribution. The player manifest records the creator, file page, license name, and license URL.
+- **Delivery:** Next.js serves responsive optimized derivatives from reviewed Wikimedia thumbnail URLs. A future bulk pipeline may self-host licensed derivatives while preserving the same attribution record.
+- **Boundary:** do not substitute undocumented Sleeper, ESPN, team, or NFL CDN headshots. Expand only after every additional image passes the same rights check or a commercial image provider is licensed.
 
 ### Local deterministic trade engine
 
@@ -25,7 +33,7 @@ This is the living inventory for every dataset we use or may add. A feed does no
 - **Cost:** no inference or third-party calculation request.
 - **Method:** best asset receives 100% weight; later pieces receive 90%, 84%, 79%, 75%, 72%, 70%, and 68%. Verdict bands are documented at `/methodology`.
 
-## Immediate data foundation
+## Current data foundation
 
 ### Scheduled public snapshot pipeline
 
@@ -34,9 +42,9 @@ This is the living inventory for every dataset we use or may add. A feed does no
   recurring research.
 - **Execution model:** a scheduled batch job in this repository. It is not an
   always-running application backend and does not accept user traffic.
-- **Durable store:** append-only, versioned objects in Google Cloud Storage or an
-  equivalent object store. Application images are consumers, not the source of
-  truth.
+- **Current store:** validated current release in `frontend/data` plus compressed,
+  append-only market snapshots in `data/snapshots`. Move the archive to object
+  storage when repository volume makes that operationally preferable.
 - **Snapshot dimensions:** format, quarterback setting, TE premium, supported
   league size, player/pick identity, value, overall and positional rank,
   confidence, upstream freshness, settings hash, and methodology version.
@@ -48,10 +56,9 @@ This is the living inventory for every dataset we use or may add. A feed does no
   transactions, and private snapshots belong to the separate connected-league
   service.
 
-The current Next.js market route remains the temporary transport contract. It
-should eventually read the latest validated release rather than depending on a
-live upstream request. Server-rendered pages should consume the same release
-through a shared server-side data library.
+The Next.js market route, calculators, rankings, player pages, sitemap, and
+downloads all consume the same validated release through a shared server-side
+data library. A failed refresh leaves the previous release intact.
 
 ## V1.1 — league-connected context
 

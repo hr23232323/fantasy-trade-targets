@@ -30,6 +30,8 @@ export interface MarketMeta {
   attribution: string;
   sourceUrl: string;
   assetCount: number;
+  releaseId: string;
+  methodologyVersion: string;
 }
 
 export interface MarketPayload {

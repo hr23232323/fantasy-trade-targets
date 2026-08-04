@@ -1,15 +1,18 @@
-import type { Metadata } from "next";
 import CalculatorGuide from "../components/CalculatorGuide";
 import FaqBlock from "../components/FaqBlock";
 import PageHero from "../components/PageHero";
 import TradeCalculator from "../components/TradeCalculator";
+import WebAppSchema from "../components/WebAppSchema";
+import { buildPageMetadata } from "../lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Free Dynasty Trade Calculator — Players, Picks & Superflex",
+const description = "Use a free dynasty trade calculator with daily player values, exact rookie picks, Superflex, TE premium, league size, and roster-cost adjustments.";
+
+export const metadata = buildPageMetadata({
+  title: "Free Dynasty Trade Calculator",
   description:
-    "Use a free dynasty trade calculator with daily player values, exact rookie picks, Superflex, TE premium, league size, and roster-cost adjustments.",
-  alternates: { canonical: "/dynasty-trade-calculator" },
-};
+    description,
+  path: "/dynasty-trade-calculator",
+});
 
 const faqs = [
   {
@@ -37,6 +40,7 @@ const faqs = [
 export default function DynastyTradeCalculatorPage() {
   return (
     <>
+      <WebAppSchema name="Fantasy Trade Target Dynasty Trade Calculator" description={description} path="/dynasty-trade-calculator" />
       <PageHero
         eyebrow="Free dynasty trade calculator"
         title="Every player. Every pick."

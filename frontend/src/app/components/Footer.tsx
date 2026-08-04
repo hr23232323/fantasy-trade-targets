@@ -2,14 +2,19 @@ import Link from "next/link";
 
 const tools = [
   ["Dynasty calculator", "/dynasty-trade-calculator"],
+  ["Player research", "/players"],
   ["Redraft analyzer", "/fantasy-football-trade-analyzer"],
   ["Superflex calculator", "/dynasty-superflex-trade-calculator"],
   ["Dynasty rankings", "/dynasty-rankings"],
+  ["Redraft value chart", "/fantasy-football-trade-value-chart"],
+  ["Trade memes", "/create-meme"],
 ];
 
 const company = [
+  ["About", "/about"],
   ["Methodology", "/methodology"],
   ["Data sources", "/data-sources"],
+  ["Editorial policy", "/editorial-policy"],
   ["FAQ", "/faq"],
   ["Privacy", "/privacy-policy"],
   ["Terms", "/terms-of-service"],
@@ -37,14 +42,12 @@ export default function Footer() {
       <div className="border-t border-white/15">
         <div className="page-wrap flex flex-col gap-2 py-5 font-mono text-[10px] uppercase tracking-[0.08em] text-white/50 sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} Fantasy Trade Target</span>
-          <a
-            href="https://tradyr.app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/data-sources"
             className="text-[#dfff4f] hover:text-white"
           >
-            Player market data powered by Tradyr ↗
-          </a>
+            Sources, licensing & freshness →
+          </Link>
         </div>
       </div>
     </footer>

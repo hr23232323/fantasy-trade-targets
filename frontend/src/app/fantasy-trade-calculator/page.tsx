@@ -1,15 +1,18 @@
-import type { Metadata } from "next";
 import FaqBlock from "../components/FaqBlock";
-import MarketBoard from "../components/MarketBoard";
+import MarketBoard from "../components/ServerMarketBoard";
 import PageHero from "../components/PageHero";
 import TradeCalculator from "../components/TradeCalculator";
+import WebAppSchema from "../components/WebAppSchema";
+import { buildPageMetadata } from "../lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Free Fantasy Trade Calculator — Current Player Values",
+const description = "Use a free fantasy trade calculator to compare current player values, package trades, quarterback settings, TE premium, and roster-spot costs.";
+
+export const metadata = buildPageMetadata({
+  title: "Free Fantasy Trade Calculator",
   description:
-    "Use a free fantasy trade calculator to compare current player values, package trades, quarterback settings, TE premium, and roster-spot costs.",
-  alternates: { canonical: "/fantasy-trade-calculator" },
-};
+    description,
+  path: "/fantasy-trade-calculator",
+});
 
 const faqs = [
   {
@@ -32,11 +35,14 @@ const faqs = [
 export default function FantasyTradeCalculatorPage() {
   return (
     <>
+      <WebAppSchema name="Fantasy Trade Target Calculator" description={description} path="/fantasy-trade-calculator" />
       <PageHero
         eyebrow="Free fantasy trade calculator"
         title="Make the offer."
         accent="Know the price."
         description="Compare current-season player values across complete trade packages, then browse the market for the missing piece that balances the deal."
+        secondaryHref="/fantasy-football-trade-value-chart"
+        secondaryLabel="Browse the redraft chart"
       />
       <div className="page-wrap"><TradeCalculator defaultFormat="redraft" defaultNumQbs={1} /></div>
       <div className="page-wrap pt-20">

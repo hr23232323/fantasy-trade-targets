@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { FiArrowUpRight, FiSearch } from "react-icons/fi";
+import { fetchClientMarket } from "../lib/client-market";
+import { hasPlayerPage } from "../lib/player-pages";
 import type {
   MarketAsset,
   MarketFormat,
@@ -10,13 +12,15 @@ import type {
   Position,
 } from "../types/MarketAsset";
 
-type MarketBoardProps = {
+export type MarketBoardProps = {
   format?: MarketFormat;
   numQbs?: 1 | 2;
   heading?: string;
   description?: string;
   initialLimit?: number;
   includePicks?: boolean;
+  initialMarket?: MarketPayload | null;
+  initialIsPartial?: boolean;
 };
 
 const positions: Array<"ALL" | Position> = ["ALL", "QB", "RB", "WR", "TE", "PICK"];
@@ -28,8 +32,11 @@ export default function MarketBoard({
   description = "Search the full market, narrow by roster shape, and turn a player into a trade offer.",
   initialLimit = 40,
   includePicks = true,
+  initialMarket = null,
+  initialIsPartial = false,
 }: MarketBoardProps) {
-  const [market, setMarket] = useState<MarketPayload | null>(null);
+  const [market, setMarket] = useState<MarketPayload | null>(initialMarket);
+  const [isPartial, setIsPartial] = useState(initialIsPartial);
   const [query, setQuery] = useState("");
   const [position, setPosition] = useState<"ALL" | Position>("ALL");
   const [ageBand, setAgeBand] = useState("all");
@@ -37,22 +44,27 @@ export default function MarketBoard({
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const controller = new AbortController();
-    fetch(`/api/market?format=${format}&numQbs=${numQbs}&tep=false&numTeams=12`, {
-      signal: controller.signal,
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error("Market feed unavailable");
-        return response.json();
+    if (initialMarket && !initialIsPartial) return;
+    let active = true;
+    const url = `/api/market?format=${format}&numQbs=${numQbs}&tep=false&numTeams=12`;
+    fetchClientMarket(url)
+      .then((payload) => {
+        if (!active) return;
+        setMarket(payload);
+        setIsPartial(false);
       })
-      .then((payload: MarketPayload) => setMarket(payload))
       .catch((loadError) => {
-        if (loadError.name !== "AbortError") {
-          setError("Rankings are temporarily unavailable. Please refresh shortly.");
-        }
+        if (!active) return;
+        setError(
+          initialMarket
+            ? "Showing the latest server-rendered leaders while the full market reloads."
+            : "Rankings are temporarily unavailable. Please refresh shortly.",
+        );
       });
-    return () => controller.abort();
-  }, [format, numQbs]);
+    return () => {
+      active = false;
+    };
+  }, [format, initialIsPartial, initialMarket, numQbs]);
 
   const filtered = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -182,7 +194,11 @@ export default function MarketBoard({
 
       {market && (
         <div className="flex flex-col gap-2 border-t border-[#171c19] bg-[#171c19] px-4 py-3 font-mono text-[10px] uppercase tracking-[0.06em] text-white/50 sm:flex-row sm:justify-between">
-          <span>{filtered.length} matching assets</span>
+          <span>
+            {isPartial
+              ? `Showing ${filtered.length} of ${market.meta.assetCount} assets`
+              : `${filtered.length} matching assets`}
+          </span>
           <a
             href="https://tradyr.app"
             target="_blank"
@@ -215,7 +231,16 @@ function MarketRow({
     <tr className="group border-b border-[#c9c5ba] bg-white/25 transition-colors hover:bg-white">
       <td className="px-4 py-3 font-mono text-xs font-black text-[#69706c]">#{displayRank}</td>
       <td className="px-4 py-3">
-        <span className="block font-bold">{asset.name}</span>
+        {asset.kind === "player" && hasPlayerPage(asset.slug) ? (
+          <Link
+            href={`/players/${asset.slug}`}
+            className="block font-bold underline decoration-[#ff6b3d] decoration-2 underline-offset-4 hover:text-[#a23616]"
+          >
+            {asset.name}
+          </Link>
+        ) : (
+          <span className="block font-bold">{asset.name}</span>
+        )}
         <span className="mt-0.5 block font-mono text-[10px] uppercase text-[#69706c]">
           {asset.team || asset.tier || "Draft pick"}
         </span>

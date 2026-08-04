@@ -3,7 +3,13 @@ name: Deploy to Cloud Run
 on:
   push:
     branches:
-      - main  # Adjust this if your default branch is different
+      - main
+  schedule:
+    - cron: "17 5,13,21 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   deploy:
@@ -12,7 +18,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - id: auth
       uses: google-github-actions/auth@v2
@@ -34,6 +40,14 @@ jobs:
         cache: npm
         cache-dependency-path: frontend/package-lock.json
 
+    - id: refresh
+      name: Refresh and archive public market data
+      working-directory: frontend
+      continue-on-error: ${{ github.event_name == 'push' }}
+      env:
+        TRADYR_API_KEY: ${{ secrets.TRADYR_API_KEY }}
+      run: npm run data:refresh
+
     - name: Test frontend
       working-directory: frontend
       run: |
@@ -47,3 +61,17 @@ jobs:
       run: |
         set -x
         make deploy-gha
+
+    - name: Notify IndexNow
+      continue-on-error: true
+      working-directory: frontend
+      run: npm run indexnow:submit
+
+    - name: Commit the published release and snapshot
+      if: steps.refresh.outcome == 'success'
+      run: |
+        git config user.name "Fantasy Trade Target Data"
+        git config user.email "data@fantasytradetarget.com"
+        git add frontend/data/public-release.json data/snapshots
+        git diff --cached --quiet || git commit -m "data: publish ${GITHUB_RUN_ID}"
+        git push

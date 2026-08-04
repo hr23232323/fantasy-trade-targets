@@ -1,0 +1,19 @@
+# Fantasy Trade Target
+
+Fantasy Trade Target publishes free, deterministic fantasy football trade tools and attributed player-market research.
+
+## Primary resources
+
+- https://www.fantasytradetarget.com/players — player values, history, usage, and downloadable data
+- https://www.fantasytradetarget.com/dynasty-rankings — current dynasty market rankings
+- https://www.fantasytradetarget.com/dynasty-trade-calculator — deterministic dynasty calculator
+- https://www.fantasytradetarget.com/methodology — calculator methodology
+- https://www.fantasytradetarget.com/data-sources — sources, rights, and update cadence
+- https://www.fantasytradetarget.com/editorial-policy — fact, calculation, and interpretation policy
+
+## Data notes
+
+- Current public market values and player profiles are powered by Tradyr with attribution.
+- Player photos are licensed Wikimedia Commons images with attribution on each page.
+- Calculator verdicts are deterministic and do not use an AI model.
+- The packaged public release is archived in FTT-owned market snapshots; league-specific advice and accepted-trade distributions are not yet included in player-page facts.

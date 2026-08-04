@@ -1,16 +1,16 @@
-import type { Metadata } from "next";
 import PageHero from "../components/PageHero";
+import { buildPageMetadata } from "../lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Trade Calculator Methodology — How Values Are Adjusted",
+export const metadata = buildPageMetadata({
+  title: "Trade Calculator Methodology",
   description: "See exactly how Fantasy Trade Target calculates raw value, roster cost, package-adjusted value, and trade verdict bands.",
-  alternates: { canonical: "/methodology" },
-};
+  path: "/methodology",
+});
 
 export default function MethodologyPage() {
   return (
     <>
-      <PageHero eyebrow="Transparent methodology" title="The calculator" accent="shows its work." description="No generated explanation and no mystery multiplier. These are the exact deterministic rules behind every V1 result." primaryHref="#formula" primaryLabel="See the formula" />
+      <PageHero eyebrow="Methodology // 2026.08.1" title="The calculator" accent="shows its work." description="No generated explanation and no mystery multiplier. These are the exact deterministic rules behind every current result." primaryHref="#formula" primaryLabel="See the formula" />
       <section id="formula" className="page-wrap grid gap-10 py-8 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
           <span className="eyebrow">01 // Base values</span>
@@ -46,7 +46,7 @@ export default function MethodologyPage() {
         </div>
       </section>
       <section className="page-wrap border-t border-[#171c19] py-14">
-        <div className="max-w-3xl"><span className="eyebrow">Known limits</span><h2 className="section-title mt-6">What V1 does not pretend to know.</h2><p className="mt-6 text-base leading-8 text-[#59605c]">The verdict does not yet model your exact scoring, starting lineup, standings, player exposure, injury tolerance, or another manager’s incentives. It is a transparent market baseline. League-aware Sleeper analysis is the next major product layer, and it will be labeled separately from the generic market calculation.</p></div>
+        <div className="max-w-3xl"><span className="eyebrow">Known limits</span><h2 className="section-title mt-6">What the model does not pretend to know.</h2><p className="mt-6 text-base leading-8 text-[#59605c]">The verdict does not yet model your exact scoring, starting lineup, standings, player exposure, injury tolerance, or another manager’s incentives. It is a transparent market baseline. League-aware Sleeper analysis is the next major product layer, and it will be labeled separately from the generic market calculation.</p></div>
       </section>
     </>
   );

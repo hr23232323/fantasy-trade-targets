@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+import { buildPageMetadata } from "../lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = buildPageMetadata({
   title: "Terms of Service",
   description: "Terms of service for Fantasy Trade Target.",
-  alternates: { canonical: "/terms-of-service" },
-};
+  path: "/terms-of-service",
+});
 
 const sections = [
   ["Use of the site", "Fantasy Trade Target provides informational fantasy sports tools. You may use the public site for lawful personal or commercial fantasy-football research, subject to these terms and the rights of third-party data providers."],

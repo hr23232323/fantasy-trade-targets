@@ -17,6 +17,7 @@ import {
   evaluateTrade,
   findBalancingAssets,
 } from "../lib/trade-engine.mjs";
+import { fetchClientMarket } from "../lib/client-market";
 import type {
   MarketAsset,
   MarketFormat,
@@ -66,7 +67,7 @@ export default function TradeCalculator({
 
   useEffect(() => {
     if (!settingsHydrated) return;
-    const controller = new AbortController();
+    let active = true;
     const loadMarket = async () => {
       setLoading(true);
       setError("");
@@ -77,11 +78,11 @@ export default function TradeCalculator({
           tep: String(tep),
           numTeams: String(numTeams),
         });
-        const response = await fetch(`/api/market?${params}`, {
-          signal: controller.signal,
-        });
-        if (!response.ok) throw new Error("Market data is unavailable");
-        const payload: MarketPayload = await response.json();
+        const payload = await fetchClientMarket(
+          `/api/market?${params}`,
+          reloadKey > 0,
+        );
+        if (!active) return;
         setMarket(payload);
         setSideA((current) =>
           current
@@ -94,16 +95,18 @@ export default function TradeCalculator({
             .filter((asset): asset is MarketAsset => Boolean(asset)),
         );
       } catch (loadError) {
-        if ((loadError as Error).name !== "AbortError") {
+        if (active) {
           setError("The market feed took a timeout. Give it one quick retry.");
         }
       } finally {
-        if (!controller.signal.aborted) setLoading(false);
+        if (active) setLoading(false);
       }
     };
 
     loadMarket();
-    return () => controller.abort();
+    return () => {
+      active = false;
+    };
   }, [format, numQbs, tep, numTeams, reloadKey, settingsHydrated]);
 
   useEffect(() => {

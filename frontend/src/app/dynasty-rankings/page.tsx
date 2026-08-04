@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
 import FaqBlock from "../components/FaqBlock";
-import MarketBoard from "../components/MarketBoard";
 import PageHero from "../components/PageHero";
+import ServerRankings from "../components/ServerRankings";
+import { buildPageMetadata } from "../lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Dynasty Rankings — Updated Player & Rookie Pick Values",
+export const metadata = buildPageMetadata({
+  title: "Dynasty Rankings: Players & Rookie Picks",
   description:
     "Free, updated dynasty rankings for quarterbacks, running backs, wide receivers, tight ends, and rookie picks with trade market scores.",
-  alternates: { canonical: "/dynasty-rankings" },
-};
+  path: "/dynasty-rankings",
+});
 
 const faqs = [
   {
@@ -40,7 +40,7 @@ export default function DynastyRankingsPage() {
         primaryLabel="Open rankings"
       />
       <div id="rankings" className="page-wrap scroll-mt-8">
-        <MarketBoard heading="Overall dynasty rankings" description="Search the complete Superflex market or filter down to a single position, age band, team, or rookie pick." />
+        <ServerRankings />
       </div>
       <FaqBlock items={faqs} title="About the rankings." />
     </>

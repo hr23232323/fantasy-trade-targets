@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
-import Script from "next/script";
 import "./globals.css";
+import JsonLd from "./components/JsonLd";
 import { CSPostHogProvider } from "./components/PosthogProvider";
 import SiteHeader from "./components/SiteHeader";
 import Footer from "./components/Footer";
@@ -66,13 +66,32 @@ export const viewport: Viewport = {
   themeColor: "#171c19",
 };
 
-const websiteSchema = {
+const siteSchema = {
   "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "Fantasy Trade Target",
-  url: "https://www.fantasytradetarget.com",
-  description:
-    "Free fantasy football trade calculators, dynasty values, and rankings.",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.fantasytradetarget.com/#organization",
+      name: "Fantasy Trade Target Research",
+      alternateName: "Fantasy Trade Target",
+      url: "https://www.fantasytradetarget.com",
+      image: "https://www.fantasytradetarget.com/og-image.png",
+      logo: "https://www.fantasytradetarget.com/og-image.png",
+      description:
+        "Independent fantasy football market research, player values, rankings, and deterministic trade tools.",
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.fantasytradetarget.com/#website",
+      name: "Fantasy Trade Target",
+      url: "https://www.fantasytradetarget.com",
+      publisher: {
+        "@id": "https://www.fantasytradetarget.com/#organization",
+      },
+      description:
+        "Free fantasy football trade calculators, dynasty values, player research, and rankings.",
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -81,11 +100,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
-        <Script
-          id="website-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-        />
+        <JsonLd data={siteSchema} />
         <CSPostHogProvider>
           <div className="site-shell">
             <SiteHeader />

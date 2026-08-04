@@ -1,20 +1,20 @@
 "use client";
-import React, { ReactNode, useEffect, useState } from "react";
-import posthog from "posthog-js";
-import { PostHogProvider } from "posthog-js/react";
-export const dynamic = "force-dynamic"; // Tell NextJS to make this dynamic
+import { type ReactNode, useEffect } from "react";
 
 interface CSPostHogProviderProps {
   children: ReactNode;
 }
 
 export function CSPostHogProvider({ children }: CSPostHogProviderProps) {
-  const [isPosthogInitialized, setIsPosthogInitialized] = useState(false);
-
   useEffect(() => {
+    let active = true;
+
     const initializePostHog = async () => {
       try {
-        const response = await fetch("/api/posthog-config");
+        const response = await fetch("/api/posthog-config", {
+          cache: "no-store",
+        });
+        if (!response.ok) return;
         const config = await response.json();
 
         if (
@@ -24,25 +24,25 @@ export function CSPostHogProvider({ children }: CSPostHogProviderProps) {
           config.POSTHOG_HOST &&
           config.POSTHOG_HOST !== "NOT SET"
         ) {
+          const { default: posthog } = await import("posthog-js");
+          if (!active) return;
           posthog.init(config.POSTHOG_KEY, {
             api_host: config.POSTHOG_HOST,
-            person_profiles: "always",
+            person_profiles: "identified_only",
           });
-          setIsPosthogInitialized(true);
         }
       } catch (error) {
-        console.error("Error initializing PostHog:", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("Error initializing PostHog:", error);
+        }
       }
     };
 
     initializePostHog();
+    return () => {
+      active = false;
+    };
   }, []);
 
-  // Always render children immediately to avoid hydration errors
-  if (isPosthogInitialized) {
-    return <PostHogProvider client={posthog}>{children}</PostHogProvider>;
-  }
-
-  // Render children without PostHog if not initialized yet
   return <>{children}</>;
 }

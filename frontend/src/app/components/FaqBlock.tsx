@@ -1,4 +1,4 @@
-import Script from "next/script";
+import JsonLd from "./JsonLd";
 
 export type FaqItem = {
   question: string;
@@ -27,11 +27,7 @@ export default function FaqBlock({
 
   return (
     <section className="page-wrap py-20">
-      <Script
-        id={`faq-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
+      <JsonLd data={schema} />
       <div className="grid gap-10 lg:grid-cols-[0.65fr_1.35fr]">
         <div>
           <span className="eyebrow">FAQ // straight answers</span>

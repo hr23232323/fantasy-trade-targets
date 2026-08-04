@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
 import FaqBlock from "../components/FaqBlock";
-import MarketBoard from "../components/MarketBoard";
+import MarketBoard from "../components/ServerMarketBoard";
 import PageHero from "../components/PageHero";
+import { buildPageMetadata } from "../lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Fantasy Football Trade Value Chart — Updated Daily",
+export const metadata = buildPageMetadata({
+  title: "Fantasy Football Trade Value Chart",
   description:
     "Free fantasy football trade value chart with daily current-season player values, position filters, search, and direct trade analyzer links.",
-  alternates: { canonical: "/fantasy-football-trade-value-chart" },
-};
+  path: "/fantasy-football-trade-value-chart",
+});
 
 const faqs = [
   {

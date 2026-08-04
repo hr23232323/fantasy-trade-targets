@@ -7,9 +7,10 @@ import { FiMenu, FiX } from "react-icons/fi";
 
 const links = [
   { href: "/dynasty-trade-calculator", label: "Calculator" },
+  { href: "/players", label: "Players" },
   { href: "/dynasty-rankings", label: "Rankings" },
   { href: "/dynasty-trade-value-chart", label: "Value chart" },
-  { href: "/create-meme", label: "Memes" },
+  { href: "/fantasy-trade-calculator", label: "Redraft" },
 ];
 
 export default function SiteHeader() {
@@ -46,7 +47,9 @@ export default function SiteHeader() {
 
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary navigation">
             {links.map((link) => {
-              const active = pathname === link.href;
+              const active =
+                pathname === link.href ||
+                (link.href === "/players" && pathname.startsWith("/players/"));
               return (
                 <Link
                   key={link.href}

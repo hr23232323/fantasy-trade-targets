@@ -1,15 +1,15 @@
-import type { Metadata } from "next";
+import { buildPageMetadata } from "../lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = buildPageMetadata({
   title: "Privacy Policy",
   description: "Privacy policy for Fantasy Trade Target.",
-  alternates: { canonical: "/privacy-policy" },
-};
+  path: "/privacy-policy",
+});
 
 const sections = [
   ["What we collect", "V1 does not require an account and does not ask for your name or email. Standard server logs may contain technical request data such as IP address, browser type, requested URL, and timestamps. If analytics is enabled, it is used to understand aggregate product usage."],
   ["Trade data", "Trades you build are calculated in your browser. A shared trade is encoded in the URL you choose to copy. Do not place private or sensitive information in a shared URL."],
-  ["Third-party services", "Market data is requested from Tradyr through our server-side cache. The meme page loads generated images from memegen.link. Hosting and infrastructure providers may process technical request data as needed to operate the site."],
+  ["Third-party services", "Published market releases are compiled from the licensed Tradyr public API before deployment. The meme page loads generated images from memegen.link. Hosting and infrastructure providers may process technical request data as needed to operate the site."],
   ["Cookies and analytics", "The application can run without marketing cookies. Product analytics is initialized only when it is explicitly enabled in the production environment. Future advertising or affiliate integrations will require this policy to be updated before launch."],
   ["Retention and choices", "Infrastructure logs are retained according to the hosting provider configuration. You may block optional analytics with browser privacy controls. Because V1 has no user accounts, there is no account profile to access or delete."],
   ["Contact", "Questions about this policy can be sent to privacy@fantasytradetarget.com."],

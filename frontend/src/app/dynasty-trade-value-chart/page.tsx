@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
 import FaqBlock from "../components/FaqBlock";
-import MarketBoard from "../components/MarketBoard";
+import MarketBoard from "../components/ServerMarketBoard";
 import PageHero from "../components/PageHero";
+import { buildPageMetadata } from "../lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Dynasty Trade Value Chart — Daily Player & Pick Values",
+export const metadata = buildPageMetadata({
+  title: "Dynasty Trade Value Chart",
   description:
     "Browse a free dynasty trade value chart with daily player market scores, exact rookie picks, age, position, and direct trade calculator links.",
-  alternates: { canonical: "/dynasty-trade-value-chart" },
-};
+  path: "/dynasty-trade-value-chart",
+});
 
 const faqs = [
   {
