@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BrandMark from "./BrandMark";
 
 const tools = [
   ["Dynasty calculator", "/dynasty-trade-calculator"],
@@ -25,9 +26,7 @@ export default function Footer() {
     <footer className="mt-24 border-t border-[#171c19] bg-[#171c19] text-white">
       <div className="page-wrap grid gap-12 py-14 md:grid-cols-[1.35fr_1fr_1fr]">
         <div>
-          <div className="mb-5 inline-grid h-12 w-12 place-items-center bg-[#dfff4f] font-mono text-sm font-black text-[#171c19]">
-            FTT
-          </div>
+          <BrandMark className="mb-5 h-12 w-12" title="Fantasy Trade Target" />
           <h2 className="max-w-md text-3xl font-black tracking-[-0.055em]">
             Better offers start with better reference points.
           </h2>

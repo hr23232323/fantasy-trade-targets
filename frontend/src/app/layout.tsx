@@ -30,6 +30,11 @@ export const metadata: Metadata = {
     "A free dynasty and redraft fantasy football trade calculator with daily market values, rookie picks, Superflex, and TE premium support.",
   applicationName: "Fantasy Trade Target",
   category: "sports",
+  appleWebApp: {
+    capable: true,
+    title: "Fantasy Trade Target",
+    statusBarStyle: "black-translucent",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -76,7 +81,12 @@ const siteSchema = {
       alternateName: "Fantasy Trade Target",
       url: "https://www.fantasytradetarget.com",
       image: "https://www.fantasytradetarget.com/og-image.png",
-      logo: "https://www.fantasytradetarget.com/og-image.png",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://www.fantasytradetarget.com/brand-mark-512.png",
+        width: 512,
+        height: 512,
+      },
       description:
         "Independent fantasy football market research, player values, rankings, and deterministic trade tools.",
     },

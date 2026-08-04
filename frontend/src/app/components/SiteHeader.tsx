@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
+import BrandMark from "./BrandMark";
 
 const links = [
   { href: "/dynasty-trade-calculator", label: "Calculator" },
@@ -32,9 +33,7 @@ export default function SiteHeader() {
             className="group flex items-center gap-3"
             onClick={() => setOpen(false)}
           >
-            <span className="grid h-10 w-10 place-items-center border border-[#171c19] bg-[#dfff4f] font-mono text-sm font-black shadow-[3px_3px_0_#171c19] transition-transform group-hover:-translate-y-0.5">
-              FTT
-            </span>
+            <BrandMark className="h-11 w-11 shrink-0 shadow-[3px_3px_0_#171c19] transition-transform group-hover:-translate-y-0.5" />
             <span className="leading-none">
               <span className="block text-[17px] font-black tracking-[-0.04em]">
                 FANTASY TRADE
