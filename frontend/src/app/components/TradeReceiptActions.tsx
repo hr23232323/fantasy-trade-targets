@@ -67,7 +67,7 @@ export default function TradeReceiptActions({
       <button
         type="button"
         onClick={share}
-        className="inline-flex items-center gap-2 border border-[#171c19] bg-[#dfff4f] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.07em] shadow-[4px_4px_0_#171c19] hover:bg-white"
+        className="inline-flex items-center gap-2 border border-[#171c19] bg-[#dfff4f] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#171c19] hover:bg-white"
       >
         {shared ? <FiCheck /> : <FiShare2 />}
         {shared ? "Shared" : "Share this trade"}
@@ -82,7 +82,7 @@ export default function TradeReceiptActions({
             verdict,
           })
         }
-        className="inline-flex items-center gap-2 border border-[#171c19] bg-white px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.07em] hover:bg-[#8bcfff]"
+        className="inline-flex items-center gap-2 border border-[#171c19] bg-white px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.07em] text-[#171c19] hover:bg-[#8bcfff]"
       >
         <FiEdit3 /> Edit in calculator
       </Link>

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import AnalyticsPageView from "../../components/AnalyticsPageView";
 import TradeReceiptActions from "../../components/TradeReceiptActions";
-import { getPlayerPage } from "../../lib/player-pages";
+import { getPlayerPage, getTradePlayerImage } from "../../lib/player-pages";
 import {
   getSharedTrade,
   tradeVerdictLabel,
@@ -138,14 +139,14 @@ export default async function TradePage({ searchParams }: TradePageProps) {
             assets={trade.sideA}
             adjusted={trade.evaluation.sideA.adjusted}
             rosterCost={trade.evaluation.sideA.rosterCost}
-            accent="bg-[#dfff4f]"
+            accent="acid"
           />
           <TradeSideCard
             label="Side B receives"
             assets={trade.sideB}
             adjusted={trade.evaluation.sideB.adjusted}
             rosterCost={trade.evaluation.sideB.rosterCost}
-            accent="bg-[#ff6b3d]"
+            accent="orange"
           />
         </div>
       </section>
@@ -217,36 +218,142 @@ function TradeSideCard({
   assets: MarketAsset[];
   adjusted: number;
   rosterCost: number;
-  accent: string;
+  accent: "acid" | "orange";
 }) {
+  const accentClass = accent === "acid" ? "bg-[#dfff4f]" : "bg-[#ff6b3d]";
+
   return (
     <article className="bg-[#f3f0e7] p-5 sm:p-8">
       <div className="flex items-center justify-between gap-4">
-        <span className={`mono-label border border-[#171c19] px-3 py-2 ${accent}`}>{label}</span>
+        <span className={`mono-label border border-[#171c19] px-3 py-2 ${accentClass}`}>{label}</span>
         <span className="font-mono text-3xl font-black">{Math.round(adjusted)}</span>
       </div>
-      <div className="mt-6 divide-y divide-[#bcb9ae] border-y border-[#bcb9ae]">
-        {assets.map((asset) => {
-          const content = (
-            <>
-              <span className={`grid h-10 w-10 shrink-0 place-items-center font-mono text-[9px] font-black ${positionColor(asset.position)}`}>{asset.position}</span>
-              <span className="min-w-0 flex-1">
-                <strong className="block truncate">{asset.name}</strong>
-                <span className="mt-1 block font-mono text-[9px] uppercase text-[#69706c]">{asset.team || asset.tier || "Draft capital"}</span>
-              </span>
-              <span className="font-mono text-lg font-black">{Math.round(asset.value)}</span>
-            </>
-          );
-          return asset.kind === "player" && getPlayerPage(asset.slug) ? (
-            <Link key={asset.id} href={`/players/${asset.slug}`} className="flex items-center gap-3 py-4 hover:bg-white">{content}</Link>
-          ) : (
-            <div key={asset.id} className="flex items-center gap-3 py-4">{content}</div>
-          );
-        })}
+      <div className="mt-6 grid gap-4">
+        {assets.map((asset) => (
+          <TradeAssetCard key={asset.id} asset={asset} accent={accent} />
+        ))}
       </div>
       {rosterCost > 0 && <p className="mt-4 text-xs text-[#69706c]">Package depth adjustment: −{Math.round(rosterCost)}</p>}
     </article>
   );
+}
+
+function TradeAssetCard({
+  asset,
+  accent,
+}: {
+  asset: MarketAsset;
+  accent: "acid" | "orange";
+}) {
+  const playerPage = asset.kind === "player" ? getPlayerPage(asset.slug) : undefined;
+  const playerImage = asset.kind === "player" ? getTradePlayerImage(asset.slug) : undefined;
+  const shadow = accent === "acid" ? "shadow-[4px_4px_0_#dfff4f]" : "shadow-[4px_4px_0_#ff6b3d]";
+  const valueBackground = accent === "acid" ? "bg-[#dfff4f]" : "bg-[#ffb29a]";
+
+  return (
+    <article className={`grid min-h-[132px] grid-cols-[96px_minmax(0,1fr)] overflow-hidden border border-[#171c19] bg-[#fffdf7] ${shadow} sm:grid-cols-[112px_minmax(0,1fr)]`}>
+      <div className="relative min-h-[132px] overflow-hidden border-r border-[#171c19] bg-[#dedbd1]">
+        {playerImage ? (
+          <Image
+            src={playerImage.src}
+            alt={playerImage.alt}
+            fill
+            className="object-cover object-top grayscale-[8%] transition-transform duration-300 hover:scale-[1.03]"
+            sizes="(max-width: 640px) 96px, 112px"
+          />
+        ) : (
+          <AssetArtwork asset={asset} />
+        )}
+        <span className={`absolute left-2 top-2 border border-[#171c19] px-2 py-1 font-mono text-[9px] font-black ${positionColor(asset.position)}`}>
+          {asset.position}
+        </span>
+      </div>
+
+      <div className="flex min-w-0 flex-col p-3 sm:p-4">
+        <div className="flex items-start justify-between gap-3">
+          <span className="font-mono text-[9px] font-black uppercase tracking-[0.08em] text-[#69706c]">
+            {asset.team || asset.tier || "Draft capital"}
+          </span>
+          <span className={`shrink-0 border border-[#171c19] px-2.5 py-1 font-mono text-sm font-black ${valueBackground}`}>
+            {Math.round(asset.value)}
+          </span>
+        </div>
+
+        {playerPage ? (
+          <Link
+            href={`/players/${asset.slug}`}
+            className="mt-2 text-xl font-black leading-[1.02] tracking-[-0.035em] underline decoration-transparent underline-offset-4 hover:decoration-[#171c19] sm:text-2xl"
+          >
+            {asset.name}
+          </Link>
+        ) : (
+          <strong className="mt-2 text-xl font-black leading-[1.02] tracking-[-0.035em] sm:text-2xl">
+            {asset.name}
+          </strong>
+        )}
+
+        <div className="mt-auto flex items-end justify-between gap-3 pt-3">
+          <span className="font-mono text-[9px] font-bold uppercase tracking-[0.06em] text-[#69706c]">
+            {asset.kind === "pick"
+              ? pickLabel(asset)
+              : asset.rank
+                ? `Market rank #${asset.rank}`
+                : "Player asset"}
+          </span>
+          {playerImage && (
+            <span className="max-w-[55%] truncate text-right font-mono text-[8px] uppercase text-[#69706c]">
+              Photo: {" "}
+              <a
+                href={playerImage.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-[#bcb9ae] underline-offset-2 hover:text-[#171c19]"
+              >
+                {playerImage.author}
+              </a>{" "}
+              · {" "}
+              <a
+                href={playerImage.licenseUrl}
+                target="_blank"
+                rel="license noopener noreferrer"
+                className="underline decoration-[#bcb9ae] underline-offset-2 hover:text-[#171c19]"
+              >
+                {playerImage.license}
+              </a>
+            </span>
+          )}
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function AssetArtwork({ asset }: { asset: MarketAsset }) {
+  const initials = asset.name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("");
+  const background = asset.kind === "pick" ? "bg-[#171c19] text-white" : positionColor(asset.position);
+
+  return (
+    <div className={`absolute inset-0 grid place-items-center ${background}`} aria-hidden="true">
+      <div className="absolute inset-3 border border-current opacity-25" />
+      <div className="absolute left-3 right-3 top-1/2 border-t border-current opacity-20" />
+      <span className="font-mono text-3xl font-black tracking-[-0.08em] sm:text-4xl">
+        {asset.kind === "pick" ? asset.year?.slice(-2) || "PK" : initials || asset.position}
+      </span>
+      <span className="absolute bottom-2 font-mono text-[8px] font-black uppercase tracking-[0.12em] opacity-65">
+        {asset.kind === "pick" ? "Draft pick" : asset.team || "NFL"}
+      </span>
+    </div>
+  );
+}
+
+function pickLabel(asset: MarketAsset) {
+  const round = asset.round ? `Round ${asset.round}` : "Future pick";
+  return asset.year ? `${asset.year} · ${round}` : round;
 }
 
 function Setting({ label, value }: { label: string; value: string }) {
