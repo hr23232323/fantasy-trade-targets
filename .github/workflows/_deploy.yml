@@ -1,0 +1,101 @@
+name: Reusable Cloud Run deploy
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: Git ref to deploy. Callers use main so queued deploys never roll production backward.
+        required: false
+        type: string
+        default: main
+    secrets:
+      GCLOUD_AUTH_SA_KEY:
+        required: true
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  deploy:
+    name: Test, build, and deploy Next.js
+    runs-on: ubuntu-latest
+    concurrency:
+      group: production-cloud-run
+      cancel-in-progress: true
+    env:
+      IMAGE: gcr.io/fantasy-trade-targets/frontend
+
+    steps:
+    - name: Checkout latest deployable ref
+      uses: actions/checkout@v6
+      with:
+        ref: ${{ inputs.ref }}
+
+    - name: Use Node.js 22
+      uses: actions/setup-node@v6
+      with:
+        node-version: 22
+        cache: npm
+        cache-dependency-path: frontend/package-lock.json
+
+    - name: Test frontend
+      working-directory: frontend
+      run: |
+        npm ci --prefer-offline --no-audit
+        npm run test
+        npm run typecheck
+
+    - id: auth
+      name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v3
+      with:
+        credentials_json: ${{ secrets.GCLOUD_AUTH_SA_KEY }}
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v3
+      with:
+        project_id: fantasy-trade-targets
+
+    - name: Authenticate Docker to GCR
+      run: gcloud auth configure-docker gcr.io --quiet
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v4
+
+    - id: source
+      name: Resolve deployed commit
+      run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+    - id: image
+      name: Build and push production image
+      uses: docker/build-push-action@v7
+      with:
+        context: ./frontend
+        file: ./frontend/prod.Dockerfile
+        platforms: linux/amd64
+        push: true
+        tags: |
+          ${{ env.IMAGE }}:${{ steps.source.outputs.sha }}
+          ${{ env.IMAGE }}:latest
+        cache-from: type=gha,scope=frontend-production
+        cache-to: type=gha,mode=max,scope=frontend-production,ignore-error=true
+
+    - name: Deploy immutable image to Cloud Run
+      run: |
+        gcloud run deploy frontend \
+          --image "${IMAGE}@${{ steps.image.outputs.digest }}" \
+          --project fantasy-trade-targets \
+          --platform managed \
+          --region us-central1 \
+          --allow-unauthenticated \
+          --port 3000 \
+          --quiet
+
+    - name: Verify production
+      run: curl --fail --silent --show-error --retry 5 --retry-delay 2 https://www.fantasytradetarget.com/ > /dev/null
+
+    - name: Notify IndexNow
+      working-directory: frontend
+      continue-on-error: true
+      run: npm run indexnow:submit

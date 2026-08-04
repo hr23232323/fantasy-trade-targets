@@ -44,7 +44,9 @@ This is the living inventory for every dataset we use or may add. A feed does no
   releases used by calculators, server-rendered player pages, histories, and
   recurring research.
 - **Execution model:** a scheduled batch job in this repository. It is not an
-  always-running application backend and does not accept user traffic.
+  always-running application backend and does not accept user traffic. It is
+  operationally separate from push-triggered application deploys: validated
+  data changes invoke the shared deploy workflow only after publication.
 - **Current store:** validated current release in `frontend/data`, a compact
   first-party player observation index at `data/player-snapshot-history.json`,
   plus compressed, append-only market snapshots in `data/snapshots`. Move the

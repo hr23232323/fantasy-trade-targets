@@ -1,0 +1,94 @@
+name: Refresh and publish data
+
+on:
+  schedule:
+    - cron: "17 5,13,21 * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+concurrency:
+  group: scheduled-data-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Refresh and commit validated releases
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.publish.outputs.changed }}
+      market_outcome: ${{ steps.market_refresh.outcome }}
+      team_outcome: ${{ steps.team_refresh.outcome }}
+
+    steps:
+    - name: Checkout current main
+      uses: actions/checkout@v6
+      with:
+        ref: main
+        fetch-depth: 0
+
+    - name: Use Node.js 22
+      uses: actions/setup-node@v6
+      with:
+        node-version: 22
+
+    - id: market_refresh
+      name: Refresh and archive public market data
+      working-directory: frontend
+      continue-on-error: true
+      env:
+        TRADYR_API_KEY: ${{ secrets.TRADYR_API_KEY }}
+      run: npm run data:refresh
+
+    - id: team_refresh
+      name: Refresh NFL team and schedule data
+      working-directory: frontend
+      continue-on-error: true
+      run: npm run data:teams
+
+    - id: publish
+      name: Commit validated data changes
+      if: always()
+      shell: bash
+      run: |
+        git config user.name "Fantasy Trade Target Data"
+        git config user.email "data@fantasytradetarget.com"
+        git add frontend/data/public-release.json frontend/data/team-release.json data/player-snapshot-history.json data/snapshots
+
+        if git diff --cached --quiet; then
+          echo "changed=false" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+
+        git commit -m "data: publish ${GITHUB_RUN_ID} [skip ci]"
+        git fetch origin main
+        git rebase origin/main
+        git push origin HEAD:main
+        echo "changed=true" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    name: Deploy the published release
+    needs: refresh
+    if: always() && needs.refresh.outputs.changed == 'true'
+    uses: ./.github/workflows/_deploy.yml
+    with:
+      ref: main
+    secrets: inherit
+
+  report:
+    name: Report refresh or deployment failures
+    needs: [refresh, deploy]
+    if: >-
+      always() &&
+      (needs.refresh.result == 'failure' ||
+       needs.refresh.outputs.market_outcome != 'success' ||
+       needs.refresh.outputs.team_outcome != 'success' ||
+       (needs.refresh.outputs.changed == 'true' && needs.deploy.result != 'success'))
+    runs-on: ubuntu-latest
+    steps:
+    - name: Fail the scheduled run
+      run: |
+        echo "One or more data refresh or deployment steps failed; validated prior releases remain available."
+        exit 1

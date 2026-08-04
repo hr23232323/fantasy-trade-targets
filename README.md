@@ -55,7 +55,11 @@ npm run build
 
 ## Production
 
-Pushes to `main` test and deploy the frontend image to the existing Google Cloud Run service through GitHub Actions. Manual deployment uses:
+Pushes to `main` take the fast path: tests, one cached production image build,
+and deployment to the existing Google Cloud Run service. Upstream market and
+NFL data refreshes run separately on the three-times-daily schedule, commit a
+validated release, and invoke the same reusable deploy only when data changed.
+Manual deployment uses:
 
 ```bash
 make deploy
@@ -76,8 +80,9 @@ append-only market snapshot under `data/snapshots/`. Server components and API
 routes read the same packaged release, so builds and requests do not depend on a
 live upstream response.
 
-CI refreshes and deploys the release three times daily. The checked-in snapshot
-archive starts the proprietary history immediately, while
+The scheduled data publisher refreshes and deploys the release three times
+daily without blocking ordinary code pushes. The checked-in snapshot archive
+starts the proprietary history immediately, while
 `data/player-snapshot-history.json` keeps the compact per-player observation
 series packaged into each public release. The raw archive can move to object
 storage without changing the public release contract as volume grows.
