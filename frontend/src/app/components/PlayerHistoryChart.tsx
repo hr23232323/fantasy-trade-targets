@@ -12,30 +12,7 @@ export default function PlayerHistoryChart({
 }) {
   const points = normalizeHistory(series.points);
 
-  if (!series.chartable) {
-    const first = points[0];
-    return (
-      <div className="grid min-h-64 gap-6 border border-[#171c19] bg-white/45 p-6 sm:grid-cols-[0.65fr_1.35fr] sm:items-center sm:p-8">
-        <div>
-          <span className="mono-label text-[#69706c]">First verified FTT observation</span>
-          <strong className="mt-3 block text-6xl font-black tracking-[-0.06em] text-[#171c19]">
-            {first?.value ?? "—"}
-          </strong>
-          {first && (
-            <time className="mt-2 block font-mono text-[10px] font-bold uppercase tracking-[0.07em] text-[#69706c]" dateTime={first.parsedDate.toISOString()}>
-              Captured {formatFullDate(first.parsedDate, series.source)}
-            </time>
-          )}
-        </div>
-        <div className="border-t border-[#9d9a91] pt-5 sm:border-l sm:border-t-0 sm:pl-7 sm:pt-0">
-          <h3 className="text-2xl font-black tracking-[-0.04em]">The record starts here.</h3>
-          <p className="mt-3 text-sm leading-7 text-[#69706c]">
-            Fantasy Trade Target has begun its own timestamped market record for {name}. New daily observations will populate the trend chart automatically; earlier values are never estimated or backfilled.
-          </p>
-        </div>
-      </div>
-    );
-  }
+  if (!series.chartable) return null;
 
   const width = 760;
   const height = 280;
@@ -117,10 +94,7 @@ export default function PlayerHistoryChart({
         </text>
       </svg>
       <figcaption className="mt-3 text-xs leading-5 text-[#69706c]">
-        {series.source === "tradyr"
-          ? "Historical composite observations supplied by Tradyr."
-          : "Timestamped composite observations recorded by Fantasy Trade Target."}{" "}
-        The chart is a market record, not a projection of future performance.
+        Historical composite market observations. This chart describes market movement; it is not a projection of future performance.
       </figcaption>
       <details className="mt-5 border border-[#9d9a91] bg-white/35">
         <summary className="cursor-pointer px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">

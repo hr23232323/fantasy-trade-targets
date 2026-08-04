@@ -17,7 +17,9 @@ This is the living inventory for every dataset we use or may add. A feed does no
 - **Public fields:** name, slug, position, team, age, composite, rank, position rank, confidence, Sleeper ID, pick metadata, upstream composite history when supplied, derived season/usage metrics, consistency, and similar-market players.
 - **History boundary:** the documented player endpoints may return an empty `history` array and `deltas: null` for an otherwise valid canonical profile. Publication must preserve that distinction instead of treating absent upstream observations as zeroes or inferred history.
 - **Do not expose:** upstream source-specific KTC or FantasyCalc payload fields. V1 republishes only the licensed Tradyr composite.
-- **Attribution:** visible “Powered by Tradyr” link on every market-driven surface.
+- **Attribution:** the dedicated data-sources page names and links the provider;
+  consumer surfaces link to sources and methodology without presenting the
+  upstream provider as the product brand.
 
 ### Wikimedia Commons — player images
 

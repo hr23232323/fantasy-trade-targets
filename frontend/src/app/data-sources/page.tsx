@@ -21,10 +21,10 @@ export default function DataSourcesPage() {
       </section>
       <section className="page-wrap py-8">
         <div className="border border-[#171c19] bg-[#171c19] p-7 text-white sm:p-10">
-          <span className="mono-label text-[#dfff4f]">First-party record // three captures daily</span>
+          <span className="mono-label text-[#dfff4f]">Historical market data // three captures daily</span>
           <div className="mt-8 grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
             <h2 className="text-4xl font-black tracking-[-0.055em]">FTT market snapshots.</h2>
-            <p className="text-sm leading-7 text-white/70">Every validated release records current player values and ranks in a separate Fantasy Trade Target series. When an upstream profile has no earlier observations, the player page begins with the first verified FTT capture and grows from there—without estimated backfill.</p>
+            <p className="text-sm leading-7 text-white/70">Player values and ranks are captured throughout the day, versioned, and retained for market movement, downloadable records, and long-term research.</p>
           </div>
         </div>
       </section>

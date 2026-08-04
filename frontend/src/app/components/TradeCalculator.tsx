@@ -284,12 +284,10 @@ export default function TradeCalculator({
             <>
               {market.meta.assetCount} assets · Updated {formatDate(market.meta.generatedAt)} ·{" "}
               <a
-                href={market.meta.sourceUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/data-sources"
                 className="text-[#dfff4f] underline decoration-white/30 underline-offset-4 hover:text-white"
               >
-                Powered by Tradyr
+                Data & methodology
               </a>
             </>
           ) : (

@@ -132,10 +132,10 @@ export default async function PlayerPage({ params }: PageProps) {
               Build an offer for {firstName(profile.name)} →
             </Link>
             <Link
-              href="#history"
+              href={historySeries.chartable ? "#history" : "#market-context"}
               className="border border-[#171c19] bg-white/70 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em]"
             >
-              See market record ↓
+              {historySeries.chartable ? "See market history ↓" : "Compare league formats ↓"}
             </Link>
           </div>
         </div>
@@ -164,7 +164,7 @@ export default async function PlayerPage({ params }: PageProps) {
         </figure>
       </section>
 
-      <section className="page-wrap py-8" aria-labelledby="market-context-title">
+      <section id="market-context" className="page-wrap scroll-mt-8 py-8" aria-labelledby="market-context-title">
         <div className="mb-7 grid gap-4 border-t border-[#171c19] pt-6 md:grid-cols-[1fr_0.75fr] md:items-end">
           <div>
             <span className="eyebrow">Current price // four formats</span>
@@ -182,33 +182,35 @@ export default async function PlayerPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section id="history" className="page-wrap scroll-mt-8 py-16">
-        <div className="paper-card p-5 sm:p-8">
-          <div className="grid gap-5 border-b border-[#171c19] pb-7 lg:grid-cols-[1fr_auto] lg:items-end">
-            <div>
-              <span className="mono-label text-[#69706c]">Recorded market observations</span>
-              <h2 className="mt-2 text-4xl font-black tracking-[-0.055em] sm:text-5xl">
-                {profile.name} market value record
-              </h2>
+      {historySeries.chartable && (
+        <section id="history" className="page-wrap scroll-mt-8 py-16">
+          <div className="paper-card p-5 sm:p-8">
+            <div className="grid gap-5 border-b border-[#171c19] pb-7 lg:grid-cols-[1fr_auto] lg:items-end">
+              <div>
+                <span className="mono-label text-[#69706c]">Market history</span>
+                <h2 className="mt-2 text-4xl font-black tracking-[-0.055em] sm:text-5xl">
+                  {profile.name} value over time
+                </h2>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <MovementCard movement={movement30} />
+                <MovementCard movement={movement90} />
+              </div>
             </div>
-            <div className="flex flex-wrap gap-2">
-              <MovementCard movement={movement30} />
-              <MovementCard movement={movement90} />
+            <div className="pt-8">
+              <PlayerHistoryChart series={historySeries} name={profile.name} />
+            </div>
+            <div className="mt-6 flex flex-wrap gap-3 border-t border-[#c9c5ba] pt-5">
+              <a href={`/players/${profile.slug}/history.csv`} download className="border border-[#171c19] bg-[#dfff4f] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">
+                Download history CSV ↓
+              </a>
+              <a href={`/players/${profile.slug}/data.json`} download className="border border-[#171c19] bg-white px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">
+                Download player JSON ↓
+              </a>
             </div>
           </div>
-          <div className="pt-8">
-            <PlayerHistoryChart series={historySeries} name={profile.name} />
-          </div>
-          <div className="mt-6 flex flex-wrap gap-3 border-t border-[#c9c5ba] pt-5">
-            <a href={`/players/${profile.slug}/history.csv`} download className="border border-[#171c19] bg-[#dfff4f] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">
-              Download history CSV ↓
-            </a>
-            <a href={`/players/${profile.slug}/data.json`} download className="border border-[#171c19] bg-white px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">
-              Download player JSON ↓
-            </a>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section className="page-wrap grid gap-8 py-8 lg:grid-cols-2">
         <MetricPanel
@@ -221,7 +223,7 @@ export default async function PlayerPage({ params }: PageProps) {
           eyebrow={`Usage // ${profile.advanced?.season ?? "latest season"}`}
           title="How the role created it."
           cards={usage}
-          footer="Advanced usage is sourced from nflverse through the attributed Tradyr profile feed. Missing metrics remain visibly unavailable."
+          footer="Advanced usage describes opportunity and role. Missing metrics remain visibly unavailable."
         />
       </section>
 
@@ -278,8 +280,8 @@ export default async function PlayerPage({ params }: PageProps) {
       <aside className="page-wrap border-t border-[#9d9a91] pt-5 text-[11px] leading-6 text-[#69706c]">
         <p className="max-w-5xl">
           <strong className="text-[#171c19]">Data note:</strong>{" "}
-          Market and profile data updated {Number.isNaN(updated.getTime()) ? "daily" : updated.toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short", timeZone: "America/New_York" })} ET and powered by{" "}
-          <a href={profile.profileUrl || "https://tradyr.app"} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Tradyr {meta.version}</a>. Fantasy Trade Target applies its own published{" "}
+          Market and profile data updated {Number.isNaN(updated.getTime()) ? "daily" : updated.toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short", timeZone: "America/New_York" })} ET. See{" "}
+          <Link href="/data-sources" className="underline underline-offset-2">sources, licensing, and freshness</Link>. Fantasy Trade Target applies its published{" "}
           <Link href="/methodology" className="underline underline-offset-2">calculator methodology</Link> in release <span className="font-mono">{meta.releaseId}</span>. Accepted-trade distributions and league-specific lineup evidence are not yet included.
         </p>
       </aside>

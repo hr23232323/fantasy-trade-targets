@@ -199,14 +199,12 @@ export default function MarketBoard({
               ? `Showing ${filtered.length} of ${market.meta.assetCount} assets`
               : `${filtered.length} matching assets`}
           </span>
-          <a
-            href="https://tradyr.app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/data-sources"
             className="text-[#dfff4f] hover:text-white"
           >
-            Powered by Tradyr ↗
-          </a>
+            Data & methodology →
+          </Link>
         </div>
       )}
     </section>

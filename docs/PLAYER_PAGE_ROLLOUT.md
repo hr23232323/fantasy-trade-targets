@@ -26,8 +26,8 @@ Every player page must include in initial HTML:
 - a direct answer below the heading;
 - current Superflex, 1QB, TE-premium, and redraft context;
 - overall and positional rank;
-- a recorded upstream value series when supplied, otherwise an explicitly dated
-  first-party FTT observation that grows automatically with scheduled snapshots;
+- a market-history module only when a meaningful verified series is available;
+- first-party FTT observations retained silently until they form a useful series;
 - computed movement only after the selected series spans enough real observation
   dates;
 - an accessible observation table plus CSV and JSON downloads;

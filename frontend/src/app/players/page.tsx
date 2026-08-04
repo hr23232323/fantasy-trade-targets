@@ -104,7 +104,7 @@ export default async function PlayersPage() {
           </article>
           <article className="bg-[#8bcfff] p-7">
             <span className="mono-label">Timestamped evidence</span>
-            <h2 className="mt-8 text-2xl font-black tracking-[-0.04em]">Every page shows its verified record—whether that is a full series or the first FTT observation.</h2>
+            <h2 className="mt-8 text-2xl font-black tracking-[-0.04em]">Market movement appears only when supported by a meaningful series of verified observations.</h2>
           </article>
           <article className="bg-[#ffb29a] p-7">
             <span className="mono-label">Honest boundary</span>
@@ -112,7 +112,7 @@ export default async function PlayersPage() {
           </article>
         </div>
         <p className="mt-6 text-[11px] leading-5 text-[#69706c]">
-          Market values updated daily and powered by <a href="https://tradyr.app" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Tradyr</a>. Player-page analysis and presentation are by Fantasy Trade Target Research.
+          Market values update daily. See <Link href="/data-sources" className="underline underline-offset-2">sources, licensing, and freshness</Link>. Player-page analysis and presentation are by Fantasy Trade Target Research.
         </p>
       </section>
     </>
