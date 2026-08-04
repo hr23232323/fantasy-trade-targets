@@ -20,6 +20,8 @@ export default async function PlayersPage() {
       market: market.assets.find((asset) => asset.slug === page.slug),
     }))
     .filter((entry) => entry.market);
+  const featuredPlayers = players.slice(0, 6);
+  const indexedPlayers = players.slice(6);
 
   return (
     <>
@@ -60,7 +62,7 @@ export default async function PlayersPage() {
       </section>
 
       <section className="page-wrap grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {players.map(({ page, market: player }, index) => (
+        {featuredPlayers.map(({ page, market: player }, index) => (
           <Link
             key={page.slug}
             href={`/players/${page.slug}`}
@@ -94,6 +96,36 @@ export default async function PlayersPage() {
             </div>
           </Link>
         ))}
+      </section>
+
+      <section className="page-wrap py-16">
+        <div className="mb-7 grid gap-4 border-t border-[#171c19] pt-6 md:grid-cols-[1fr_auto] md:items-end">
+          <div>
+            <span className="eyebrow">Complete index // 50 profiles</span>
+            <h2 className="section-title mt-5">More players. Same depth.</h2>
+          </div>
+          <p className="max-w-lg text-sm leading-7 text-[#69706c]">
+            Every player below has the same four-format pricing, market history, production, usage, comparable-player, and pick-equivalent detail.
+          </p>
+        </div>
+        <div className="grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2 lg:grid-cols-3">
+          {indexedPlayers.map(({ page, market: player }) => (
+            <Link
+              key={page.slug}
+              href={`/players/${page.slug}`}
+              className="group flex min-h-40 flex-col bg-[#f3f0e7] p-5 hover:bg-[#dfff4f]"
+            >
+              <div className="flex items-center justify-between gap-4 font-mono text-[10px] font-black uppercase tracking-[0.06em] text-[#69706c]">
+                <span>{player!.position}{player!.posRank ?? "—"} · #{player!.rank ?? "—"}</span>
+                <span>{Math.round(player!.value)}</span>
+              </div>
+              <h3 className="mt-7 text-2xl font-black tracking-[-0.045em]">{player!.name}</h3>
+              <span className="mt-auto pt-5 font-mono text-[10px] font-black uppercase tracking-[0.07em] group-hover:text-[#a23616]">
+                Open player file →
+              </span>
+            </Link>
+          ))}
+        </div>
       </section>
 
       <section className="page-wrap py-20">

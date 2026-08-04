@@ -10,6 +10,7 @@ const teamCounts = [8, 10, 12, 14, 16];
 const capturedAt = new Date();
 const hasApiKey = Boolean(process.env.TRADYR_API_KEY);
 const requestIntervalMs = hasApiKey ? 75 : 1_100;
+const requestTimeoutMs = 15_000;
 let nextRequestAt = 0;
 const releaseId = `ftt-${capturedAt
   .toISOString()
@@ -53,15 +54,27 @@ const pickRequests = quarterbackSettings.flatMap((numQbs) =>
 );
 const profileRequests = playerSlugs.map((slug) => ({
   key: slug,
-  url: `${API_BASE}/players/${encodeURIComponent(slug)}/full`,
+  url: `${API_BASE}/players/${encodeURIComponent(slug)}`,
   kind: "profile",
 }));
 
-const responses = await mapConcurrent(
-  [...playerRequests, ...pickRequests, ...profileRequests],
+const marketAndPickResponses = await mapConcurrent(
+  [...playerRequests, ...pickRequests],
   hasApiKey ? 8 : 4,
   async (request) => ({ ...request, payload: await fetchJson(request.url) }),
 );
+const profileResponses = await mapConcurrent(
+  profileRequests,
+  2,
+  async (request, index) => {
+    const payload = await fetchPlayerProfile(request.url);
+    console.log(
+      `Fetched player profile ${index + 1}/${profileRequests.length}: ${request.key}`,
+    );
+    return { ...request, payload };
+  },
+);
+const responses = [...marketAndPickResponses, ...profileResponses];
 
 const playerMarkets = Object.fromEntries(
   responses
@@ -73,10 +86,19 @@ const pickMarkets = Object.fromEntries(
     .filter((response) => response.kind === "picks")
     .map((response) => [response.key, response.payload]),
 );
-const playerProfiles = Object.fromEntries(
+const rawPlayerProfiles = Object.fromEntries(
   responses
     .filter((response) => response.kind === "profile")
     .map((response) => [response.key, response.payload]),
+);
+const currentPlayersBySlug = new Map(
+  playerMarkets["dynasty:2:0"].data.map((player) => [player.slug, player]),
+);
+const playerProfiles = Object.fromEntries(
+  Object.entries(rawPlayerProfiles).map(([slug, payload]) => [
+    slug,
+    normalizeProfileToMarket(payload, currentPlayersBySlug),
+  ]),
 );
 
 const [priorRelease, priorSnapshotHistory] = await Promise.all([
@@ -163,12 +185,98 @@ console.log(
   `Published ${releaseId}: ${Object.keys(playerMarkets).length} player markets, ${Object.keys(pickMarkets).length} pick markets, ${Object.keys(playerProfiles).length} player profiles.`,
 );
 
-async function fetchJson(url) {
-  const attempts = 4;
+async function fetchPlayerProfile(playerUrl) {
+  const detail = await fetchJson(playerUrl);
+  const stats = await fetchJson(`${playerUrl}/stats`);
+  const advanced = await fetchOptionalJson(`${playerUrl}/advanced`);
+  const bestball = await fetchOptionalJson(`${playerUrl}/bestball`);
+  const projection = await fetchOptionalJson(`${playerUrl}/projection`);
+  const advancedData = advanced?.data;
+
+  return {
+    data: {
+      ...detail.data,
+      stats: stats?.data?.stats ?? null,
+      career: stats?.data?.career ?? null,
+      advanced: advancedData?.found
+        ? {
+            season: advancedData.season,
+            ...advancedData.metrics,
+            last4: advancedData.last4,
+            totals: advancedData.totals,
+          }
+        : null,
+      bestball: bestball?.data
+        ? omitKeys(bestball.data, ["slug"])
+        : null,
+      projection: projection?.data?.projection ?? null,
+    },
+    meta: detail.meta,
+  };
+}
+
+function normalizeProfileToMarket(payload, currentPlayersBySlug) {
+  const current = currentPlayersBySlug.get(payload.data.slug);
+  if (!current) return payload;
+
+  return {
+    ...payload,
+    data: {
+      ...payload.data,
+      name: current.name,
+      position: current.position,
+      team: current.team,
+      age: current.age,
+      composite: current.composite,
+      confidence: current.confidence,
+      rank: current.rank,
+      posRank: current.posRank,
+      sources: current.sources,
+      sleeperId: current.sleeperId,
+      similar: (payload.data.similar ?? []).map((similar) => {
+        const matchingPlayer = currentPlayersBySlug.get(similar.slug);
+        return matchingPlayer
+          ? {
+              ...similar,
+              name: matchingPlayer.name,
+              position: matchingPlayer.position,
+              composite: matchingPlayer.composite,
+              rank: matchingPlayer.rank,
+            }
+          : similar;
+      }),
+    },
+  };
+}
+
+async function fetchOptionalJson(url, { attempts = 1 } = {}) {
+  try {
+    return await fetchJson(url, { attempts });
+  } catch {
+    return null;
+  }
+}
+
+async function fetchJson(url, { attempts = 4 } = {}) {
 
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
     await waitForRequestSlot();
-    const response = await fetch(url, { headers });
+    let response;
+    try {
+      response = await fetch(url, {
+        headers,
+        signal: AbortSignal.timeout(requestTimeoutMs),
+      });
+    } catch (error) {
+      if (attempt === attempts) {
+        throw new Error(
+          `Tradyr request timed out for ${url}`,
+          { cause: error },
+        );
+      }
+      await delay(750 * 2 ** (attempt - 1));
+      continue;
+    }
     if (response.ok) {
       const payload = await response.json();
       if (!payload || typeof payload !== "object" || !("data" in payload) || !("meta" in payload)) {
@@ -191,6 +299,12 @@ async function fetchJson(url) {
   }
 
   throw new Error(`Tradyr request failed for ${url}`);
+}
+
+function omitKeys(value, keys) {
+  return Object.fromEntries(
+    Object.entries(value).filter(([key]) => !keys.includes(key)),
+  );
 }
 
 function delay(milliseconds) {
@@ -216,18 +330,27 @@ function validateRelease({
   if (Object.keys(pickMarkets).length !== 10) {
     throw new Error("Release is missing pick market variants");
   }
+  if (Object.keys(playerProfiles).length !== playerSlugs.length) {
+    throw new Error(
+      `Release has ${Object.keys(playerProfiles).length} of ${playerSlugs.length} configured player profiles`,
+    );
+  }
   for (const [key, payload] of Object.entries(playerMarkets)) {
     const minimumPlayers = key.startsWith("redraft:") ? 150 : 300;
     if (!Array.isArray(payload.data) || payload.data.length < minimumPlayers) {
       throw new Error(`Player market ${key} is unexpectedly small`);
     }
   }
-  for (const [slug, payload] of Object.entries(playerProfiles)) {
+  for (const slug of playerSlugs) {
+    const payload = playerProfiles[slug];
     if (!payload.data || payload.data.slug !== slug) {
       throw new Error(`Player profile ${slug} failed validation`);
     }
     if (!Array.isArray(payload.data.history)) {
       throw new Error(`Player profile ${slug} has an invalid history field`);
+    }
+    if (!payload.data.stats?.derivedStats) {
+      throw new Error(`Player profile ${slug} is missing production stats`);
     }
     const observations = playerSnapshotHistory[slug];
     if (!Array.isArray(observations) || observations.length < 1) {
@@ -249,6 +372,15 @@ function validateRelease({
     const currentPlayer = playerMarkets["dynasty:2:0"].data.find(
       (player) => player.slug === slug,
     );
+    if (
+      !currentPlayer ||
+      payload.data.name !== currentPlayer.name ||
+      payload.data.position !== currentPlayer.position ||
+      payload.data.team !== currentPlayer.team ||
+      payload.data.composite !== currentPlayer.composite
+    ) {
+      throw new Error(`Player profile ${slug} does not match the current market`);
+    }
     if (
       latest.releaseId !== releaseId ||
       latest.value !== currentPlayer?.composite ||

@@ -31,13 +31,26 @@ test("public release contains every supported market variant", () => {
 test("every configured player page has a validated profile", () => {
   const currentMarket = release.playerMarkets["dynasty:2:0"].data;
 
+  assert.equal(playerPages.length, 50);
+  assert.equal(new Set(playerPages.map((page) => page.slug)).size, 50);
+  assert.equal(new Set(playerPages.map((page) => page.image.src)).size, 50);
+  assert.equal(Object.keys(release.playerProfiles).length, 50);
+
   for (const page of playerPages) {
     const profile = release.playerProfiles[page.slug];
     const currentPlayer = currentMarket.find((player) => player.slug === page.slug);
     assert.ok(profile, `${page.slug} profile exists`);
     assert.ok(currentPlayer, `${page.slug} exists in the current market`);
     assert.equal(profile.data.slug, page.slug);
+    assert.equal(profile.data.name, page.name);
+    assert.equal(profile.data.name, currentPlayer.name);
+    assert.equal(profile.data.position, currentPlayer.position);
+    assert.equal(profile.data.team, currentPlayer.team);
+    assert.equal(profile.data.composite, currentPlayer.composite);
     assert.ok(Array.isArray(profile.data.history));
+    assert.ok(Array.isArray(profile.data.similar));
+    assert.ok(profile.data.stats?.derivedStats);
+    assert.ok(Number.isFinite(Date.parse(profile.meta.generatedAt)));
     const snapshots = release.playerSnapshotHistory[page.slug];
     assert.ok(Array.isArray(snapshots), `${page.slug} snapshot history exists`);
     assert.ok(snapshots.length >= 1, `${page.slug} has an FTT observation`);
@@ -64,6 +77,11 @@ test("every configured player page has a validated profile", () => {
     );
     assert.ok(page.image.src.startsWith("https://upload.wikimedia.org/"));
     assert.ok(page.image.licenseUrl.startsWith("https://creativecommons.org/"));
+    assert.ok(page.image.sourceUrl.startsWith("https://commons.wikimedia.org/"));
+    assert.ok(page.image.author);
+    assert.ok(page.image.alt.includes(page.name));
+    assert.ok(page.image.width > 0);
+    assert.ok(page.image.height > 0);
   }
 });
 

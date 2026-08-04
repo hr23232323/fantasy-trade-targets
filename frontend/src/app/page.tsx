@@ -83,14 +83,14 @@ export default function Home() {
         <div className="grid gap-8 border-y border-[#171c19] py-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
           <div>
             <span className="eyebrow">Player research // market files</span>
-            <h2 className="section-title mt-6">Five market files. Fully sourced.</h2>
+            <h2 className="section-title mt-6">50 market files. Fully sourced.</h2>
           </div>
           <div>
             <p className="max-w-2xl text-sm leading-7 text-[#59605c]">
               Direct dynasty answers, four-format pricing, historical charts, production, usage, comparable players, pick equivalents, and visible source records.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
-              {playerPages.map((player) => (
+              {playerPages.slice(0, 10).map((player) => (
                 <Link
                   key={player.slug}
                   href={`/players/${player.slug}`}
@@ -99,6 +99,12 @@ export default function Home() {
                   {player.name} →
                 </Link>
               ))}
+              <Link
+                href="/players"
+                className="border border-[#171c19] bg-[#171c19] px-3 py-2 font-mono text-[10px] font-black uppercase tracking-[0.06em] text-white hover:bg-[#a23616]"
+              >
+                Browse all 50 →
+              </Link>
             </div>
           </div>
         </div>
