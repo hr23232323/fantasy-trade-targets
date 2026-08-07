@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   FiArrowLeft,
@@ -25,6 +24,7 @@ import {
 import { fetchClientMarket } from "../lib/client-market";
 import { captureAnalytics } from "../lib/analytics";
 import { getTradePlayerImage } from "../lib/player-pages";
+import PlayerPortrait from "./PlayerPortrait";
 import type {
   MarketAsset,
   MarketFormat,
@@ -898,12 +898,15 @@ function AssetThumbnail({
       aria-hidden="true"
     >
       {playerImage ? (
-        <Image
-          src={playerImage.src}
-          alt=""
-          fill
-          className="object-cover object-top"
+        <PlayerPortrait
+          slug={asset.slug}
+          name={asset.name}
+          image={playerImage}
+          position={asset.position}
+          team={asset.team}
+          variant="thumbnail"
           sizes={compact ? "28px" : "40px"}
+          decorative
         />
       ) : (
         <span className="font-mono text-[10px] font-black tracking-[-0.05em] text-[#171c19]">

@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
+import { getTradePlayerImage } from "../lib/player-pages";
 import { getSharedTrade, tradeVerdictLabel } from "../lib/shared-trade";
 import type { MarketAsset } from "../types/MarketAsset";
 
@@ -81,26 +82,71 @@ function CardSide({
   value: number;
   color: string;
 }) {
-  const visible = assets.slice(0, 4);
+  const visible = assets.slice(0, 3);
   return (
     <div style={{ display: "flex", flex: 1, flexDirection: "column", border: "3px solid #171c19", background: "white" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "15px 18px", background: color, borderBottom: "3px solid #171c19" }}>
         <span style={{ fontSize: "16px", fontWeight: 900, letterSpacing: "2px" }}>{label}</span>
         <span style={{ fontSize: "28px", fontWeight: 900 }}>{Math.round(value)}</span>
       </div>
-      <div style={{ display: "flex", flexDirection: "column", padding: "12px 18px" }}>
+      <div style={{ display: "flex", flexDirection: "column", padding: "10px 16px" }}>
         {visible.map((asset) => (
-          <div key={asset.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid #d1cec4" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <span style={{ display: "flex", width: "38px", height: "26px", alignItems: "center", justifyContent: "center", background: positionColor(asset.position), fontSize: "12px", fontWeight: 900 }}>{asset.position}</span>
-              <span style={{ fontSize: "21px", fontWeight: 800 }}>{asset.name}</span>
+          <div key={asset.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", minHeight: "84px", padding: "7px 0", borderBottom: "1px solid #d1cec4" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: 0 }}>
+              <TradeCardPortrait asset={asset} />
+              <div style={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
+                <span style={{ fontSize: "20px", fontWeight: 850, lineHeight: 1.05 }}>{asset.name}</span>
+                <span style={{ marginTop: "5px", color: "#69706c", fontSize: "11px", fontWeight: 800, letterSpacing: "1px" }}>
+                  {asset.kind === "player" ? `${asset.team || "NFL"} · ${asset.position}` : "DRAFT CAPITAL"}
+                </span>
+              </div>
             </div>
-            <span style={{ fontSize: "18px", fontWeight: 900 }}>{Math.round(asset.value)}</span>
+            <span style={{ marginLeft: "12px", fontSize: "18px", fontWeight: 900 }}>{Math.round(asset.value)}</span>
           </div>
         ))}
         {assets.length > visible.length && <span style={{ display: "flex", paddingTop: "10px", color: "#69706c", fontSize: "16px", fontWeight: 700 }}>+ {assets.length - visible.length} more assets</span>}
       </div>
     </div>
+  );
+}
+
+function TradeCardPortrait({ asset }: { asset: MarketAsset }) {
+  const image = asset.kind === "player" ? getTradePlayerImage(asset.slug) : undefined;
+  const color = positionColor(asset.position);
+  const secondary = asset.position === "RB" || asset.position === "TE" ? "#dfff4f" : "#ff6b3d";
+
+  return (
+    <span
+      style={{
+        position: "relative",
+        display: "flex",
+        width: "62px",
+        height: "68px",
+        flexShrink: 0,
+        overflow: "hidden",
+        border: "2px solid #171c19",
+        background: color,
+      }}
+    >
+      {image ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={image.src}
+          alt=""
+          width="62"
+          height="68"
+          style={{ width: "62px", height: "68px", objectFit: "cover", objectPosition: "50% 10%" }}
+        />
+      ) : (
+        <span style={{ display: "flex", width: "100%", height: "100%", alignItems: "center", justifyContent: "center", fontSize: "18px", fontWeight: 900 }}>
+          {asset.kind === "pick" ? asset.year?.slice(-2) || "PK" : asset.position}
+        </span>
+      )}
+      <span style={{ position: "absolute", top: "-12px", right: "-16px", width: "42px", height: "84px", background: secondary, opacity: 0.48, transform: "rotate(18deg)" }} />
+      <span style={{ position: "absolute", right: "3px", bottom: "3px", display: "flex", padding: "3px 4px", border: "1px solid #171c19", background: color, fontSize: "8px", fontWeight: 900 }}>
+        {asset.position}
+      </span>
+    </span>
   );
 }
 

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import JsonLd from "../../components/JsonLd";
 import AnalyticsPageView from "../../components/AnalyticsPageView";
+import PlayerPortrait from "../../components/PlayerPortrait";
 import PlayerHistoryChart from "../../components/PlayerHistoryChart";
 import { TrackedAnchor, TrackedLink } from "../../components/TrackedLink";
 import {
@@ -168,15 +168,15 @@ export default async function PlayerPage({ params }: PageProps) {
           </div>
         </div>
 
-        <figure className="relative min-h-[500px] overflow-hidden border border-[#171c19] bg-[#171c19]">
-          <Image
-            src={page.image.src}
-            width={page.image.width}
-            height={page.image.height}
-            alt={page.image.alt}
-            className="h-full min-h-[500px] w-full object-cover object-top grayscale-[15%]"
-            loading="eager"
-            fetchPriority="high"
+        <figure className="relative min-h-[500px] overflow-hidden border border-[#171c19] bg-[#171c19] shadow-[8px_8px_0_#ff6b3d]">
+          <PlayerPortrait
+            slug={profile.slug}
+            name={profile.name}
+            image={page.image}
+            position={profile.position}
+            team={profile.team}
+            variant="hero"
+            priority
             sizes="(max-width: 1023px) 100vw, 40vw"
           />
           <figcaption className="absolute inset-x-0 bottom-0 bg-[#171c19]/92 px-4 py-3 font-mono text-[9px] uppercase leading-4 tracking-[0.05em] text-white/70">

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import AnalyticsPageView from "../../components/AnalyticsPageView";
 import TradeReceiptActions from "../../components/TradeReceiptActions";
+import PlayerPortrait from "../../components/PlayerPortrait";
 import { getPlayerPage, getTradePlayerImage } from "../../lib/player-pages";
 import {
   getSharedTrade,
@@ -254,11 +254,13 @@ function TradeAssetCard({
     <article className={`grid min-h-[132px] grid-cols-[96px_minmax(0,1fr)] overflow-hidden border border-[#171c19] bg-[#fffdf7] ${shadow} sm:grid-cols-[112px_minmax(0,1fr)]`}>
       <div className="relative min-h-[132px] overflow-hidden border-r border-[#171c19] bg-[#dedbd1]">
         {playerImage ? (
-          <Image
-            src={playerImage.src}
-            alt={playerImage.alt}
-            fill
-            className="object-cover object-top grayscale-[8%] transition-transform duration-300 hover:scale-[1.03]"
+          <PlayerPortrait
+            slug={asset.slug}
+            name={asset.name}
+            image={playerImage}
+            position={asset.position}
+            team={asset.team}
+            variant="thumbnail"
             sizes="(max-width: 640px) 96px, 112px"
           />
         ) : (

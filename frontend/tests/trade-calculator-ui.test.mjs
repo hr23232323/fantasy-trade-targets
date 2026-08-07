@@ -8,10 +8,11 @@ const calculator = await readFile(
 );
 
 test("calculator asset surfaces use reviewed player thumbnails", () => {
-  assert.match(calculator, /import Image from "next\/image"/);
+  assert.match(calculator, /import PlayerPortrait from "\.\/PlayerPortrait"/);
   assert.match(calculator, /getTradePlayerImage/);
   assert.match(calculator, /function AssetThumbnail/);
-  assert.match(calculator, /playerImage\.src/);
+  assert.match(calculator, /image=\{playerImage\}/);
+  assert.match(calculator, /variant="thumbnail"/);
 
   const thumbnailUses = calculator.match(/<AssetThumbnail asset=\{asset\}/g) ?? [];
   assert.equal(

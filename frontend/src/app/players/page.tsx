@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import JsonLd from "../components/JsonLd";
+import PlayerPortrait from "../components/PlayerPortrait";
 import { getMarket } from "../lib/market";
 import { buildPageMetadata } from "../lib/metadata";
 import { playerPages } from "../lib/player-pages";
@@ -70,15 +70,15 @@ export default async function PlayersPage() {
           >
             <div className={`grid h-full ${index === 0 ? "sm:grid-cols-2" : ""}`}>
               <div className="relative min-h-80 overflow-hidden bg-[#171c19]">
-                <Image
-                  src={page.image.src}
-                  width={page.image.width}
-                  height={page.image.height}
-                  alt={page.image.alt}
-                  loading={index < 2 ? "eager" : "lazy"}
-                  fetchPriority={index < 2 ? "high" : "auto"}
+                <PlayerPortrait
+                  slug={page.slug}
+                  name={page.name}
+                  image={page.image}
+                  position={player!.position}
+                  team={player!.team}
+                  variant="card"
+                  priority={index < 2}
                   sizes={index === 0 ? "(max-width: 767px) 100vw, 50vw" : "(max-width: 767px) 100vw, 33vw"}
-                  className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
                 />
                 <span className="absolute left-3 top-3 bg-[#dfff4f] px-3 py-2 font-mono text-[10px] font-black uppercase tracking-[0.07em]">
                   {player!.position}{player!.posRank ?? "—"} · #{player!.rank ?? "—"}
@@ -113,16 +113,30 @@ export default async function PlayersPage() {
             <Link
               key={page.slug}
               href={`/players/${page.slug}`}
-              className="group flex min-h-40 flex-col bg-[#f3f0e7] p-5 hover:bg-[#dfff4f]"
+              className="group grid min-h-40 grid-cols-[88px_minmax(0,1fr)] bg-[#f3f0e7] hover:bg-[#dfff4f]"
             >
-              <div className="flex items-center justify-between gap-4 font-mono text-[10px] font-black uppercase tracking-[0.06em] text-[#69706c]">
-                <span>{player!.position}{player!.posRank ?? "—"} · #{player!.rank ?? "—"}</span>
-                <span>{Math.round(player!.value)}</span>
+              <div className="relative overflow-hidden border-r border-[#171c19]">
+                <PlayerPortrait
+                  slug={page.slug}
+                  name={page.name}
+                  image={page.image}
+                  position={player!.position}
+                  team={player!.team}
+                  variant="thumbnail"
+                  sizes="88px"
+                  decorative
+                />
               </div>
-              <h3 className="mt-7 text-2xl font-black tracking-[-0.045em]">{player!.name}</h3>
-              <span className="mt-auto pt-5 font-mono text-[10px] font-black uppercase tracking-[0.07em] group-hover:text-[#a23616]">
-                Open player file →
-              </span>
+              <div className="flex min-w-0 flex-col p-5">
+                <div className="flex items-center justify-between gap-4 font-mono text-[10px] font-black uppercase tracking-[0.06em] text-[#69706c]">
+                  <span>{player!.position}{player!.posRank ?? "—"} · #{player!.rank ?? "—"}</span>
+                  <span>{Math.round(player!.value)}</span>
+                </div>
+                <h3 className="mt-6 text-2xl font-black tracking-[-0.045em]">{player!.name}</h3>
+                <span className="mt-auto pt-5 font-mono text-[10px] font-black uppercase tracking-[0.07em] group-hover:text-[#a23616]">
+                  Open player file →
+                </span>
+              </div>
             </Link>
           ))}
         </div>
