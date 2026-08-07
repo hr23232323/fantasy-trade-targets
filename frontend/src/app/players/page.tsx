@@ -69,7 +69,7 @@ export default async function PlayersPage() {
             className={`group overflow-hidden border border-[#171c19] shadow-[5px_5px_0_#171c19] ${index === 0 ? "md:col-span-2" : ""}`}
           >
             <div className={`grid h-full ${index === 0 ? "sm:grid-cols-2" : ""}`}>
-              <div className="relative min-h-80 overflow-hidden bg-[#171c19]">
+              <div className="relative z-10 min-h-80 overflow-visible bg-[#171c19]">
                 <PlayerPortrait
                   slug={page.slug}
                   name={page.name}

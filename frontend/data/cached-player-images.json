@@ -1,0 +1,308 @@
+[
+  {
+    "slug": "josh-allen-qb",
+    "src": "/images/players/josh-allen-qb.jpg",
+    "width": 697,
+    "height": 960
+  },
+  {
+    "slug": "bijan-robinson-rb",
+    "src": "/images/players/bijan-robinson-rb.jpg",
+    "width": 768,
+    "height": 960
+  },
+  {
+    "slug": "jamarr-chase-wr",
+    "src": "/images/players/jamarr-chase-wr.jpg",
+    "width": 808,
+    "height": 960
+  },
+  {
+    "slug": "jahmyr-gibbs-rb",
+    "src": "/images/players/jahmyr-gibbs-rb.jpg",
+    "width": 720,
+    "height": 960
+  },
+  {
+    "slug": "jaxon-smith-njigba-wr",
+    "src": "/images/players/jaxon-smith-njigba-wr.jpg",
+    "width": 744,
+    "height": 960
+  },
+  {
+    "slug": "drake-maye-qb",
+    "src": "/images/players/drake-maye-qb.jpg",
+    "width": 608,
+    "height": 960
+  },
+  {
+    "slug": "puka-nacua-wr",
+    "src": "/images/players/puka-nacua-wr.jpg",
+    "width": 755,
+    "height": 960
+  },
+  {
+    "slug": "brock-bowers-te",
+    "src": "/images/players/brock-bowers-te.jpg",
+    "width": 684,
+    "height": 960
+  },
+  {
+    "slug": "amon-ra-st-brown-wr",
+    "src": "/images/players/amon-ra-st-brown-wr.jpg",
+    "width": 743,
+    "height": 960
+  },
+  {
+    "slug": "caleb-williams-qb",
+    "src": "/images/players/caleb-williams-qb.jpg",
+    "width": 720,
+    "height": 960
+  },
+  {
+    "slug": "lamar-jackson-qb",
+    "src": "/images/players/lamar-jackson-qb.jpg",
+    "width": 745,
+    "height": 960
+  },
+  {
+    "slug": "jayden-daniels-qb",
+    "src": "/images/players/jayden-daniels-qb.jpg",
+    "width": 858,
+    "height": 960
+  },
+  {
+    "slug": "ashton-jeanty-rb",
+    "src": "/images/players/ashton-jeanty-rb.jpg",
+    "width": 670,
+    "height": 960
+  },
+  {
+    "slug": "justin-jefferson-wr",
+    "src": "/images/players/justin-jefferson-wr.jpg",
+    "width": 744,
+    "height": 960
+  },
+  {
+    "slug": "joe-burrow-qb",
+    "src": "/images/players/joe-burrow-qb.jpg",
+    "width": 711,
+    "height": 960
+  },
+  {
+    "slug": "jeremiyah-love-rb",
+    "src": "/images/players/jeremiyah-love-rb.jpg",
+    "width": 960,
+    "height": 960
+  },
+  {
+    "slug": "malik-nabers-wr",
+    "src": "/images/players/malik-nabers-wr.jpg",
+    "width": 524,
+    "height": 960
+  },
+  {
+    "slug": "trey-mcbride-te",
+    "src": "/images/players/trey-mcbride-te.jpg",
+    "width": 754,
+    "height": 960
+  },
+  {
+    "slug": "ceedee-lamb-wr",
+    "src": "/images/players/ceedee-lamb-wr.jpg",
+    "width": 779,
+    "height": 960
+  },
+  {
+    "slug": "omarion-hampton-rb",
+    "src": "/images/players/omarion-hampton-rb.jpg",
+    "width": 912,
+    "height": 960
+  },
+  {
+    "slug": "justin-herbert-qb",
+    "src": "/images/players/justin-herbert-qb.jpg",
+    "width": 892,
+    "height": 960
+  },
+  {
+    "slug": "drake-london-wr",
+    "src": "/images/players/drake-london-wr.jpg",
+    "width": 631,
+    "height": 960
+  },
+  {
+    "slug": "devon-achane-rb",
+    "src": "/images/players/devon-achane-rb.jpg",
+    "width": 757,
+    "height": 960
+  },
+  {
+    "slug": "patrick-mahomes-qb",
+    "src": "/images/players/patrick-mahomes-qb.jpg",
+    "width": 640,
+    "height": 960
+  },
+  {
+    "slug": "jaxson-dart-qb",
+    "src": "/images/players/jaxson-dart-qb.jpg",
+    "width": 696,
+    "height": 960
+  },
+  {
+    "slug": "jalen-hurts-qb",
+    "src": "/images/players/jalen-hurts-qb.jpg",
+    "width": 737,
+    "height": 960
+  },
+  {
+    "slug": "trevor-lawrence-qb",
+    "src": "/images/players/trevor-lawrence-qb.jpg",
+    "width": 697,
+    "height": 960
+  },
+  {
+    "slug": "colston-loveland-te",
+    "src": "/images/players/colston-loveland-te.jpg",
+    "width": 960,
+    "height": 949
+  },
+  {
+    "slug": "jonathan-taylor-rb",
+    "src": "/images/players/jonathan-taylor-rb.jpg",
+    "width": 719,
+    "height": 960
+  },
+  {
+    "slug": "tetairoa-mcmillan-wr",
+    "src": "/images/players/tetairoa-mcmillan-wr.jpg",
+    "width": 775,
+    "height": 960
+  },
+  {
+    "slug": "james-cook-rb",
+    "src": "/images/players/james-cook-rb.jpg",
+    "width": 738,
+    "height": 960
+  },
+  {
+    "slug": "emeka-egbuka-wr",
+    "src": "/images/players/emeka-egbuka-wr.jpg",
+    "width": 960,
+    "height": 960
+  },
+  {
+    "slug": "bo-nix-qb",
+    "src": "/images/players/bo-nix-qb.jpg",
+    "width": 670,
+    "height": 960
+  },
+  {
+    "slug": "carnell-tate-wr",
+    "src": "/images/players/carnell-tate-wr.jpg",
+    "width": 706,
+    "height": 960
+  },
+  {
+    "slug": "george-pickens-wr",
+    "src": "/images/players/george-pickens-wr.jpg",
+    "width": 857,
+    "height": 960
+  },
+  {
+    "slug": "tyler-warren-te",
+    "src": "/images/players/tyler-warren-te.jpg",
+    "width": 674,
+    "height": 960
+  },
+  {
+    "slug": "brock-purdy-qb",
+    "src": "/images/players/brock-purdy-qb.jpg",
+    "width": 719,
+    "height": 960
+  },
+  {
+    "slug": "kenneth-walker-rb",
+    "src": "/images/players/kenneth-walker-rb.jpg",
+    "width": 768,
+    "height": 960
+  },
+  {
+    "slug": "nico-collins-wr",
+    "src": "/images/players/nico-collins-wr.jpg",
+    "width": 604,
+    "height": 960
+  },
+  {
+    "slug": "ladd-mcconkey-wr",
+    "src": "/images/players/ladd-mcconkey-wr.jpg",
+    "width": 654,
+    "height": 960
+  },
+  {
+    "slug": "chris-olave-wr",
+    "src": "/images/players/chris-olave-wr.jpg",
+    "width": 719,
+    "height": 960
+  },
+  {
+    "slug": "jordan-love-qb",
+    "src": "/images/players/jordan-love-qb.jpg",
+    "width": 915,
+    "height": 960
+  },
+  {
+    "slug": "christian-mccaffrey-rb",
+    "src": "/images/players/christian-mccaffrey-rb.jpg",
+    "width": 747,
+    "height": 960
+  },
+  {
+    "slug": "garrett-wilson-wr",
+    "src": "/images/players/garrett-wilson-wr.jpg",
+    "width": 692,
+    "height": 960
+  },
+  {
+    "slug": "fernando-mendoza-qb",
+    "src": "/images/players/fernando-mendoza-qb.jpg",
+    "width": 754,
+    "height": 960
+  },
+  {
+    "slug": "chase-brown-rb",
+    "src": "/images/players/chase-brown-rb.jpg",
+    "width": 720,
+    "height": 960
+  },
+  {
+    "slug": "luther-burden-wr",
+    "src": "/images/players/luther-burden-wr.jpg",
+    "width": 720,
+    "height": 960
+  },
+  {
+    "slug": "devonta-smith-wr",
+    "src": "/images/players/devonta-smith-wr.jpg",
+    "width": 652,
+    "height": 960
+  },
+  {
+    "slug": "quinshon-judkins-rb",
+    "src": "/images/players/quinshon-judkins-rb.jpg",
+    "width": 960,
+    "height": 960
+  },
+  {
+    "slug": "cam-ward-qb",
+    "src": "/images/players/cam-ward-qb.jpg",
+    "width": 756,
+    "height": 960
+  },
+  {
+    "slug": "saquon-barkley-rb",
+    "src": "/images/players/saquon-barkley-rb.jpg",
+    "width": 537,
+    "height": 960
+  }
+]

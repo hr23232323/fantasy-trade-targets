@@ -168,7 +168,7 @@ export default async function PlayerPage({ params }: PageProps) {
           </div>
         </div>
 
-        <figure className="relative min-h-[500px] overflow-hidden border border-[#171c19] bg-[#171c19] shadow-[8px_8px_0_#ff6b3d]">
+        <figure className="relative min-h-[500px] overflow-visible border border-[#171c19] bg-[#171c19] shadow-[8px_8px_0_#ff6b3d]">
           <PlayerPortrait
             slug={profile.slug}
             name={profile.name}

@@ -34,6 +34,16 @@ const themes: Record<string, { accent: string; splash: string; wash: string }> =
   NFL: { accent: "#dfff4f", splash: "#8bcfff", wash: "#69706c" },
 };
 
+function portraitMotif(slug: string) {
+  let hash = 0;
+
+  for (const character of slug) {
+    hash = (hash * 31 + character.charCodeAt(0)) >>> 0;
+  }
+
+  return hash % 6;
+}
+
 export default function PlayerPortrait({
   slug,
   name,
@@ -65,42 +75,47 @@ export default function PlayerPortrait({
       className={`player-portrait ${className}`}
       data-variant={variant}
       data-position={position || "NFL"}
+      data-motif={portraitMotif(slug)}
       style={style}
       aria-hidden={decorative || undefined}
     >
-      <span className="player-portrait__base" aria-hidden="true" />
-      {image ? (
-        <Image
-          src={image.src}
-          alt={decorative ? "" : image.alt}
-          fill
-          className="player-portrait__image"
-          sizes={sizes}
-          {...(priority
-            ? { priority: true, fetchPriority: "high" as const }
-            : { loading: "lazy" as const })}
-        />
-      ) : (
-        <span className="player-portrait__fallback" aria-hidden="true">
-          {initials || position || "FTT"}
-        </span>
-      )}
-      <span className="player-portrait__color-wash" aria-hidden="true" />
-      <span className="player-portrait__splash" aria-hidden="true" />
-      <span className="player-portrait__halftone" aria-hidden="true" />
-      <span className="player-portrait__frame" aria-hidden="true" />
+      <span className="player-portrait__clip">
+        <span className="player-portrait__base" aria-hidden="true" />
+        {image ? (
+          <Image
+            src={image.src}
+            alt={decorative ? "" : image.alt}
+            fill
+            className="player-portrait__image"
+            sizes={sizes}
+            {...(priority
+              ? { priority: true, fetchPriority: "high" as const }
+              : { loading: "lazy" as const })}
+          />
+        ) : (
+          <span className="player-portrait__fallback" aria-hidden="true">
+            {initials || position || "FTT"}
+          </span>
+        )}
+        <span className="player-portrait__color-wash" aria-hidden="true" />
+        <span className="player-portrait__splash" aria-hidden="true" />
+        <span className="player-portrait__secondary" aria-hidden="true" />
+        <span className="player-portrait__halftone" aria-hidden="true" />
+        <span className="player-portrait__frame" aria-hidden="true" />
 
-      {variant !== "thumbnail" && (
-        <>
-          <span className="player-portrait__kicker" aria-hidden="true">
-            FTT // PLAYER FILE
-          </span>
-          <span className="player-portrait__identity" aria-hidden="true">
-            <strong>{position || "NFL"}</strong>
-            <span>{team || "MARKET"}</span>
-          </span>
-        </>
-      )}
+        {variant !== "thumbnail" && (
+          <>
+            <span className="player-portrait__kicker" aria-hidden="true">
+              FTT // PLAYER FILE
+            </span>
+            <span className="player-portrait__identity" aria-hidden="true">
+              <strong>{position || "NFL"}</strong>
+              <span>{team || "MARKET"}</span>
+            </span>
+          </>
+        )}
+      </span>
+      <span className="player-portrait__breaker" aria-hidden="true" />
     </span>
   );
 }

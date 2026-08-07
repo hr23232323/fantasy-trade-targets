@@ -126,24 +126,33 @@ select:focus-visible {
   --portrait-focus: 50% 10%;
   position: absolute;
   inset: 0;
-  isolation: isolate;
+  display: block;
+  overflow: visible;
+  color: var(--ink);
+  pointer-events: none;
+}
+
+.player-portrait__clip {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   display: block;
   overflow: hidden;
-  color: var(--ink);
+  isolation: isolate;
   background: var(--portrait-accent);
 }
 
 .player-portrait__base {
   position: absolute;
   inset: 0;
-  z-index: -2;
+  z-index: 0;
   background:
     linear-gradient(135deg, transparent 0 55%, rgba(23, 28, 25, 0.18) 55% 56%, transparent 56%),
     var(--portrait-accent);
 }
 
 .player-portrait__image {
-  z-index: -1;
+  z-index: 1;
   object-fit: cover;
   object-position: var(--portrait-focus);
   filter: saturate(0.82) contrast(1.08);
@@ -160,6 +169,7 @@ select:focus-visible {
 .player-portrait__color-wash {
   position: absolute;
   inset: 0;
+  z-index: 2;
   background: linear-gradient(105deg, var(--portrait-wash) 0%, transparent 46%, var(--portrait-accent) 100%);
   mix-blend-mode: color;
   opacity: 0.22;
@@ -167,6 +177,7 @@ select:focus-visible {
 
 .player-portrait__splash {
   position: absolute;
+  z-index: 3;
   inset: -8% -20% auto auto;
   width: 64%;
   height: 58%;
@@ -177,8 +188,22 @@ select:focus-visible {
   opacity: 0.8;
 }
 
+.player-portrait__secondary {
+  position: absolute;
+  z-index: 4;
+  left: -8%;
+  bottom: 8%;
+  width: 42%;
+  height: 20%;
+  background: var(--portrait-accent);
+  clip-path: polygon(0 0, 100% 28%, 86% 100%, 0 84%);
+  mix-blend-mode: soft-light;
+  opacity: 0.72;
+}
+
 .player-portrait__halftone {
   position: absolute;
+  z-index: 5;
   inset: auto -1px -1px auto;
   width: 46%;
   height: 42%;
@@ -191,6 +216,7 @@ select:focus-visible {
 
 .player-portrait__frame {
   position: absolute;
+  z-index: 6;
   inset: 10px;
   border: 1px solid rgba(243, 240, 231, 0.64);
   box-shadow: inset 0 0 0 1px rgba(23, 28, 25, 0.2);
@@ -199,6 +225,7 @@ select:focus-visible {
 
 .player-portrait__kicker {
   position: absolute;
+  z-index: 7;
   top: 22px;
   right: 19px;
   padding: 7px 9px;
@@ -213,6 +240,7 @@ select:focus-visible {
 
 .player-portrait__identity {
   position: absolute;
+  z-index: 7;
   left: 20px;
   bottom: 20px;
   display: flex;
@@ -242,12 +270,195 @@ select:focus-visible {
 .player-portrait__fallback {
   position: absolute;
   inset: 0;
+  z-index: 1;
   display: grid;
   place-items: center;
   font-family: var(--font-geist-mono), monospace;
   font-size: clamp(2rem, 16cqw, 6rem);
   font-weight: 900;
   letter-spacing: -0.09em;
+}
+
+.player-portrait__breaker {
+  position: absolute;
+  z-index: 8;
+  display: block;
+  border: 1px solid var(--ink);
+  background: var(--portrait-splash);
+  box-shadow: 3px 3px 0 var(--ink);
+  pointer-events: none;
+}
+
+/* Each player keeps one stable motif. The mix is intentionally editorial, not random on render. */
+.player-portrait[data-motif="0"] .player-portrait__splash {
+  inset: -8% -20% auto auto;
+  width: 64%;
+  height: 58%;
+  border-radius: 0;
+  clip-path: polygon(17% 0, 100% 0, 100% 80%, 0 100%, 9% 47%);
+  transform: none;
+}
+
+.player-portrait[data-motif="0"] .player-portrait__breaker {
+  top: 24%;
+  right: -15px;
+  width: 34px;
+  height: 104px;
+  clip-path: polygon(0 10%, 100% 0, 82% 100%, 12% 82%);
+  transform: rotate(3deg);
+}
+
+.player-portrait[data-motif="1"] .player-portrait__splash {
+  inset: 7% auto auto -19%;
+  width: 67%;
+  height: 48%;
+  border-radius: 999px;
+  clip-path: none;
+  transform: rotate(-12deg);
+}
+
+.player-portrait[data-motif="1"] .player-portrait__secondary {
+  left: auto;
+  right: -9%;
+  bottom: 5%;
+  width: 54%;
+  height: 17%;
+  clip-path: polygon(8% 0, 100% 20%, 100% 100%, 0 76%);
+}
+
+.player-portrait[data-motif="1"] .player-portrait__breaker {
+  top: 13%;
+  left: -17px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--portrait-accent);
+}
+
+.player-portrait[data-motif="2"] .player-portrait__splash {
+  inset: -13% -3% auto auto;
+  width: 31%;
+  height: 94%;
+  border-radius: 0;
+  clip-path: polygon(27% 0, 100% 0, 70% 100%, 0 91%);
+  transform: rotate(8deg);
+}
+
+.player-portrait[data-motif="2"] .player-portrait__secondary {
+  left: -14%;
+  bottom: 13%;
+  width: 53%;
+  height: 34%;
+  border-radius: 50%;
+  clip-path: none;
+}
+
+.player-portrait[data-motif="2"] .player-portrait__breaker {
+  right: -10px;
+  bottom: 17%;
+  width: 24px;
+  height: 112px;
+  background: var(--portrait-accent);
+  transform: rotate(8deg);
+}
+
+.player-portrait[data-motif="3"] .player-portrait__splash {
+  inset: auto -8% 4% auto;
+  width: 88%;
+  height: 32%;
+  border-radius: 0;
+  clip-path: polygon(0 26%, 28% 26%, 28% 0, 68% 0, 68% 17%, 100% 17%, 100% 100%, 0 100%);
+  transform: none;
+}
+
+.player-portrait[data-motif="3"] .player-portrait__secondary {
+  left: -5%;
+  top: -6%;
+  bottom: auto;
+  width: 54%;
+  height: 38%;
+  clip-path: polygon(0 0, 100% 0, 14% 100%);
+}
+
+.player-portrait[data-motif="3"] .player-portrait__breaker {
+  top: -13px;
+  left: 11%;
+  width: 92px;
+  height: 32px;
+  clip-path: polygon(0 0, 70% 0, 70% 38%, 100% 38%, 100% 100%, 0 100%);
+}
+
+.player-portrait[data-motif="4"] .player-portrait__splash {
+  inset: 2% -16% auto auto;
+  width: 58%;
+  height: 48%;
+  border-radius: 0;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  transform: rotate(11deg);
+}
+
+.player-portrait[data-motif="4"] .player-portrait__secondary {
+  left: -3%;
+  bottom: -4%;
+  width: 24%;
+  height: 74%;
+  clip-path: polygon(0 8%, 72% 0, 100% 92%, 21% 100%);
+}
+
+.player-portrait[data-motif="4"] .player-portrait__breaker {
+  right: 12%;
+  bottom: -20px;
+  width: 52px;
+  height: 52px;
+  transform: rotate(45deg);
+}
+
+.player-portrait[data-motif="5"] .player-portrait__splash {
+  inset: -20% auto auto -9%;
+  width: 108%;
+  height: 56%;
+  border-radius: 0 0 52% 52%;
+  clip-path: none;
+  transform: rotate(-6deg);
+}
+
+.player-portrait[data-motif="5"] .player-portrait__secondary {
+  left: auto;
+  right: -5%;
+  bottom: 6%;
+  width: 69%;
+  height: 25%;
+  clip-path: polygon(12% 0, 100% 0, 86% 100%, 0 100%);
+}
+
+.player-portrait[data-motif="5"] .player-portrait__breaker {
+  left: -18px;
+  bottom: 16%;
+  width: 90px;
+  height: 27px;
+  clip-path: polygon(0 0, 100% 0, 82% 100%, 13% 82%);
+  background: var(--portrait-accent);
+  transform: rotate(-3deg);
+}
+
+.player-portrait[data-motif="1"] .player-portrait__halftone,
+.player-portrait[data-motif="4"] .player-portrait__halftone {
+  inset: auto auto -1px -1px;
+  clip-path: polygon(0 0, 72% 12%, 100% 100%, 0 100%);
+}
+
+.player-portrait[data-motif="2"] .player-portrait__halftone {
+  inset: 0 auto auto -1px;
+  width: 38%;
+  height: 50%;
+  clip-path: polygon(0 0, 100% 0, 73% 100%, 0 84%);
+}
+
+.player-portrait[data-motif="3"] .player-portrait__halftone,
+.player-portrait[data-motif="5"] .player-portrait__halftone {
+  width: 58%;
+  height: 24%;
+  clip-path: polygon(0 18%, 100% 0, 100% 100%, 8% 100%);
 }
 
 .player-portrait[data-variant="card"] .player-portrait__frame {
@@ -272,6 +483,11 @@ select:focus-visible {
   padding: 6px 7px;
 }
 
+.player-portrait[data-variant="card"] .player-portrait__breaker {
+  box-shadow: 2px 2px 0 var(--ink);
+  scale: 0.78;
+}
+
 .player-portrait[data-variant="thumbnail"] .player-portrait__image {
   filter: saturate(0.75) contrast(1.12);
 }
@@ -287,7 +503,8 @@ select:focus-visible {
 }
 
 .player-portrait[data-variant="thumbnail"] .player-portrait__halftone,
-.player-portrait[data-variant="thumbnail"] .player-portrait__frame {
+.player-portrait[data-variant="thumbnail"] .player-portrait__frame,
+.player-portrait[data-variant="thumbnail"] .player-portrait__breaker {
   display: none;
 }
 
