@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
-import { getTradePlayerImage } from "../lib/player-pages";
 import { getSharedTrade, tradeVerdictLabel } from "../lib/shared-trade";
 import type { MarketAsset } from "../types/MarketAsset";
 
@@ -111,9 +110,14 @@ function CardSide({
 }
 
 function TradeCardPortrait({ asset }: { asset: MarketAsset }) {
-  const image = asset.kind === "player" ? getTradePlayerImage(asset.slug) : undefined;
   const color = positionColor(asset.position);
   const secondary = asset.position === "RB" || asset.position === "TE" ? "#dfff4f" : "#ff6b3d";
+  const initials = asset.name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("");
 
   return (
     <span
@@ -128,20 +132,9 @@ function TradeCardPortrait({ asset }: { asset: MarketAsset }) {
         background: color,
       }}
     >
-      {image ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={image.src}
-          alt=""
-          width="62"
-          height="68"
-          style={{ width: "62px", height: "68px", objectFit: "cover", objectPosition: "50% 10%" }}
-        />
-      ) : (
-        <span style={{ display: "flex", width: "100%", height: "100%", alignItems: "center", justifyContent: "center", fontSize: "18px", fontWeight: 900 }}>
-          {asset.kind === "pick" ? asset.year?.slice(-2) || "PK" : asset.position}
-        </span>
-      )}
+      <span style={{ display: "flex", width: "100%", height: "100%", alignItems: "center", justifyContent: "center", fontSize: "18px", fontWeight: 900, letterSpacing: "-1px" }}>
+        {asset.kind === "pick" ? asset.year?.slice(-2) || "PK" : initials || asset.position}
+      </span>
       <span style={{ position: "absolute", top: "-12px", right: "-16px", width: "42px", height: "84px", background: secondary, opacity: 0.48, transform: "rotate(18deg)" }} />
       <span style={{ position: "absolute", right: "3px", bottom: "3px", display: "flex", padding: "3px 4px", border: "1px solid #171c19", background: color, fontSize: "8px", fontWeight: 900 }}>
         {asset.position}

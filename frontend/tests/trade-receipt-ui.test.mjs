@@ -53,9 +53,10 @@ test("trade packages use reviewed imagery with visible licensing and fallbacks",
   assert.equal(saquon.image.license, "CC BY-SA 4.0");
 });
 
-test("generated share cards carry the same player-photo language", () => {
-  assert.match(tradeCard, /getTradePlayerImage/);
+test("generated share cards carry dependency-free branded player artwork", () => {
   assert.match(tradeCard, /function TradeCardPortrait/);
-  assert.match(tradeCard, /image\.src/);
+  assert.match(tradeCard, /const initials = asset\.name/);
+  assert.match(tradeCard, /initials \|\| asset\.position/);
   assert.match(tradeCard, /positionColor\(asset\.position\)/);
+  assert.doesNotMatch(tradeCard, /upload\.wikimedia\.org/);
 });
