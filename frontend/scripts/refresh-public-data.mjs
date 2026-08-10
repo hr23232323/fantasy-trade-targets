@@ -1,6 +1,7 @@
 import { readFile, mkdir, rename, writeFile } from "node:fs/promises";
 import { gzipSync } from "node:zlib";
 import path from "node:path";
+import { buildScoringProfile } from "../src/app/lib/scoring-engine.mjs";
 
 const API_BASE = "https://api.tradyr.app/v1";
 const formats = ["dynasty", "redraft"];
@@ -63,42 +64,66 @@ const marketAndPickResponses = await mapConcurrent(
   hasApiKey ? 8 : 4,
   async (request) => ({ ...request, payload: await fetchJson(request.url) }),
 );
+const playerMarkets = Object.fromEntries(
+  marketAndPickResponses
+    .filter((response) => response.kind === "players")
+    .map((response) => [response.key, response.payload]),
+);
+const pickMarkets = Object.fromEntries(
+  marketAndPickResponses
+    .filter((response) => response.kind === "picks")
+    .map((response) => [response.key, response.payload]),
+);
+const currentPlayersBySlug = new Map(
+  playerMarkets["dynasty:2:0"].data.map((player) => [player.slug, player]),
+);
+const scoringStatsResponses = await mapConcurrent(
+  [...currentPlayersBySlug.values()],
+  hasApiKey ? 8 : 4,
+  async (player, index) => {
+    const payload = await fetchOptionalJson(
+      `${API_BASE}/players/${encodeURIComponent(player.slug)}/stats`,
+      { attempts: 2 },
+    );
+    if ((index + 1) % 25 === 0 || index + 1 === currentPlayersBySlug.size) {
+      console.log(
+        `Fetched scoring stats ${index + 1}/${currentPlayersBySlug.size}`,
+      );
+    }
+    return { slug: player.slug, payload };
+  },
+);
+const scoringStatsBySlug = new Map(
+  scoringStatsResponses.map((response) => [response.slug, response.payload]),
+);
 const profileResponses = await mapConcurrent(
   profileRequests,
   2,
   async (request, index) => {
-    const payload = await fetchPlayerProfile(request.url);
+    const payload = await fetchPlayerProfile(
+      request.url,
+      scoringStatsBySlug.get(request.key),
+    );
     console.log(
       `Fetched player profile ${index + 1}/${profileRequests.length}: ${request.key}`,
     );
     return { ...request, payload };
   },
 );
-const responses = [...marketAndPickResponses, ...profileResponses];
-
-const playerMarkets = Object.fromEntries(
-  responses
-    .filter((response) => response.kind === "players")
-    .map((response) => [response.key, response.payload]),
-);
-const pickMarkets = Object.fromEntries(
-  responses
-    .filter((response) => response.kind === "picks")
-    .map((response) => [response.key, response.payload]),
-);
 const rawPlayerProfiles = Object.fromEntries(
-  responses
-    .filter((response) => response.kind === "profile")
-    .map((response) => [response.key, response.payload]),
-);
-const currentPlayersBySlug = new Map(
-  playerMarkets["dynasty:2:0"].data.map((player) => [player.slug, player]),
+  profileResponses.map((response) => [response.key, response.payload]),
 );
 const playerProfiles = Object.fromEntries(
   Object.entries(rawPlayerProfiles).map(([slug, payload]) => [
     slug,
     normalizeProfileToMarket(payload, currentPlayersBySlug),
   ]),
+);
+const playerScoringProfiles = Object.fromEntries(
+  scoringStatsResponses.flatMap(({ slug, payload }) => {
+    const profile = buildScoringProfile(payload?.data);
+    return profile ? [[slug, profile]] : [];
+  }),
 );
 
 const [priorRelease, priorSnapshotHistory] = await Promise.all([
@@ -122,12 +147,13 @@ validateRelease({
   playerMarkets,
   pickMarkets,
   playerProfiles,
+  playerScoringProfiles,
   playerSnapshotHistory,
 });
 
 const release = {
-  schemaVersion: 2,
-  methodologyVersion: "2026.08.1",
+  schemaVersion: 3,
+  methodologyVersion: "2026.08.2",
   releaseId,
   capturedAt: capturedAt.toISOString(),
   source: {
@@ -138,6 +164,7 @@ const release = {
   playerMarkets,
   pickMarkets,
   playerProfiles,
+  playerScoringProfiles,
   playerSnapshotHistory,
 };
 
@@ -175,6 +202,7 @@ const archive = {
   source: release.source,
   playerMarkets,
   pickMarkets,
+  playerScoringProfiles,
 };
 await writeFile(
   path.join(archiveDirectory, `${releaseId}.json.gz`),
@@ -182,12 +210,12 @@ await writeFile(
 );
 
 console.log(
-  `Published ${releaseId}: ${Object.keys(playerMarkets).length} player markets, ${Object.keys(pickMarkets).length} pick markets, ${Object.keys(playerProfiles).length} player profiles.`,
+  `Published ${releaseId}: ${Object.keys(playerMarkets).length} player markets, ${Object.keys(pickMarkets).length} pick markets, ${Object.keys(playerProfiles).length} player profiles, ${Object.keys(playerScoringProfiles).length} scoring profiles.`,
 );
 
-async function fetchPlayerProfile(playerUrl) {
+async function fetchPlayerProfile(playerUrl, suppliedStats) {
   const detail = await fetchJson(playerUrl);
-  const stats = await fetchJson(`${playerUrl}/stats`);
+  const stats = suppliedStats ?? await fetchJson(`${playerUrl}/stats`);
   const advanced = await fetchOptionalJson(`${playerUrl}/advanced`);
   const bestball = await fetchOptionalJson(`${playerUrl}/bestball`);
   const projection = await fetchOptionalJson(`${playerUrl}/projection`);
@@ -322,6 +350,7 @@ function validateRelease({
   playerMarkets,
   pickMarkets,
   playerProfiles,
+  playerScoringProfiles,
   playerSnapshotHistory,
 }) {
   if (Object.keys(playerMarkets).length !== 8) {
@@ -334,6 +363,22 @@ function validateRelease({
     throw new Error(
       `Release has ${Object.keys(playerProfiles).length} of ${playerSlugs.length} configured player profiles`,
     );
+  }
+  if (Object.keys(playerScoringProfiles).length < 150) {
+    throw new Error(
+      `Release has only ${Object.keys(playerScoringProfiles).length} usable scoring profiles`,
+    );
+  }
+  for (const [slug, profile] of Object.entries(playerScoringProfiles)) {
+    if (
+      !currentPlayersBySlug.has(slug) ||
+      profile.modelVersion !== "2026.08.2" ||
+      !Number.isFinite(profile.confidence) ||
+      !profile.perGame ||
+      Object.values(profile.perGame).some((value) => !Number.isFinite(value))
+    ) {
+      throw new Error(`Player scoring profile ${slug} failed validation`);
+    }
   }
   for (const [key, payload] of Object.entries(playerMarkets)) {
     const minimumPlayers = key.startsWith("redraft:") ? 150 : 300;

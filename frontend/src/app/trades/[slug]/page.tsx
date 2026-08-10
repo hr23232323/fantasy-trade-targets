@@ -89,6 +89,8 @@ export default async function TradePage({ searchParams }: TradePageProps) {
           num_qbs: trade.numQbs,
           te_premium: trade.tep,
           league_size: trade.numTeams,
+          passing_td_points: trade.passingTdPoints,
+          reception_points: trade.receptionPoints,
           roster_cost_enabled: trade.rosterPremium,
           side_a_asset_count: trade.sideA.length,
           side_b_asset_count: trade.sideB.length,
@@ -117,7 +119,7 @@ export default async function TradePage({ searchParams }: TradePageProps) {
                 {trade.title}
               </h1>
               <p className="mt-6 max-w-3xl text-base leading-7 text-white/60">
-                Both packages priced against today&apos;s {trade.format} market with Fantasy Trade Target&apos;s published roster-cost rules.
+                Both packages priced against today&apos;s {trade.format} market for {trade.passingTdPoints}-point passing touchdowns and {pprLabel(trade.receptionPoints)} scoring.
               </p>
             </div>
             <TradeReceiptActions
@@ -127,6 +129,8 @@ export default async function TradePage({ searchParams }: TradePageProps) {
               sideACount={trade.sideA.length}
               sideBCount={trade.sideB.length}
               verdict={trade.evaluation.status}
+              passingTdPoints={trade.passingTdPoints}
+              receptionPoints={trade.receptionPoints}
             />
           </div>
         </div>
@@ -175,9 +179,11 @@ export default async function TradePage({ searchParams }: TradePageProps) {
             </div>
           </div>
 
-          <dl className="mt-8 grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2 lg:grid-cols-5">
+          <dl className="mt-8 grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2 lg:grid-cols-7">
             <Setting label="Format" value={trade.format} />
             <Setting label="Quarterbacks" value={trade.numQbs === 2 ? "Superflex" : "1QB"} />
+            <Setting label="Pass TD" value={`${trade.passingTdPoints} points`} />
+            <Setting label="Receptions" value={pprLabel(trade.receptionPoints)} />
             <Setting label="League" value={`${trade.numTeams} teams`} />
             <Setting label="TE premium" value={trade.tep ? "On" : "Off"} />
             <Setting label="Roster cost" value={trade.rosterPremium ? "On" : "Off"} />
@@ -197,11 +203,13 @@ export default async function TradePage({ searchParams }: TradePageProps) {
           sideACount={trade.sideA.length}
           sideBCount={trade.sideB.length}
           verdict={trade.evaluation.status}
+          passingTdPoints={trade.passingTdPoints}
+          receptionPoints={trade.receptionPoints}
         />
       </section>
 
       <aside className="page-wrap mt-10 border-t border-[#9d9a91] pt-5 text-[11px] leading-6 text-[#69706c]">
-        Values updated {Number.isNaN(updated.getTime()) ? "daily" : updated.toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short", timeZone: "America/New_York" })} ET · Release <span className="font-mono">{trade.market.meta.releaseId}</span> · Shared trade receipts are private-by-link and excluded from search indexing. <Link href="/methodology" className="underline underline-offset-2">Read the methodology</Link>.
+        Values updated {Number.isNaN(updated.getTime()) ? "daily" : updated.toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short", timeZone: "America/New_York" })} ET · Scoring model <span className="font-mono">{trade.market.meta.scoring.modelVersion}</span> · Release <span className="font-mono">{trade.market.meta.releaseId}</span> · Shared trade receipts are private-by-link and excluded from search indexing. <Link href="/methodology" className="underline underline-offset-2">Read the methodology</Link>.
       </aside>
     </>
   );
@@ -276,8 +284,13 @@ function TradeAssetCard({
           <span className="font-mono text-[9px] font-black uppercase tracking-[0.08em] text-[#69706c]">
             {asset.team || asset.tier || "Draft capital"}
           </span>
-          <span className={`shrink-0 border border-[#171c19] px-2.5 py-1 font-mono text-sm font-black ${valueBackground}`}>
-            {Math.round(asset.value)}
+          <span className={`shrink-0 border border-[#171c19] px-2.5 py-1 text-right font-mono ${valueBackground}`}>
+            <span className="block text-sm font-black">{Math.round(asset.value)}</span>
+            {asset.scoringContext?.valueDelta ? (
+              <span className="block text-[8px] font-bold text-[#171c19]/65" title={`Base market value ${asset.baseValue ?? asset.value}`}>
+                {asset.scoringContext.valueDelta > 0 ? "+" : ""}{asset.scoringContext.valueDelta} league
+              </span>
+            ) : null}
           </span>
         </div>
 
@@ -356,6 +369,12 @@ function AssetArtwork({ asset }: { asset: MarketAsset }) {
 function pickLabel(asset: MarketAsset) {
   const round = asset.round ? `Round ${asset.round}` : "Future pick";
   return asset.year ? `${asset.year} · ${round}` : round;
+}
+
+function pprLabel(points: number) {
+  if (points === 0) return "Standard";
+  if (points === 0.5) return "Half PPR";
+  return "Full PPR";
 }
 
 function Setting({ label, value }: { label: string; value: string }) {

@@ -3,14 +3,14 @@ import { buildPageMetadata } from "../lib/metadata";
 
 export const metadata = buildPageMetadata({
   title: "Fantasy Trade Value & Matchup Methodology",
-  description: "See exactly how Fantasy Trade Target calculates raw value, roster cost, package-adjusted value, verdict bands, and team matchup temperature.",
+  description: "See exactly how Fantasy Trade Target adjusts market value for 4- or 6-point passing touchdowns, standard through full PPR, roster cost, and verdict bands.",
   path: "/methodology",
 });
 
 export default function MethodologyPage() {
   return (
     <>
-      <PageHero eyebrow="Methodology // 2026.08.1" title="The calculator" accent="shows its work." description="No generated explanation and no mystery multiplier. These are the exact deterministic rules behind every current result." primaryHref="#formula" primaryLabel="See the formula" />
+      <PageHero eyebrow="Methodology // 2026.08.2" title="The calculator" accent="shows its work." description="No generated explanation and no mystery multiplier. These are the exact deterministic rules behind every current result." primaryHref="#formula" primaryLabel="See the formula" />
       <section id="formula" className="page-wrap grid gap-10 py-8 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
           <span className="eyebrow">01 // Base values</span>
@@ -24,7 +24,30 @@ export default function MethodologyPage() {
       </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
-          <span className="eyebrow">02 // Roster cost</span>
+          <span className="eyebrow">02 // League scoring</span>
+          <h2 className="section-title mt-6">Change value, not just points.</h2>
+        </div>
+        <div className="space-y-5 text-sm leading-7 text-[#59605c]">
+          <p>The published market is the anchor. Full PPR with four points per passing touchdown is the neutral baseline. Selecting six-point passing touchdowns, half PPR, or standard scoring re-prices players by how their fantasy production changes relative to a replacement-level player at the same position. Picks remain unchanged.</p>
+          <p>Player scoring profiles use per-game NFL totals from up to three recent seasons. The newest season receives weight 1.00, then 0.55 and 0.30. Short samples receive less weight, and the final market adjustment is reduced when fewer than 17 weighted games are available.</p>
+          <div className="border border-[#171c19] bg-[#171c19] p-6 font-mono text-xs font-bold leading-6 text-[#dfff4f] sm:text-sm">
+            FANTASY POINTS = PASS YDS × 0.04 + PASS TD × (4 OR 6) − INT × 2<br />
+            + RUSH YDS × 0.10 + RUSH TD × 6<br />
+            + RECEPTIONS × (0, 0.5, OR 1) + REC YDS × 0.10 + REC TD × 6<br />
+            − FUMBLES LOST × 2 + TWO-POINT CONVERSIONS × 2
+          </div>
+          <p>Replacement ranks are based on the selected league size and quarterback format: one or two quarterbacks, two running backs, three wide receivers, and one tight end per team. Each replacement baseline is the median of up to five modeled players nearest that positional rank.</p>
+          <div className="border border-[#171c19] bg-white/45 p-6 font-mono text-xs font-bold leading-6 text-[#171c19] sm:text-sm">
+            ΔVORP = (SELECTED PLAYER PPG − SELECTED REPLACEMENT PPG)<br />
+            − (BASELINE PLAYER PPG − BASELINE REPLACEMENT PPG)<br /><br />
+            VALUE SHIFT = ΔVORP ÷ POSITION SPREAD × FORMAT CAP × SAMPLE CONFIDENCE
+          </div>
+          <p>The position spread is the 75th percentile of positive starter value over replacement, with a two-point floor. To keep market evidence dominant, shifts are capped at ±12% in dynasty and ±20% in redraft. Players without a usable profile keep their original market value.</p>
+        </div>
+      </section>
+      <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
+        <div>
+          <span className="eyebrow">03 // Roster cost</span>
           <h2 className="section-title mt-6">A dollar beats loose change.</h2>
         </div>
         <div>
@@ -40,13 +63,13 @@ export default function MethodologyPage() {
         </div>
       </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
-        <div><span className="eyebrow">03 // Verdict bands</span><h2 className="section-title mt-6">A range, not fake precision.</h2></div>
+        <div><span className="eyebrow">04 // Verdict bands</span><h2 className="section-title mt-6">A range, not fake precision.</h2></div>
         <div className="grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2">
           {[['0–4%','Fair trade'],['4–10%','Leans one side'],['10–18%','Clear edge'],['18%+','Strong edge']].map(([range,label]) => <div key={range} className="bg-[#f3f0e7] p-6"><span className="font-mono text-2xl font-black text-[#ff6b3d]">{range}</span><h3 className="mt-3 text-lg font-black">{label}</h3></div>)}
         </div>
       </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
-        <div><span className="eyebrow">04 // Matchup temperature</span><h2 className="section-title mt-6">The calendar, with a visible baseline.</h2></div>
+        <div><span className="eyebrow">05 // Matchup temperature</span><h2 className="section-title mt-6">The calendar, with a visible baseline.</h2></div>
         <div className="space-y-5 text-sm leading-7 text-[#59605c]">
           <p>Team pages grade each scheduled game from 0 to 100. The largest input is the opponent&apos;s prior-season NFL scoring-defense rank: No. 1 allowed the fewest points and creates the cold end of the scale; No. 32 allowed the most and creates the hot end.</p>
           <div className="border border-[#171c19] bg-[#171c19] p-6 font-mono text-xs font-bold leading-6 text-[#dfff4f] sm:text-sm">
@@ -66,7 +89,7 @@ export default function MethodologyPage() {
         </div>
       </section>
       <section className="page-wrap border-t border-[#171c19] py-14">
-        <div className="max-w-3xl"><span className="eyebrow">Known limits</span><h2 className="section-title mt-6">What the model does not pretend to know.</h2><p className="mt-6 text-base leading-8 text-[#59605c]">The verdict does not yet model your exact scoring, starting lineup, standings, player exposure, injury tolerance, or another manager’s incentives. It is a transparent market baseline. League-aware Sleeper analysis is the next major product layer, and it will be labeled separately from the generic market calculation.</p></div>
+        <div className="max-w-3xl"><span className="eyebrow">Known limits</span><h2 className="section-title mt-6">What the model does not pretend to know.</h2><p className="mt-6 text-base leading-8 text-[#59605c]">Scoring adjustments are a historical scoring fit, not a projection of future games. This release models only four- versus six-point passing touchdowns and standard, half, or full PPR; it does not yet model yardage bonuses, first downs, custom turnovers, starting flex slots, standings, player exposure, injury tolerance, or another manager’s incentives. The result remains a transparent market baseline, with league-aware Sleeper analysis labeled separately when it arrives.</p></div>
       </section>
     </>
   );

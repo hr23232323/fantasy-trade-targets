@@ -4,6 +4,7 @@ Deterministic fantasy football trade tools for [fantasytradetarget.com](https://
 
 - dynasty and redraft trade calculators;
 - 1QB, Superflex, TE premium, and 8–16 team settings;
+- replacement-relative values for 4/6-point passing touchdowns and standard/half/full PPR;
 - exact rookie-pick values;
 - transparent roster-cost adjustment;
 - searchable dynasty rankings and trade value charts;
@@ -95,6 +96,6 @@ keep the release and compact-history contracts unchanged.
 
 ## Related intelligence engine
 
-The public website and the local `sleeper-trader` intelligence engine intentionally remain separate projects. The website owns free generic tools, acquisition, and presentation; the sibling engine owns Sleeper league sync, scoring-aware analysis, trade discovery, and optional AI synthesis.
+The public website and the local `sleeper-trader` intelligence engine intentionally remain separate projects. The website owns free generic tools, acquisition, presentation, and the published 4/6-point passing-TD plus standard/half/full-PPR model; the sibling engine owns Sleeper league sync, complete custom-scoring analysis, trade discovery, and optional AI synthesis.
 
 See [docs/ECOSYSTEM.md](docs/ECOSYSTEM.md) for the repository boundary, integration contract, and a staged connected-league / advisor / MCP paid-tier plan.

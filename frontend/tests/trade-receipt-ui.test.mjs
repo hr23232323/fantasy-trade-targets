@@ -60,3 +60,12 @@ test("generated share cards carry dependency-free branded player artwork", () =>
   assert.match(tradeCard, /positionColor\(asset\.position\)/);
   assert.doesNotMatch(tradeCard, /upload\.wikimedia\.org/);
 });
+
+test("shared reports preserve and display scoring context", () => {
+  assert.match(receipt, /passing_td_points: trade\.passingTdPoints/);
+  assert.match(receipt, /label="Pass TD"/);
+  assert.match(receipt, /label="Receptions"/);
+  assert.match(receipt, /asset\.scoringContext\?\.valueDelta/);
+  assert.match(tradeCard, /trade\.passingTdPoints/);
+  assert.match(tradeCard, /pprLabel\(trade\.receptionPoints\)/);
+});

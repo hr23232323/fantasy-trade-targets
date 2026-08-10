@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getMarket } from "../../lib/market";
-import type { MarketFormat } from "../../types/MarketAsset";
+import type {
+  MarketFormat,
+  PassingTdPoints,
+  ReceptionPoints,
+} from "../../types/MarketAsset";
 
 export const runtime = "nodejs";
 export const revalidate = 21600;
@@ -15,9 +19,26 @@ export async function GET(request: NextRequest) {
   const tep = searchParams.get("tep") === "true";
   const requestedTeams = Number(searchParams.get("numTeams") || 12);
   const numTeams = ALLOWED_TEAM_COUNTS.has(requestedTeams) ? requestedTeams : 12;
+  const passingTdPoints: PassingTdPoints =
+    searchParams.get("passingTdPoints") === "6" ? 6 : 4;
+  const requestedReceptionPoints = Number(
+    searchParams.get("receptionPoints") ?? 1,
+  );
+  const receptionPoints: ReceptionPoints = [0, 0.5, 1].includes(
+    requestedReceptionPoints,
+  )
+    ? (requestedReceptionPoints as ReceptionPoints)
+    : 1;
 
   try {
-    const payload = await getMarket({ format, numQbs, tep, numTeams });
+    const payload = await getMarket({
+      format,
+      numQbs,
+      tep,
+      numTeams,
+      passingTdPoints,
+      receptionPoints,
+    });
 
     return NextResponse.json(payload, {
       headers: {

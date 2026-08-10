@@ -14,6 +14,13 @@ export type PlayerSnapshotObservation = {
 };
 
 export type DerivedStats = Record<string, number | null | undefined>;
+export type SeasonTotals = Record<string, number | null | undefined>;
+
+export type CareerSeason = {
+  season?: string | number;
+  gamesPlayed?: number;
+  seasonTotals?: SeasonTotals;
+};
 
 export type ConsistencyProfile = {
   gamesPlayed?: number;
@@ -34,9 +41,11 @@ export type PlayerProfile = MarketAsset & {
   stats?: {
     season?: string;
     gamesPlayed?: number;
+    seasonTotals?: SeasonTotals;
     derivedStats?: DerivedStats;
     consistency?: ConsistencyProfile;
   };
+  career?: CareerSeason[];
   advanced?: {
     [key: string]: number | string | DerivedStats | null | undefined;
     season?: number;

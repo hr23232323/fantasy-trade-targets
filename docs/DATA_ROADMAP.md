@@ -1,6 +1,6 @@
 # Fantasy Trade Target data roadmap
 
-Last reviewed: 2026-08-04
+Last reviewed: 2026-08-10
 
 This is the living inventory for every dataset we use or may add. A feed does not ship merely because it is technically accessible. Each feed needs a clear product job, stable identifier mapping, update cadence, attribution plan, and commercial-use decision.
 
@@ -14,7 +14,7 @@ This is the living inventory for every dataset we use or may add. A feed does no
 - **Identifier spine:** Tradyr slug plus Sleeper player ID when supplied.
 - **Refresh:** the publisher runs three times daily, validates every supported market variant, and packages the current release with the application.
 - **Rights:** the [official Tradyr API documentation](https://api.tradyr.app/docs) explicitly permits commercial use with attribution.
-- **Public fields:** name, slug, position, team, age, composite, rank, position rank, confidence, Sleeper ID, pick metadata, upstream composite history when supplied, derived season/usage metrics, consistency, and similar-market players.
+- **Public fields:** name, slug, position, team, age, composite, rank, position rank, confidence, Sleeper ID, pick metadata, upstream composite history when supplied, compact three-season scoring profiles, derived season/usage metrics, consistency, and similar-market players.
 - **History boundary:** the documented player endpoints may return an empty `history` array and `deltas: null` for an otherwise valid canonical profile. Publication must preserve that distinction instead of treating absent upstream observations as zeroes or inferred history.
 - **Do not expose:** upstream source-specific KTC or FantasyCalc payload fields. V1 republishes only the licensed Tradyr composite.
 - **Attribution:** the dedicated data-sources page names and links the provider;
@@ -31,10 +31,10 @@ This is the living inventory for every dataset we use or may add. A feed does no
 
 ### Local deterministic trade engine
 
-- **Product job:** raw totals, roster-cost-adjusted totals, verdict bands, balancing suggestions, and share URLs.
+- **Product job:** replacement-relative 4/6-point passing-TD and standard/half/full-PPR values, raw totals, roster-cost-adjusted totals, verdict bands, balancing suggestions, and share URLs.
 - **Refresh:** versioned with application deploys.
 - **Cost:** no inference or third-party calculation request.
-- **Method:** best asset receives 100% weight; later pieces receive 90%, 84%, 79%, 75%, 72%, 70%, and 68%. Verdict bands are documented at `/methodology`.
+- **Method:** scoring changes are measured as the player's change in points over positional replacement, then confidence-weighted and capped so the published market remains the anchor. Best package asset receives 100% weight; later pieces receive 90%, 84%, 79%, 75%, 72%, 70%, and 68%. Exact formulas and verdict bands are documented at `/methodology`.
 
 ## Current data foundation
 
@@ -57,7 +57,8 @@ This is the living inventory for every dataset we use or may add. A feed does no
   expensive; preserve the same release IDs and public compact-history contract.
 - **Snapshot dimensions:** format, quarterback setting, TE premium, supported
   league size, player/pick identity, value, overall and positional rank,
-  confidence, upstream freshness, settings hash, and methodology version.
+  confidence, compact raw-stat scoring profile, upstream freshness, settings
+  hash, and methodology version.
 - **Public releases:** a manifest, current market snapshots, player histories,
   mover reports, and downloadable sanitized CSV/JSON artifacts.
 - **Validation:** reject stale, partial, duplicate, or schema-incompatible input
@@ -85,7 +86,7 @@ data library. A failed refresh leaves the previous release intact.
 
 ### Derived league features
 
-- League-specific scoring normalized from `scoring_settings`.
+- Complete league-specific scoring normalized from `scoring_settings`, extending the public passing-TD/PPR subset with bonuses, first downs, turnover variants, and other custom rules.
 - Starting lineup value vs bench value, with replacement-level baselines per league.
 - Contender / retool / rebuild classification using age, starter strength, depth, draft capital, and standings.
 - Positional need/surplus by comparing usable starters with every other roster.

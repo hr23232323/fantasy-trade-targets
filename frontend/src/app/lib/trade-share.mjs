@@ -33,6 +33,8 @@ export function buildTradeShareParams({
   numQbs,
   tep,
   numTeams,
+  passingTdPoints,
+  receptionPoints,
   rosterPremium,
   sideA,
   sideB,
@@ -43,6 +45,10 @@ export function buildTradeShareParams({
     teams: String(VALID_TEAM_COUNTS.has(numTeams) ? numTeams : 12),
   });
   if (tep) params.set("tep", "1");
+  if (passingTdPoints === 6) params.set("passTd", "6");
+  if ([0, 0.5].includes(Number(receptionPoints))) {
+    params.set("ppr", String(Number(receptionPoints)));
+  }
   if (!rosterPremium) params.set("roster", "0");
   if (sideA.length) params.set("get", sideA.map((asset) => asset.id).join(","));
   if (sideB.length) params.set("send", sideB.map((asset) => asset.id).join(","));
@@ -55,6 +61,11 @@ export function resolveTradeShare(searchParams, marketAssets) {
   const tep = firstParam(searchParams, "tep") === "1";
   const requestedTeams = Number(firstParam(searchParams, "teams"));
   const numTeams = VALID_TEAM_COUNTS.has(requestedTeams) ? requestedTeams : 12;
+  const passingTdPoints = firstParam(searchParams, "passTd") === "6" ? 6 : 4;
+  const requestedReceptionPoints = Number(firstParam(searchParams, "ppr") ?? 1);
+  const receptionPoints = [0, 0.5, 1].includes(requestedReceptionPoints)
+    ? requestedReceptionPoints
+    : 1;
   const rosterPremium = firstParam(searchParams, "roster") !== "0";
   const byId = new Map(marketAssets.map((asset) => [asset.id, asset]));
   const seen = new Set();
@@ -76,6 +87,8 @@ export function resolveTradeShare(searchParams, marketAssets) {
     numQbs,
     tep,
     numTeams,
+    passingTdPoints,
+    receptionPoints,
     rosterPremium,
     sideA,
     sideB,

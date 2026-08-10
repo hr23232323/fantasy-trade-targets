@@ -16,7 +16,7 @@ const compactSnapshotHistory = JSON.parse(
 );
 
 test("public release contains every supported market variant", () => {
-  assert.equal(release.schemaVersion, 2);
+  assert.ok(release.schemaVersion >= 2);
   assert.match(release.releaseId, /^ftt-\d{8}T\d{6}Z$/);
   assert.equal(Object.keys(release.playerMarkets).length, 8);
   assert.equal(Object.keys(release.pickMarkets).length, 10);
@@ -25,6 +25,22 @@ test("public release contains every supported market variant", () => {
     const minimum = key.startsWith("redraft:") ? 150 : 300;
     assert.ok(payload.data.length >= minimum, `${key} has a complete player market`);
     assert.ok(payload.meta.generatedAt, `${key} records source freshness`);
+  }
+});
+
+test("new releases publish compact scoring profiles for the full player market", () => {
+  if (release.schemaVersion < 3) return;
+
+  const profiles = release.playerScoringProfiles;
+  assert.ok(profiles && typeof profiles === "object");
+  assert.ok(Object.keys(profiles).length >= 150);
+  for (const [slug, profile] of Object.entries(profiles)) {
+    assert.equal(profile.modelVersion, "2026.08.2", `${slug} uses the active model`);
+    assert.ok(profile.observedThroughSeason);
+    assert.ok(profile.weightedGames > 0);
+    assert.ok(profile.confidence > 0 && profile.confidence <= 1);
+    assert.equal(typeof profile.perGame.passingTouchdowns, "number");
+    assert.equal(typeof profile.perGame.receptions, "number");
   }
 });
 

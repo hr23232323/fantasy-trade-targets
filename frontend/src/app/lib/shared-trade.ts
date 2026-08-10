@@ -21,6 +21,8 @@ export async function getSharedTrade(searchParams: RawTradeSearchParams) {
     numQbs: requested.numQbs,
     tep: requested.tep,
     numTeams: requested.numTeams,
+    passingTdPoints: requested.passingTdPoints,
+    receptionPoints: requested.receptionPoints,
   });
   const trade = resolveTradeShare(
     searchParams,

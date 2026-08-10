@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { FiCheck, FiEdit3, FiShare2 } from "react-icons/fi";
 import { captureAnalytics } from "../lib/analytics";
+import type { PassingTdPoints, ReceptionPoints } from "../types/MarketAsset";
 
 export default function TradeReceiptActions({
   title,
@@ -12,6 +13,8 @@ export default function TradeReceiptActions({
   sideACount,
   sideBCount,
   verdict,
+  passingTdPoints,
+  receptionPoints,
 }: {
   title: string;
   editHref: string;
@@ -19,12 +22,16 @@ export default function TradeReceiptActions({
   sideACount: number;
   sideBCount: number;
   verdict: string;
+  passingTdPoints: PassingTdPoints;
+  receptionPoints: ReceptionPoints;
 }) {
   const [shared, setShared] = useState(false);
 
   const share = async () => {
     const properties = {
       calculator_format: format,
+      passing_td_points: passingTdPoints,
+      reception_points: receptionPoints,
       side_a_asset_count: sideACount,
       side_b_asset_count: sideBCount,
       verdict,
@@ -77,6 +84,8 @@ export default function TradeReceiptActions({
         onClick={() =>
           captureAnalytics("trade_report_edit_opened", {
             calculator_format: format,
+            passing_td_points: passingTdPoints,
+            reception_points: receptionPoints,
             side_a_asset_count: sideACount,
             side_b_asset_count: sideBCount,
             verdict,

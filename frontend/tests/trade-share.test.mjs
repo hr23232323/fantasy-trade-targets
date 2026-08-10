@@ -50,6 +50,8 @@ test("share parameters round-trip every calculator setting and package", () => {
     numQbs: 2,
     tep: true,
     numTeams: 14,
+    passingTdPoints: 6,
+    receptionPoints: 0.5,
     rosterPremium: false,
     sideA: [bijan, pick],
     sideB: [gibbs],
@@ -61,6 +63,8 @@ test("share parameters round-trip every calculator setting and package", () => {
     numQbs: 2,
     tep: true,
     numTeams: 14,
+    passingTdPoints: 6,
+    receptionPoints: 0.5,
     rosterPremium: false,
     sideA: [bijan, pick],
     sideB: [gibbs],
@@ -80,7 +84,39 @@ test("unknown and duplicate assets are discarded across both sides", () => {
   assert.deepEqual(resolved.sideA, [bijan]);
   assert.deepEqual(resolved.sideB, [gibbs]);
   assert.equal(resolved.numTeams, 12);
+  assert.equal(resolved.passingTdPoints, 4);
+  assert.equal(resolved.receptionPoints, 1);
   assert.equal(resolved.rosterPremium, true);
+});
+
+test("baseline scoring stays compact while scoring variants are explicit", () => {
+  const baseline = buildTradeShareParams({
+    format: "dynasty",
+    numQbs: 2,
+    tep: false,
+    numTeams: 12,
+    passingTdPoints: 4,
+    receptionPoints: 1,
+    rosterPremium: true,
+    sideA: [],
+    sideB: [],
+  });
+  assert.equal(baseline.has("passTd"), false);
+  assert.equal(baseline.has("ppr"), false);
+
+  const standardSixPoint = buildTradeShareParams({
+    format: "redraft",
+    numQbs: 1,
+    tep: false,
+    numTeams: 10,
+    passingTdPoints: 6,
+    receptionPoints: 0,
+    rosterPremium: true,
+    sideA: [],
+    sideB: [],
+  });
+  assert.equal(standardSixPoint.get("passTd"), "6");
+  assert.equal(standardSixPoint.get("ppr"), "0");
 });
 
 test("trade labels and editor destinations stay deterministic", () => {

@@ -1,9 +1,16 @@
 import publicReleaseJson from "../../../data/public-release.json";
+import {
+  applyScoringContext,
+  buildScoringProfile,
+} from "./scoring-engine.mjs";
 import type {
   MarketAsset,
   MarketFormat,
   MarketPayload,
+  PassingTdPoints,
+  PlayerScoringProfile,
   Position,
+  ReceptionPoints,
 } from "../types/MarketAsset";
 import type {
   PlayerProfile,
@@ -16,6 +23,8 @@ type MarketSettings = {
   numQbs?: 1 | 2;
   tep?: boolean;
   numTeams?: number;
+  passingTdPoints?: PassingTdPoints;
+  receptionPoints?: ReceptionPoints;
 };
 
 type TradyrPlayer = {
@@ -66,10 +75,22 @@ type PublicRelease = {
   playerMarkets: Record<string, TradyrResponse<TradyrPlayer[]>>;
   pickMarkets: Record<string, TradyrResponse<TradyrPick[]>>;
   playerProfiles: Record<string, TradyrResponse<PlayerProfile>>;
+  playerScoringProfiles?: Record<string, PlayerScoringProfile>;
   playerSnapshotHistory: Record<string, PlayerSnapshotObservation[]>;
 };
 
 const publicRelease = publicReleaseJson as unknown as PublicRelease;
+const fallbackScoringProfiles = Object.fromEntries(
+  Object.entries(publicRelease.playerProfiles).flatMap(([slug, payload]) => {
+    const profile = buildScoringProfile({
+      stats: payload.data.stats,
+      career: payload.data.career,
+    });
+    return profile ? [[slug, profile]] : [];
+  }),
+) as Record<string, PlayerScoringProfile>;
+const playerScoringProfiles =
+  publicRelease.playerScoringProfiles ?? fallbackScoringProfiles;
 
 export function getMarketReleaseInfo() {
   return {
@@ -96,6 +117,12 @@ export async function getMarket(
   const numQbs = settings.numQbs ?? 2;
   const tep = settings.tep ?? false;
   const numTeams = normalizeTeamCount(settings.numTeams ?? 12);
+  const passingTdPoints = settings.passingTdPoints === 6 ? 6 : 4;
+  const receptionPoints = [0, 0.5, 1].includes(
+    Number(settings.receptionPoints),
+  )
+    ? (Number(settings.receptionPoints) as ReceptionPoints)
+    : 1;
   const playerKey = `${format}:${numQbs}:${tep ? 1 : 0}`;
   const playersResponse = publicRelease.playerMarkets[playerKey];
   const picksResponse =
@@ -110,7 +137,7 @@ export async function getMarket(
     throw new Error(`Public release is missing pick market ${numQbs}:${numTeams}`);
   }
 
-  const players: MarketAsset[] = playersResponse.data.map((player) => ({
+  const basePlayers: MarketAsset[] = playersResponse.data.map((player) => ({
     id: player.slug,
     slug: player.slug,
     name: player.name,
@@ -124,6 +151,17 @@ export async function getMarket(
     confidence: player.confidence,
     sleeperId: player.sleeperId,
   }));
+  const scoringMarket = applyScoringContext(
+    basePlayers,
+    playerScoringProfiles,
+    {
+      format,
+      numQbs,
+      numTeams,
+      passingTdPoints,
+      receptionPoints,
+    },
+  );
 
   const picks: MarketAsset[] = (picksResponse?.data || []).map((pick) => ({
     id: pick.id,
@@ -138,7 +176,9 @@ export async function getMarket(
     tier: pick.tier,
   }));
 
-  const assets = [...players, ...picks].sort((a, b) => b.value - a.value);
+  const assets = [...scoringMarket.assets, ...picks].sort(
+    (a, b) => b.value - a.value,
+  );
 
   return {
     assets,
@@ -153,6 +193,7 @@ export async function getMarket(
       assetCount: assets.length,
       releaseId: publicRelease.releaseId,
       methodologyVersion: publicRelease.methodologyVersion,
+      scoring: scoringMarket.meta,
     },
   };
 }

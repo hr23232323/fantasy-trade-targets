@@ -1,10 +1,17 @@
-import type { MarketAsset, MarketFormat } from "../types/MarketAsset";
+import type {
+  MarketAsset,
+  MarketFormat,
+  PassingTdPoints,
+  ReceptionPoints,
+} from "../types/MarketAsset";
 
 export type TradeShareSettings = {
   format: MarketFormat;
   numQbs: 1 | 2;
   tep: boolean;
   numTeams: number;
+  passingTdPoints: PassingTdPoints;
+  receptionPoints: ReceptionPoints;
   rosterPremium: boolean;
   sideA: MarketAsset[];
   sideB: MarketAsset[];

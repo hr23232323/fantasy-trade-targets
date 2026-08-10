@@ -29,6 +29,8 @@ import type {
   MarketAsset,
   MarketFormat,
   MarketPayload,
+  PassingTdPoints,
+  ReceptionPoints,
 } from "../types/MarketAsset";
 
 type TradeCalculatorProps = {
@@ -48,6 +50,8 @@ export default function TradeCalculator({
   const [numQbs, setNumQbs] = useState<1 | 2>(defaultNumQbs);
   const [tep, setTep] = useState(false);
   const [numTeams, setNumTeams] = useState(12);
+  const [passingTdPoints, setPassingTdPoints] = useState<PassingTdPoints>(4);
+  const [receptionPoints, setReceptionPoints] = useState<ReceptionPoints>(1);
   const [rosterPremium, setRosterPremium] = useState(true);
   const [settingsHydrated, setSettingsHydrated] = useState(false);
   const [reloadKey, setReloadKey] = useState(0);
@@ -69,6 +73,11 @@ export default function TradeCalculator({
     if (params.get("qbs") === "2") setNumQbs(2);
     if (params.get("tep") === "1") setTep(true);
     if (params.get("roster") === "0") setRosterPremium(false);
+    if (params.get("passTd") === "6") setPassingTdPoints(6);
+    const requestedPpr = Number(params.get("ppr"));
+    if ([0, 0.5, 1].includes(requestedPpr)) {
+      setReceptionPoints(requestedPpr as ReceptionPoints);
+    }
     const requestedTeams = Number(params.get("teams"));
     if ([8, 10, 12, 14, 16].includes(requestedTeams)) setNumTeams(requestedTeams);
     setSettingsHydrated(true);
@@ -86,6 +95,8 @@ export default function TradeCalculator({
           numQbs: String(numQbs),
           tep: String(tep),
           numTeams: String(numTeams),
+          passingTdPoints: String(passingTdPoints),
+          receptionPoints: String(receptionPoints),
         });
         const payload = await fetchClientMarket(
           `/api/market?${params}`,
@@ -93,14 +104,17 @@ export default function TradeCalculator({
         );
         if (!active) return;
         setMarket(payload);
-        const marketSignature = `${payload.meta.releaseId}:${format}:${numQbs}:${tep}:${numTeams}`;
+        const marketSignature = `${payload.meta.releaseId}:${format}:${numQbs}:${tep}:${numTeams}:${passingTdPoints}:${receptionPoints}`;
         if (lastMarketSignature.current !== marketSignature) {
           captureAnalytics("calculator_market_loaded", {
             calculator_format: format,
             num_qbs: numQbs,
             te_premium: tep,
             league_size: numTeams,
+            passing_td_points: passingTdPoints,
+            reception_points: receptionPoints,
             asset_count: payload.meta.assetCount,
+            scoring_profile_count: payload.meta.scoring.coveredCount,
             release_id: payload.meta.releaseId,
           });
           lastMarketSignature.current = marketSignature;
@@ -123,6 +137,8 @@ export default function TradeCalculator({
             num_qbs: numQbs,
             te_premium: tep,
             league_size: numTeams,
+            passing_td_points: passingTdPoints,
+            reception_points: receptionPoints,
           });
         }
       } finally {
@@ -134,7 +150,16 @@ export default function TradeCalculator({
     return () => {
       active = false;
     };
-  }, [format, numQbs, tep, numTeams, reloadKey, settingsHydrated]);
+  }, [
+    format,
+    numQbs,
+    tep,
+    numTeams,
+    passingTdPoints,
+    receptionPoints,
+    reloadKey,
+    settingsHydrated,
+  ]);
 
   useEffect(() => {
     if (!market || hydratedFromUrl.current) return;
@@ -191,7 +216,9 @@ export default function TradeCalculator({
       market.meta.format !== format ||
       market.meta.numQbs !== numQbs ||
       market.meta.tep !== tep ||
-      market.meta.numTeams !== numTeams
+      market.meta.numTeams !== numTeams ||
+      market.meta.scoring.settings.passingTdPoints !== passingTdPoints ||
+      market.meta.scoring.settings.receptionPoints !== receptionPoints
     ) {
       return;
     }
@@ -203,6 +230,8 @@ export default function TradeCalculator({
       numQbs,
       tep,
       numTeams,
+      passingTdPoints,
+      receptionPoints,
       rosterPremium,
     });
     if (signature === lastEvaluationSignature.current) return;
@@ -212,6 +241,8 @@ export default function TradeCalculator({
       num_qbs: numQbs,
       te_premium: tep,
       league_size: numTeams,
+      passing_td_points: passingTdPoints,
+      reception_points: receptionPoints,
       roster_cost_enabled: rosterPremium,
       get_asset_count: sideA.length,
       send_asset_count: sideB.length,
@@ -236,6 +267,8 @@ export default function TradeCalculator({
     market,
     numQbs,
     numTeams,
+    passingTdPoints,
+    receptionPoints,
     rosterPremium,
     settingsHydrated,
     sideA,
@@ -256,6 +289,8 @@ export default function TradeCalculator({
       num_qbs: numQbs,
       te_premium: tep,
       league_size: numTeams,
+      passing_td_points: passingTdPoints,
+      reception_points: receptionPoints,
       side: side === "A" ? "get" : "send",
       selection_source: selectionSource,
       asset_slug: asset.slug,
@@ -272,6 +307,8 @@ export default function TradeCalculator({
     if (asset) {
       captureAnalytics("trade_asset_removed", {
         calculator_format: format,
+        passing_td_points: passingTdPoints,
+        reception_points: receptionPoints,
         side: side === "A" ? "get" : "send",
         asset_slug: asset.slug,
         asset_kind: asset.kind,
@@ -283,6 +320,8 @@ export default function TradeCalculator({
   const reset = () => {
     captureAnalytics("trade_reset", {
       calculator_format: format,
+      passing_td_points: passingTdPoints,
+      reception_points: receptionPoints,
       get_asset_count: sideA.length,
       send_asset_count: sideB.length,
       had_complete_trade: sideA.length > 0 && sideB.length > 0,
@@ -300,6 +339,8 @@ export default function TradeCalculator({
       numQbs,
       tep,
       numTeams,
+      passingTdPoints,
+      receptionPoints,
       rosterPremium,
       sideA,
       sideB,
@@ -317,6 +358,8 @@ export default function TradeCalculator({
       num_qbs: numQbs,
       te_premium: tep,
       league_size: numTeams,
+      passing_td_points: passingTdPoints,
+      reception_points: receptionPoints,
       roster_cost_enabled: rosterPremium,
       get_asset_count: sideA.length,
       send_asset_count: sideB.length,
@@ -383,6 +426,24 @@ export default function TradeCalculator({
           });
           setNumTeams(value);
         }}
+        passingTdPoints={passingTdPoints}
+        setPassingTdPoints={(value) => {
+          captureAnalytics("trade_setting_changed", {
+            setting: "passing_td_points",
+            previous_value: passingTdPoints,
+            selected_value: value,
+          });
+          setPassingTdPoints(value);
+        }}
+        receptionPoints={receptionPoints}
+        setReceptionPoints={(value) => {
+          captureAnalytics("trade_setting_changed", {
+            setting: "reception_points",
+            previous_value: receptionPoints,
+            selected_value: value,
+          });
+          setReceptionPoints(value);
+        }}
         rosterPremium={rosterPremium}
         setRosterPremium={(value) => {
           captureAnalytics("trade_setting_changed", {
@@ -404,6 +465,8 @@ export default function TradeCalculator({
               captureAnalytics("calculator_market_retry", {
                 calculator_format: format,
                 num_qbs: numQbs,
+                passing_td_points: passingTdPoints,
+                reception_points: receptionPoints,
               });
               setReloadKey((value) => value + 1);
             }}
@@ -472,7 +535,8 @@ export default function TradeCalculator({
         <div className="text-xs text-white/50">
           {market ? (
             <>
-              {market.meta.assetCount} assets · Updated {formatDate(market.meta.generatedAt)} ·{" "}
+              {market.meta.assetCount} assets · {passingTdPoints}PT pass TD · {pprLabel(receptionPoints)} ·{" "}
+              {market.meta.scoring.coveredCount}/{market.meta.scoring.playerCount} players modeled · Updated {formatDate(market.meta.generatedAt)} ·{" "}
               <a
                 href="/data-sources"
                 className="text-[#dfff4f] underline decoration-white/30 underline-offset-4 hover:text-white"
@@ -517,6 +581,10 @@ function LeagueControls({
   setTep,
   numTeams,
   setNumTeams,
+  passingTdPoints,
+  setPassingTdPoints,
+  receptionPoints,
+  setReceptionPoints,
   rosterPremium,
   setRosterPremium,
 }: {
@@ -528,11 +596,15 @@ function LeagueControls({
   setTep: (value: boolean) => void;
   numTeams: number;
   setNumTeams: (value: number) => void;
+  passingTdPoints: PassingTdPoints;
+  setPassingTdPoints: (value: PassingTdPoints) => void;
+  receptionPoints: ReceptionPoints;
+  setReceptionPoints: (value: ReceptionPoints) => void;
   rosterPremium: boolean;
   setRosterPremium: (value: boolean) => void;
 }) {
   return (
-    <div className="grid gap-5 border-b border-white/20 bg-white/[0.035] px-5 py-5 sm:px-8 xl:grid-cols-[1fr_1fr_auto_auto] xl:items-end">
+    <div className="grid gap-5 border-b border-white/20 bg-white/[0.035] px-5 py-5 sm:grid-cols-2 sm:px-8 xl:grid-cols-3 xl:items-end">
       <Segmented
         label="League type"
         options={[
@@ -551,6 +623,25 @@ function LeagueControls({
         value={String(numQbs)}
         onChange={(value) => setNumQbs(value === "1" ? 1 : 2)}
       />
+      <Segmented
+        label="Passing TD"
+        options={[
+          ["4", "4 points"],
+          ["6", "6 points"],
+        ]}
+        value={String(passingTdPoints)}
+        onChange={(value) => setPassingTdPoints(value === "6" ? 6 : 4)}
+      />
+      <Segmented
+        label="Receptions"
+        options={[
+          ["0", "Standard"],
+          ["0.5", "Half PPR"],
+          ["1", "Full PPR"],
+        ]}
+        value={String(receptionPoints)}
+        onChange={(value) => setReceptionPoints(Number(value) as ReceptionPoints)}
+      />
       <label className="grid gap-2">
         <span className="mono-label text-white/50">League size</span>
         <select
@@ -563,7 +654,7 @@ function LeagueControls({
           ))}
         </select>
       </label>
-      <div className="flex flex-wrap gap-2 xl:justify-end">
+      <div className="flex flex-wrap gap-2 sm:self-end xl:justify-end">
         <Toggle active={tep} onClick={() => setTep(!tep)} label="TE premium" />
         <Toggle
           active={rosterPremium}
@@ -589,7 +680,10 @@ function Segmented({
   return (
     <div className="grid gap-2">
       <span className="mono-label text-white/50">{label}</span>
-      <div className="grid grid-cols-2 border border-white/25 p-1">
+      <div
+        className="grid border border-white/25 p-1"
+        style={{ gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))` }}
+      >
         {options.map(([optionValue, optionLabel]) => (
           <button
             key={optionValue}
@@ -763,8 +857,9 @@ function AssetPicker({
                     {asset.position}{asset.team ? ` · ${asset.team}` : ""}{asset.age ? ` · ${asset.age.toFixed(1)} y.o.` : ""}
                   </span>
                 </span>
-                <span className={`px-2 py-1 font-mono text-xs font-black ${accent === "acid" ? "bg-[#dfff4f]" : "bg-[#ffb29a]"}`}>
-                  {asset.value}
+                <span className={`px-2 py-1 text-right font-mono ${accent === "acid" ? "bg-[#dfff4f]" : "bg-[#ffb29a]"}`}>
+                  <span className="block text-xs font-black">{asset.value}</span>
+                  <ScoringDelta asset={asset} className="text-[8px] text-[#171c19]/65" />
                 </span>
               </button>
             ))
@@ -787,7 +882,10 @@ function AssetRow({ asset, onRemove }: { asset: MarketAsset; onRemove: () => voi
           {asset.team || asset.tier || "Draft capital"}{asset.age ? ` · ${asset.age.toFixed(1)} y.o.` : ""}
         </p>
       </div>
-      <span className="font-mono text-sm font-black tabular-nums">{asset.value}</span>
+      <span className="text-right font-mono tabular-nums">
+        <span className="block text-sm font-black">{asset.value}</span>
+        <ScoringDelta asset={asset} className="text-[9px] text-white/45" />
+      </span>
       <button
         type="button"
         onClick={onRemove}
@@ -863,7 +961,11 @@ function TradeVerdict({
               >
                 <FiPlus />
                 <AssetThumbnail asset={asset} compact onDark />
-                {asset.name} <span className="font-mono text-white/40">{asset.value}</span>
+                {asset.name}{" "}
+                <span className="text-right font-mono text-white/40">
+                  {asset.value}
+                  <ScoringDelta asset={asset} className="block text-[8px]" />
+                </span>
               </button>
             ))}
           </div>
@@ -926,6 +1028,22 @@ function positionColor(position: MarketAsset["position"]) {
   if (position === "WR") return "bg-[#dfff4f]";
   if (position === "TE") return "bg-[#d7b6ff]";
   return "bg-white";
+}
+
+function ScoringDelta({ asset, className }: { asset: MarketAsset; className: string }) {
+  const delta = asset.scoringContext?.valueDelta || 0;
+  if (!delta) return null;
+  return (
+    <span className={className} title={`Base market value ${asset.baseValue ?? asset.value}`}>
+      {delta > 0 ? "+" : ""}{delta} league
+    </span>
+  );
+}
+
+function pprLabel(points: ReceptionPoints) {
+  if (points === 0) return "Standard";
+  if (points === 0.5) return "Half PPR";
+  return "Full PPR";
 }
 
 function formatDate(value: string) {

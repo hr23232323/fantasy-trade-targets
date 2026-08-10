@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
             </div>
           </div>
           <div style={{ display: "flex", padding: "12px 18px", border: "3px solid #171c19", background: "#171c19", color: "white", fontSize: "17px", fontWeight: 800, textTransform: "uppercase" }}>
-            {trade.format} · {trade.numQbs === 2 ? "Superflex" : "1QB"}
+            {trade.format} · {trade.numQbs === 2 ? "Superflex" : "1QB"} · {trade.passingTdPoints}PT TD · {pprLabel(trade.receptionPoints)}
           </div>
         </div>
 
@@ -100,7 +100,14 @@ function CardSide({
                 </span>
               </div>
             </div>
-            <span style={{ marginLeft: "12px", fontSize: "18px", fontWeight: 900 }}>{Math.round(asset.value)}</span>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginLeft: "12px" }}>
+              <span style={{ fontSize: "18px", fontWeight: 900 }}>{Math.round(asset.value)}</span>
+              {asset.scoringContext?.valueDelta ? (
+                <span style={{ marginTop: "3px", color: "#69706c", fontSize: "9px", fontWeight: 800 }}>
+                  {asset.scoringContext.valueDelta > 0 ? "+" : ""}{asset.scoringContext.valueDelta} LEAGUE
+                </span>
+              ) : null}
+            </div>
           </div>
         ))}
         {assets.length > visible.length && <span style={{ display: "flex", paddingTop: "10px", color: "#69706c", fontSize: "16px", fontWeight: 700 }}>+ {assets.length - visible.length} more assets</span>}
@@ -149,4 +156,10 @@ function positionColor(position: MarketAsset["position"]) {
   if (position === "WR") return "#dfff4f";
   if (position === "TE") return "#d7b6ff";
   return "#dedbd1";
+}
+
+function pprLabel(points: number) {
+  if (points === 0) return "STD";
+  if (points === 0.5) return "HALF PPR";
+  return "PPR";
 }

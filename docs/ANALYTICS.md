@@ -51,6 +51,8 @@ Fantasy Trade Target uses PostHog for privacy-conscious, anonymous product analy
 
 PostHog's standard `$pageview`, `$pageleave`, `$autocapture`, exception, and performance events complement these product events.
 
+Calculator load, failure, asset-add, evaluation, and share events include `passing_td_points` and `reception_points`. Shared-report events carry the same dimensions, so adoption and conversion can be compared across 4/6-point passing-TD and standard/half/full-PPR cohorts without recording league or user identifiers.
+
 ## Recommended dashboards
 
 1. **Acquisition:** unique visitors and landing pages by referrer/UTM.
@@ -58,5 +60,6 @@ PostHog's standard `$pageview`, `$pageleave`, `$autocapture`, exception, and per
 3. **Research funnel:** player/team research viewed → calculator CTA or data download.
 4. **Content demand:** player and team views, market searches, and downloads by asset/team.
 5. **Reliability:** market load failures, exceptions, slow pages, and retry recovery.
+6. **Scoring adoption:** setting changes, completed evaluations, and report shares split by `passing_td_points` and `reception_points`.
 
 Use `trade_evaluated` as the primary activation event, `trade_shared` as report creation, and `trade_report_viewed` as evidence that a recipient opened it.
