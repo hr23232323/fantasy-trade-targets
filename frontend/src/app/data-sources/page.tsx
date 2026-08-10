@@ -20,6 +20,41 @@ export default function DataSourcesPage() {
           <article className="bg-[#ffb29a] p-7 sm:p-10"><span className="mono-label">Images // licensed</span><h2 className="mt-10 text-4xl font-black tracking-[-0.055em]">Wikimedia Commons</h2><p className="mt-4 text-sm leading-7 text-[#3f453f]">Player pages and trade tools use Wikimedia API-selected images with reviewed Creative Commons terms. Every image record retains its creator, source file, and license; full credits appear on player profiles and trade receipts. Sleeper and ESPN image hotlinks are not used.</p><a href="https://commons.wikimedia.org" target="_blank" rel="noopener noreferrer" className="mt-7 inline-block border-b-2 border-[#171c19] font-mono text-xs font-black uppercase">Visit Commons ↗</a></article>
         </div>
       </section>
+      <section id="scoring-data" className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
+        <div>
+          <span className="eyebrow">Scoring adjustment // reproducible</span>
+          <h2 className="section-title mt-6">Where the league-value change comes from.</h2>
+        </div>
+        <div>
+          <p className="max-w-3xl text-sm leading-7 text-[#59605c]">
+            Tradyr’s composite market is always the anchor. FTT combines that market with licensed raw season totals, calculates fantasy points under the selected rules, and adjusts only for the player’s change relative to replacement at the same position. No generated opinion or hidden projection changes the score.
+          </p>
+          <div className="mt-7 grid gap-px border border-[#171c19] bg-[#171c19] md:grid-cols-3">
+            <article className="bg-[#dfff4f] p-6">
+              <span className="mono-label">01 // Raw inputs</span>
+              <h3 className="mt-6 text-2xl font-black tracking-[-0.04em]">Recent production</h3>
+              <p className="mt-3 text-sm leading-6 text-[#3f453f]">Passing, rushing, receiving, turnover, and two-point-conversion totals from up to three recent seasons become confidence-weighted per-game profiles.</p>
+            </article>
+            <article className="bg-[#8bcfff] p-6">
+              <span className="mono-label">02 // Your scoring</span>
+              <h3 className="mt-6 text-2xl font-black tracking-[-0.04em]">Six clear choices</h3>
+              <p className="mt-3 text-sm leading-6 text-[#3f453f]"><strong>PPR means points per reception.</strong> <strong>Passing TD:</strong> 4 or 6 points. <strong>Standard:</strong> 0 per catch. <strong>Half PPR:</strong> 0.5 per catch. <strong>Full PPR:</strong> 1 per catch. Yardage and touchdown scoring otherwise stays fixed.</p>
+            </article>
+            <article className="bg-[#ffb29a] p-6">
+              <span className="mono-label">03 // Guardrails</span>
+              <h3 className="mt-6 text-2xl font-black tracking-[-0.04em]">Market first</h3>
+              <p className="mt-3 text-sm leading-6 text-[#3f453f]">The model compares each player with league-size replacement, scales for sample confidence, and caps movement at ±12% in dynasty or ±20% in redraft. Picks and players without usable profiles remain unchanged.</p>
+            </article>
+          </div>
+          <div className="mt-5 border border-[#171c19] bg-white/45 p-5 text-sm leading-7 text-[#59605c]">
+            <strong className="text-[#171c19]">Neutral baseline:</strong> 4-point passing touchdowns and Full PPR use the published market unchanged. A visible “+ / − league” label shows the difference between that base market and the selected scoring context.
+          </div>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <a href="/methodology#league-scoring" className="border border-[#171c19] bg-[#171c19] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] text-white">Inspect the exact math →</a>
+            <a href="/dynasty-trade-calculator" className="border border-[#171c19] bg-white px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">Try the scoring controls →</a>
+          </div>
+        </div>
+      </section>
       <section className="page-wrap py-8">
         <div className="border border-[#171c19] bg-[#171c19] p-7 text-white sm:p-10">
           <span className="mono-label text-[#dfff4f]">Historical market data // three captures daily</span>

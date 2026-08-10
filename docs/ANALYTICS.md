@@ -23,6 +23,7 @@ Fantasy Trade Target uses PostHog for privacy-conscious, anonymous product analy
 | Calculator | `trade_asset_added` | A player or pick was added, including side and selection source. |
 | Calculator | `trade_asset_removed` | An asset was removed. |
 | Calculator | `trade_setting_changed` | A league or model setting was changed by the visitor. |
+| Calculator | `trade_help_opened` | A visitor opened a league-setting explanation; captures only the fixed help topic. |
 | Calculator | `trade_evaluated` | Both sides produced a distinct, complete trade evaluation. |
 | Calculator | `trade_sides_swapped` | The get/send sides were swapped. |
 | Calculator | `trade_reset` | The trade was cleared. |

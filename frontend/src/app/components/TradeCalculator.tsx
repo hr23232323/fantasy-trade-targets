@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import {
   FiArrowLeft,
   FiArrowRight,
   FiArrowUp,
   FiCheck,
   FiCopy,
+  FiInfo,
   FiPlus,
   FiRefreshCcw,
   FiSearch,
@@ -604,63 +605,82 @@ function LeagueControls({
   setRosterPremium: (value: boolean) => void;
 }) {
   return (
-    <div className="grid gap-5 border-b border-white/20 bg-white/[0.035] px-5 py-5 sm:grid-cols-2 sm:px-8 xl:grid-cols-3 xl:items-end">
-      <Segmented
-        label="League type"
-        options={[
-          ["dynasty", "Dynasty"],
-          ["redraft", "Redraft"],
-        ]}
-        value={format}
-        onChange={(value) => setFormat(value as MarketFormat)}
-      />
-      <Segmented
-        label="Quarterbacks"
-        options={[
-          ["1", "1QB"],
-          ["2", "Superflex"],
-        ]}
-        value={String(numQbs)}
-        onChange={(value) => setNumQbs(value === "1" ? 1 : 2)}
-      />
-      <Segmented
-        label="Passing TD"
-        options={[
-          ["4", "4 points"],
-          ["6", "6 points"],
-        ]}
-        value={String(passingTdPoints)}
-        onChange={(value) => setPassingTdPoints(value === "6" ? 6 : 4)}
-      />
-      <Segmented
-        label="Receptions"
-        options={[
-          ["0", "Standard"],
-          ["0.5", "Half PPR"],
-          ["1", "Full PPR"],
-        ]}
-        value={String(receptionPoints)}
-        onChange={(value) => setReceptionPoints(Number(value) as ReceptionPoints)}
-      />
-      <label className="grid gap-2">
-        <span className="mono-label text-white/50">League size</span>
-        <select
-          value={numTeams}
-          onChange={(event) => setNumTeams(Number(event.target.value))}
-          className="h-[42px] border border-white/25 bg-[#171c19] px-3 text-sm text-white"
-        >
-          {[8, 10, 12, 14, 16].map((count) => (
-            <option key={count} value={count}>{count} teams</option>
-          ))}
-        </select>
-      </label>
-      <div className="flex flex-wrap gap-2 sm:self-end xl:justify-end">
-        <Toggle active={tep} onClick={() => setTep(!tep)} label="TE premium" />
-        <Toggle
-          active={rosterPremium}
-          onClick={() => setRosterPremium(!rosterPremium)}
-          label="Roster cost"
+    <div className="border-b border-white/20 bg-white/[0.035]">
+      <div className="grid gap-5 px-5 py-5 sm:grid-cols-2 sm:px-8 xl:grid-cols-3 xl:items-end">
+        <Segmented
+          label="League type"
+          options={[
+            ["dynasty", "Dynasty"],
+            ["redraft", "Redraft"],
+          ]}
+          value={format}
+          onChange={(value) => setFormat(value as MarketFormat)}
         />
+        <Segmented
+          label="Quarterbacks"
+          help="Superflex treats roughly two quarterbacks per team as starters, so replacement level is deeper and scarce quarterbacks carry more market value."
+          options={[
+            ["1", "1QB"],
+            ["2", "Superflex"],
+          ]}
+          value={String(numQbs)}
+          onChange={(value) => setNumQbs(value === "1" ? 1 : 2)}
+        />
+        <Segmented
+          label="Passing TD"
+          help="Four points is the baseline. Six-point scoring adds two raw points per passing touchdown, then compares each quarterback’s change with the replacement quarterback for this league. Passing-TD-heavy QBs usually gain more than rushing-first QBs."
+          options={[
+            ["4", "4 points"],
+            ["6", "6 points"],
+          ]}
+          value={String(passingTdPoints)}
+          onChange={(value) => setPassingTdPoints(value === "6" ? 6 : 4)}
+        />
+        <Segmented
+          label="Receptions"
+          help="PPR means points per reception. Standard awards 0 points per catch, Half PPR awards 0.5, and Full PPR awards 1. Receiving yards and touchdowns score the same in all three. Values move by production relative to replacement at the same position."
+          options={[
+            ["0", "Standard"],
+            ["0.5", "Half PPR"],
+            ["1", "Full PPR"],
+          ]}
+          value={String(receptionPoints)}
+          onChange={(value) => setReceptionPoints(Number(value) as ReceptionPoints)}
+        />
+        <div className="grid gap-2">
+          <span className="inline-flex items-center gap-1.5">
+            <label htmlFor="trade-league-size" className="mono-label text-white/50">League size</label>
+            <InfoTooltip label="league size">
+              League size changes the positional replacement line. More teams push replacement deeper, making scarce starters harder to replace.
+            </InfoTooltip>
+          </span>
+          <select
+            id="trade-league-size"
+            value={numTeams}
+            onChange={(event) => setNumTeams(Number(event.target.value))}
+            className="h-[42px] border border-white/25 bg-[#171c19] px-3 text-sm text-white"
+          >
+            {[8, 10, 12, 14, 16].map((count) => (
+              <option key={count} value={count}>{count} teams</option>
+            ))}
+          </select>
+        </div>
+        <div className="flex flex-wrap gap-2 sm:self-end xl:justify-end">
+          <Toggle active={tep} onClick={() => setTep(!tep)} label="TE premium" />
+          <Toggle
+            active={rosterPremium}
+            onClick={() => setRosterPremium(!rosterPremium)}
+            label="Roster cost"
+          />
+        </div>
+      </div>
+      <div className="flex items-start gap-2 border-t border-white/10 px-5 py-3 text-[11px] leading-5 text-white/50 sm:px-8">
+        <FiInfo className="mt-0.5 shrink-0 text-[#8bcfff]" aria-hidden="true" />
+        <p>
+          <strong className="text-white/75">Selected: {passingTdPoints}-point passing TD + {pprLabel(receptionPoints)}.</strong>{" "}
+          Players move only when their scoring change differs from a replacement player at the same position; picks do not move.{" "}
+          <a href="/methodology#league-scoring" className="text-[#dfff4f] underline decoration-white/25 underline-offset-2 hover:text-white">See the exact math.</a>
+        </p>
       </div>
     </div>
   );
@@ -671,15 +691,20 @@ function Segmented({
   options,
   value,
   onChange,
+  help,
 }: {
   label: string;
   options: string[][];
   value: string;
   onChange: (value: string) => void;
+  help?: string;
 }) {
   return (
     <div className="grid gap-2">
-      <span className="mono-label text-white/50">{label}</span>
+      <span className="inline-flex items-center gap-1.5">
+        <span className="mono-label text-white/50">{label}</span>
+        {help ? <InfoTooltip label={label}>{help}</InfoTooltip> : null}
+      </span>
       <div
         className="grid border border-white/25 p-1"
         style={{ gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))` }}
@@ -689,6 +714,7 @@ function Segmented({
             key={optionValue}
             type="button"
             onClick={() => onChange(optionValue)}
+            aria-pressed={value === optionValue}
             className={`px-3 py-2 text-xs font-bold transition-colors ${
               value === optionValue ? "bg-white text-[#171c19]" : "text-white/60 hover:text-white"
             }`}
@@ -1033,9 +1059,39 @@ function positionColor(position: MarketAsset["position"]) {
 function ScoringDelta({ asset, className }: { asset: MarketAsset; className: string }) {
   const delta = asset.scoringContext?.valueDelta || 0;
   if (!delta) return null;
+  const direction = delta > 0 ? "above" : "below";
+  const explanation = `Base market value ${asset.baseValue ?? asset.value}. This league value is ${Math.abs(delta)} points ${direction} the base after comparing the player’s selected-scoring production with replacement at ${asset.position}.`;
   return (
-    <span className={className} title={`Base market value ${asset.baseValue ?? asset.value}`}>
+    <span
+      className={`${className} cursor-help underline decoration-dotted underline-offset-2`}
+      title={explanation}
+      aria-label={explanation}
+    >
       {delta > 0 ? "+" : ""}{delta} league
+    </span>
+  );
+}
+
+function InfoTooltip({ label, children }: { label: string; children: string }) {
+  const id = useId();
+  return (
+    <span className="group relative inline-flex normal-case">
+      <button
+        type="button"
+        aria-label={`Explain ${label}`}
+        aria-describedby={id}
+        onClick={() => captureAnalytics("trade_help_opened", { help_topic: label })}
+        className="grid h-5 w-5 place-items-center rounded-full border border-white/25 text-white/50 hover:border-[#8bcfff] hover:text-[#8bcfff] focus-visible:border-[#8bcfff] focus-visible:text-[#8bcfff] focus-visible:outline-none"
+      >
+        <FiInfo size={12} aria-hidden="true" />
+      </button>
+      <span
+        id={id}
+        role="tooltip"
+        className="pointer-events-none invisible absolute left-0 top-7 z-50 w-[min(18rem,calc(100vw-2.5rem))] border border-white/20 bg-[#090c0a] p-3 font-sans text-[11px] font-medium leading-5 text-white opacity-0 shadow-[4px_4px_0_#8bcfff] transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100"
+      >
+        {children}
+      </span>
     </span>
   );
 }

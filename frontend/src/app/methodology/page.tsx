@@ -22,13 +22,17 @@ export default function MethodologyPage() {
           <div className="border border-[#171c19] bg-[#171c19] p-6 font-mono text-sm font-bold text-[#dfff4f]">RAW SIDE VALUE = Σ ASSET MARKET SCORE</div>
         </div>
       </section>
-      <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
+      <section id="league-scoring" className="page-wrap grid scroll-mt-24 gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
           <span className="eyebrow">02 // League scoring</span>
           <h2 className="section-title mt-6">Change value, not just points.</h2>
         </div>
         <div className="space-y-5 text-sm leading-7 text-[#59605c]">
           <p>The published market is the anchor. Full PPR with four points per passing touchdown is the neutral baseline. Selecting six-point passing touchdowns, half PPR, or standard scoring re-prices players by how their fantasy production changes relative to a replacement-level player at the same position. Picks remain unchanged.</p>
+          <p><strong>PPR means points per reception.</strong> The three supported reception settings are:</p>
+          <div className="grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-3">
+            {[["Standard", "0 points per reception"], ["Half PPR", "0.5 points per reception"], ["Full PPR", "1 point per reception"]].map(([name, definition]) => <div key={name} className="bg-[#f3f0e7] p-4"><strong className="block text-[#171c19]">{name}</strong><span className="mt-1 block font-mono text-[10px] font-bold uppercase tracking-[0.06em] text-[#69706c]">{definition}</span></div>)}
+          </div>
           <p>Player scoring profiles use per-game NFL totals from up to three recent seasons. The newest season receives weight 1.00, then 0.55 and 0.30. Short samples receive less weight, and the final market adjustment is reduced when fewer than 17 weighted games are available.</p>
           <div className="border border-[#171c19] bg-[#171c19] p-6 font-mono text-xs font-bold leading-6 text-[#dfff4f] sm:text-sm">
             FANTASY POINTS = PASS YDS × 0.04 + PASS TD × (4 OR 6) − INT × 2<br />
