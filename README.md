@@ -4,7 +4,8 @@ Deterministic fantasy football trade tools for [fantasytradetarget.com](https://
 
 - dynasty and redraft trade calculators;
 - 1QB, Superflex, TE premium, and 8–16 team settings;
-- replacement-relative values for 4/6-point passing touchdowns and standard/half/full PPR;
+- replacement-relative values for 4/6-point passing touchdowns, standard/half/full PPR, dedicated RB/WR/TE starters, and 0–3 FLEX spots;
+- a shareable scoring impact lab plus focused scoring research pages;
 - exact rookie-pick values;
 - transparent roster-cost adjustment;
 - searchable dynasty rankings and trade value charts;
@@ -41,9 +42,10 @@ upstream access at request time. Refresh the release and archive a snapshot with
 TRADYR_API_KEY=try_live_xxxx npm run data:refresh
 ```
 
-The publisher respects the anonymous request limit automatically. Configure the
-free `TRADYR_API_KEY` GitHub Actions secret before expanding to hundreds of full
-player profiles so scheduled releases complete quickly.
+The publisher respects the anonymous request limit automatically. Scoring
+profiles publish in deterministic 200-player cohorts, preserving valid current
+profiles between runs until full-market coverage is reached. Configure the free
+`TRADYR_API_KEY` GitHub Actions secret so scheduled cohorts complete quickly.
 
 ## Verification
 

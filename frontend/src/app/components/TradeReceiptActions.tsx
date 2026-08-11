@@ -5,6 +5,7 @@ import { useState } from "react";
 import { FiCheck, FiEdit3, FiShare2 } from "react-icons/fi";
 import { captureAnalytics } from "../lib/analytics";
 import type { PassingTdPoints, ReceptionPoints } from "../types/MarketAsset";
+import type { RosterSettings } from "../types/MarketAsset";
 
 export default function TradeReceiptActions({
   title,
@@ -15,6 +16,10 @@ export default function TradeReceiptActions({
   verdict,
   passingTdPoints,
   receptionPoints,
+  rbStarters,
+  wrStarters,
+  teStarters,
+  flexSpots,
 }: {
   title: string;
   editHref: string;
@@ -24,7 +29,7 @@ export default function TradeReceiptActions({
   verdict: string;
   passingTdPoints: PassingTdPoints;
   receptionPoints: ReceptionPoints;
-}) {
+} & RosterSettings) {
   const [shared, setShared] = useState(false);
 
   const share = async () => {
@@ -32,6 +37,10 @@ export default function TradeReceiptActions({
       calculator_format: format,
       passing_td_points: passingTdPoints,
       reception_points: receptionPoints,
+      rb_starters: rbStarters,
+      wr_starters: wrStarters,
+      te_starters: teStarters,
+      flex_spots: flexSpots,
       side_a_asset_count: sideACount,
       side_b_asset_count: sideBCount,
       verdict,
@@ -86,6 +95,10 @@ export default function TradeReceiptActions({
             calculator_format: format,
             passing_td_points: passingTdPoints,
             reception_points: receptionPoints,
+            rb_starters: rbStarters,
+            wr_starters: wrStarters,
+            te_starters: teStarters,
+            flex_spots: flexSpots,
             side_a_asset_count: sideACount,
             side_b_asset_count: sideBCount,
             verdict,

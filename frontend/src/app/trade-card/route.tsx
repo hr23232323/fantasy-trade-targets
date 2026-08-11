@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
             </div>
           </div>
           <div style={{ display: "flex", padding: "12px 18px", border: "3px solid #171c19", background: "#171c19", color: "white", fontSize: "17px", fontWeight: 800, textTransform: "uppercase" }}>
-            {trade.format} · {trade.numQbs === 2 ? "Superflex" : "1QB"} · {trade.passingTdPoints}PT TD · {pprLabel(trade.receptionPoints)}
+            {trade.format} · {trade.numQbs === 2 ? "Superflex" : "1QB"} · {trade.passingTdPoints}PT TD · {pprLabel(trade.receptionPoints)} · {trade.flexSpots} FLEX
           </div>
         </div>
 

@@ -17,6 +17,8 @@ const files = [
   "../src/app/players/[slug]/page.tsx",
   "../src/app/teams/[slug]/page.tsx",
   "../src/app/trades/[slug]/page.tsx",
+  "../src/app/scoring-impact/page.tsx",
+  "../src/app/components/ScoringResearchPage.tsx",
 ];
 
 const source = (
@@ -80,6 +82,11 @@ test("high-value product events remain instrumented", () => {
     "team_map_selected",
     "research_cta_clicked",
     "research_downloaded",
+    "scoring_impact_viewed",
+    "scoring_impact_setting_changed",
+    "scoring_impact_calculator_opened",
+    "scoring_research_viewed",
+    "scoring_research_lab_opened",
     "memes_generated",
     "meme_generation_failed",
     "meme_download_opened",

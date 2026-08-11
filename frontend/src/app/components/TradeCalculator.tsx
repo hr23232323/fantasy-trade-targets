@@ -32,6 +32,7 @@ import type {
   MarketPayload,
   PassingTdPoints,
   ReceptionPoints,
+  RosterSettings,
 } from "../types/MarketAsset";
 
 type TradeCalculatorProps = {
@@ -53,6 +54,10 @@ export default function TradeCalculator({
   const [numTeams, setNumTeams] = useState(12);
   const [passingTdPoints, setPassingTdPoints] = useState<PassingTdPoints>(4);
   const [receptionPoints, setReceptionPoints] = useState<ReceptionPoints>(1);
+  const [rbStarters, setRbStarters] = useState<RosterSettings["rbStarters"]>(2);
+  const [wrStarters, setWrStarters] = useState<RosterSettings["wrStarters"]>(3);
+  const [teStarters, setTeStarters] = useState<RosterSettings["teStarters"]>(1);
+  const [flexSpots, setFlexSpots] = useState<RosterSettings["flexSpots"]>(1);
   const [rosterPremium, setRosterPremium] = useState(true);
   const [settingsHydrated, setSettingsHydrated] = useState(false);
   const [reloadKey, setReloadKey] = useState(0);
@@ -79,6 +84,14 @@ export default function TradeCalculator({
     if ([0, 0.5, 1].includes(requestedPpr)) {
       setReceptionPoints(requestedPpr as ReceptionPoints);
     }
+    const requestedRb = Number(params.get("rb"));
+    if ([1, 2, 3].includes(requestedRb)) setRbStarters(requestedRb as RosterSettings["rbStarters"]);
+    const requestedWr = Number(params.get("wr"));
+    if ([2, 3, 4].includes(requestedWr)) setWrStarters(requestedWr as RosterSettings["wrStarters"]);
+    const requestedTe = Number(params.get("te"));
+    if ([1, 2].includes(requestedTe)) setTeStarters(requestedTe as RosterSettings["teStarters"]);
+    const requestedFlex = Number(params.get("flex"));
+    if ([0, 1, 2, 3].includes(requestedFlex)) setFlexSpots(requestedFlex as RosterSettings["flexSpots"]);
     const requestedTeams = Number(params.get("teams"));
     if ([8, 10, 12, 14, 16].includes(requestedTeams)) setNumTeams(requestedTeams);
     setSettingsHydrated(true);
@@ -98,6 +111,10 @@ export default function TradeCalculator({
           numTeams: String(numTeams),
           passingTdPoints: String(passingTdPoints),
           receptionPoints: String(receptionPoints),
+          rbStarters: String(rbStarters),
+          wrStarters: String(wrStarters),
+          teStarters: String(teStarters),
+          flexSpots: String(flexSpots),
         });
         const payload = await fetchClientMarket(
           `/api/market?${params}`,
@@ -105,7 +122,7 @@ export default function TradeCalculator({
         );
         if (!active) return;
         setMarket(payload);
-        const marketSignature = `${payload.meta.releaseId}:${format}:${numQbs}:${tep}:${numTeams}:${passingTdPoints}:${receptionPoints}`;
+        const marketSignature = `${payload.meta.releaseId}:${format}:${numQbs}:${tep}:${numTeams}:${passingTdPoints}:${receptionPoints}:${rbStarters}:${wrStarters}:${teStarters}:${flexSpots}`;
         if (lastMarketSignature.current !== marketSignature) {
           captureAnalytics("calculator_market_loaded", {
             calculator_format: format,
@@ -114,6 +131,10 @@ export default function TradeCalculator({
             league_size: numTeams,
             passing_td_points: passingTdPoints,
             reception_points: receptionPoints,
+            rb_starters: rbStarters,
+            wr_starters: wrStarters,
+            te_starters: teStarters,
+            flex_spots: flexSpots,
             asset_count: payload.meta.assetCount,
             scoring_profile_count: payload.meta.scoring.coveredCount,
             release_id: payload.meta.releaseId,
@@ -140,6 +161,10 @@ export default function TradeCalculator({
             league_size: numTeams,
             passing_td_points: passingTdPoints,
             reception_points: receptionPoints,
+            rb_starters: rbStarters,
+            wr_starters: wrStarters,
+            te_starters: teStarters,
+            flex_spots: flexSpots,
           });
         }
       } finally {
@@ -158,6 +183,10 @@ export default function TradeCalculator({
     numTeams,
     passingTdPoints,
     receptionPoints,
+    rbStarters,
+    wrStarters,
+    teStarters,
+    flexSpots,
     reloadKey,
     settingsHydrated,
   ]);
@@ -219,7 +248,11 @@ export default function TradeCalculator({
       market.meta.tep !== tep ||
       market.meta.numTeams !== numTeams ||
       market.meta.scoring.settings.passingTdPoints !== passingTdPoints ||
-      market.meta.scoring.settings.receptionPoints !== receptionPoints
+      market.meta.scoring.settings.receptionPoints !== receptionPoints ||
+      market.meta.scoring.rosterSettings.rbStarters !== rbStarters ||
+      market.meta.scoring.rosterSettings.wrStarters !== wrStarters ||
+      market.meta.scoring.rosterSettings.teStarters !== teStarters ||
+      market.meta.scoring.rosterSettings.flexSpots !== flexSpots
     ) {
       return;
     }
@@ -233,6 +266,10 @@ export default function TradeCalculator({
       numTeams,
       passingTdPoints,
       receptionPoints,
+      rbStarters,
+      wrStarters,
+      teStarters,
+      flexSpots,
       rosterPremium,
     });
     if (signature === lastEvaluationSignature.current) return;
@@ -244,6 +281,10 @@ export default function TradeCalculator({
       league_size: numTeams,
       passing_td_points: passingTdPoints,
       reception_points: receptionPoints,
+      rb_starters: rbStarters,
+      wr_starters: wrStarters,
+      te_starters: teStarters,
+      flex_spots: flexSpots,
       roster_cost_enabled: rosterPremium,
       get_asset_count: sideA.length,
       send_asset_count: sideB.length,
@@ -270,6 +311,10 @@ export default function TradeCalculator({
     numTeams,
     passingTdPoints,
     receptionPoints,
+    rbStarters,
+    wrStarters,
+    teStarters,
+    flexSpots,
     rosterPremium,
     settingsHydrated,
     sideA,
@@ -292,6 +337,10 @@ export default function TradeCalculator({
       league_size: numTeams,
       passing_td_points: passingTdPoints,
       reception_points: receptionPoints,
+      rb_starters: rbStarters,
+      wr_starters: wrStarters,
+      te_starters: teStarters,
+      flex_spots: flexSpots,
       side: side === "A" ? "get" : "send",
       selection_source: selectionSource,
       asset_slug: asset.slug,
@@ -310,6 +359,10 @@ export default function TradeCalculator({
         calculator_format: format,
         passing_td_points: passingTdPoints,
         reception_points: receptionPoints,
+        rb_starters: rbStarters,
+        wr_starters: wrStarters,
+        te_starters: teStarters,
+        flex_spots: flexSpots,
         side: side === "A" ? "get" : "send",
         asset_slug: asset.slug,
         asset_kind: asset.kind,
@@ -323,6 +376,10 @@ export default function TradeCalculator({
       calculator_format: format,
       passing_td_points: passingTdPoints,
       reception_points: receptionPoints,
+      rb_starters: rbStarters,
+      wr_starters: wrStarters,
+      te_starters: teStarters,
+      flex_spots: flexSpots,
       get_asset_count: sideA.length,
       send_asset_count: sideB.length,
       had_complete_trade: sideA.length > 0 && sideB.length > 0,
@@ -342,6 +399,10 @@ export default function TradeCalculator({
       numTeams,
       passingTdPoints,
       receptionPoints,
+      rbStarters,
+      wrStarters,
+      teStarters,
+      flexSpots,
       rosterPremium,
       sideA,
       sideB,
@@ -361,6 +422,10 @@ export default function TradeCalculator({
       league_size: numTeams,
       passing_td_points: passingTdPoints,
       reception_points: receptionPoints,
+      rb_starters: rbStarters,
+      wr_starters: wrStarters,
+      te_starters: teStarters,
+      flex_spots: flexSpots,
       roster_cost_enabled: rosterPremium,
       get_asset_count: sideA.length,
       send_asset_count: sideB.length,
@@ -445,6 +510,42 @@ export default function TradeCalculator({
           });
           setReceptionPoints(value);
         }}
+        rbStarters={rbStarters}
+        setRbStarters={(value) => {
+          captureAnalytics("trade_setting_changed", {
+            setting: "rb_starters",
+            previous_value: rbStarters,
+            selected_value: value,
+          });
+          setRbStarters(value);
+        }}
+        wrStarters={wrStarters}
+        setWrStarters={(value) => {
+          captureAnalytics("trade_setting_changed", {
+            setting: "wr_starters",
+            previous_value: wrStarters,
+            selected_value: value,
+          });
+          setWrStarters(value);
+        }}
+        teStarters={teStarters}
+        setTeStarters={(value) => {
+          captureAnalytics("trade_setting_changed", {
+            setting: "te_starters",
+            previous_value: teStarters,
+            selected_value: value,
+          });
+          setTeStarters(value);
+        }}
+        flexSpots={flexSpots}
+        setFlexSpots={(value) => {
+          captureAnalytics("trade_setting_changed", {
+            setting: "flex_spots",
+            previous_value: flexSpots,
+            selected_value: value,
+          });
+          setFlexSpots(value);
+        }}
         rosterPremium={rosterPremium}
         setRosterPremium={(value) => {
           captureAnalytics("trade_setting_changed", {
@@ -468,6 +569,10 @@ export default function TradeCalculator({
                 num_qbs: numQbs,
                 passing_td_points: passingTdPoints,
                 reception_points: receptionPoints,
+                rb_starters: rbStarters,
+                wr_starters: wrStarters,
+                te_starters: teStarters,
+                flex_spots: flexSpots,
               });
               setReloadKey((value) => value + 1);
             }}
@@ -536,13 +641,13 @@ export default function TradeCalculator({
         <div className="text-xs text-white/50">
           {market ? (
             <>
-              {market.meta.assetCount} assets · {passingTdPoints}PT pass TD · {pprLabel(receptionPoints)} ·{" "}
+              {market.meta.assetCount} assets · {passingTdPoints}PT pass TD · {pprLabel(receptionPoints)} · {flexSpots} FLEX ·{" "}
               {market.meta.scoring.coveredCount}/{market.meta.scoring.playerCount} players modeled · Updated {formatDate(market.meta.generatedAt)} ·{" "}
               <a
-                href="/data-sources"
+                href="/scoring-impact"
                 className="text-[#dfff4f] underline decoration-white/30 underline-offset-4 hover:text-white"
               >
-                Data & methodology
+                Explore scoring impact
               </a>
             </>
           ) : (
@@ -586,6 +691,14 @@ function LeagueControls({
   setPassingTdPoints,
   receptionPoints,
   setReceptionPoints,
+  rbStarters,
+  setRbStarters,
+  wrStarters,
+  setWrStarters,
+  teStarters,
+  setTeStarters,
+  flexSpots,
+  setFlexSpots,
   rosterPremium,
   setRosterPremium,
 }: {
@@ -601,6 +714,14 @@ function LeagueControls({
   setPassingTdPoints: (value: PassingTdPoints) => void;
   receptionPoints: ReceptionPoints;
   setReceptionPoints: (value: ReceptionPoints) => void;
+  rbStarters: RosterSettings["rbStarters"];
+  setRbStarters: (value: RosterSettings["rbStarters"]) => void;
+  wrStarters: RosterSettings["wrStarters"];
+  setWrStarters: (value: RosterSettings["wrStarters"]) => void;
+  teStarters: RosterSettings["teStarters"];
+  setTeStarters: (value: RosterSettings["teStarters"]) => void;
+  flexSpots: RosterSettings["flexSpots"];
+  setFlexSpots: (value: RosterSettings["flexSpots"]) => void;
   rosterPremium: boolean;
   setRosterPremium: (value: boolean) => void;
 }) {
@@ -674,10 +795,48 @@ function LeagueControls({
           />
         </div>
       </div>
+      <details className="border-t border-white/10 px-5 py-3 sm:px-8">
+        <summary className="cursor-pointer list-none font-mono text-[10px] font-black uppercase tracking-[0.08em] text-white/65 marker:hidden hover:text-white">
+          <span className="inline-flex items-center gap-2">
+            Roster shape
+            <span className="text-[#8bcfff]">{rbStarters} RB · {wrStarters} WR · {teStarters} TE · {flexSpots} FLEX</span>
+          </span>
+        </summary>
+        <div className="mt-4 grid gap-4 border-t border-white/10 pt-4 sm:grid-cols-2 xl:grid-cols-4">
+          <Segmented
+            label="Starting RB"
+            help="Dedicated RB starters set the first layer of running-back demand before FLEX spots are assigned."
+            options={[["1", "1 RB"], ["2", "2 RB"], ["3", "3 RB"]]}
+            value={String(rbStarters)}
+            onChange={(value) => setRbStarters(Number(value) as RosterSettings["rbStarters"])}
+          />
+          <Segmented
+            label="Starting WR"
+            help="Dedicated WR starters set the first layer of wide-receiver demand before FLEX spots are assigned."
+            options={[["2", "2 WR"], ["3", "3 WR"], ["4", "4 WR"]]}
+            value={String(wrStarters)}
+            onChange={(value) => setWrStarters(Number(value) as RosterSettings["wrStarters"])}
+          />
+          <Segmented
+            label="Starting TE"
+            help="A second required tight end pushes TE replacement much deeper. TE premium still controls the underlying market format."
+            options={[["1", "1 TE"], ["2", "2 TE"]]}
+            value={String(teStarters)}
+            onChange={(value) => setTeStarters(Number(value) as RosterSettings["teStarters"])}
+          />
+          <Segmented
+            label="FLEX spots"
+            help="FLEX does not change fantasy points. Each extra spot increases starter demand and pushes replacement deeper across the highest-valued eligible RBs, WRs, and TEs."
+            options={[["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]}
+            value={String(flexSpots)}
+            onChange={(value) => setFlexSpots(Number(value) as RosterSettings["flexSpots"])}
+          />
+        </div>
+      </details>
       <div className="flex items-start gap-2 border-t border-white/10 px-5 py-3 text-[11px] leading-5 text-white/50 sm:px-8">
         <FiInfo className="mt-0.5 shrink-0 text-[#8bcfff]" aria-hidden="true" />
         <p>
-          <strong className="text-white/75">Selected: {passingTdPoints}-point passing TD + {pprLabel(receptionPoints)}.</strong>{" "}
+          <strong className="text-white/75">Selected: {passingTdPoints}-point passing TD + {pprLabel(receptionPoints)} · {rbStarters} RB / {wrStarters} WR / {teStarters} TE / {flexSpots} FLEX.</strong>{" "}
           Players move only when their scoring change differs from a replacement player at the same position; picks do not move.{" "}
           <a href="/methodology#league-scoring" className="text-[#dfff4f] underline decoration-white/25 underline-offset-2 hover:text-white">See the exact math.</a>
         </p>

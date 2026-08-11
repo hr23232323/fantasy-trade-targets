@@ -91,6 +91,10 @@ export default async function TradePage({ searchParams }: TradePageProps) {
           league_size: trade.numTeams,
           passing_td_points: trade.passingTdPoints,
           reception_points: trade.receptionPoints,
+          rb_starters: trade.rbStarters,
+          wr_starters: trade.wrStarters,
+          te_starters: trade.teStarters,
+          flex_spots: trade.flexSpots,
           roster_cost_enabled: trade.rosterPremium,
           side_a_asset_count: trade.sideA.length,
           side_b_asset_count: trade.sideB.length,
@@ -119,7 +123,7 @@ export default async function TradePage({ searchParams }: TradePageProps) {
                 {trade.title}
               </h1>
               <p className="mt-6 max-w-3xl text-base leading-7 text-white/60">
-                Both packages priced against today&apos;s {trade.format} market for {trade.passingTdPoints}-point passing touchdowns and {pprLabel(trade.receptionPoints)} scoring.
+                Both packages priced against today&apos;s {trade.format} market for {trade.passingTdPoints}-point passing touchdowns, {pprLabel(trade.receptionPoints)} scoring, and a {trade.rbStarters} RB / {trade.wrStarters} WR / {trade.teStarters} TE / {trade.flexSpots} FLEX lineup.
               </p>
             </div>
             <TradeReceiptActions
@@ -131,6 +135,10 @@ export default async function TradePage({ searchParams }: TradePageProps) {
               verdict={trade.evaluation.status}
               passingTdPoints={trade.passingTdPoints}
               receptionPoints={trade.receptionPoints}
+              rbStarters={trade.rbStarters}
+              wrStarters={trade.wrStarters}
+              teStarters={trade.teStarters}
+              flexSpots={trade.flexSpots}
             />
           </div>
         </div>
@@ -179,11 +187,15 @@ export default async function TradePage({ searchParams }: TradePageProps) {
             </div>
           </div>
 
-          <dl className="mt-8 grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2 lg:grid-cols-7">
+          <dl className="mt-8 grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2 lg:grid-cols-6">
             <Setting label="Format" value={trade.format} />
             <Setting label="Quarterbacks" value={trade.numQbs === 2 ? "Superflex" : "1QB"} />
             <Setting label="Pass TD" value={`${trade.passingTdPoints} points`} />
             <Setting label="Receptions" value={pprLabel(trade.receptionPoints)} />
+            <Setting label="Starting RB" value={String(trade.rbStarters)} />
+            <Setting label="Starting WR" value={String(trade.wrStarters)} />
+            <Setting label="Starting TE" value={String(trade.teStarters)} />
+            <Setting label="FLEX spots" value={String(trade.flexSpots)} />
             <Setting label="League" value={`${trade.numTeams} teams`} />
             <Setting label="TE premium" value={trade.tep ? "On" : "Off"} />
             <Setting label="Roster cost" value={trade.rosterPremium ? "On" : "Off"} />
@@ -205,6 +217,10 @@ export default async function TradePage({ searchParams }: TradePageProps) {
           verdict={trade.evaluation.status}
           passingTdPoints={trade.passingTdPoints}
           receptionPoints={trade.receptionPoints}
+          rbStarters={trade.rbStarters}
+          wrStarters={trade.wrStarters}
+          teStarters={trade.teStarters}
+          flexSpots={trade.flexSpots}
         />
       </section>
 

@@ -167,3 +167,69 @@ test("picks and players without usable production remain at market value", () =>
   assert.equal(result.assets[1].value, 300);
   assert.equal(result.assets[1].scoringContext.available, false);
 });
+
+test("extra FLEX spots deepen eligible replacement without changing raw points", () => {
+  const positionCounts = { RB: 32, WR: 36, TE: 16 };
+  const assets = Object.entries(positionCounts).flatMap(([position, count]) =>
+    Array.from({ length: count }, (_, index) => ({
+      id: `${position.toLowerCase()}-${index + 1}`,
+      slug: `${position.toLowerCase()}-${index + 1}`,
+      name: `${position} ${index + 1}`,
+      position,
+      kind: "player",
+      value:
+        position === "RB"
+          ? 1000 - index * 10
+          : position === "WR"
+            ? 700 - index * 8
+            : 500 - index * 8,
+      rank: index + 1,
+      posRank: index + 1,
+    })),
+  );
+  const profiles = Object.fromEntries(
+    assets.map((asset) => [
+      asset.slug,
+      profile(
+        asset.position === "RB"
+          ? { rushingYards: Math.max(20, 160 - asset.posRank * 3) }
+          : { receivingYards: Math.max(20, 130 - asset.posRank * 2) },
+      ),
+    ]),
+  );
+
+  const defaultRoster = applyScoringContext(assets, profiles, {
+    format: "dynasty",
+    numTeams: 8,
+    numQbs: 1,
+    passingTdPoints: 4,
+    receptionPoints: 1,
+    rbStarters: 2,
+    wrStarters: 3,
+    teStarters: 1,
+    flexSpots: 1,
+  });
+  assert.equal(defaultRoster.meta.adjustedCount, 0);
+
+  const doubleFlex = applyScoringContext(assets, profiles, {
+    format: "dynasty",
+    numTeams: 8,
+    numQbs: 1,
+    passingTdPoints: 4,
+    receptionPoints: 1,
+    rbStarters: 2,
+    wrStarters: 3,
+    teStarters: 1,
+    flexSpots: 2,
+  });
+  assert.equal(
+    Object.values(doubleFlex.meta.flexAllocation).reduce((sum, value) => sum + value, 0),
+    16,
+  );
+  assert.ok(doubleFlex.meta.replacementRanks.RB > defaultRoster.meta.replacementRanks.RB);
+  assert.ok(doubleFlex.assets.find((asset) => asset.slug === "rb-1").scoringContext.adjustmentPercent > 0);
+  assert.equal(
+    calculateFantasyPoints(profiles["rb-1"], defaultRoster.meta.settings),
+    calculateFantasyPoints(profiles["rb-1"], doubleFlex.meta.settings),
+  );
+});

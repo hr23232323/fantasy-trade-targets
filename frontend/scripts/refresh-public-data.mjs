@@ -1,7 +1,16 @@
 import { readFile, mkdir, rename, writeFile } from "node:fs/promises";
 import { gzipSync } from "node:zlib";
 import path from "node:path";
-import { buildScoringProfile } from "../src/app/lib/scoring-engine.mjs";
+import {
+  buildScoringProfile,
+  SCORING_MODEL_VERSION,
+} from "../src/app/lib/scoring-engine.mjs";
+import {
+  DEFAULT_SCORING_PROFILE_BATCH_SIZE,
+  nextScoringRefreshCursor,
+  selectScoringProfileCohort,
+  usableScoringProfiles,
+} from "../src/app/lib/scoring-publication.mjs";
 
 const API_BASE = "https://api.tradyr.app/v1";
 const formats = ["dynasty", "redraft"];
@@ -12,6 +21,14 @@ const capturedAt = new Date();
 const hasApiKey = Boolean(process.env.TRADYR_API_KEY);
 const requestIntervalMs = hasApiKey ? 75 : 1_100;
 const requestTimeoutMs = 15_000;
+const scoringProfileBatchSize = Math.max(
+  50,
+  Math.min(
+    500,
+    Number(process.env.SCORING_PROFILE_BATCH_SIZE) ||
+      DEFAULT_SCORING_PROFILE_BATCH_SIZE,
+  ),
+);
 let nextRequestAt = 0;
 const releaseId = `ftt-${capturedAt
   .toISOString()
@@ -28,6 +45,10 @@ const playerPageManifest = JSON.parse(
   await readFile(path.resolve("data/player-pages.json"), "utf8"),
 );
 const playerSlugs = playerPageManifest.map((player) => player.slug);
+const [priorRelease, priorSnapshotHistory] = await Promise.all([
+  readJsonIfPresent(currentPath),
+  readJsonIfPresent(snapshotHistoryPath),
+]);
 
 const headers = {
   Accept: "application/json",
@@ -77,22 +98,63 @@ const pickMarkets = Object.fromEntries(
 const currentPlayersBySlug = new Map(
   playerMarkets["dynasty:2:0"].data.map((player) => [player.slug, player]),
 );
-const scoringStatsResponses = await mapConcurrent(
-  [...currentPlayersBySlug.values()],
+const currentPlayers = [...currentPlayersBySlug.values()];
+const currentPlayerSlugs = currentPlayers.map((player) => player.slug);
+const carriedScoringProfiles = usableScoringProfiles(
+  priorRelease?.playerScoringProfiles,
+  currentPlayerSlugs,
+);
+const priorRefreshCursor =
+  priorRelease?.scoringProfilePublication?.nextRefreshCursor ?? 0;
+const scoringCohort = selectScoringProfileCohort({
+  players: currentPlayers,
+  existingProfiles: carriedScoringProfiles,
+  prioritySlugs: playerSlugs,
+  batchSize: scoringProfileBatchSize,
+  refreshCursor: priorRefreshCursor,
+});
+console.log(
+  `Scoring profiles: ${hasApiKey ? "authenticated" : "anonymous"} publication, carrying ${Object.keys(carriedScoringProfiles).length}, refreshing ${scoringCohort.length}/${currentPlayers.length}.`,
+);
+const scoringHealthPlayer = scoringCohort[0];
+const scoringHealthPayload = scoringHealthPlayer
+  ? await fetchOptionalJson(
+      `${API_BASE}/players/${encodeURIComponent(scoringHealthPlayer.slug)}/stats`,
+      { attempts: 1 },
+    )
+  : null;
+const scoringHealthProfile = buildScoringProfile(scoringHealthPayload?.data);
+if (scoringHealthPlayer && !scoringHealthProfile) {
+  throw new Error(
+    `Tradyr scoring stats are unavailable or unusable for ${scoringHealthPlayer.slug}; preserving the prior release`,
+  );
+}
+if (scoringHealthPlayer) {
+  console.log(`Verified scoring stats availability with ${scoringHealthPlayer.slug}.`);
+}
+const remainingScoringStatsResponses = await mapConcurrent(
+  scoringCohort.slice(1),
   hasApiKey ? 8 : 4,
   async (player, index) => {
     const payload = await fetchOptionalJson(
       `${API_BASE}/players/${encodeURIComponent(player.slug)}/stats`,
       { attempts: 2 },
     );
-    if ((index + 1) % 25 === 0 || index + 1 === currentPlayersBySlug.size) {
+    const completed = index + 2;
+    if (completed % 25 === 0 || completed === scoringCohort.length) {
       console.log(
-        `Fetched scoring stats ${index + 1}/${currentPlayersBySlug.size}`,
+        `Fetched scoring stats ${completed}/${scoringCohort.length}`,
       );
     }
     return { slug: player.slug, payload };
   },
 );
+const scoringStatsResponses = scoringHealthPlayer
+  ? [
+      { slug: scoringHealthPlayer.slug, payload: scoringHealthPayload },
+      ...remainingScoringStatsResponses,
+    ]
+  : [];
 const scoringStatsBySlug = new Map(
   scoringStatsResponses.map((response) => [response.slug, response.payload]),
 );
@@ -119,17 +181,41 @@ const playerProfiles = Object.fromEntries(
     normalizeProfileToMarket(payload, currentPlayersBySlug),
   ]),
 );
-const playerScoringProfiles = Object.fromEntries(
+const refreshedScoringProfiles = Object.fromEntries(
   scoringStatsResponses.flatMap(({ slug, payload }) => {
     const profile = buildScoringProfile(payload?.data);
     return profile ? [[slug, profile]] : [];
   }),
 );
-
-const [priorRelease, priorSnapshotHistory] = await Promise.all([
-  readJsonIfPresent(currentPath),
-  readJsonIfPresent(snapshotHistoryPath),
-]);
+const reviewedScoringProfiles = Object.fromEntries(
+  Object.entries(rawPlayerProfiles).flatMap(([slug, payload]) => {
+    const profile = buildScoringProfile({
+      stats: payload?.data?.stats,
+      career: payload?.data?.career,
+    });
+    return profile ? [[slug, profile]] : [];
+  }),
+);
+const playerScoringProfiles = usableScoringProfiles(
+  {
+    ...carriedScoringProfiles,
+    ...reviewedScoringProfiles,
+    ...refreshedScoringProfiles,
+  },
+  currentPlayerSlugs,
+);
+const scoringProfilePublication = {
+  modelVersion: SCORING_MODEL_VERSION,
+  profileCount: Object.keys(playerScoringProfiles).length,
+  playerCount: currentPlayers.length,
+  refreshedCount: Object.keys(refreshedScoringProfiles).length,
+  requestedCount: scoringCohort.length,
+  nextRefreshCursor: nextScoringRefreshCursor({
+    players: currentPlayers,
+    cohort: scoringCohort,
+    refreshCursor: priorRefreshCursor,
+  }),
+};
 const playerSnapshotHistory = buildPlayerSnapshotHistory({
   existing: priorSnapshotHistory?.players,
   releases: [
@@ -148,12 +234,13 @@ validateRelease({
   pickMarkets,
   playerProfiles,
   playerScoringProfiles,
+  priorScoringProfileCount: Object.keys(carriedScoringProfiles).length,
   playerSnapshotHistory,
 });
 
 const release = {
   schemaVersion: 3,
-  methodologyVersion: "2026.08.2",
+  methodologyVersion: SCORING_MODEL_VERSION,
   releaseId,
   capturedAt: capturedAt.toISOString(),
   source: {
@@ -165,6 +252,7 @@ const release = {
   pickMarkets,
   playerProfiles,
   playerScoringProfiles,
+  scoringProfilePublication,
   playerSnapshotHistory,
 };
 
@@ -203,6 +291,7 @@ const archive = {
   playerMarkets,
   pickMarkets,
   playerScoringProfiles,
+  scoringProfilePublication,
 };
 await writeFile(
   path.join(archiveDirectory, `${releaseId}.json.gz`),
@@ -351,6 +440,7 @@ function validateRelease({
   pickMarkets,
   playerProfiles,
   playerScoringProfiles,
+  priorScoringProfileCount,
   playerSnapshotHistory,
 }) {
   if (Object.keys(playerMarkets).length !== 8) {
@@ -369,10 +459,15 @@ function validateRelease({
       `Release has only ${Object.keys(playerScoringProfiles).length} usable scoring profiles`,
     );
   }
+  if (Object.keys(playerScoringProfiles).length < priorScoringProfileCount) {
+    throw new Error(
+      `Scoring profile coverage regressed from ${priorScoringProfileCount} to ${Object.keys(playerScoringProfiles).length}`,
+    );
+  }
   for (const [slug, profile] of Object.entries(playerScoringProfiles)) {
     if (
       !currentPlayersBySlug.has(slug) ||
-      profile.modelVersion !== "2026.08.2" ||
+      profile.modelVersion !== SCORING_MODEL_VERSION ||
       !Number.isFinite(profile.confidence) ||
       !profile.perGame ||
       Object.values(profile.perGame).some((value) => !Number.isFinite(value))

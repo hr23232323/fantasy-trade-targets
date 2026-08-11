@@ -22,6 +22,10 @@ const staticRoutes = [
   "/market",
   "/players",
   "/privacy-policy",
+  "/scoring-impact",
+  "/scoring/6-point-passing-td-rankings",
+  "/scoring/half-ppr-trade-values",
+  "/scoring/standard-vs-ppr-player-values",
   "/terms-of-service",
   "/teams",
 ];

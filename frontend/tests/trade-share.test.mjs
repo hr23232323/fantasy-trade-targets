@@ -52,6 +52,10 @@ test("share parameters round-trip every calculator setting and package", () => {
     numTeams: 14,
     passingTdPoints: 6,
     receptionPoints: 0.5,
+    rbStarters: 3,
+    wrStarters: 4,
+    teStarters: 2,
+    flexSpots: 2,
     rosterPremium: false,
     sideA: [bijan, pick],
     sideB: [gibbs],
@@ -65,6 +69,10 @@ test("share parameters round-trip every calculator setting and package", () => {
     numTeams: 14,
     passingTdPoints: 6,
     receptionPoints: 0.5,
+    rbStarters: 3,
+    wrStarters: 4,
+    teStarters: 2,
+    flexSpots: 2,
     rosterPremium: false,
     sideA: [bijan, pick],
     sideB: [gibbs],
@@ -86,6 +94,10 @@ test("unknown and duplicate assets are discarded across both sides", () => {
   assert.equal(resolved.numTeams, 12);
   assert.equal(resolved.passingTdPoints, 4);
   assert.equal(resolved.receptionPoints, 1);
+  assert.equal(resolved.rbStarters, 2);
+  assert.equal(resolved.wrStarters, 3);
+  assert.equal(resolved.teStarters, 1);
+  assert.equal(resolved.flexSpots, 1);
   assert.equal(resolved.rosterPremium, true);
 });
 
@@ -97,6 +109,10 @@ test("baseline scoring stays compact while scoring variants are explicit", () =>
     numTeams: 12,
     passingTdPoints: 4,
     receptionPoints: 1,
+    rbStarters: 2,
+    wrStarters: 3,
+    teStarters: 1,
+    flexSpots: 1,
     rosterPremium: true,
     sideA: [],
     sideB: [],
@@ -111,12 +127,20 @@ test("baseline scoring stays compact while scoring variants are explicit", () =>
     numTeams: 10,
     passingTdPoints: 6,
     receptionPoints: 0,
+    rbStarters: 1,
+    wrStarters: 2,
+    teStarters: 2,
+    flexSpots: 3,
     rosterPremium: true,
     sideA: [],
     sideB: [],
   });
   assert.equal(standardSixPoint.get("passTd"), "6");
   assert.equal(standardSixPoint.get("ppr"), "0");
+  assert.equal(standardSixPoint.get("rb"), "1");
+  assert.equal(standardSixPoint.get("wr"), "2");
+  assert.equal(standardSixPoint.get("te"), "2");
+  assert.equal(standardSixPoint.get("flex"), "3");
 });
 
 test("trade labels and editor destinations stay deterministic", () => {

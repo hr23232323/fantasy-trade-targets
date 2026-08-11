@@ -44,6 +44,11 @@ Fantasy Trade Target uses PostHog for privacy-conscious, anonymous product analy
 | Research | `team_map_selected` | A team was chosen from the map. |
 | Research | `research_cta_clicked` | A research page or board led into a key next step. |
 | Research | `research_downloaded` | A player or team CSV/JSON download was selected. |
+| Scoring lab | `scoring_impact_viewed` | The impact lab rendered with its selected scoring, roster, format, and player coverage. |
+| Scoring lab | `scoring_impact_setting_changed` | A fixed scoring, lineup, format, or position control changed; no league identifier is captured. |
+| Scoring lab | `scoring_impact_calculator_opened` | The lab led into a calculator with the exact selected settings. |
+| Scoring research | `scoring_research_viewed` | A focused scoring research page rendered with release and model context. |
+| Scoring research | `scoring_research_lab_opened` | A focused research page led into its matching impact-lab comparison. |
 | Meme tool | `memes_generated` | A meme set was generated; only input lengths are captured. |
 | Meme tool | `meme_generation_failed` | Meme generation failed. |
 | Meme tool | `meme_download_opened` | A generated template was opened for download. |
@@ -52,15 +57,16 @@ Fantasy Trade Target uses PostHog for privacy-conscious, anonymous product analy
 
 PostHog's standard `$pageview`, `$pageleave`, `$autocapture`, exception, and performance events complement these product events.
 
-Calculator load, failure, asset-add, evaluation, and share events include `passing_td_points` and `reception_points`. Shared-report events carry the same dimensions, so adoption and conversion can be compared across 4/6-point passing-TD and standard/half/full-PPR cohorts without recording league or user identifiers.
+Calculator load, failure, asset-add, evaluation, and share events include `passing_td_points`, `reception_points`, `rb_starters`, `wr_starters`, `te_starters`, and `flex_spots`. Shared-report and scoring-lab events carry the same fixed dimensions, so adoption and conversion can be compared across scoring and roster cohorts without recording league or user identifiers.
 
 ## Recommended dashboards
 
 1. **Acquisition:** unique visitors and landing pages by referrer/UTM.
 2. **Calculator funnel:** calculator page view → asset added → trade evaluated → trade report created → receipt viewed/shared.
-3. **Research funnel:** player/team research viewed → calculator CTA or data download.
-4. **Content demand:** player and team views, market searches, and downloads by asset/team.
-5. **Reliability:** market load failures, exceptions, slow pages, and retry recovery.
-6. **Scoring adoption:** setting changes, completed evaluations, and report shares split by `passing_td_points` and `reception_points`.
+3. **Scoring funnel:** scoring research viewed → impact lab → calculator → trade evaluated/shared, split by landing page and league settings.
+4. **Research funnel:** player/team research viewed → calculator CTA or data download.
+5. **Content demand:** player, team, and scoring-page views, market searches, and downloads.
+6. **Reliability:** market load failures, exceptions, slow pages, and retry recovery.
+7. **Scoring adoption:** lab setting changes, completed evaluations, and report shares split by scoring plus roster dimensions.
 
 Use `trade_evaluated` as the primary activation event, `trade_shared` as report creation, and `trade_report_viewed` as evidence that a recipient opened it.

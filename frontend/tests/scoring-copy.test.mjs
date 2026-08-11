@@ -20,6 +20,8 @@ test("calculator explains every supported scoring choice at the decision point",
   assert.match(calculator, /aria-pressed=\{value === optionValue\}/);
   assert.match(calculator, /captureAnalytics\("trade_help_opened"/);
   assert.match(calculator, /players move only when their scoring change differs from a replacement player/i);
+  assert.match(calculator, /Roster shape/);
+  assert.match(calculator, /FLEX does not change fantasy points/);
 });
 
 test("data sources documents inputs, scoring definitions, and adjustment guardrails", () => {
@@ -31,6 +33,8 @@ test("data sources documents inputs, scoring definitions, and adjustment guardra
   assert.match(dataSources, /Full PPR:<\/strong> 1 per catch/);
   assert.match(dataSources, /caps movement at ±12% in dynasty or ±20% in redraft/);
   assert.match(dataSources, /4-point passing touchdowns and Full PPR/);
+  assert.match(dataSources, /dedicated starters and FLEX demand are allocated/);
+  assert.match(dataSources, /href="\/scoring-impact"/);
 });
 
 test("methodology exposes a stable scoring anchor and plain-language PPR definitions", () => {
@@ -39,4 +43,8 @@ test("methodology exposes a stable scoring anchor and plain-language PPR definit
   assert.match(methodology, /0 points per reception/);
   assert.match(methodology, /0\.5 points per reception/);
   assert.match(methodology, /1 point per reception/);
+  assert.match(methodology, /neutral roster baseline/);
+  assert.match(methodology, /FLEX demand is then assigned/);
+  assert.match(methodology, /does not alter anyone&apos;s raw fantasy points/);
+  assert.match(methodology, /Methodology \/\/ 2026\.08\.3/);
 });

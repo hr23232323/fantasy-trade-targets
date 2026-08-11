@@ -28,14 +28,22 @@ test("public release contains every supported market variant", () => {
   }
 });
 
-test("new releases publish compact scoring profiles for the full player market", () => {
+test("new releases publish validated compact scoring-profile cohorts", () => {
   if (release.schemaVersion < 3) return;
 
   const profiles = release.playerScoringProfiles;
   assert.ok(profiles && typeof profiles === "object");
   assert.ok(Object.keys(profiles).length >= 150);
+  assert.equal(release.scoringProfilePublication.modelVersion, "2026.08.3");
+  assert.equal(
+    release.scoringProfilePublication.profileCount,
+    Object.keys(profiles).length,
+  );
+  assert.ok(release.scoringProfilePublication.playerCount >= Object.keys(profiles).length);
+  assert.ok(release.scoringProfilePublication.requestedCount >= 50);
+  assert.ok(release.scoringProfilePublication.requestedCount <= 500);
   for (const [slug, profile] of Object.entries(profiles)) {
-    assert.equal(profile.modelVersion, "2026.08.2", `${slug} uses the active model`);
+    assert.equal(profile.modelVersion, "2026.08.3", `${slug} uses the active model`);
     assert.ok(profile.observedThroughSeason);
     assert.ok(profile.weightedGames > 0);
     assert.ok(profile.confidence > 0 && profile.confidence <= 1);

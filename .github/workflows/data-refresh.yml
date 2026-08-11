@@ -40,6 +40,7 @@ jobs:
       continue-on-error: true
       env:
         TRADYR_API_KEY: ${{ secrets.TRADYR_API_KEY }}
+        SCORING_PROFILE_BATCH_SIZE: 200
       run: npm run data:refresh
 
     - id: team_refresh

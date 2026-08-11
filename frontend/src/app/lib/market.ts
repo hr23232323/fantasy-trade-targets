@@ -11,6 +11,7 @@ import type {
   PlayerScoringProfile,
   Position,
   ReceptionPoints,
+  RosterSettings,
 } from "../types/MarketAsset";
 import type {
   PlayerProfile,
@@ -25,7 +26,7 @@ type MarketSettings = {
   numTeams?: number;
   passingTdPoints?: PassingTdPoints;
   receptionPoints?: ReceptionPoints;
-};
+} & Partial<RosterSettings>;
 
 type TradyrPlayer = {
   slug: string;
@@ -123,6 +124,18 @@ export async function getMarket(
   )
     ? (Number(settings.receptionPoints) as ReceptionPoints)
     : 1;
+  const rbStarters = [1, 2, 3].includes(Number(settings.rbStarters))
+    ? (Number(settings.rbStarters) as RosterSettings["rbStarters"])
+    : 2;
+  const wrStarters = [2, 3, 4].includes(Number(settings.wrStarters))
+    ? (Number(settings.wrStarters) as RosterSettings["wrStarters"])
+    : 3;
+  const teStarters = [1, 2].includes(Number(settings.teStarters))
+    ? (Number(settings.teStarters) as RosterSettings["teStarters"])
+    : 1;
+  const flexSpots = [0, 1, 2, 3].includes(Number(settings.flexSpots))
+    ? (Number(settings.flexSpots) as RosterSettings["flexSpots"])
+    : 1;
   const playerKey = `${format}:${numQbs}:${tep ? 1 : 0}`;
   const playersResponse = publicRelease.playerMarkets[playerKey];
   const picksResponse =
@@ -160,6 +173,10 @@ export async function getMarket(
       numTeams,
       passingTdPoints,
       receptionPoints,
+      rbStarters,
+      wrStarters,
+      teStarters,
+      flexSpots,
     },
   );
 

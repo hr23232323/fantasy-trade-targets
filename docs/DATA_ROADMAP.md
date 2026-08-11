@@ -31,10 +31,10 @@ This is the living inventory for every dataset we use or may add. A feed does no
 
 ### Local deterministic trade engine
 
-- **Product job:** replacement-relative 4/6-point passing-TD and standard/half/full-PPR values, raw totals, roster-cost-adjusted totals, verdict bands, balancing suggestions, and share URLs.
+- **Product job:** replacement-relative 4/6-point passing-TD and standard/half/full-PPR values, custom dedicated RB/WR/TE starters, zero to three RB/WR/TE FLEX spots, raw totals, roster-cost-adjusted totals, verdict bands, balancing suggestions, and share URLs.
 - **Refresh:** versioned with application deploys.
 - **Cost:** no inference or third-party calculation request.
-- **Method:** scoring changes are measured as the player's change in points over positional replacement, then confidence-weighted and capped so the published market remains the anchor. Best package asset receives 100% weight; later pieces receive 90%, 84%, 79%, 75%, 72%, 70%, and 68%. Exact formulas and verdict bands are documented at `/methodology`.
+- **Method:** scoring changes are measured as the player's change in points over positional replacement. Dedicated starters establish each positional replacement rank; FLEX demand is allocated to the highest-valued eligible RBs, WRs, and TEs beyond those starters. The result is confidence-weighted and capped so the published market remains the anchor. Best package asset receives 100% weight; later pieces receive 90%, 84%, 79%, 75%, 72%, 70%, and 68%. Exact formulas and verdict bands are documented at `/methodology` and explorable at `/scoring-impact`.
 
 ## Current data foundation
 
@@ -46,7 +46,10 @@ This is the living inventory for every dataset we use or may add. A feed does no
 - **Execution model:** a scheduled batch job in this repository. It is not an
   always-running application backend and does not accept user traffic. It is
   operationally separate from push-triggered application deploys: validated
-  data changes invoke the shared deploy workflow only after publication.
+  data changes invoke the shared deploy workflow only after publication. Full
+  scoring coverage is restored incrementally in deterministic cohorts: missing
+  and reviewed players are prioritized, valid current-model profiles carry
+  forward, and complete cohorts rotate for freshness.
 - **Current store:** validated current release in `frontend/data`, a compact
   first-party player observation index at `data/player-snapshot-history.json`,
   plus compressed, append-only market snapshots in `data/snapshots`. The

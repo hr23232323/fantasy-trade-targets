@@ -3,6 +3,7 @@ import type {
   MarketFormat,
   PassingTdPoints,
   ReceptionPoints,
+  RosterSettings,
 } from "../types/MarketAsset";
 
 export type TradeShareSettings = {
@@ -15,7 +16,7 @@ export type TradeShareSettings = {
   rosterPremium: boolean;
   sideA: MarketAsset[];
   sideB: MarketAsset[];
-};
+} & RosterSettings;
 
 export function buildTradeShareSlug(
   sideA: MarketAsset[],

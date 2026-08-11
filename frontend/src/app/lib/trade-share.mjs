@@ -35,6 +35,10 @@ export function buildTradeShareParams({
   numTeams,
   passingTdPoints,
   receptionPoints,
+  rbStarters,
+  wrStarters,
+  teStarters,
+  flexSpots,
   rosterPremium,
   sideA,
   sideB,
@@ -49,6 +53,10 @@ export function buildTradeShareParams({
   if ([0, 0.5].includes(Number(receptionPoints))) {
     params.set("ppr", String(Number(receptionPoints)));
   }
+  if ([1, 3].includes(Number(rbStarters))) params.set("rb", String(rbStarters));
+  if ([2, 4].includes(Number(wrStarters))) params.set("wr", String(wrStarters));
+  if (Number(teStarters) === 2) params.set("te", "2");
+  if ([0, 2, 3].includes(Number(flexSpots))) params.set("flex", String(flexSpots));
   if (!rosterPremium) params.set("roster", "0");
   if (sideA.length) params.set("get", sideA.map((asset) => asset.id).join(","));
   if (sideB.length) params.set("send", sideB.map((asset) => asset.id).join(","));
@@ -65,6 +73,22 @@ export function resolveTradeShare(searchParams, marketAssets) {
   const requestedReceptionPoints = Number(firstParam(searchParams, "ppr") ?? 1);
   const receptionPoints = [0, 0.5, 1].includes(requestedReceptionPoints)
     ? requestedReceptionPoints
+    : 1;
+  const requestedRbStarters = Number(firstParam(searchParams, "rb") ?? 2);
+  const rbStarters = [1, 2, 3].includes(requestedRbStarters)
+    ? requestedRbStarters
+    : 2;
+  const requestedWrStarters = Number(firstParam(searchParams, "wr") ?? 3);
+  const wrStarters = [2, 3, 4].includes(requestedWrStarters)
+    ? requestedWrStarters
+    : 3;
+  const requestedTeStarters = Number(firstParam(searchParams, "te") ?? 1);
+  const teStarters = [1, 2].includes(requestedTeStarters)
+    ? requestedTeStarters
+    : 1;
+  const requestedFlexSpots = Number(firstParam(searchParams, "flex") ?? 1);
+  const flexSpots = [0, 1, 2, 3].includes(requestedFlexSpots)
+    ? requestedFlexSpots
     : 1;
   const rosterPremium = firstParam(searchParams, "roster") !== "0";
   const byId = new Map(marketAssets.map((asset) => [asset.id, asset]));
@@ -89,6 +113,10 @@ export function resolveTradeShare(searchParams, marketAssets) {
     numTeams,
     passingTdPoints,
     receptionPoints,
+    rbStarters,
+    wrStarters,
+    teStarters,
+    flexSpots,
     rosterPremium,
     sideA,
     sideB,

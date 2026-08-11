@@ -12,7 +12,7 @@ const links = [
   { href: "/players", label: "Players" },
   { href: "/market", label: "Market" },
   { href: "/teams", label: "Teams" },
-  { href: "/dynasty-rankings", label: "Rankings" },
+  { href: "/scoring-impact", label: "Scoring" },
   { href: "/fantasy-trade-calculator", label: "Redraft" },
 ];
 
@@ -58,7 +58,8 @@ export default function SiteHeader() {
                 pathname === link.href ||
                 (link.href === "/players" && pathname.startsWith("/players/")) ||
                 (link.href === "/market" && pathname.startsWith("/market/")) ||
-                (link.href === "/teams" && pathname.startsWith("/teams/"));
+                (link.href === "/teams" && pathname.startsWith("/teams/")) ||
+                (link.href === "/scoring-impact" && pathname.startsWith("/scoring"));
               return (
                 <Link
                   key={link.href}

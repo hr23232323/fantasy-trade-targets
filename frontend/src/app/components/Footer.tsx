@@ -3,6 +3,10 @@ import { TrackedLink } from "./TrackedLink";
 
 const tools = [
   ["Dynasty calculator", "/dynasty-trade-calculator"],
+  ["Scoring impact lab", "/scoring-impact"],
+  ["6-point passing TD rankings", "/scoring/6-point-passing-td-rankings"],
+  ["Standard vs. PPR values", "/scoring/standard-vs-ppr-player-values"],
+  ["Half PPR trade values", "/scoring/half-ppr-trade-values"],
   ["Player research", "/players"],
   ["Market data", "/market"],
   ["Team outlooks", "/teams"],

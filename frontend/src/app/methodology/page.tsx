@@ -10,7 +10,7 @@ export const metadata = buildPageMetadata({
 export default function MethodologyPage() {
   return (
     <>
-      <PageHero eyebrow="Methodology // 2026.08.2" title="The calculator" accent="shows its work." description="No generated explanation and no mystery multiplier. These are the exact deterministic rules behind every current result." primaryHref="#formula" primaryLabel="See the formula" />
+      <PageHero eyebrow="Methodology // 2026.08.3" title="The calculator" accent="shows its work." description="No generated explanation and no mystery multiplier. These are the exact deterministic rules behind every current result." primaryHref="#formula" primaryLabel="See the formula" />
       <section id="formula" className="page-wrap grid gap-10 py-8 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
           <span className="eyebrow">01 // Base values</span>
@@ -40,13 +40,14 @@ export default function MethodologyPage() {
             + RECEPTIONS × (0, 0.5, OR 1) + REC YDS × 0.10 + REC TD × 6<br />
             − FUMBLES LOST × 2 + TWO-POINT CONVERSIONS × 2
           </div>
-          <p>Replacement ranks are based on the selected league size and quarterback format: one or two quarterbacks, two running backs, three wide receivers, and one tight end per team. Each replacement baseline is the median of up to five modeled players nearest that positional rank.</p>
+          <p>The neutral roster baseline is one or two quarterbacks, two running backs, three wide receivers, one tight end, and one RB/WR/TE FLEX per team. Your dedicated starter counts establish the first replacement rank. FLEX demand is then assigned to the highest-valued eligible RBs, WRs, and TEs left beyond those dedicated starters. Each replacement baseline is the median of up to five modeled players nearest the resulting positional rank.</p>
           <div className="border border-[#171c19] bg-white/45 p-6 font-mono text-xs font-bold leading-6 text-[#171c19] sm:text-sm">
             ΔVORP = (SELECTED PLAYER PPG − SELECTED REPLACEMENT PPG)<br />
             − (BASELINE PLAYER PPG − BASELINE REPLACEMENT PPG)<br /><br />
             VALUE SHIFT = ΔVORP ÷ POSITION SPREAD × FORMAT CAP × SAMPLE CONFIDENCE
           </div>
-          <p>The position spread is the 75th percentile of positive starter value over replacement, with a two-point floor. To keep market evidence dominant, shifts are capped at ±12% in dynasty and ±20% in redraft. Players without a usable profile keep their original market value.</p>
+          <p>Changing a FLEX or dedicated starter slot does not alter anyone&apos;s raw fantasy points. It changes positional demand and the replacement line. The position spread is the 75th percentile of positive starter value over the neutral replacement baseline, with a two-point floor. To keep market evidence dominant, shifts are capped at ±12% in dynasty and ±20% in redraft. Players without a usable profile keep their original market value.</p>
+          <a href="/scoring-impact" className="inline-block border border-[#171c19] bg-[#dfff4f] px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#171c19]">Explore the scoring impact lab →</a>
         </div>
       </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
@@ -93,7 +94,7 @@ export default function MethodologyPage() {
         </div>
       </section>
       <section className="page-wrap border-t border-[#171c19] py-14">
-        <div className="max-w-3xl"><span className="eyebrow">Known limits</span><h2 className="section-title mt-6">What the model does not pretend to know.</h2><p className="mt-6 text-base leading-8 text-[#59605c]">Scoring adjustments are a historical scoring fit, not a projection of future games. This release models only four- versus six-point passing touchdowns and standard, half, or full PPR; it does not yet model yardage bonuses, first downs, custom turnovers, starting flex slots, standings, player exposure, injury tolerance, or another manager’s incentives. The result remains a transparent market baseline, with league-aware Sleeper analysis labeled separately when it arrives.</p></div>
+        <div className="max-w-3xl"><span className="eyebrow">Known limits</span><h2 className="section-title mt-6">What the model does not pretend to know.</h2><p className="mt-6 text-base leading-8 text-[#59605c]">Scoring adjustments are a historical scoring fit, not a projection of future games. This release models four- versus six-point passing touchdowns; standard, half, or full PPR; league size; one-QB versus Superflex demand; dedicated RB/WR/TE starters; and zero to three RB/WR/TE FLEX spots. It does not yet model yardage bonuses, first downs, custom turnover rules, TE-premium scoring beyond the selected source market, position-restricted FLEX variants, bench depth, standings, player exposure, injury tolerance, or another manager’s incentives. The result remains a transparent market baseline, with league-aware Sleeper analysis labeled separately when it arrives.</p></div>
       </section>
     </>
   );

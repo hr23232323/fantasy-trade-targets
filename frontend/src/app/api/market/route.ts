@@ -4,6 +4,7 @@ import type {
   MarketFormat,
   PassingTdPoints,
   ReceptionPoints,
+  RosterSettings,
 } from "../../types/MarketAsset";
 
 export const runtime = "nodejs";
@@ -29,6 +30,20 @@ export async function GET(request: NextRequest) {
   )
     ? (requestedReceptionPoints as ReceptionPoints)
     : 1;
+  const rosterValue = <Key extends keyof RosterSettings>(
+    key: Key,
+    allowed: RosterSettings[Key][],
+    fallback: RosterSettings[Key],
+  ) => {
+    const requested = Number(searchParams.get(key));
+    return allowed.includes(requested as RosterSettings[Key])
+      ? (requested as RosterSettings[Key])
+      : fallback;
+  };
+  const rbStarters = rosterValue("rbStarters", [1, 2, 3], 2);
+  const wrStarters = rosterValue("wrStarters", [2, 3, 4], 3);
+  const teStarters = rosterValue("teStarters", [1, 2], 1);
+  const flexSpots = rosterValue("flexSpots", [0, 1, 2, 3], 1);
 
   try {
     const payload = await getMarket({
@@ -38,6 +53,10 @@ export async function GET(request: NextRequest) {
       numTeams,
       passingTdPoints,
       receptionPoints,
+      rbStarters,
+      wrStarters,
+      teStarters,
+      flexSpots,
     });
 
     return NextResponse.json(payload, {

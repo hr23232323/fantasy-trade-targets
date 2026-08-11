@@ -9,6 +9,13 @@ export interface ScoringSettings {
   receptionPoints: ReceptionPoints;
 }
 
+export interface RosterSettings {
+  rbStarters: 1 | 2 | 3;
+  wrStarters: 2 | 3 | 4;
+  teStarters: 1 | 2;
+  flexSpots: 0 | 1 | 2 | 3;
+}
+
 export interface PlayerScoringProfile {
   modelVersion: string;
   observedThroughSeason: string;
@@ -81,6 +88,10 @@ export interface MarketMeta {
     modelVersion: string;
     baseline: ScoringSettings;
     settings: ScoringSettings;
+    baselineRoster: RosterSettings;
+    rosterSettings: RosterSettings;
+    replacementRanks: Record<"QB" | "RB" | "WR" | "TE", number>;
+    flexAllocation: Record<"RB" | "WR" | "TE", number>;
     adjustedCount: number;
     coveredCount: number;
     playerCount: number;

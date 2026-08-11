@@ -1,8 +1,15 @@
-export const SCORING_MODEL_VERSION = "2026.08.2";
+export const SCORING_MODEL_VERSION = "2026.08.3";
 
 export const DEFAULT_SCORING_SETTINGS = Object.freeze({
   passingTdPoints: 4,
   receptionPoints: 1,
+});
+
+export const DEFAULT_ROSTER_SETTINGS = Object.freeze({
+  rbStarters: 2,
+  wrStarters: 3,
+  teStarters: 1,
+  flexSpots: 1,
 });
 
 const SEASON_WEIGHTS = [1, 0.55, 0.3];
@@ -34,12 +41,6 @@ const SOURCE_FIELDS = {
   passingTwoPointConversions: "pass_2pt",
   rushingTwoPointConversions: "rush_2pt",
   receivingTwoPointConversions: "rec_2pt",
-};
-
-const STARTERS_PER_TEAM = {
-  RB: 2,
-  WR: 3,
-  TE: 1,
 };
 
 function finite(value, fallback = 0) {
@@ -81,6 +82,19 @@ export function normalizeScoringSettings(settings = {}) {
     receptionPoints: [0, 0.5, 1].includes(Number(settings.receptionPoints))
       ? Number(settings.receptionPoints)
       : 1,
+  };
+}
+
+export function normalizeRosterSettings(settings = {}) {
+  const rbStarters = Number(settings.rbStarters);
+  const wrStarters = Number(settings.wrStarters);
+  const teStarters = Number(settings.teStarters);
+  const flexSpots = Number(settings.flexSpots);
+  return {
+    rbStarters: [1, 2, 3].includes(rbStarters) ? rbStarters : 2,
+    wrStarters: [2, 3, 4].includes(wrStarters) ? wrStarters : 3,
+    teStarters: [1, 2].includes(teStarters) ? teStarters : 1,
+    flexSpots: [0, 1, 2, 3].includes(flexSpots) ? flexSpots : 1,
   };
 }
 
@@ -165,12 +179,45 @@ export function calculateFantasyPoints(profile, rawSettings = {}) {
   );
 }
 
-function replacementRank(position, numTeams, numQbs) {
-  if (position === "QB") return numTeams * (numQbs === 2 ? 2 : 1);
-  return numTeams * (STARTERS_PER_TEAM[position] ?? 1);
+function calculateReplacementRanks(playerAssets, numTeams, numQbs, roster) {
+  const ranks = {
+    QB: numTeams * (numQbs === 2 ? 2 : 1),
+    RB: numTeams * roster.rbStarters,
+    WR: numTeams * roster.wrStarters,
+    TE: numTeams * roster.teStarters,
+  };
+  const flexAllocation = { RB: 0, WR: 0, TE: 0 };
+  const flexCandidates = ["RB", "WR", "TE"]
+    .flatMap((position) =>
+      playerAssets
+        .filter((asset) => asset.position === position)
+        .sort(
+          (left, right) =>
+            finite(left.posRank, Number.MAX_SAFE_INTEGER) -
+              finite(right.posRank, Number.MAX_SAFE_INTEGER) ||
+            finite(right.baseValue, right.value) - finite(left.baseValue, left.value),
+        )
+        .slice(ranks[position])
+        .map((asset) => ({ asset, position })),
+    )
+    .sort(
+      (left, right) =>
+        finite(right.asset.baseValue, right.asset.value) -
+          finite(left.asset.baseValue, left.asset.value) ||
+        finite(left.asset.posRank, Number.MAX_SAFE_INTEGER) -
+          finite(right.asset.posRank, Number.MAX_SAFE_INTEGER),
+    )
+    .slice(0, numTeams * roster.flexSpots);
+
+  for (const candidate of flexCandidates) {
+    ranks[candidate.position] += 1;
+    flexAllocation[candidate.position] += 1;
+  }
+
+  return { ranks, flexAllocation };
 }
 
-function replacementContext(positionAssets, profiles, targetRank, settings) {
+function replacementPoints(positionAssets, profiles, targetRank, settings) {
   const ranked = [...positionAssets].sort(
     (left, right) =>
       finite(left.posRank, Number.MAX_SAFE_INTEGER) -
@@ -194,17 +241,10 @@ function replacementContext(positionAssets, profiles, targetRank, settings) {
 
   if (!nearby.length) return null;
 
-  const referencePoints = nearby
-    .map((profile) => calculateFantasyPoints(profile, DEFAULT_SCORING_SETTINGS))
-    .filter(Number.isFinite);
-  const selectedPoints = nearby
+  const points = nearby
     .map((profile) => calculateFantasyPoints(profile, settings))
     .filter(Number.isFinite);
-
-  return {
-    referencePoints: median(referencePoints),
-    selectedPoints: median(selectedPoints),
-  };
+  return median(points);
 }
 
 export function applyScoringContext(
@@ -213,6 +253,7 @@ export function applyScoringContext(
   rawSettings = {},
 ) {
   const settings = normalizeScoringSettings(rawSettings);
+  const rosterSettings = normalizeRosterSettings(rawSettings);
   const numTeams = [8, 10, 12, 14, 16].includes(Number(rawSettings.numTeams))
     ? Number(rawSettings.numTeams)
     : 12;
@@ -227,27 +268,48 @@ export function applyScoringContext(
   const playerAssets = assets.filter(
     (asset) => asset.kind === "player" && asset.position !== "PICK",
   );
-  const replacements = {};
+  const baselineRosterContext = calculateReplacementRanks(
+    playerAssets,
+    numTeams,
+    numQbs,
+    DEFAULT_ROSTER_SETTINGS,
+  );
+  const selectedRosterContext = calculateReplacementRanks(
+    playerAssets,
+    numTeams,
+    numQbs,
+    rosterSettings,
+  );
+  const referenceReplacements = {};
+  const selectedReplacements = {};
   const spreads = {};
 
   for (const position of ["QB", "RB", "WR", "TE"]) {
     const atPosition = playerAssets.filter((asset) => asset.position === position);
-    const targetRank = replacementRank(position, numTeams, numQbs);
-    replacements[position] = replacementContext(
+    const referenceRank = baselineRosterContext.ranks[position];
+    const selectedRank = selectedRosterContext.ranks[position];
+    referenceReplacements[position] = replacementPoints(
       atPosition,
       profiles,
-      targetRank,
+      referenceRank,
+      DEFAULT_SCORING_SETTINGS,
+    );
+    selectedReplacements[position] = replacementPoints(
+      atPosition,
+      profiles,
+      selectedRank,
       settings,
     );
 
-    const replacement = replacements[position];
     const starterVorp = atPosition
       .slice()
       .sort((left, right) => right.baseValue - left.baseValue)
-      .slice(0, targetRank)
+      .slice(0, referenceRank)
       .map((asset) => calculateFantasyPoints(profiles[asset.slug], DEFAULT_SCORING_SETTINGS))
       .filter(Number.isFinite)
-      .map((points) => Math.max(0, points - (replacement?.referencePoints ?? 0)));
+      .map((points) =>
+        Math.max(0, points - (referenceReplacements[position] ?? 0)),
+      );
     spreads[position] = Math.max(2, quantile(starterVorp, 0.75));
   }
 
@@ -256,8 +318,13 @@ export function applyScoringContext(
   const adjustedAssets = assets.map((asset) => {
     if (asset.kind !== "player" || asset.position === "PICK") return asset;
     const profile = profiles[asset.slug];
-    const replacement = replacements[asset.position];
-    if (!profile || !replacement) {
+    const referenceReplacement = referenceReplacements[asset.position];
+    const selectedReplacement = selectedReplacements[asset.position];
+    if (
+      !profile ||
+      !Number.isFinite(referenceReplacement) ||
+      !Number.isFinite(selectedReplacement)
+    ) {
       return {
         ...asset,
         scoringContext: {
@@ -274,8 +341,8 @@ export function applyScoringContext(
     );
     const selectedPoints = calculateFantasyPoints(profile, settings);
     const deltaVorpPerGame =
-      (selectedPoints - replacement.selectedPoints) -
-      (referencePoints - replacement.referencePoints);
+      (selectedPoints - selectedReplacement) -
+      (referencePoints - referenceReplacement);
     const contextRatio = deltaVorpPerGame / spreads[asset.position];
     const adjustmentRate =
       clamp(contextRatio * maximumShift, -maximumShift, maximumShift) *
@@ -298,8 +365,8 @@ export function applyScoringContext(
         confidence: profile.confidence,
         referencePointsPerGame: referencePoints,
         selectedPointsPerGame: selectedPoints,
-        replacementReferencePointsPerGame: round(replacement.referencePoints, 3),
-        replacementSelectedPointsPerGame: round(replacement.selectedPoints, 3),
+        replacementReferencePointsPerGame: round(referenceReplacement, 3),
+        replacementSelectedPointsPerGame: round(selectedReplacement, 3),
         deltaVorpPerGame: round(deltaVorpPerGame, 3),
         adjustmentPercent: round(adjustmentRate * 100, 1),
         valueDelta,
@@ -313,6 +380,10 @@ export function applyScoringContext(
       modelVersion: SCORING_MODEL_VERSION,
       baseline: DEFAULT_SCORING_SETTINGS,
       settings,
+      baselineRoster: DEFAULT_ROSTER_SETTINGS,
+      rosterSettings,
+      replacementRanks: selectedRosterContext.ranks,
+      flexAllocation: selectedRosterContext.flexAllocation,
       adjustedCount,
       coveredCount,
       playerCount: playerAssets.length,

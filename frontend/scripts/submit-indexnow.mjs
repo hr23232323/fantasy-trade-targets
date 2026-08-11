@@ -23,6 +23,11 @@ const changedPaths = [
   "/fantasy-football-trade-analyzer",
   "/fantasy-football-trade-value-chart",
   "/data-sources",
+  "/methodology",
+  "/scoring-impact",
+  "/scoring/6-point-passing-td-rankings",
+  "/scoring/half-ppr-trade-values",
+  "/scoring/standard-vs-ppr-player-values",
   ...playerPages.map((player) => `/players/${player.slug}`),
   ...Object.values(teamRelease.teams).map((team) => `/teams/${team.slug}`),
 ];
