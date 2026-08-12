@@ -17,10 +17,20 @@ const formats = ["dynasty", "redraft"];
 const quarterbackSettings = [1, 2];
 const tepSettings = [false, true];
 const teamCounts = [8, 10, 12, 14, 16];
-const capturedAt = new Date();
+let capturedAt = new Date();
 const hasApiKey = Boolean(process.env.TRADYR_API_KEY);
 const requestIntervalMs = hasApiKey ? 75 : 1_100;
-const requestTimeoutMs = 15_000;
+const requestTimeoutMs = Math.max(
+  15_000,
+  Math.min(60_000, Number(process.env.TRADYR_REQUEST_TIMEOUT_MS) || 45_000),
+);
+const scoringProfileConcurrency = Math.max(
+  1,
+  Math.min(
+    16,
+    Number(process.env.SCORING_PROFILE_CONCURRENCY) || 8,
+  ),
+);
 const scoringProfileBatchSize = Math.max(
   50,
   Math.min(
@@ -30,7 +40,7 @@ const scoringProfileBatchSize = Math.max(
   ),
 );
 let nextRequestAt = 0;
-const releaseId = `ftt-${capturedAt
+let releaseId = `ftt-${capturedAt
   .toISOString()
   .replace(/[-:]/g, "")
   .replace(/\.\d{3}/, "")}`;
@@ -49,6 +59,17 @@ const [priorRelease, priorSnapshotHistory] = await Promise.all([
   readJsonIfPresent(currentPath),
   readJsonIfPresent(snapshotHistoryPath),
 ]);
+const reuseValidatedMarkets =
+  process.env.REUSE_VALIDATED_MARKETS === "true" &&
+  priorRelease?.playerMarkets &&
+  priorRelease?.pickMarkets;
+if (reuseValidatedMarkets) {
+  capturedAt = new Date(priorRelease.capturedAt);
+  releaseId = priorRelease.releaseId;
+}
+const refreshReviewedPlayerProfiles =
+  process.env.REFRESH_REVIEWED_PLAYER_PROFILES !== "false" ||
+  Object.keys(priorRelease?.playerProfiles ?? {}).length !== playerSlugs.length;
 
 const headers = {
   Accept: "application/json",
@@ -80,21 +101,32 @@ const profileRequests = playerSlugs.map((slug) => ({
   kind: "profile",
 }));
 
-const marketAndPickResponses = await mapConcurrent(
-  [...playerRequests, ...pickRequests],
-  hasApiKey ? 8 : 4,
-  async (request) => ({ ...request, payload: await fetchJson(request.url) }),
-);
-const playerMarkets = Object.fromEntries(
-  marketAndPickResponses
-    .filter((response) => response.kind === "players")
-    .map((response) => [response.key, response.payload]),
-);
-const pickMarkets = Object.fromEntries(
-  marketAndPickResponses
-    .filter((response) => response.kind === "picks")
-    .map((response) => [response.key, response.payload]),
-);
+const marketAndPickResponses = reuseValidatedMarkets
+  ? []
+  : await mapConcurrent(
+      [...playerRequests, ...pickRequests],
+      hasApiKey ? 8 : 4,
+      async (request) => ({ ...request, payload: await fetchJson(request.url) }),
+    );
+const playerMarkets = reuseValidatedMarkets
+  ? priorRelease.playerMarkets
+  : Object.fromEntries(
+      marketAndPickResponses
+        .filter((response) => response.kind === "players")
+        .map((response) => [response.key, response.payload]),
+    );
+const pickMarkets = reuseValidatedMarkets
+  ? priorRelease.pickMarkets
+  : Object.fromEntries(
+      marketAndPickResponses
+        .filter((response) => response.kind === "picks")
+        .map((response) => [response.key, response.payload]),
+    );
+if (reuseValidatedMarkets) {
+  console.log(
+    `Reusing validated market release ${releaseId} for scoring-only publication.`,
+  );
+}
 const currentPlayersBySlug = new Map(
   playerMarkets["dynasty:2:0"].data.map((player) => [player.slug, player]),
 );
@@ -114,9 +146,10 @@ const scoringCohort = selectScoringProfileCohort({
   refreshCursor: priorRefreshCursor,
 });
 console.log(
-  `Scoring profiles: ${hasApiKey ? "authenticated" : "anonymous"} publication, carrying ${Object.keys(carriedScoringProfiles).length}, refreshing ${scoringCohort.length}/${currentPlayers.length}.`,
+  `Scoring profiles: ${hasApiKey ? "authenticated" : "anonymous"} publication, carrying ${Object.keys(carriedScoringProfiles).length}, refreshing ${scoringCohort.length}/${currentPlayers.length} with concurrency ${scoringProfileConcurrency}.`,
 );
-const scoringHealthPlayer = scoringCohort[0];
+const scoringHealthPlayer =
+  currentPlayersBySlug.get("josh-allen-qb") ?? scoringCohort[0];
 const scoringHealthPayload = scoringHealthPlayer
   ? await fetchOptionalJson(
       `${API_BASE}/players/${encodeURIComponent(scoringHealthPlayer.slug)}/stats`,
@@ -132,15 +165,21 @@ if (scoringHealthPlayer && !scoringHealthProfile) {
 if (scoringHealthPlayer) {
   console.log(`Verified scoring stats availability with ${scoringHealthPlayer.slug}.`);
 }
+const scoringHealthWasRequested = scoringCohort.some(
+  (player) => player.slug === scoringHealthPlayer?.slug,
+);
+const remainingScoringCohort = scoringCohort.filter(
+  (player) => player.slug !== scoringHealthPlayer?.slug,
+);
 const remainingScoringStatsResponses = await mapConcurrent(
-  scoringCohort.slice(1),
-  hasApiKey ? 8 : 4,
+  remainingScoringCohort,
+  scoringProfileConcurrency,
   async (player, index) => {
     const payload = await fetchOptionalJson(
       `${API_BASE}/players/${encodeURIComponent(player.slug)}/stats`,
       { attempts: 2 },
     );
-    const completed = index + 2;
+    const completed = index + 1 + (scoringHealthWasRequested ? 1 : 0);
     if (completed % 25 === 0 || completed === scoringCohort.length) {
       console.log(
         `Fetched scoring stats ${completed}/${scoringCohort.length}`,
@@ -149,32 +188,39 @@ const remainingScoringStatsResponses = await mapConcurrent(
     return { slug: player.slug, payload };
   },
 );
-const scoringStatsResponses = scoringHealthPlayer
+const scoringStatsResponses = scoringHealthPlayer && scoringHealthWasRequested
   ? [
       { slug: scoringHealthPlayer.slug, payload: scoringHealthPayload },
       ...remainingScoringStatsResponses,
     ]
-  : [];
+  : remainingScoringStatsResponses;
 const scoringStatsBySlug = new Map(
   scoringStatsResponses.map((response) => [response.slug, response.payload]),
 );
-const profileResponses = await mapConcurrent(
-  profileRequests,
-  2,
-  async (request, index) => {
-    const payload = await fetchPlayerProfile(
-      request.url,
-      scoringStatsBySlug.get(request.key),
-    );
-    console.log(
-      `Fetched player profile ${index + 1}/${profileRequests.length}: ${request.key}`,
-    );
-    return { ...request, payload };
-  },
-);
-const rawPlayerProfiles = Object.fromEntries(
-  profileResponses.map((response) => [response.key, response.payload]),
-);
+const profileResponses = refreshReviewedPlayerProfiles
+  ? await mapConcurrent(
+      profileRequests,
+      2,
+      async (request, index) => {
+        const payload = await fetchPlayerProfile(
+          request.url,
+          scoringStatsBySlug.get(request.key),
+        );
+        console.log(
+          `Fetched player profile ${index + 1}/${profileRequests.length}: ${request.key}`,
+        );
+        return { ...request, payload };
+      },
+    )
+  : [];
+const rawPlayerProfiles = refreshReviewedPlayerProfiles
+  ? Object.fromEntries(
+      profileResponses.map((response) => [response.key, response.payload]),
+    )
+  : priorRelease.playerProfiles;
+if (!refreshReviewedPlayerProfiles) {
+  console.log(`Reusing ${playerSlugs.length} reviewed player profiles for scoring-only publication.`);
+}
 const playerProfiles = Object.fromEntries(
   Object.entries(rawPlayerProfiles).map(([slug, payload]) => [
     slug,
@@ -187,6 +233,14 @@ const refreshedScoringProfiles = Object.fromEntries(
     return profile ? [[slug, profile]] : [];
   }),
 );
+const successfulScoringResponseCount = scoringStatsResponses.filter(
+  ({ payload }) => Boolean(payload),
+).length;
+const unavailableScoringProfileCount = scoringStatsResponses.filter(
+  ({ payload, slug }) => Boolean(payload) && !refreshedScoringProfiles[slug],
+).length;
+const failedScoringRequestCount =
+  scoringStatsResponses.length - successfulScoringResponseCount;
 const reviewedScoringProfiles = Object.fromEntries(
   Object.entries(rawPlayerProfiles).flatMap(([slug, payload]) => {
     const profile = buildScoringProfile({
@@ -210,6 +264,9 @@ const scoringProfilePublication = {
   playerCount: currentPlayers.length,
   refreshedCount: Object.keys(refreshedScoringProfiles).length,
   requestedCount: scoringCohort.length,
+  successfulResponseCount: successfulScoringResponseCount,
+  unavailableCount: unavailableScoringProfileCount,
+  failedRequestCount: failedScoringRequestCount,
   nextRefreshCursor: nextScoringRefreshCursor({
     players: currentPlayers,
     cohort: scoringCohort,
@@ -235,6 +292,7 @@ validateRelease({
   playerProfiles,
   playerScoringProfiles,
   priorScoringProfileCount: Object.keys(carriedScoringProfiles).length,
+  priorPlayerMarkets: priorRelease?.playerMarkets,
   playerSnapshotHistory,
 });
 
@@ -441,6 +499,7 @@ function validateRelease({
   playerProfiles,
   playerScoringProfiles,
   priorScoringProfileCount,
+  priorPlayerMarkets,
   playerSnapshotHistory,
 }) {
   if (Object.keys(playerMarkets).length !== 8) {
@@ -479,6 +538,12 @@ function validateRelease({
     const minimumPlayers = key.startsWith("redraft:") ? 150 : 300;
     if (!Array.isArray(payload.data) || payload.data.length < minimumPlayers) {
       throw new Error(`Player market ${key} is unexpectedly small`);
+    }
+    const priorCount = priorPlayerMarkets?.[key]?.data?.length ?? 0;
+    if (payload.data.length < priorCount) {
+      throw new Error(
+        `Player market ${key} regressed from ${priorCount} to ${payload.data.length} players`,
+      );
     }
   }
   for (const slug of playerSlugs) {

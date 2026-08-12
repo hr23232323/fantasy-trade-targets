@@ -72,7 +72,36 @@ test("carried profiles are model-versioned, finite, and current-market only", ()
 
 test("publication fails fast when the upstream scoring layer is unavailable", () => {
   assert.match(publisher, /scoringHealthPlayer/);
+  assert.match(publisher, /currentPlayersBySlug\.get\("josh-allen-qb"\)/);
   assert.match(publisher, /attempts: 1/);
   assert.match(publisher, /Tradyr scoring stats are unavailable/);
   assert.match(publisher, /preserving the prior release/);
+});
+
+test("publication rejects a player market that regresses from its prior release", () => {
+  assert.match(publisher, /priorPlayerMarkets/);
+  assert.match(publisher, /payload\.data\.length < priorCount/);
+  assert.match(publisher, /regressed from.*players/);
+});
+
+test("anonymous publication overlaps slow requests without increasing its start rate", () => {
+  assert.match(publisher, /requestIntervalMs = hasApiKey \? 75 : 1_100/);
+  assert.match(publisher, /SCORING_PROFILE_CONCURRENCY\) \|\| 8/);
+  assert.match(publisher, /TRADYR_REQUEST_TIMEOUT_MS\) \|\| 45_000/);
+  assert.match(publisher, /scoringProfileConcurrency/);
+});
+
+test("scoring-only backfills can reuse already validated reviewed profiles", () => {
+  assert.match(publisher, /REFRESH_REVIEWED_PLAYER_PROFILES !== "false"/);
+  assert.match(publisher, /priorRelease\.playerProfiles/);
+  assert.match(publisher, /Reusing.*reviewed player profiles/);
+});
+
+test("scoring-only backfills preserve validated market identity and classify outcomes", () => {
+  assert.match(publisher, /REUSE_VALIDATED_MARKETS === "true"/);
+  assert.match(publisher, /releaseId = priorRelease\.releaseId/);
+  assert.match(publisher, /Reusing validated market release/);
+  assert.match(publisher, /successfulResponseCount/);
+  assert.match(publisher, /unavailableCount/);
+  assert.match(publisher, /failedRequestCount/);
 });

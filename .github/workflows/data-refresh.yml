@@ -41,6 +41,8 @@ jobs:
       env:
         TRADYR_API_KEY: ${{ secrets.TRADYR_API_KEY }}
         SCORING_PROFILE_BATCH_SIZE: 200
+        SCORING_PROFILE_CONCURRENCY: 8
+        TRADYR_REQUEST_TIMEOUT_MS: 45000
       run: npm run data:refresh
 
     - id: team_refresh
