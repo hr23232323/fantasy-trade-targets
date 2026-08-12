@@ -15,6 +15,7 @@ const staticRoutes = [
   "/dynasty-trade-value-chart",
   "/editorial-policy",
   "/fantasy-football-trade-analyzer",
+  "/fantasy-football-trade-targets",
   "/fantasy-football-trade-value-chart",
   "/fantasy-trade-calculator",
   "/faq",

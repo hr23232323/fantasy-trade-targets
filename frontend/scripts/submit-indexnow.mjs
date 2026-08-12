@@ -21,6 +21,7 @@ const changedPaths = [
   "/dynasty-superflex-trade-calculator",
   "/fantasy-trade-calculator",
   "/fantasy-football-trade-analyzer",
+  "/fantasy-football-trade-targets",
   "/fantasy-football-trade-value-chart",
   "/data-sources",
   "/methodology",

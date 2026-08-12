@@ -101,7 +101,7 @@ export default async function PlayersPage() {
       <section className="page-wrap py-16">
         <div className="mb-7 grid gap-4 border-t border-[#171c19] pt-6 md:grid-cols-[1fr_auto] md:items-end">
           <div>
-            <span className="eyebrow">Complete index // 50 profiles</span>
+            <span className="eyebrow">Complete index // {playerPages.length} profiles</span>
             <h2 className="section-title mt-5">More players. Same depth.</h2>
           </div>
           <p className="max-w-lg text-sm leading-7 text-[#69706c]">

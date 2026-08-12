@@ -30,21 +30,6 @@
     }
   },
   {
-    "slug": "jamarr-chase-wr",
-    "name": "Ja'Marr Chase",
-    "editorialLens": "A cornerstone dynasty wide receiver with elite market liquidity and a production profile built for long competitive windows.",
-    "image": {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Ja%27Marr_Chase.jpg/960px-Ja%27Marr_Chase.jpg",
-      "width": 900,
-      "height": 1069,
-      "alt": "Ja'Marr Chase in uniform on the sideline",
-      "author": "All-Pro Reels",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ja%27Marr_Chase.jpg"
-    }
-  },
-  {
     "slug": "jahmyr-gibbs-rb",
     "name": "Jahmyr Gibbs",
     "editorialLens": "Jahmyr Gibbs's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
@@ -57,6 +42,21 @@
       "license": "CC0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File:JahmyrGibbs_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "jamarr-chase-wr",
+    "name": "Ja'Marr Chase",
+    "editorialLens": "A cornerstone dynasty wide receiver with elite market liquidity and a production profile built for long competitive windows.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Ja%27Marr_Chase.jpg/960px-Ja%27Marr_Chase.jpg",
+      "width": 900,
+      "height": 1069,
+      "alt": "Ja'Marr Chase in uniform on the sideline",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ja%27Marr_Chase.jpg"
     }
   },
   {
@@ -165,21 +165,6 @@
     }
   },
   {
-    "slug": "jayden-daniels-qb",
-    "name": "Jayden Daniels",
-    "editorialLens": "Jayden Daniels's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
-    "image": {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/3/37/Jayden_Daniels_2025.jpg",
-      "width": 960,
-      "height": 1073,
-      "alt": "Photograph of Jayden Daniels",
-      "author": "All-Pro Reels",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jayden_Daniels_2025.jpg"
-    }
-  },
-  {
     "slug": "ashton-jeanty-rb",
     "name": "Ashton Jeanty",
     "editorialLens": "A young running back priced on immediate opportunity, long runway, and the scarcity of high-end dynasty backfields.",
@@ -195,18 +180,18 @@
     }
   },
   {
-    "slug": "justin-jefferson-wr",
-    "name": "Justin Jefferson",
-    "editorialLens": "Justin Jefferson's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "slug": "jayden-daniels-qb",
+    "name": "Jayden Daniels",
+    "editorialLens": "Jayden Daniels's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
     "image": {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Jefferson_2022.jpg/960px-Jefferson_2022.jpg",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/3/37/Jayden_Daniels_2025.jpg",
       "width": 960,
-      "height": 1238,
-      "alt": "Photograph of Justin Jefferson",
+      "height": 1073,
+      "alt": "Photograph of Jayden Daniels",
       "author": "All-Pro Reels",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jefferson_2022.jpg"
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jayden_Daniels_2025.jpg"
     }
   },
   {
@@ -222,6 +207,21 @@
       "license": "CC BY 3.0",
       "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File:Joe_Burrow_-_Lordstown_interview_-_1_(cropped).png"
+    }
+  },
+  {
+    "slug": "justin-jefferson-wr",
+    "name": "Justin Jefferson",
+    "editorialLens": "Justin Jefferson's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Jefferson_2022.jpg/960px-Jefferson_2022.jpg",
+      "width": 960,
+      "height": 1238,
+      "alt": "Photograph of Justin Jefferson",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jefferson_2022.jpg"
     }
   },
   {
@@ -300,21 +300,6 @@
     }
   },
   {
-    "slug": "justin-herbert-qb",
-    "name": "Justin Herbert",
-    "editorialLens": "Justin Herbert's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
-    "image": {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Justin_Herbert_presnap_against_the_Washington_Commanders.jpg/960px-Justin_Herbert_presnap_against_the_Washington_Commanders.jpg",
-      "width": 960,
-      "height": 1033,
-      "alt": "Photograph of Justin Herbert",
-      "author": "All-Pro Reels",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Justin_Herbert_presnap_against_the_Washington_Commanders.jpg"
-    }
-  },
-  {
     "slug": "drake-london-wr",
     "name": "Drake London",
     "editorialLens": "Drake London's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
@@ -327,6 +312,21 @@
       "license": "CC BY 3.0",
       "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File:Drake_London_Falcons_camp_2022.png"
+    }
+  },
+  {
+    "slug": "justin-herbert-qb",
+    "name": "Justin Herbert",
+    "editorialLens": "Justin Herbert's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Justin_Herbert_presnap_against_the_Washington_Commanders.jpg/960px-Justin_Herbert_presnap_against_the_Washington_Commanders.jpg",
+      "width": 960,
+      "height": 1033,
+      "alt": "Photograph of Justin Herbert",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Justin_Herbert_presnap_against_the_Washington_Commanders.jpg"
     }
   },
   {
@@ -360,51 +360,6 @@
     }
   },
   {
-    "slug": "jaxson-dart-qb",
-    "name": "Jaxson Dart",
-    "editorialLens": "Jaxson Dart's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
-    "image": {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Jaxson_Dart_2025.jpg",
-      "width": 960,
-      "height": 1324,
-      "alt": "Photograph of Jaxson Dart",
-      "author": "All-Pro Reels",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jaxson_Dart_2025.jpg"
-    }
-  },
-  {
-    "slug": "jalen-hurts-qb",
-    "name": "Jalen Hurts",
-    "editorialLens": "Jalen Hurts's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
-    "image": {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Jalen_Hurts_11-14-22_%28cropped%29.jpg/960px-Jalen_Hurts_11-14-22_%28cropped%29.jpg",
-      "width": 960,
-      "height": 1250,
-      "alt": "Photograph of Jalen Hurts",
-      "author": "All-Pro Reels",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jalen_Hurts_11-14-22_(cropped).jpg"
-    }
-  },
-  {
-    "slug": "trevor-lawrence-qb",
-    "name": "Trevor Lawrence",
-    "editorialLens": "Trevor Lawrence's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
-    "image": {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Trevor_Lawrence_%2852377887812%29_%28cropped%29.jpg/960px-Trevor_Lawrence_%2852377887812%29_%28cropped%29.jpg",
-      "width": 960,
-      "height": 1321,
-      "alt": "Photograph of Trevor Lawrence",
-      "author": "All-Pro Reels",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Trevor_Lawrence_(52377887812)_(cropped).jpg"
-    }
-  },
-  {
     "slug": "colston-loveland-te",
     "name": "Colston Loveland",
     "editorialLens": "Colston Loveland's price is especially sensitive to tight end premium scoring; the four-format comparison shows where positional scarcity changes the market.",
@@ -435,18 +390,18 @@
     }
   },
   {
-    "slug": "tetairoa-mcmillan-wr",
-    "name": "Tetairoa McMillan",
-    "editorialLens": "Tetairoa McMillan's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "slug": "jaxson-dart-qb",
+    "name": "Jaxson Dart",
+    "editorialLens": "Jaxson Dart's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
     "image": {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Tetairoa_McMillan_Super_Bowl_LX_2026.png",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Jaxson_Dart_2025.jpg",
       "width": 960,
-      "height": 1189,
-      "alt": "Photograph of Tetairoa McMillan",
-      "author": "MMG",
-      "license": "CC BY 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tetairoa_McMillan_Super_Bowl_LX_2026.png"
+      "height": 1324,
+      "alt": "Photograph of Jaxson Dart",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jaxson_Dart_2025.jpg"
     }
   },
   {
@@ -465,6 +420,51 @@
     }
   },
   {
+    "slug": "jalen-hurts-qb",
+    "name": "Jalen Hurts",
+    "editorialLens": "Jalen Hurts's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Jalen_Hurts_11-14-22_%28cropped%29.jpg/960px-Jalen_Hurts_11-14-22_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1250,
+      "alt": "Photograph of Jalen Hurts",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jalen_Hurts_11-14-22_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "tetairoa-mcmillan-wr",
+    "name": "Tetairoa McMillan",
+    "editorialLens": "Tetairoa McMillan's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Tetairoa_McMillan_Super_Bowl_LX_2026.png",
+      "width": 960,
+      "height": 1189,
+      "alt": "Photograph of Tetairoa McMillan",
+      "author": "MMG",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tetairoa_McMillan_Super_Bowl_LX_2026.png"
+    }
+  },
+  {
+    "slug": "trevor-lawrence-qb",
+    "name": "Trevor Lawrence",
+    "editorialLens": "Trevor Lawrence's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Trevor_Lawrence_%2852377887812%29_%28cropped%29.jpg/960px-Trevor_Lawrence_%2852377887812%29_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1321,
+      "alt": "Photograph of Trevor Lawrence",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Trevor_Lawrence_(52377887812)_(cropped).jpg"
+    }
+  },
+  {
     "slug": "emeka-egbuka-wr",
     "name": "Emeka Egbuka",
     "editorialLens": "Emeka Egbuka's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
@@ -477,36 +477,6 @@
       "license": "CC BY 3.0",
       "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File:2025-0120_Emeka_Egbuka.jpg"
-    }
-  },
-  {
-    "slug": "bo-nix-qb",
-    "name": "Bo Nix",
-    "editorialLens": "Bo Nix's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
-    "image": {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Bo_Nix_scramble.png",
-      "width": 960,
-      "height": 1374,
-      "alt": "Photograph of Bo Nix",
-      "author": "Tennessee Titans",
-      "license": "CC BY 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bo_Nix_scramble.png"
-    }
-  },
-  {
-    "slug": "carnell-tate-wr",
-    "name": "Carnell Tate",
-    "editorialLens": "Carnell Tate's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
-    "image": {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Carnell_Tate_2026_%28cropped%29.png",
-      "width": 960,
-      "height": 1305,
-      "alt": "Photograph of Carnell Tate",
-      "author": "Tennessee Titans",
-      "license": "CC BY 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Carnell_Tate_2026_(cropped).png"
     }
   },
   {
@@ -537,6 +507,36 @@
       "license": "CC BY 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tyler_Warren_pro_bowl.png"
+    }
+  },
+  {
+    "slug": "bo-nix-qb",
+    "name": "Bo Nix",
+    "editorialLens": "Bo Nix's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Bo_Nix_scramble.png",
+      "width": 960,
+      "height": 1374,
+      "alt": "Photograph of Bo Nix",
+      "author": "Tennessee Titans",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bo_Nix_scramble.png"
+    }
+  },
+  {
+    "slug": "carnell-tate-wr",
+    "name": "Carnell Tate",
+    "editorialLens": "Carnell Tate's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Carnell_Tate_2026_%28cropped%29.png",
+      "width": 960,
+      "height": 1305,
+      "alt": "Photograph of Carnell Tate",
+      "author": "Tennessee Titans",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Carnell_Tate_2026_(cropped).png"
     }
   },
   {
@@ -585,21 +585,6 @@
     }
   },
   {
-    "slug": "ladd-mcconkey-wr",
-    "name": "Ladd McConkey",
-    "editorialLens": "Ladd McConkey's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
-    "image": {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Ladd_McConkey_2024.png",
-      "width": 960,
-      "height": 1408,
-      "alt": "Photograph of Ladd McConkey",
-      "author": "Tennessee Titans",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ladd_McConkey_2024.png"
-    }
-  },
-  {
     "slug": "chris-olave-wr",
     "name": "Chris Olave",
     "editorialLens": "Chris Olave's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
@@ -612,21 +597,6 @@
       "license": "CC BY 2.0",
       "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File:IX8A4137_(45339431234)_(cropped).jpg"
-    }
-  },
-  {
-    "slug": "jordan-love-qb",
-    "name": "Jordan Love",
-    "editorialLens": "Jordan Love's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
-    "image": {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/6/6a/2025_Commanders_at_Packers_135_%28cropped%29.jpg",
-      "width": 960,
-      "height": 1007,
-      "alt": "Photograph of Jordan Love",
-      "author": "All-Pro Reels",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2025_Commanders_at_Packers_135_(cropped).jpg"
     }
   },
   {
@@ -645,36 +615,6 @@
     }
   },
   {
-    "slug": "garrett-wilson-wr",
-    "name": "Garrett Wilson",
-    "editorialLens": "Garrett Wilson's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
-    "image": {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/4/41/2025_NYJ_offseason_-_Garrett_Wilson_interview_%28cropped%29.png",
-      "width": 960,
-      "height": 1332,
-      "alt": "Photograph of Garrett Wilson",
-      "author": "New York Jets",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2025_NYJ_offseason_-_Garrett_Wilson_interview_(cropped).png"
-    }
-  },
-  {
-    "slug": "fernando-mendoza-qb",
-    "name": "Fernando Mendoza",
-    "editorialLens": "Fernando Mendoza's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
-    "image": {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Fernando_Mendoza.jpg/960px-Fernando_Mendoza.jpg",
-      "width": 960,
-      "height": 1222,
-      "alt": "Photograph of Fernando Mendoza",
-      "author": "Tech. Sgt. Anthony Hetlage",
-      "license": "Public domain",
-      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fernando_Mendoza.jpg"
-    }
-  },
-  {
     "slug": "chase-brown-rb",
     "name": "Chase Brown",
     "editorialLens": "Chase Brown's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
@@ -690,18 +630,48 @@
     }
   },
   {
-    "slug": "luther-burden-wr",
-    "name": "Luther Burden",
-    "editorialLens": "Luther Burden's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "slug": "garrett-wilson-wr",
+    "name": "Garrett Wilson",
+    "editorialLens": "Garrett Wilson's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
     "image": {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Luther_Burden_III_%2854857809017%29_%28cropped%29.jpg/960px-Luther_Burden_III_%2854857809017%29_%28cropped%29.jpg",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/4/41/2025_NYJ_offseason_-_Garrett_Wilson_interview_%28cropped%29.png",
       "width": 960,
-      "height": 1280,
-      "alt": "Photograph of Luther Burden",
-      "author": "All-Pro Reels from District of Columbia, USA",
+      "height": 1332,
+      "alt": "Photograph of Garrett Wilson",
+      "author": "New York Jets",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2025_NYJ_offseason_-_Garrett_Wilson_interview_(cropped).png"
+    }
+  },
+  {
+    "slug": "ladd-mcconkey-wr",
+    "name": "Ladd McConkey",
+    "editorialLens": "Ladd McConkey's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Ladd_McConkey_2024.png",
+      "width": 960,
+      "height": 1408,
+      "alt": "Photograph of Ladd McConkey",
+      "author": "Tennessee Titans",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ladd_McConkey_2024.png"
+    }
+  },
+  {
+    "slug": "jordan-love-qb",
+    "name": "Jordan Love",
+    "editorialLens": "Jordan Love's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/6/6a/2025_Commanders_at_Packers_135_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1007,
+      "alt": "Photograph of Jordan Love",
+      "author": "All-Pro Reels",
       "license": "CC BY-SA 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Luther_Burden_III_(54857809017)_(cropped).jpg"
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2025_Commanders_at_Packers_135_(cropped).jpg"
     }
   },
   {
@@ -720,6 +690,36 @@
     }
   },
   {
+    "slug": "luther-burden-wr",
+    "name": "Luther Burden",
+    "editorialLens": "Luther Burden's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Luther_Burden_III_%2854857809017%29_%28cropped%29.jpg/960px-Luther_Burden_III_%2854857809017%29_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1280,
+      "alt": "Photograph of Luther Burden",
+      "author": "All-Pro Reels from District of Columbia, USA",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Luther_Burden_III_(54857809017)_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "jordyn-tyson-wr",
+    "name": "Jordyn Tyson",
+    "editorialLens": "Jordyn Tyson's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "/images/player-file-placeholder.svg",
+      "width": 960,
+      "height": 960,
+      "alt": "Fantasy Trade Target player file graphic for Jordyn Tyson",
+      "author": "Fantasy Trade Target Research",
+      "license": "Original site artwork",
+      "licenseUrl": "https://fantasytradetarget.com/terms-of-service",
+      "sourceUrl": "https://fantasytradetarget.com/data-sources"
+    }
+  },
+  {
     "slug": "quinshon-judkins-rb",
     "name": "Quinshon Judkins",
     "editorialLens": "Quinshon Judkins's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
@@ -735,6 +735,51 @@
     }
   },
   {
+    "slug": "fernando-mendoza-qb",
+    "name": "Fernando Mendoza",
+    "editorialLens": "Fernando Mendoza's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Fernando_Mendoza.jpg/960px-Fernando_Mendoza.jpg",
+      "width": 960,
+      "height": 1222,
+      "alt": "Photograph of Fernando Mendoza",
+      "author": "Tech. Sgt. Anthony Hetlage",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fernando_Mendoza.jpg"
+    }
+  },
+  {
+    "slug": "zay-flowers-wr",
+    "name": "Zay Flowers",
+    "editorialLens": "Zay Flowers's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Zay_Flowers_JUL2024_%2853880447586%29.jpg/960px-Zay_Flowers_JUL2024_%2853880447586%29.jpg",
+      "width": 960,
+      "height": 1281,
+      "alt": "Photograph of Zay Flowers",
+      "author": "Maryland GovPics",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zay_Flowers_JUL2024_(53880447586).jpg"
+    }
+  },
+  {
+    "slug": "breece-hall-rb",
+    "name": "Breece Hall",
+    "editorialLens": "Breece Hall's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/2026_NYJ_Media_-_Breece_Hall.png/960px-2026_NYJ_Media_-_Breece_Hall.png",
+      "width": 960,
+      "height": 1316,
+      "alt": "Photograph of Breece Hall",
+      "author": "New York Jets",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2026_NYJ_Media_-_Breece_Hall.png"
+    }
+  },
+  {
     "slug": "cam-ward-qb",
     "name": "Cam Ward",
     "editorialLens": "Cam Ward's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
@@ -747,6 +792,711 @@
       "license": "CC BY 3.0",
       "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
       "sourceUrl": "https://commons.wikimedia.org/wiki/File:2025_TEN_vs_DEN_-_QB_Cam_Ward_(cropped).png"
+    }
+  },
+  {
+    "slug": "saquon-barkley-rb",
+    "name": "Saquon Barkley",
+    "editorialLens": "Saquon Barkley's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Saquon_Barkley_112024.jpg",
+      "width": 960,
+      "height": 1717,
+      "alt": "Photograph of Saquon Barkley",
+      "author": "PistonsFan2223",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Saquon_Barkley_112024.jpg"
+    }
+  },
+  {
+    "slug": "dak-prescott-qb",
+    "name": "Dak Prescott",
+    "editorialLens": "Dak Prescott's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Dak_Prescott_by_Gage_Skidmore.jpg/960px-Dak_Prescott_by_Gage_Skidmore.jpg",
+      "width": 960,
+      "height": 1306,
+      "alt": "Photograph of Dak Prescott",
+      "author": "Gage Skidmore",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dak_Prescott_by_Gage_Skidmore.jpg"
+    }
+  },
+  {
+    "slug": "aj-brown-wr",
+    "name": "A.J. Brown",
+    "editorialLens": "A.J. Brown's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/c/c9/AJ_Brown_2021.jpg",
+      "width": 960,
+      "height": 1038,
+      "alt": "Photograph of A.J. Brown",
+      "author": "Tennesse Titans",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:AJ_Brown_2021.jpg"
+    }
+  },
+  {
+    "slug": "treveyon-henderson-rb",
+    "name": "TreVeyon Henderson",
+    "editorialLens": "TreVeyon Henderson's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/TreVeyon_Henderson.jpg/960px-TreVeyon_Henderson.jpg",
+      "width": 960,
+      "height": 811,
+      "alt": "Photograph of TreVeyon Henderson",
+      "author": "Bobak Ha'Eri",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:TreVeyon_Henderson.jpg"
+    }
+  },
+  {
+    "slug": "rome-odunze-wr",
+    "name": "Rome Odunze",
+    "editorialLens": "Rome Odunze's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/2024-0106-Rome_Odunze.jpg/960px-2024-0106-Rome_Odunze.jpg",
+      "width": 960,
+      "height": 960,
+      "alt": "Photograph of Rome Odunze",
+      "author": "Bobak Ha'Eri",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2024-0106-Rome_Odunze.jpg"
+    }
+  },
+  {
+    "slug": "rashee-rice-wr",
+    "name": "Rashee Rice",
+    "editorialLens": "Rashee Rice's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Rashee_Rice_%2855090108907%29_%28cropped%29.jpg/960px-Rashee_Rice_%2855090108907%29_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1280,
+      "alt": "Photograph of Rashee Rice",
+      "author": "All-Pro Reels from District of Columbia, USA",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rashee_Rice_(55090108907)_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "tee-higgins-wr",
+    "name": "Tee Higgins",
+    "editorialLens": "Tee Higgins's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/f/f8/Tee_Higgins_%2850677888797%29_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1629,
+      "alt": "Photograph of Tee Higgins",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tee_Higgins_(50677888797)_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "kyren-williams-rb",
+    "name": "Kyren Williams",
+    "editorialLens": "Kyren Williams's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/8/8c/2025_FanDuel_Super_Bowl_LIX_Winner_Poll_-_Kyren_Williams_%28cropped%29.png",
+      "width": 960,
+      "height": 1259,
+      "alt": "Photograph of Kyren Williams",
+      "author": "FanDuel",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2025_FanDuel_Super_Bowl_LIX_Winner_Poll_-_Kyren_Williams_(cropped).png"
+    }
+  },
+  {
+    "slug": "tucker-kraft-te",
+    "name": "Tucker Kraft",
+    "editorialLens": "Tucker Kraft's price is especially sensitive to tight end premium scoring; the four-format comparison shows where positional scarcity changes the market.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/9/93/Tucker_Kraft_%28tight_end%29_at_Fisher_House_in_Milwaukee_during_Green_Bay_Packers_Tailgate_Tour_stop_on_April_9%2C_2025_%2854441676575%29_%281%29.jpg",
+      "width": 960,
+      "height": 1280,
+      "alt": "Photograph of Tucker Kraft",
+      "author": "Milwaukee VA Medical Center",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tucker_Kraft_(tight_end)_at_Fisher_House_in_Milwaukee_during_Green_Bay_Packers_Tailgate_Tour_stop_on_April_9,_2025_(54441676575)_(1).jpg"
+    }
+  },
+  {
+    "slug": "tyler-shough-qb",
+    "name": "Tyler Shough",
+    "editorialLens": "Tyler Shough's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/b/b0/TylerShough2.png",
+      "width": 960,
+      "height": 1617,
+      "alt": "Photograph of Tyler Shough",
+      "author": "Tennessee Titans",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:TylerShough2.png"
+    }
+  },
+  {
+    "slug": "cam-skattebo-rb",
+    "name": "Cam Skattebo",
+    "editorialLens": "Cam Skattebo's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/4/4f/Cam_Skattebo_Jan_2019.png",
+      "width": 960,
+      "height": 1133,
+      "alt": "Photograph of Cam Skattebo",
+      "author": "utrhighlightvideos",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cam_Skattebo_Jan_2019.png"
+    }
+  },
+  {
+    "slug": "jaylen-waddle-wr",
+    "name": "Jaylen Waddle",
+    "editorialLens": "Jaylen Waddle's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Jaylen_Waddle_being_interviewed_by_CBS_Sports_at_Miami_Dolphins_training_camp_in_July_2025_%28cropped%29.jpg/960px-Jaylen_Waddle_being_interviewed_by_CBS_Sports_at_Miami_Dolphins_training_camp_in_July_2025_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1137,
+      "alt": "Photograph of Jaylen Waddle",
+      "author": "Gatorfan252525",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jaylen_Waddle_being_interviewed_by_CBS_Sports_at_Miami_Dolphins_training_camp_in_July_2025_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "jadarian-price-rb",
+    "name": "Jadarian Price",
+    "editorialLens": "Jadarian Price's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Jadarian_Price.jpg/960px-Jadarian_Price.jpg",
+      "width": 960,
+      "height": 1790,
+      "alt": "Photograph of Jadarian Price",
+      "author": "U.S. Army photo by Spc. David Poleski",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jadarian_Price.jpg"
+    }
+  },
+  {
+    "slug": "jared-goff-qb",
+    "name": "Jared Goff",
+    "editorialLens": "Jared Goff's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Jared_Goff_2022.jpg/960px-Jared_Goff_2022.jpg",
+      "width": 960,
+      "height": 1281,
+      "alt": "Photograph of Jared Goff",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jared_Goff_2022.jpg"
+    }
+  },
+  {
+    "slug": "makai-lemon-wr",
+    "name": "Makai Lemon",
+    "editorialLens": "Makai Lemon's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/2025-0724_Makai_Lemon_%28cropped%29.jpg/960px-2025-0724_Makai_Lemon_%28cropped%29.jpg",
+      "width": 960,
+      "height": 863,
+      "alt": "Photograph of Makai Lemon",
+      "author": "Bobak Ha'Eri",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2025-0724_Makai_Lemon_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "harold-fannin-te",
+    "name": "Harold Fannin",
+    "editorialLens": "Harold Fannin's price is especially sensitive to tight end premium scoring; the four-format comparison shows where positional scarcity changes the market.",
+    "image": {
+      "src": "/images/player-file-placeholder.svg",
+      "width": 960,
+      "height": 960,
+      "alt": "Fantasy Trade Target player file graphic for Harold Fannin",
+      "author": "Fantasy Trade Target Research",
+      "license": "Original site artwork",
+      "licenseUrl": "https://fantasytradetarget.com/terms-of-service",
+      "sourceUrl": "https://fantasytradetarget.com/data-sources"
+    }
+  },
+  {
+    "slug": "baker-mayfield-qb",
+    "name": "Baker Mayfield",
+    "editorialLens": "Baker Mayfield's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Baker_Mayfield_%28cropped%29.jpg/960px-Baker_Mayfield_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1202,
+      "alt": "Photograph of Baker Mayfield",
+      "author": "Erik Drost",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Baker_Mayfield_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "cj-stroud-qb",
+    "name": "C.J. Stroud",
+    "editorialLens": "C.J. Stroud's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/f/fd/CJ_Stroud_NFL_Combine_%28cropped%29.png",
+      "width": 960,
+      "height": 1388,
+      "alt": "Photograph of C.J. Stroud",
+      "author": "Tennessee Titans",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:CJ_Stroud_NFL_Combine_(cropped).png"
+    }
+  },
+  {
+    "slug": "brian-thomas-wr",
+    "name": "Brian Thomas",
+    "editorialLens": "Brian Thomas's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Brian_Thomas_Jr_%28cropped%29.jpg/960px-Brian_Thomas_Jr_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1484,
+      "alt": "Photograph of Brian Thomas",
+      "author": "Tammy Anthony Baker from Louisiana",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Brian_Thomas_Jr_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "bucky-irving-rb",
+    "name": "Bucky Irving",
+    "editorialLens": "Bucky Irving's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "/images/player-file-placeholder.svg",
+      "width": 960,
+      "height": 960,
+      "alt": "Fantasy Trade Target player file graphic for Bucky Irving",
+      "author": "Fantasy Trade Target Research",
+      "license": "Original site artwork",
+      "licenseUrl": "https://fantasytradetarget.com/terms-of-service",
+      "sourceUrl": "https://fantasytradetarget.com/data-sources"
+    }
+  },
+  {
+    "slug": "marvin-harrison-jr-wr",
+    "name": "Marvin Harrison Jr",
+    "editorialLens": "Marvin Harrison Jr's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Marvin_Harrison_Jr_2022_no_helmet_%28cropped%29.jpg/960px-Marvin_Harrison_Jr_2022_no_helmet_%28cropped%29.jpg",
+      "width": 960,
+      "height": 960,
+      "alt": "Photograph of Marvin Harrison Jr",
+      "author": "Alexander Jonesi",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Marvin_Harrison_Jr_2022_no_helmet_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "javonte-williams-rb",
+    "name": "Javonte Williams",
+    "editorialLens": "Javonte Williams's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Javonte_WIlliams_2025.jpg/960px-Javonte_WIlliams_2025.jpg",
+      "width": 960,
+      "height": 1335,
+      "alt": "Photograph of Javonte Williams",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Javonte_WIlliams_2025.jpg"
+    }
+  },
+  {
+    "slug": "sam-laporta-te",
+    "name": "Sam LaPorta",
+    "editorialLens": "Sam LaPorta's price is especially sensitive to tight end premium scoring; the four-format comparison shows where positional scarcity changes the market.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/4/47/SamLaPorta.jpg",
+      "width": 960,
+      "height": 1332,
+      "alt": "Photograph of Sam LaPorta",
+      "author": "Maize & Blue Nation",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:SamLaPorta.jpg"
+    }
+  },
+  {
+    "slug": "jameson-williams-wr",
+    "name": "Jameson Williams",
+    "editorialLens": "Jameson Williams's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/0/0a/Jameson_Williams.png",
+      "width": 960,
+      "height": 1281,
+      "alt": "Photograph of Jameson Williams",
+      "author": "The University of Alabama",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jameson_Williams.png"
+    }
+  },
+  {
+    "slug": "kyle-pitts-te",
+    "name": "Kyle Pitts",
+    "editorialLens": "Kyle Pitts's price is especially sensitive to tight end premium scoring; the four-format comparison shows where positional scarcity changes the market.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Kyle_Pitts_2025.jpg/960px-Kyle_Pitts_2025.jpg",
+      "width": 960,
+      "height": 1440,
+      "alt": "Photograph of Kyle Pitts",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kyle_Pitts_2025.jpg"
+    }
+  },
+  {
+    "slug": "derrick-henry-rb",
+    "name": "Derrick Henry",
+    "editorialLens": "Derrick Henry's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Derrick_Henry_OCT2022_%28cropped%29.jpg/960px-Derrick_Henry_OCT2022_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1439,
+      "alt": "Photograph of Derrick Henry",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Derrick_Henry_OCT2022_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "sam-darnold-qb",
+    "name": "Sam Darnold",
+    "editorialLens": "Sam Darnold's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Seattle_Seahawks_Super_Bowl_LX_parade_-_16_%28Sam_Darnold_crop%29.jpg/960px-Seattle_Seahawks_Super_Bowl_LX_parade_-_16_%28Sam_Darnold_crop%29.jpg",
+      "width": 960,
+      "height": 1281,
+      "alt": "Photograph of Sam Darnold",
+      "author": "SounderBruce",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Seattle_Seahawks_Super_Bowl_LX_parade_-_16_(Sam_Darnold_crop).jpg"
+    }
+  },
+  {
+    "slug": "bhayshul-tuten-rb",
+    "name": "Bhayshul Tuten",
+    "editorialLens": "Bhayshul Tuten's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "/images/player-file-placeholder.svg",
+      "width": 960,
+      "height": 960,
+      "alt": "Fantasy Trade Target player file graphic for Bhayshul Tuten",
+      "author": "Fantasy Trade Target Research",
+      "license": "Original site artwork",
+      "licenseUrl": "https://fantasytradetarget.com/terms-of-service",
+      "sourceUrl": "https://fantasytradetarget.com/data-sources"
+    }
+  },
+  {
+    "slug": "kc-concepcion-wr",
+    "name": "KC Concepcion",
+    "editorialLens": "KC Concepcion's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "/images/player-file-placeholder.svg",
+      "width": 960,
+      "height": 960,
+      "alt": "Fantasy Trade Target player file graphic for KC Concepcion",
+      "author": "Fantasy Trade Target Research",
+      "license": "Original site artwork",
+      "licenseUrl": "https://fantasytradetarget.com/terms-of-service",
+      "sourceUrl": "https://fantasytradetarget.com/data-sources"
+    }
+  },
+  {
+    "slug": "travis-etienne-rb",
+    "name": "Travis Etienne",
+    "editorialLens": "Travis Etienne's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Travis_Etienne.jpg",
+      "width": 960,
+      "height": 1156,
+      "alt": "Photograph of Travis Etienne",
+      "author": "Gamecock Central",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Travis_Etienne.jpg"
+    }
+  },
+  {
+    "slug": "josh-jacobs-rb",
+    "name": "Josh Jacobs",
+    "editorialLens": "Josh Jacobs's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/e/ed/2025_Commanders_at_Packers_54_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1168,
+      "alt": "Photograph of Josh Jacobs",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2025_Commanders_at_Packers_54_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "parker-washington-wr",
+    "name": "Parker Washington",
+    "editorialLens": "Parker Washington's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "/images/player-file-placeholder.svg",
+      "width": 960,
+      "height": 960,
+      "alt": "Fantasy Trade Target player file graphic for Parker Washington",
+      "author": "Fantasy Trade Target Research",
+      "license": "Original site artwork",
+      "licenseUrl": "https://fantasytradetarget.com/terms-of-service",
+      "sourceUrl": "https://fantasytradetarget.com/data-sources"
+    }
+  },
+  {
+    "slug": "kenyon-sadiq-te",
+    "name": "Kenyon Sadiq",
+    "editorialLens": "Kenyon Sadiq's price is especially sensitive to tight end premium scoring; the four-format comparison shows where positional scarcity changes the market.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/2025-0723_Kenyon_Sadiq.jpg/960px-2025-0723_Kenyon_Sadiq.jpg",
+      "width": 960,
+      "height": 960,
+      "alt": "Photograph of Kenyon Sadiq",
+      "author": "Bobak Ha'Eri",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2025-0723_Kenyon_Sadiq.jpg"
+    }
+  },
+  {
+    "slug": "kyler-murray-qb",
+    "name": "Kyler Murray",
+    "editorialLens": "Kyler Murray's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/5/51/Kyler_Murray_in_huddle_%2850369475187%29_%28cropped%29_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1128,
+      "alt": "Photograph of Kyler Murray",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kyler_Murray_in_huddle_(50369475187)_(cropped)_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "matthew-stafford-qb",
+    "name": "Matthew Stafford",
+    "editorialLens": "Matthew Stafford's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Stafford_6_731_%28cropped3%29.jpg/960px-Stafford_6_731_%28cropped3%29.jpg",
+      "width": 960,
+      "height": 1277,
+      "alt": "Photograph of Matthew Stafford",
+      "author": "Sewageboy",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Stafford_6_731_(cropped3).jpg"
+    }
+  },
+  {
+    "slug": "bryce-young-qb",
+    "name": "Bryce Young",
+    "editorialLens": "Bryce Young's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Bryce_Young_at_W.P.T._Hill_Field_-_2024_-_02_%28cropped%29.jpg/960px-Bryce_Young_at_W.P.T._Hill_Field_-_2024_-_02_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1197,
+      "alt": "Photograph of Bryce Young",
+      "author": "Sgt. Andrew Skiver",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bryce_Young_at_W.P.T._Hill_Field_-_2024_-_02_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "daniel-jones-qb",
+    "name": "Daniel Jones",
+    "editorialLens": "Daniel Jones's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Daniel_Jones_2019_crop.jpg/960px-Daniel_Jones_2019_crop.jpg",
+      "width": 960,
+      "height": 1280,
+      "alt": "Photograph of Daniel Jones",
+      "author": "AlexanderJonesi",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Daniel_Jones_2019_crop.jpg"
+    }
+  },
+  {
+    "slug": "christian-watson-wr",
+    "name": "Christian Watson",
+    "editorialLens": "Christian Watson's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/8/83/Christian_Watson_-_2025_Commanders_at_Packers.jpg",
+      "width": 960,
+      "height": 1439,
+      "alt": "Photograph of Christian Watson",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Christian_Watson_-_2025_Commanders_at_Packers.jpg"
+    }
+  },
+  {
+    "slug": "jordan-addison-wr",
+    "name": "Jordan Addison",
+    "editorialLens": "Jordan Addison's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "/images/player-file-placeholder.svg",
+      "width": 960,
+      "height": 960,
+      "alt": "Fantasy Trade Target player file graphic for Jordan Addison",
+      "author": "Fantasy Trade Target Research",
+      "license": "Original site artwork",
+      "licenseUrl": "https://fantasytradetarget.com/terms-of-service",
+      "sourceUrl": "https://fantasytradetarget.com/data-sources"
+    }
+  },
+  {
+    "slug": "malik-willis-qb",
+    "name": "Malik Willis",
+    "editorialLens": "Malik Willis's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Malik_Willis_interview.jpg/960px-Malik_Willis_interview.jpg",
+      "width": 960,
+      "height": 1280,
+      "alt": "Photograph of Malik Willis",
+      "author": "Tennessee Titans",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Malik_Willis_interview.jpg"
+    }
+  },
+  {
+    "slug": "dj-moore-wr",
+    "name": "DJ Moore",
+    "editorialLens": "DJ Moore's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/DJ_Moore_WFT-Panthers_NOV2021_%28cropped%29.jpg/960px-DJ_Moore_WFT-Panthers_NOV2021_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1439,
+      "alt": "Photograph of DJ Moore",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:DJ_Moore_WFT-Panthers_NOV2021_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "dandre-swift-rb",
+    "name": "D'Andre Swift",
+    "editorialLens": "D'Andre Swift's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/GA_VS_LSU_E101318_9.jpg/960px-GA_VS_LSU_E101318_9.jpg",
+      "width": 960,
+      "height": 1414,
+      "alt": "Photograph of D'Andre Swift",
+      "author": "Tammy Anthony Baker, Photographer",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:GA_VS_LSU_E101318_9.jpg"
+    }
+  },
+  {
+    "slug": "michael-wilson-wr",
+    "name": "Michael Wilson",
+    "editorialLens": "Michael Wilson's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Michael_Wilson_%2853851501052%29_%28cropped%29.jpg/960px-Michael_Wilson_%2853851501052%29_%28cropped%29.jpg",
+      "width": 960,
+      "height": 988,
+      "alt": "Photograph of Michael Wilson",
+      "author": "Unknown author Unknown author",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Michael_Wilson_(53851501052)_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "alec-pierce-wr",
+    "name": "Alec Pierce",
+    "editorialLens": "Alec Pierce's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/4/47/Alec_Pierce_Commanders_vs_Colts_OCT2022_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1219,
+      "alt": "Photograph of Alec Pierce",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alec_Pierce_Commanders_vs_Colts_OCT2022_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "denzel-boston-wr",
+    "name": "Denzel Boston",
+    "editorialLens": "Denzel Boston's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "/images/player-file-placeholder.svg",
+      "width": 960,
+      "height": 960,
+      "alt": "Fantasy Trade Target player file graphic for Denzel Boston",
+      "author": "Fantasy Trade Target Research",
+      "license": "Original site artwork",
+      "licenseUrl": "https://fantasytradetarget.com/terms-of-service",
+      "sourceUrl": "https://fantasytradetarget.com/data-sources"
+    }
+  },
+  {
+    "slug": "matthew-golden-wr",
+    "name": "Matthew Golden",
+    "editorialLens": "Matthew Golden's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/8/86/Matthew_Golden_September_2025.jpg",
+      "width": 960,
+      "height": 1468,
+      "alt": "Photograph of Matthew Golden",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Matthew_Golden_September_2025.jpg"
+    }
+  },
+  {
+    "slug": "josh-downs-wr",
+    "name": "Josh Downs",
+    "editorialLens": "Josh Downs's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "/images/player-file-placeholder.svg",
+      "width": 960,
+      "height": 960,
+      "alt": "Fantasy Trade Target player file graphic for Josh Downs",
+      "author": "Fantasy Trade Target Research",
+      "license": "Original site artwork",
+      "licenseUrl": "https://fantasytradetarget.com/terms-of-service",
+      "sourceUrl": "https://fantasytradetarget.com/data-sources"
     }
   }
 ]

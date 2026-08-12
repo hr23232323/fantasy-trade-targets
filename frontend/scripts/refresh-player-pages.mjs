@@ -1,7 +1,7 @@
 import { readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-const PLAYER_COUNT = 50;
+const PLAYER_COUNT = 100;
 const USER_AGENT =
   "FantasyTradeTargetData/1.0 (+https://fantasytradetarget.com)";
 const manifestPath = path.resolve("data/player-pages.json");
@@ -13,6 +13,10 @@ const wikipediaTitleOverrides = {
   "luther-burden-wr": "Luther Burden III",
   "fernando-mendoza-qb": "Fernando Mendoza (American football)",
   "cam-ward-qb": "Cam Ward (American football)",
+  "brian-thomas-wr": "Brian Thomas Jr.",
+  "daniel-jones-qb": "Daniel Jones (American football)",
+  "harold-fannin-te": "Harold Fannin Jr.",
+  "michael-wilson-wr": "Michael Wilson (wide receiver)",
 };
 
 const commonsFileOverrides = {
@@ -42,7 +46,11 @@ for (const player of topPlayers) {
     slug: player.slug,
     name: player.name,
     editorialLens: existing?.editorialLens ?? editorialLens(player),
-    image: existing?.image ?? (await getCommonsImage(player)),
+    image:
+      existing?.image?.src &&
+      existing.image.src !== "/images/player-file-placeholder.svg"
+        ? existing.image
+        : await getCommonsImage(player),
   });
   console.log(`Curated ${pages.length}/${PLAYER_COUNT}: ${player.name}`);
 }
@@ -59,6 +67,8 @@ async function getCommonsImage(player) {
     (await getWikipediaPageImage(
       wikipediaTitleOverrides[player.slug] ?? player.name,
     ));
+  if (!fileName) return getOriginalPlayerFileImage(player);
+
   const url = new URL("https://commons.wikimedia.org/w/api.php");
   url.search = new URLSearchParams({
     action: "query",
@@ -108,10 +118,23 @@ async function getWikipediaPageImage(title) {
   });
   const payload = await fetchJson(url);
   const page = Object.values(payload.query?.pages ?? {})[0];
-  if (!page?.pageimage) {
-    throw new Error(`No Wikipedia page image for ${title}`);
-  }
-  return page.pageimage;
+  return page?.pageimage ?? null;
+}
+
+function getOriginalPlayerFileImage(player) {
+  console.warn(
+    `No reusable Commons portrait for ${player.name}; using the original FTT player-file art.`,
+  );
+  return {
+    src: "/images/player-file-placeholder.svg",
+    width: 960,
+    height: 960,
+    alt: `Fantasy Trade Target player file graphic for ${player.name}`,
+    author: "Fantasy Trade Target Research",
+    license: "Original site artwork",
+    licenseUrl: "https://fantasytradetarget.com/terms-of-service",
+    sourceUrl: "https://fantasytradetarget.com/data-sources",
+  };
 }
 
 async function fetchJson(url) {
@@ -170,9 +193,18 @@ function validateManifest(pages, players) {
     }
     if (
       !page.editorialLens ||
-      !page.image.src.startsWith("https://upload.wikimedia.org/") ||
-      !page.image.sourceUrl.startsWith("https://commons.wikimedia.org/") ||
-      !page.image.licenseUrl.startsWith("https://creativecommons.org/") ||
+      !(
+        page.image.src.startsWith("https://upload.wikimedia.org/") ||
+        page.image.src === "/images/player-file-placeholder.svg"
+      ) ||
+      !(
+        page.image.sourceUrl.startsWith("https://commons.wikimedia.org/") ||
+        page.image.sourceUrl === "https://fantasytradetarget.com/data-sources"
+      ) ||
+      !(
+        page.image.licenseUrl.startsWith("https://creativecommons.org/") ||
+        page.image.licenseUrl === "https://fantasytradetarget.com/terms-of-service"
+      ) ||
       !Number.isFinite(page.image.width) ||
       !Number.isFinite(page.image.height)
     ) {

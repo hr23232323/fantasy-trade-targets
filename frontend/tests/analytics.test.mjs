@@ -18,6 +18,7 @@ const files = [
   "../src/app/teams/[slug]/page.tsx",
   "../src/app/trades/[slug]/page.tsx",
   "../src/app/scoring-impact/page.tsx",
+  "../src/app/fantasy-football-trade-targets/page.tsx",
   "../src/app/components/ScoringResearchPage.tsx",
 ];
 
@@ -87,6 +88,8 @@ test("high-value product events remain instrumented", () => {
     "scoring_impact_calculator_opened",
     "scoring_research_viewed",
     "scoring_research_lab_opened",
+    "trade_targets_hub_viewed",
+    "trade_target_opened",
     "memes_generated",
     "meme_generation_failed",
     "meme_download_opened",

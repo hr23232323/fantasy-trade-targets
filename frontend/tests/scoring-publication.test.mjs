@@ -97,6 +97,18 @@ test("scoring-only backfills can reuse already validated reviewed profiles", () 
   assert.match(publisher, /Reusing.*reviewed player profiles/);
 });
 
+test("profile expansion preserves prior evidence through transient optional gaps", () => {
+  assert.match(publisher, /REFRESH_MISSING_PLAYER_PROFILES_ONLY/);
+  assert.match(publisher, /priorRelease\?\.playerProfiles\?\.\[slug\]/);
+  assert.match(publisher, /preserveValidatedProfileEvidence/);
+  assert.match(publisher, /stats: payload\.data\.stats \?\? priorPayload\.data\.stats/);
+  assert.match(publisher, /advanced: payload\.data\.advanced \?\? priorPayload\.data\.advanced/);
+  assert.match(publisher, /fetchRequiredPlayerStats/);
+  assert.match(publisher, /data\?\.stats\?\.derivedStats/);
+  assert.match(publisher, /PRESERVE_VALIDATED_SCORING_PROFILES/);
+  assert.match(publisher, /preserving the validated cohort/);
+});
+
 test("scoring-only backfills preserve validated market identity and classify outcomes", () => {
   assert.match(publisher, /REUSE_VALIDATED_MARKETS === "true"/);
   assert.match(publisher, /releaseId = priorRelease\.releaseId/);

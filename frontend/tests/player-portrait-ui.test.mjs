@@ -27,8 +27,12 @@ test("player portraits have one responsive, position-aware treatment", () => {
   assert.match(styles, /\.player-portrait__halftone/);
 });
 
-test("every reviewed player portrait is served from a valid local image", async () => {
-  const reviewedSlugs = new Set([...pageRecords, ...tradeRecords].map((record) => record.slug));
+test("every reviewed Commons portrait is served from a valid local image", async () => {
+  const reviewedSlugs = new Set(
+    [...pageRecords, ...tradeRecords]
+      .filter((record) => record.image.src.startsWith("https://upload.wikimedia.org/"))
+      .map((record) => record.slug),
+  );
 
   assert.equal(cachedImages.length, reviewedSlugs.size);
   assert.equal(new Set(cachedImages.map((image) => image.slug)).size, reviewedSlugs.size);
@@ -39,6 +43,17 @@ test("every reviewed player portrait is served from a valid local image", async 
     assert.ok(image.width > 0 && image.height > 0, `${image.slug} has dimensions`);
     const file = await stat(new URL(`../public${image.src}`, import.meta.url));
     assert.ok(file.size > 5_000, `${image.slug} has a complete local image`);
+  }
+});
+
+test("profiles without a reusable portrait use the first-party player-file art", () => {
+  const originalArt = pageRecords.filter(
+    (record) => record.image.src === "/images/player-file-placeholder.svg",
+  );
+  assert.ok(originalArt.length > 0);
+  for (const record of originalArt) {
+    assert.equal(record.image.author, "Fantasy Trade Target Research");
+    assert.equal(record.image.sourceUrl, "https://fantasytradetarget.com/data-sources");
   }
 });
 

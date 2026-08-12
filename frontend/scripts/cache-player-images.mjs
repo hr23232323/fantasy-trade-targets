@@ -8,7 +8,8 @@ const run = promisify(execFile);
 const root = new URL("..", import.meta.url);
 const pageRecords = JSON.parse(await readFile(new URL("../data/player-pages.json", import.meta.url), "utf8"));
 const tradeRecords = JSON.parse(await readFile(new URL("../data/trade-player-images.json", import.meta.url), "utf8"));
-const records = [...new Map([...pageRecords, ...tradeRecords].map((record) => [record.slug, record])).values()];
+const records = [...new Map([...pageRecords, ...tradeRecords].map((record) => [record.slug, record])).values()]
+  .filter((record) => record.image.src.startsWith("https://upload.wikimedia.org/"));
 const outputDirectory = new URL("../public/images/players/", import.meta.url);
 const manifestUrl = new URL("../data/cached-player-images.json", import.meta.url);
 const temporaryDirectory = await mkdtemp(join(tmpdir(), "ftt-player-images-"));

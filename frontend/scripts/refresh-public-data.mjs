@@ -95,11 +95,19 @@ const pickRequests = quarterbackSettings.flatMap((numQbs) =>
     kind: "picks",
   })),
 );
-const profileRequests = playerSlugs.map((slug) => ({
+const refreshMissingPlayerProfilesOnly =
+  process.env.REFRESH_MISSING_PLAYER_PROFILES_ONLY === "true";
+const profileRequests = playerSlugs
+  .filter(
+    (slug) =>
+      !refreshMissingPlayerProfilesOnly ||
+      !priorRelease?.playerProfiles?.[slug],
+  )
+  .map((slug) => ({
   key: slug,
   url: `${API_BASE}/players/${encodeURIComponent(slug)}`,
   kind: "profile",
-}));
+  }));
 
 const marketAndPickResponses = reuseValidatedMarkets
   ? []
@@ -136,17 +144,23 @@ const carriedScoringProfiles = usableScoringProfiles(
   priorRelease?.playerScoringProfiles,
   currentPlayerSlugs,
 );
+const preserveValidatedScoringProfiles =
+  process.env.PRESERVE_VALIDATED_SCORING_PROFILES === "true" &&
+  reuseValidatedMarkets &&
+  Object.keys(carriedScoringProfiles).length >= 150;
 const priorRefreshCursor =
   priorRelease?.scoringProfilePublication?.nextRefreshCursor ?? 0;
-const scoringCohort = selectScoringProfileCohort({
-  players: currentPlayers,
-  existingProfiles: carriedScoringProfiles,
-  prioritySlugs: playerSlugs,
-  batchSize: scoringProfileBatchSize,
-  refreshCursor: priorRefreshCursor,
-});
+const scoringCohort = preserveValidatedScoringProfiles
+  ? []
+  : selectScoringProfileCohort({
+      players: currentPlayers,
+      existingProfiles: carriedScoringProfiles,
+      prioritySlugs: playerSlugs,
+      batchSize: scoringProfileBatchSize,
+      refreshCursor: priorRefreshCursor,
+    });
 console.log(
-  `Scoring profiles: ${hasApiKey ? "authenticated" : "anonymous"} publication, carrying ${Object.keys(carriedScoringProfiles).length}, refreshing ${scoringCohort.length}/${currentPlayers.length} with concurrency ${scoringProfileConcurrency}.`,
+  `Scoring profiles: ${hasApiKey ? "authenticated" : "anonymous"} publication, carrying ${Object.keys(carriedScoringProfiles).length}, ${preserveValidatedScoringProfiles ? "preserving the validated cohort" : `refreshing ${scoringCohort.length}/${currentPlayers.length} with concurrency ${scoringProfileConcurrency}`}.`,
 );
 const scoringHealthPlayer =
   currentPlayersBySlug.get("josh-allen-qb") ?? scoringCohort[0];
@@ -214,9 +228,14 @@ const profileResponses = refreshReviewedPlayerProfiles
     )
   : [];
 const rawPlayerProfiles = refreshReviewedPlayerProfiles
-  ? Object.fromEntries(
-      profileResponses.map((response) => [response.key, response.payload]),
-    )
+  ? {
+      ...(refreshMissingPlayerProfilesOnly
+        ? priorRelease?.playerProfiles ?? {}
+        : {}),
+      ...Object.fromEntries(
+        profileResponses.map((response) => [response.key, response.payload]),
+      ),
+    }
   : priorRelease.playerProfiles;
 if (!refreshReviewedPlayerProfiles) {
   console.log(`Reusing ${playerSlugs.length} reviewed player profiles for scoring-only publication.`);
@@ -224,7 +243,13 @@ if (!refreshReviewedPlayerProfiles) {
 const playerProfiles = Object.fromEntries(
   Object.entries(rawPlayerProfiles).map(([slug, payload]) => [
     slug,
-    normalizeProfileToMarket(payload, currentPlayersBySlug),
+    normalizeProfileToMarket(
+      preserveValidatedProfileEvidence(
+        payload,
+        priorRelease?.playerProfiles?.[slug],
+      ),
+      currentPlayersBySlug,
+    ),
   ]),
 );
 const refreshedScoringProfiles = Object.fromEntries(
@@ -258,21 +283,28 @@ const playerScoringProfiles = usableScoringProfiles(
   },
   currentPlayerSlugs,
 );
-const scoringProfilePublication = {
-  modelVersion: SCORING_MODEL_VERSION,
-  profileCount: Object.keys(playerScoringProfiles).length,
-  playerCount: currentPlayers.length,
-  refreshedCount: Object.keys(refreshedScoringProfiles).length,
-  requestedCount: scoringCohort.length,
-  successfulResponseCount: successfulScoringResponseCount,
-  unavailableCount: unavailableScoringProfileCount,
-  failedRequestCount: failedScoringRequestCount,
-  nextRefreshCursor: nextScoringRefreshCursor({
-    players: currentPlayers,
-    cohort: scoringCohort,
-    refreshCursor: priorRefreshCursor,
-  }),
-};
+const scoringProfilePublication = preserveValidatedScoringProfiles
+  ? {
+      ...priorRelease.scoringProfilePublication,
+      modelVersion: SCORING_MODEL_VERSION,
+      profileCount: Object.keys(playerScoringProfiles).length,
+      playerCount: currentPlayers.length,
+    }
+  : {
+      modelVersion: SCORING_MODEL_VERSION,
+      profileCount: Object.keys(playerScoringProfiles).length,
+      playerCount: currentPlayers.length,
+      refreshedCount: Object.keys(refreshedScoringProfiles).length,
+      requestedCount: scoringCohort.length,
+      successfulResponseCount: successfulScoringResponseCount,
+      unavailableCount: unavailableScoringProfileCount,
+      failedRequestCount: failedScoringRequestCount,
+      nextRefreshCursor: nextScoringRefreshCursor({
+        players: currentPlayers,
+        cohort: scoringCohort,
+        refreshCursor: priorRefreshCursor,
+      }),
+    };
 const playerSnapshotHistory = buildPlayerSnapshotHistory({
   existing: priorSnapshotHistory?.players,
   releases: [
@@ -362,7 +394,7 @@ console.log(
 
 async function fetchPlayerProfile(playerUrl, suppliedStats) {
   const detail = await fetchJson(playerUrl);
-  const stats = suppliedStats ?? await fetchJson(`${playerUrl}/stats`);
+  const stats = await fetchRequiredPlayerStats(playerUrl, suppliedStats);
   const advanced = await fetchOptionalJson(`${playerUrl}/advanced`);
   const bestball = await fetchOptionalJson(`${playerUrl}/bestball`);
   const projection = await fetchOptionalJson(`${playerUrl}/projection`);
@@ -388,6 +420,18 @@ async function fetchPlayerProfile(playerUrl, suppliedStats) {
     },
     meta: detail.meta,
   };
+}
+
+async function fetchRequiredPlayerStats(playerUrl, suppliedStats) {
+  if (suppliedStats?.data?.stats?.derivedStats) return suppliedStats;
+
+  let latest = suppliedStats;
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    latest = await fetchJson(`${playerUrl}/stats`, { attempts: 2 });
+    if (latest?.data?.stats?.derivedStats) return latest;
+    if (attempt < 2) await delay(750 * attempt);
+  }
+  return latest;
 }
 
 function normalizeProfileToMarket(payload, currentPlayersBySlug) {
@@ -420,6 +464,21 @@ function normalizeProfileToMarket(payload, currentPlayersBySlug) {
             }
           : similar;
       }),
+    },
+  };
+}
+
+function preserveValidatedProfileEvidence(payload, priorPayload) {
+  if (!priorPayload?.data) return payload;
+  return {
+    ...payload,
+    data: {
+      ...payload.data,
+      stats: payload.data.stats ?? priorPayload.data.stats ?? null,
+      career: payload.data.career ?? priorPayload.data.career ?? null,
+      advanced: payload.data.advanced ?? priorPayload.data.advanced ?? null,
+      bestball: payload.data.bestball ?? priorPayload.data.bestball ?? null,
+      projection: payload.data.projection ?? priorPayload.data.projection ?? null,
     },
   };
 }

@@ -61,7 +61,7 @@ export default function Home() {
               Open calculator ↘
             </Link>
             <Link
-              href="#trade-targets"
+            href="/fantasy-football-trade-targets"
               className="border border-[#171c19] bg-white/50 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em]"
             >
               Find targets
@@ -84,7 +84,7 @@ export default function Home() {
         <div className="grid gap-8 border-y border-[#171c19] py-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
           <div>
             <span className="eyebrow">Player research // market files</span>
-            <h2 className="section-title mt-6">50 market files. Fully sourced.</h2>
+            <h2 className="section-title mt-6">{playerPages.length} market files. Fully sourced.</h2>
           </div>
           <div>
             <p className="max-w-2xl text-sm leading-7 text-[#59605c]">
@@ -104,7 +104,7 @@ export default function Home() {
                 href="/players"
                 className="border border-[#171c19] bg-[#171c19] px-3 py-2 font-mono text-[10px] font-black uppercase tracking-[0.06em] text-white hover:bg-[#a23616]"
               >
-                Browse all 50 →
+                Browse all {playerPages.length} →
               </Link>
             </div>
           </div>

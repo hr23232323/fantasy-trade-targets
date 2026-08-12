@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const description = `${player.name} dynasty value, Superflex and 1QB rank, recorded market observations, production profile, comparable players, and rookie-pick equivalents.`;
 
   return {
-    title: `${player.name} Dynasty Value, Rank & History`,
+    title: `${player.name} Dynasty Trade Value, Rank & History`,
     description,
     alternates: { canonical: `/players/${slug}` },
     openGraph: {
@@ -180,13 +180,15 @@ export default async function PlayerPage({ params }: PageProps) {
             sizes="(max-width: 1023px) 100vw, 40vw"
           />
           <figcaption className="absolute inset-x-0 bottom-0 bg-[#171c19]/92 px-4 py-3 font-mono text-[9px] uppercase leading-4 tracking-[0.05em] text-white/70">
-            Photo: {page.image.author} ·{" "}
+            Image: {page.image.author} ·{" "}
             <a href={page.image.licenseUrl} target="_blank" rel="license noopener" className="text-[#dfff4f] underline">
               {page.image.license}
             </a>{" "}
             ·{" "}
             <a href={page.image.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-[#dfff4f] underline">
-              Wikimedia Commons
+              {page.image.sourceUrl.startsWith("https://commons.wikimedia.org/")
+                ? "Wikimedia Commons"
+                : "FTT data sources"}
             </a>
           </figcaption>
         </figure>
@@ -319,18 +321,32 @@ export default async function PlayerPage({ params }: PageProps) {
       <section className="page-wrap py-16 text-center">
         <span className="mono-label text-[#69706c]">Next decision</span>
         <h2 className="mx-auto mt-4 max-w-3xl text-4xl font-black tracking-[-0.055em] sm:text-6xl">Price the complete package.</h2>
-        <TrackedLink
-          href={`/dynasty-trade-calculator?format=dynasty&qbs=2&get=${profile.slug}`}
-          className="mt-7 inline-block border border-[#171c19] bg-[#dfff4f] px-6 py-4 font-mono text-xs font-black uppercase tracking-[0.08em] shadow-[5px_5px_0_#171c19]"
-          analyticsEvent="research_cta_clicked"
-          analyticsProperties={{
-            source: "player_footer",
-            destination: "calculator",
-            player_slug: profile.slug,
-          }}
-        >
-          Trade for {profile.name} →
-        </TrackedLink>
+        <div className="mt-7 flex flex-wrap justify-center gap-3">
+          <TrackedLink
+            href={`/dynasty-trade-calculator?format=dynasty&qbs=2&get=${profile.slug}`}
+            className="inline-block border border-[#171c19] bg-[#dfff4f] px-6 py-4 font-mono text-xs font-black uppercase tracking-[0.08em] shadow-[5px_5px_0_#171c19]"
+            analyticsEvent="research_cta_clicked"
+            analyticsProperties={{
+              source: "player_footer",
+              destination: "calculator",
+              player_slug: profile.slug,
+            }}
+          >
+            Trade for {profile.name} →
+          </TrackedLink>
+          <TrackedLink
+            href="/fantasy-football-trade-targets"
+            className="inline-block border border-[#171c19] bg-white/60 px-6 py-4 font-mono text-xs font-black uppercase tracking-[0.08em]"
+            analyticsEvent="research_cta_clicked"
+            analyticsProperties={{
+              source: "player_footer",
+              destination: "trade_targets",
+              player_slug: profile.slug,
+            }}
+          >
+            Compare current targets →
+          </TrackedLink>
+        </div>
       </section>
 
       <aside className="page-wrap border-t border-[#9d9a91] pt-5 text-[11px] leading-6 text-[#69706c]">
@@ -419,6 +435,7 @@ function buildSchema(
   dateModified: string,
 ) {
   const url = `https://fantasytradetarget.com/players/${player.slug}`;
+  const imageUrl = new URL(image.src, "https://fantasytradetarget.com").toString();
   const team = getTeamByAbbr(player.team);
   return {
     "@context": "https://schema.org",
@@ -433,7 +450,7 @@ function buildSchema(
           "@type": "Person",
           "@id": `${url}#player`,
           name: player.name,
-          image: image.src,
+          image: imageUrl,
           jobTitle: `${player.position} football player`,
           affiliation: team
             ? {
@@ -445,7 +462,7 @@ function buildSchema(
         },
         primaryImageOfPage: {
           "@type": "ImageObject",
-          url: image.src,
+          url: imageUrl,
           width: image.width,
           height: image.height,
           caption: image.alt,

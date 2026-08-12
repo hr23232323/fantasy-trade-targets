@@ -55,10 +55,10 @@ test("new releases publish validated compact scoring-profile cohorts", () => {
 test("every configured player page has a validated profile", () => {
   const currentMarket = release.playerMarkets["dynasty:2:0"].data;
 
-  assert.equal(playerPages.length, 50);
-  assert.equal(new Set(playerPages.map((page) => page.slug)).size, 50);
-  assert.equal(new Set(playerPages.map((page) => page.image.src)).size, 50);
-  assert.equal(Object.keys(release.playerProfiles).length, 50);
+  assert.equal(playerPages.length, 100);
+  assert.equal(new Set(playerPages.map((page) => page.slug)).size, 100);
+  assert.ok(new Set(playerPages.map((page) => page.image.src)).size >= 85);
+  assert.equal(Object.keys(release.playerProfiles).length, 100);
 
   for (const page of playerPages) {
     const profile = release.playerProfiles[page.slug];
@@ -99,9 +99,20 @@ test("every configured player page has a validated profile", () => {
       Number.isFinite(Date.parse(snapshots.at(-1).observedAt)),
       `${page.slug} observation has a valid timestamp`,
     );
-    assert.ok(page.image.src.startsWith("https://upload.wikimedia.org/"));
-    assert.ok(page.image.licenseUrl.startsWith("https://creativecommons.org/"));
-    assert.ok(page.image.sourceUrl.startsWith("https://commons.wikimedia.org/"));
+    const commonsImage = page.image.src.startsWith("https://upload.wikimedia.org/");
+    assert.ok(
+      commonsImage || page.image.src === "/images/player-file-placeholder.svg",
+    );
+    assert.ok(
+      commonsImage
+        ? page.image.licenseUrl.startsWith("https://creativecommons.org/")
+        : page.image.licenseUrl === "https://fantasytradetarget.com/terms-of-service",
+    );
+    assert.ok(
+      commonsImage
+        ? page.image.sourceUrl.startsWith("https://commons.wikimedia.org/")
+        : page.image.sourceUrl === "https://fantasytradetarget.com/data-sources",
+    );
     assert.ok(page.image.author);
     assert.ok(page.image.alt.includes(page.name));
     assert.ok(page.image.width > 0);

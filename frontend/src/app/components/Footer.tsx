@@ -3,6 +3,7 @@ import { TrackedLink } from "./TrackedLink";
 
 const tools = [
   ["Dynasty calculator", "/dynasty-trade-calculator"],
+  ["Fantasy football trade targets", "/fantasy-football-trade-targets"],
   ["Scoring impact lab", "/scoring-impact"],
   ["6-point passing TD rankings", "/scoring/6-point-passing-td-rankings"],
   ["Standard vs. PPR values", "/scoring/standard-vs-ppr-player-values"],

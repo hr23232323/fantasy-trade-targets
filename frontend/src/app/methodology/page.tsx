@@ -3,7 +3,7 @@ import { buildPageMetadata } from "../lib/metadata";
 
 export const metadata = buildPageMetadata({
   title: "Fantasy Trade Value & Matchup Methodology",
-  description: "See exactly how Fantasy Trade Target adjusts market value for 4- or 6-point passing touchdowns, standard through full PPR, roster cost, and verdict bands.",
+  description: "See how Fantasy Trade Target builds trade-target screens and adjusts market value for scoring, replacement, roster cost, and verdict bands.",
   path: "/methodology",
 });
 
@@ -52,7 +52,22 @@ export default function MethodologyPage() {
       </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
-          <span className="eyebrow">03 // Roster cost</span>
+          <span className="eyebrow">03 // Trade-target screens</span>
+          <h2 className="section-title mt-6">Direction before recommendation.</h2>
+        </div>
+        <div className="space-y-5 text-sm leading-7 text-[#59605c]">
+          <p>The trade-target hub compares each player&apos;s current dynasty 1QB overall rank with the same player&apos;s redraft 1QB overall rank, isolating time horizon without mixing in Superflex quarterback scarcity. A separate dynasty Superflex board establishes the market price ceiling. The two direction screens exclude that leading tier and keep candidates inside a useful top-120 market window.</p>
+          <div className="border border-[#171c19] bg-[#171c19] p-6 font-mono text-xs font-bold leading-6 text-[#dfff4f] sm:text-sm">
+            BUILDER EDGE = REDRAFT RANK − DYNASTY RANK<br />
+            CONTENDER EDGE = DYNASTY RANK − REDRAFT RANK
+          </div>
+          <p>A larger builder edge means the long-horizon dynasty market ranks the player more highly. A larger contender edge means the current-season redraft market ranks the player more highly. The lists are reproducible format screens—not buy-low predictions, projections, or claims about future news. League scoring, lineup needs, health, schedule, and the price another manager will accept remain outside this screen.</p>
+          <a href="/fantasy-football-trade-targets" className="inline-block border border-[#171c19] bg-[#dfff4f] px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#171c19]">Open the trade-target boards →</a>
+        </div>
+      </section>
+      <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
+        <div>
+          <span className="eyebrow">04 // Roster cost</span>
           <h2 className="section-title mt-6">A dollar beats loose change.</h2>
         </div>
         <div>
@@ -68,13 +83,13 @@ export default function MethodologyPage() {
         </div>
       </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
-        <div><span className="eyebrow">04 // Verdict bands</span><h2 className="section-title mt-6">A range, not fake precision.</h2></div>
+        <div><span className="eyebrow">05 // Verdict bands</span><h2 className="section-title mt-6">A range, not fake precision.</h2></div>
         <div className="grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2">
           {[['0–4%','Fair trade'],['4–10%','Leans one side'],['10–18%','Clear edge'],['18%+','Strong edge']].map(([range,label]) => <div key={range} className="bg-[#f3f0e7] p-6"><span className="font-mono text-2xl font-black text-[#ff6b3d]">{range}</span><h3 className="mt-3 text-lg font-black">{label}</h3></div>)}
         </div>
       </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
-        <div><span className="eyebrow">05 // Matchup temperature</span><h2 className="section-title mt-6">The calendar, with a visible baseline.</h2></div>
+        <div><span className="eyebrow">06 // Matchup temperature</span><h2 className="section-title mt-6">The calendar, with a visible baseline.</h2></div>
         <div className="space-y-5 text-sm leading-7 text-[#59605c]">
           <p>Team pages grade each scheduled game from 0 to 100. The largest input is the opponent&apos;s prior-season NFL scoring-defense rank: No. 1 allowed the fewest points and creates the cold end of the scale; No. 32 allowed the most and creates the hot end.</p>
           <div className="border border-[#171c19] bg-[#171c19] p-6 font-mono text-xs font-bold leading-6 text-[#dfff4f] sm:text-sm">
