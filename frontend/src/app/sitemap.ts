@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
+import { getMarketReleaseInfo } from "./lib/market";
 import { playerPages } from "./lib/player-pages";
-import { teams } from "./lib/team-data";
+import { playerComparisons } from "./lib/player-comparisons";
+import { teamRelease, teams } from "./lib/team-data";
 
 const BASE_URL = "https://fantasytradetarget.com";
 
@@ -22,6 +24,7 @@ const staticRoutes = [
   "/methodology",
   "/market",
   "/players",
+  "/player-comparisons",
   "/privacy-policy",
   "/scoring-impact",
   "/scoring/6-point-passing-td-rankings",
@@ -31,16 +34,36 @@ const staticRoutes = [
   "/teams",
 ];
 
+const marketDrivenRoutes = new Set([
+  "",
+  "/dynasty-rankings",
+  "/fantasy-football-trade-targets",
+  "/market",
+  "/player-comparisons",
+  "/players",
+  "/scoring/6-point-passing-td-rankings",
+  "/scoring/half-ppr-trade-values",
+  "/scoring/standard-vs-ppr-player-values",
+]);
+
 export default function sitemap(): MetadataRoute.Sitemap {
+  const marketUpdated = getMarketReleaseInfo().capturedAt;
   return [
     ...staticRoutes.map((route) => ({
       url: `${BASE_URL}${route}`,
+      ...(marketDrivenRoutes.has(route) ? { lastModified: marketUpdated } : {}),
     })),
     ...playerPages.map((player) => ({
       url: `${BASE_URL}/players/${player.slug}`,
+      lastModified: marketUpdated,
+    })),
+    ...playerComparisons.map((comparison) => ({
+      url: `${BASE_URL}/player-comparisons/${comparison.slug}`,
+      lastModified: marketUpdated,
     })),
     ...teams.map((team) => ({
       url: `${BASE_URL}/teams/${team.slug}`,
+      lastModified: teamRelease.capturedAt,
     })),
   ];
 }

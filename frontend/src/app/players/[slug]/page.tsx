@@ -14,6 +14,7 @@ import {
   getPlayerPage,
   playerPageSlugs,
 } from "../../lib/player-pages";
+import { getComparisonForPlayer } from "../../lib/player-comparisons";
 import { getTeamByAbbr } from "../../lib/team-data";
 import {
   calculateMovement,
@@ -97,6 +98,14 @@ export default async function PlayerPage({ params }: PageProps) {
   const usage = getUsageCards(profile);
   const updated = new Date(meta.generatedAt);
   const playerTeam = getTeamByAbbr(profile.team);
+  const playerComparison = getComparisonForPlayer(profile.slug);
+  const comparisonOpponent = playerComparison
+    ? getPlayerPage(
+        playerComparison.leftSlug === profile.slug
+          ? playerComparison.rightSlug
+          : playerComparison.leftSlug,
+      )
+    : undefined;
   const schema = buildSchema(profile, page.image, meta.generatedAt);
 
   return (
@@ -112,6 +121,7 @@ export default async function PlayerPage({ params }: PageProps) {
           market_value: Math.round(player.value),
           has_history: historySeries.chartable,
           has_team_page: Boolean(playerTeam),
+          has_head_to_head_comparison: Boolean(playerComparison),
         }}
       />
 
@@ -346,6 +356,20 @@ export default async function PlayerPage({ params }: PageProps) {
           >
             Compare current targets →
           </TrackedLink>
+          {playerComparison && comparisonOpponent && (
+            <TrackedLink
+              href={`/player-comparisons/${playerComparison.slug}`}
+              className="inline-block border border-[#171c19] bg-[#8bcfff] px-6 py-4 font-mono text-xs font-black uppercase tracking-[0.08em]"
+              analyticsEvent="player_comparison_opened"
+              analyticsProperties={{
+                source: "player_footer",
+                comparison_slug: playerComparison.slug,
+                player_slug: profile.slug,
+              }}
+            >
+              Compare with {comparisonOpponent.name} →
+            </TrackedLink>
+          )}
         </div>
       </section>
 

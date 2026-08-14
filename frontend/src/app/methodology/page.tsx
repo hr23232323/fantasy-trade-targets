@@ -10,7 +10,7 @@ export const metadata = buildPageMetadata({
 export default function MethodologyPage() {
   return (
     <>
-      <PageHero eyebrow="Methodology // 2026.08.3" title="The calculator" accent="shows its work." description="No generated explanation and no mystery multiplier. These are the exact deterministic rules behind every current result." primaryHref="#formula" primaryLabel="See the formula" />
+      <PageHero eyebrow="Methodology // 2026.08.4" title="The calculator" accent="shows its work." description="No generated explanation and no mystery multiplier. These are the exact deterministic rules behind every current result." primaryHref="#formula" primaryLabel="See the formula" />
       <section id="formula" className="page-wrap grid gap-10 py-8 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
           <span className="eyebrow">01 // Base values</span>
@@ -67,7 +67,23 @@ export default function MethodologyPage() {
       </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
-          <span className="eyebrow">04 // Roster cost</span>
+          <span className="eyebrow">04 // Player comparisons</span>
+          <h2 className="section-title mt-6">A head-to-head answer, with limits.</h2>
+        </div>
+        <div className="space-y-5 text-sm leading-7 text-[#59605c]">
+          <p>Every head-to-head page loads both players from the same validated release and compares them across dynasty Superflex, dynasty 1QB, Superflex TE premium, and redraft 1QB. Quarterback pages then isolate four- versus six-point passing touchdowns; RB, WR, and TE pages isolate standard, half-PPR, and full-PPR scoring.</p>
+          <div className="border border-[#171c19] bg-[#171c19] p-6 font-mono text-xs font-bold leading-6 text-[#dfff4f] sm:text-sm">
+            VALUE GAP % = |PLAYER A − PLAYER B| ÷ MAX(PLAYER A, PLAYER B) × 100<br />
+            SAME COMPARISON TIER = VALUE GAP ≤ 5%
+          </div>
+          <p>The five-percent label is a reading aid, not a new trade-value formula. It prevents small score differences from being described as categorical wins. Displayed values retain their underlying market and scoring math; no editorial sentence changes a score. If the higher-valued player changes across settings, the page says the leader flips and directs the reader to the row matching that league.</p>
+          <p>The initial 24 matchups contain 48 distinct top-100 player files and are deliberately curated within meaningful position and value neighborhoods. The collection is not every possible name permutation. Injuries, forecasts, manager preferences, and required trade adds remain outside the comparison answer.</p>
+          <a href="/player-comparisons" className="inline-block border border-[#171c19] bg-[#8bcfff] px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#171c19]">Open player comparisons →</a>
+        </div>
+      </section>
+      <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
+        <div>
+          <span className="eyebrow">05 // Roster cost</span>
           <h2 className="section-title mt-6">A dollar beats loose change.</h2>
         </div>
         <div>
@@ -83,13 +99,13 @@ export default function MethodologyPage() {
         </div>
       </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
-        <div><span className="eyebrow">05 // Verdict bands</span><h2 className="section-title mt-6">A range, not fake precision.</h2></div>
+        <div><span className="eyebrow">06 // Verdict bands</span><h2 className="section-title mt-6">A range, not fake precision.</h2></div>
         <div className="grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2">
           {[['0–4%','Fair trade'],['4–10%','Leans one side'],['10–18%','Clear edge'],['18%+','Strong edge']].map(([range,label]) => <div key={range} className="bg-[#f3f0e7] p-6"><span className="font-mono text-2xl font-black text-[#ff6b3d]">{range}</span><h3 className="mt-3 text-lg font-black">{label}</h3></div>)}
         </div>
       </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
-        <div><span className="eyebrow">06 // Matchup temperature</span><h2 className="section-title mt-6">The calendar, with a visible baseline.</h2></div>
+        <div><span className="eyebrow">07 // Matchup temperature</span><h2 className="section-title mt-6">The calendar, with a visible baseline.</h2></div>
         <div className="space-y-5 text-sm leading-7 text-[#59605c]">
           <p>Team pages grade each scheduled game from 0 to 100. The largest input is the opponent&apos;s prior-season NFL scoring-defense rank: No. 1 allowed the fewest points and creates the cold end of the scale; No. 32 allowed the most and creates the hot end.</p>
           <div className="border border-[#171c19] bg-[#171c19] p-6 font-mono text-xs font-bold leading-6 text-[#dfff4f] sm:text-sm">

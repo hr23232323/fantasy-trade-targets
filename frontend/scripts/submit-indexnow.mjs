@@ -9,10 +9,14 @@ const playerPages = JSON.parse(
 const teamRelease = JSON.parse(
   await readFile(new URL("../data/team-release.json", import.meta.url), "utf8"),
 );
+const playerComparisons = JSON.parse(
+  await readFile(new URL("../data/player-comparisons.json", import.meta.url), "utf8"),
+);
 
 const changedPaths = [
   "",
   "/players",
+  "/player-comparisons",
   "/market",
   "/teams",
   "/dynasty-rankings",
@@ -30,6 +34,7 @@ const changedPaths = [
   "/scoring/half-ppr-trade-values",
   "/scoring/standard-vs-ppr-player-values",
   ...playerPages.map((player) => `/players/${player.slug}`),
+  ...playerComparisons.map((comparison) => `/player-comparisons/${comparison.slug}`),
   ...Object.values(teamRelease.teams).map((team) => `/teams/${team.slug}`),
 ];
 

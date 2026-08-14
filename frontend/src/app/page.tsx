@@ -4,6 +4,7 @@ import FaqBlock from "./components/FaqBlock";
 import MarketBoard from "./components/ServerMarketBoard";
 import TradeCalculator from "./components/TradeCalculator";
 import { buildPageMetadata } from "./lib/metadata";
+import { playerComparisons } from "./lib/player-comparisons";
 import { playerPages } from "./lib/player-pages";
 import { teams } from "./lib/team-data";
 
@@ -61,10 +62,16 @@ export default function Home() {
               Open calculator ↘
             </Link>
             <Link
-            href="/fantasy-football-trade-targets"
+              href="/fantasy-football-trade-targets"
               className="border border-[#171c19] bg-white/50 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em]"
             >
               Find targets
+            </Link>
+            <Link
+              href="/player-comparisons"
+              className="border border-[#171c19] bg-[#8bcfff] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em]"
+            >
+              Compare players
             </Link>
           </div>
         </div>
@@ -105,6 +112,12 @@ export default function Home() {
                 className="border border-[#171c19] bg-[#171c19] px-3 py-2 font-mono text-[10px] font-black uppercase tracking-[0.06em] text-white hover:bg-[#a23616]"
               >
                 Browse all {playerPages.length} →
+              </Link>
+              <Link
+                href="/player-comparisons"
+                className="border border-[#171c19] bg-[#8bcfff] px-3 py-2 font-mono text-[10px] font-black uppercase tracking-[0.06em] hover:bg-[#dfff4f]"
+              >
+                {playerComparisons.length} head-to-heads →
               </Link>
             </div>
           </div>
