@@ -6,9 +6,11 @@ import {
 export default function PlayerHistoryChart({
   series,
   name,
+  id = "history",
 }: {
   series: PublishedHistorySeries;
   name: string;
+  id?: string;
 }) {
   const points = normalizeHistory(series.points);
 
@@ -43,10 +45,10 @@ export default function PlayerHistoryChart({
         viewBox={`0 0 ${width} ${height}`}
         className="h-auto w-full overflow-visible"
         role="img"
-        aria-labelledby="history-chart-title history-chart-description"
+        aria-labelledby={`${id}-chart-title ${id}-chart-description`}
       >
-        <title id="history-chart-title">{name} dynasty value history</title>
-        <desc id="history-chart-description">
+        <title id={`${id}-chart-title`}>{name} dynasty value history</title>
+        <desc id={`${id}-chart-description`}>
           Market observations from {formatDate(first.parsedDate, series.source)} through {formatDate(last.parsedDate, series.source)}, ranging from {min} to {max}.
         </desc>
         {[0, 0.5, 1].map((ratio) => {

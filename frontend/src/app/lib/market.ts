@@ -107,6 +107,37 @@ export function getPlayerSnapshotHistory() {
   return publicRelease.playerSnapshotHistory;
 }
 
+export function getPickMarket({
+  numQbs = 2,
+  numTeams = 12,
+}: {
+  numQbs?: 1 | 2;
+  numTeams?: number;
+} = {}) {
+  const normalizedTeams = normalizeTeamCount(numTeams);
+  const response = publicRelease.pickMarkets[`${numQbs}:${normalizedTeams}`];
+  if (!response) {
+    throw new Error(`Public release is missing pick market ${numQbs}:${normalizedTeams}`);
+  }
+
+  return {
+    assets: response.data.map((pick): MarketAsset => ({
+      id: pick.id,
+      slug: pick.id,
+      name: pick.name,
+      position: "PICK",
+      kind: "pick",
+      value: pick.composite,
+      year: pick.year,
+      round: pick.round,
+      slot: pick.slot,
+      tier: pick.tier,
+    })),
+    generatedAt: response.meta.generatedAt,
+    releaseId: publicRelease.releaseId,
+  };
+}
+
 function normalizeTeamCount(value: number) {
   return [8, 10, 12, 14, 16].includes(value) ? value : 12;
 }

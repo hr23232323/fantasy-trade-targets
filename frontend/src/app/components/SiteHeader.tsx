@@ -11,6 +11,7 @@ const links = [
   { href: "/dynasty-trade-calculator", label: "Calculator" },
   { href: "/fantasy-football-trade-targets", label: "Targets" },
   { href: "/player-comparisons", label: "Compare" },
+  { href: "/rookie-pick-values", label: "Picks" },
   { href: "/players", label: "Players" },
   { href: "/market", label: "Market" },
   { href: "/teams", label: "Teams" },
@@ -60,6 +61,7 @@ export default function SiteHeader() {
                 pathname === link.href ||
                 (link.href === "/players" && pathname.startsWith("/players/")) ||
                 (link.href === "/player-comparisons" && pathname.startsWith("/player-comparisons/")) ||
+                (link.href === "/rookie-pick-values" && pathname.startsWith("/rookie-pick-values/")) ||
                 (link.href === "/fantasy-football-trade-targets" && pathname.startsWith("/fantasy-football-trade-targets/")) ||
                 (link.href === "/market" && pathname.startsWith("/market/")) ||
                 (link.href === "/teams" && pathname.startsWith("/teams/")) ||
@@ -68,7 +70,7 @@ export default function SiteHeader() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-4 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.08em] transition-colors ${
+                  className={`px-3 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.08em] transition-colors ${
                     active
                       ? "bg-[#171c19] text-white"
                       : "hover:bg-[#e4dfd2]"

@@ -11,6 +11,10 @@ import {
   selectScoringProfileCohort,
   usableScoringProfiles,
 } from "../src/app/lib/scoring-publication.mjs";
+import {
+  buildRookiePickHistory,
+  validateRookiePickHistory,
+} from "../src/app/lib/rookie-pick-history.mjs";
 
 const API_BASE = "https://api.tradyr.app/v1";
 const formats = ["dynasty", "redraft"];
@@ -50,14 +54,16 @@ const snapshotHistoryPath = path.resolve(
   "data",
   "player-snapshot-history.json",
 );
+const rookiePickHistoryPath = path.resolve("data", "rookie-pick-history.json");
 
 const playerPageManifest = JSON.parse(
   await readFile(path.resolve("data/player-pages.json"), "utf8"),
 );
 const playerSlugs = playerPageManifest.map((player) => player.slug);
-const [priorRelease, priorSnapshotHistory] = await Promise.all([
+const [priorRelease, priorSnapshotHistory, priorRookiePickHistory] = await Promise.all([
   readJsonIfPresent(currentPath),
   readJsonIfPresent(snapshotHistoryPath),
+  readJsonIfPresent(rookiePickHistoryPath),
 ]);
 const reuseValidatedMarkets =
   process.env.REUSE_VALIDATED_MARKETS === "true" &&
@@ -317,6 +323,21 @@ const playerSnapshotHistory = buildPlayerSnapshotHistory({
   ],
   playerSlugs,
 });
+const rookiePickHistory = buildRookiePickHistory({
+  existing: priorRookiePickHistory?.picks,
+  releases: [
+    priorRelease,
+    {
+      releaseId,
+      capturedAt: capturedAt.toISOString(),
+      pickMarkets,
+    },
+  ],
+});
+validateRookiePickHistory({
+  histories: rookiePickHistory,
+  release: { releaseId, pickMarkets },
+});
 
 validateRelease({
   playerMarkets,
@@ -348,8 +369,10 @@ const release = {
 
 const temporaryPath = `${currentPath}.tmp`;
 const snapshotHistoryTemporaryPath = `${snapshotHistoryPath}.tmp`;
+const rookiePickHistoryTemporaryPath = `${rookiePickHistoryPath}.tmp`;
 await mkdir(path.dirname(currentPath), { recursive: true });
 await mkdir(path.dirname(snapshotHistoryPath), { recursive: true });
+await mkdir(path.dirname(rookiePickHistoryPath), { recursive: true });
 await writeFile(temporaryPath, `${JSON.stringify(release)}\n`);
 await writeFile(
   snapshotHistoryTemporaryPath,
@@ -359,6 +382,15 @@ await writeFile(
     players: playerSnapshotHistory,
   })}\n`,
 );
+await writeFile(
+  rookiePickHistoryTemporaryPath,
+  `${JSON.stringify({
+    schemaVersion: 1,
+    updatedAt: capturedAt.toISOString(),
+    picks: rookiePickHistory,
+  })}\n`,
+);
+await rename(rookiePickHistoryTemporaryPath, rookiePickHistoryPath);
 await rename(snapshotHistoryTemporaryPath, snapshotHistoryPath);
 await rename(temporaryPath, currentPath);
 

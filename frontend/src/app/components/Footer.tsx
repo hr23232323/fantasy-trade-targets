@@ -5,6 +5,7 @@ const tools = [
   ["Dynasty calculator", "/dynasty-trade-calculator"],
   ["Fantasy football trade targets", "/fantasy-football-trade-targets"],
   ["Player comparisons", "/player-comparisons"],
+  ["2027 rookie pick values", "/rookie-pick-values"],
   ["Scoring impact lab", "/scoring-impact"],
   ["6-point passing TD rankings", "/scoring/6-point-passing-td-rankings"],
   ["Standard vs. PPR values", "/scoring/standard-vs-ppr-player-values"],

@@ -10,7 +10,7 @@ export const metadata = buildPageMetadata({
 export default function MethodologyPage() {
   return (
     <>
-      <PageHero eyebrow="Methodology // 2026.08.4" title="The calculator" accent="shows its work." description="No generated explanation and no mystery multiplier. These are the exact deterministic rules behind every current result." primaryHref="#formula" primaryLabel="See the formula" />
+      <PageHero eyebrow="Methodology // 2026.08.5" title="The calculator" accent="shows its work." description="No generated explanation and no mystery multiplier. These are the exact deterministic rules behind every current result." primaryHref="#formula" primaryLabel="See the formula" />
       <section id="formula" className="page-wrap grid gap-10 py-8 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
           <span className="eyebrow">01 // Base values</span>
@@ -22,9 +22,27 @@ export default function MethodologyPage() {
           <div className="border border-[#171c19] bg-[#171c19] p-6 font-mono text-sm font-bold text-[#dfff4f]">RAW SIDE VALUE = Σ ASSET MARKET SCORE</div>
         </div>
       </section>
+      <section id="rookie-pick-values" className="page-wrap grid scroll-mt-24 gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
+        <div>
+          <span className="eyebrow">02 // Rookie pick research</span>
+          <h2 className="section-title mt-6">An exact slot is its own asset.</h2>
+        </div>
+        <div className="space-y-5 text-sm leading-7 text-[#59605c]">
+          <p>The rookie-pick collection publishes the first two complete rounds of the 2027 class as 24 exact-slot evidence files. It is a bounded draft-board reference, not a page for every possible keyword variation. Every displayed number is read from the same validated Tradyr pick markets used by the calculator.</p>
+          <p>Quarterback format and league size are separate source markets. FTT reads 1QB and Superflex values independently for 8-, 10-, 12-, 14-, and 16-team leagues. It does not multiply one baseline to manufacture the other. If an exact numbered slot falls beyond a league&apos;s round boundary, the page reports that the slot does not exist.</p>
+          <div className="border border-[#171c19] bg-[#171c19] p-6 font-mono text-xs font-bold leading-6 text-[#dfff4f] sm:text-sm">
+            ADJACENT-PICK GAP = NEIGHBOR VALUE − CURRENT PICK VALUE<br />
+            PLAYER EQUIVALENT = REVIEWED PLAYER WITH MINIMUM |PLAYER VALUE − PICK VALUE|<br />
+            CROSS-YEAR EQUIVALENT = OTHER-CLASS PICK WITH MINIMUM |OTHER PICK − CURRENT PICK|
+          </div>
+          <p>All equivalents are descriptive nearest neighbors on the current 0–1000 composite scale. They do not say a rookie pick and a known player have equal risk, expected outcome, or roster utility. Editorial text never overwrites a source value.</p>
+          <p>The public history records each successful 12-team 1QB and Superflex snapshot by UTC timestamp and release ID. History charts describe observed price movement; they are not prospect forecasts. JSON and CSV downloads expose the current values, league-size matrix, equivalents, adjacent picks, and complete retained observations.</p>
+          <a href="/rookie-pick-values" className="inline-block border border-[#171c19] bg-[#dfff4f] px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#171c19]">Open rookie pick research →</a>
+        </div>
+      </section>
       <section id="league-scoring" className="page-wrap grid scroll-mt-24 gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
-          <span className="eyebrow">02 // League scoring</span>
+          <span className="eyebrow">03 // League scoring</span>
           <h2 className="section-title mt-6">Change value, not just points.</h2>
         </div>
         <div className="space-y-5 text-sm leading-7 text-[#59605c]">
@@ -52,7 +70,7 @@ export default function MethodologyPage() {
       </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
-          <span className="eyebrow">03 // Trade-target screens</span>
+          <span className="eyebrow">04 // Trade-target screens</span>
           <h2 className="section-title mt-6">Direction before recommendation.</h2>
         </div>
         <div className="space-y-5 text-sm leading-7 text-[#59605c]">
@@ -67,7 +85,7 @@ export default function MethodologyPage() {
       </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
-          <span className="eyebrow">04 // Player comparisons</span>
+          <span className="eyebrow">05 // Player comparisons</span>
           <h2 className="section-title mt-6">A head-to-head answer, with limits.</h2>
         </div>
         <div className="space-y-5 text-sm leading-7 text-[#59605c]">
@@ -83,7 +101,7 @@ export default function MethodologyPage() {
       </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
-          <span className="eyebrow">05 // Roster cost</span>
+          <span className="eyebrow">06 // Roster cost</span>
           <h2 className="section-title mt-6">A dollar beats loose change.</h2>
         </div>
         <div>
@@ -99,13 +117,13 @@ export default function MethodologyPage() {
         </div>
       </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
-        <div><span className="eyebrow">06 // Verdict bands</span><h2 className="section-title mt-6">A range, not fake precision.</h2></div>
+        <div><span className="eyebrow">07 // Verdict bands</span><h2 className="section-title mt-6">A range, not fake precision.</h2></div>
         <div className="grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2">
           {[['0–4%','Fair trade'],['4–10%','Leans one side'],['10–18%','Clear edge'],['18%+','Strong edge']].map(([range,label]) => <div key={range} className="bg-[#f3f0e7] p-6"><span className="font-mono text-2xl font-black text-[#ff6b3d]">{range}</span><h3 className="mt-3 text-lg font-black">{label}</h3></div>)}
         </div>
       </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
-        <div><span className="eyebrow">07 // Matchup temperature</span><h2 className="section-title mt-6">The calendar, with a visible baseline.</h2></div>
+        <div><span className="eyebrow">08 // Matchup temperature</span><h2 className="section-title mt-6">The calendar, with a visible baseline.</h2></div>
         <div className="space-y-5 text-sm leading-7 text-[#59605c]">
           <p>Team pages grade each scheduled game from 0 to 100. The largest input is the opponent&apos;s prior-season NFL scoring-defense rank: No. 1 allowed the fewest points and creates the cold end of the scale; No. 32 allowed the most and creates the hot end.</p>
           <div className="border border-[#171c19] bg-[#171c19] p-6 font-mono text-xs font-bold leading-6 text-[#dfff4f] sm:text-sm">

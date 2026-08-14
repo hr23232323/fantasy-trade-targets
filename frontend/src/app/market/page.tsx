@@ -213,6 +213,7 @@ export default async function MarketPage() {
           <div>
             <span className="eyebrow">Rookie-pick reference</span>
             <h2 className="section-title mt-5">Draft capital on the same scale.</h2>
+            <Link href="/rookie-pick-values" className="mt-5 inline-block border-b-2 border-[#171c19] font-mono text-[10px] font-black uppercase tracking-[0.07em]">Research every 2027 exact pick →</Link>
           </div>
           <div className="grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2 lg:grid-cols-3">
             {leadingPicks.map((pick) => (

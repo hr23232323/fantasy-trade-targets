@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { getMarketReleaseInfo } from "./lib/market";
 import { playerPages } from "./lib/player-pages";
 import { playerComparisons } from "./lib/player-comparisons";
+import { rookiePickPages } from "./lib/rookie-picks";
 import { teamRelease, teams } from "./lib/team-data";
 
 const BASE_URL = "https://fantasytradetarget.com";
@@ -26,6 +27,7 @@ const staticRoutes = [
   "/players",
   "/player-comparisons",
   "/privacy-policy",
+  "/rookie-pick-values",
   "/scoring-impact",
   "/scoring/6-point-passing-td-rankings",
   "/scoring/half-ppr-trade-values",
@@ -41,6 +43,7 @@ const marketDrivenRoutes = new Set([
   "/market",
   "/player-comparisons",
   "/players",
+  "/rookie-pick-values",
   "/scoring/6-point-passing-td-rankings",
   "/scoring/half-ppr-trade-values",
   "/scoring/standard-vs-ppr-player-values",
@@ -59,6 +62,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...playerComparisons.map((comparison) => ({
       url: `${BASE_URL}/player-comparisons/${comparison.slug}`,
+      lastModified: marketUpdated,
+    })),
+    ...rookiePickPages.map((pick) => ({
+      url: `${BASE_URL}/rookie-pick-values/${pick.slug}`,
       lastModified: marketUpdated,
     })),
     ...teams.map((team) => ({

@@ -12,11 +12,15 @@ const teamRelease = JSON.parse(
 const playerComparisons = JSON.parse(
   await readFile(new URL("../data/player-comparisons.json", import.meta.url), "utf8"),
 );
+const rookiePickPages = JSON.parse(
+  await readFile(new URL("../data/rookie-pick-pages.json", import.meta.url), "utf8"),
+);
 
 const changedPaths = [
   "",
   "/players",
   "/player-comparisons",
+  "/rookie-pick-values",
   "/market",
   "/teams",
   "/dynasty-rankings",
@@ -35,6 +39,7 @@ const changedPaths = [
   "/scoring/standard-vs-ppr-player-values",
   ...playerPages.map((player) => `/players/${player.slug}`),
   ...playerComparisons.map((comparison) => `/player-comparisons/${comparison.slug}`),
+  ...rookiePickPages.map((pick) => `/rookie-pick-values/${pick.slug}`),
   ...Object.values(teamRelease.teams).map((team) => `/teams/${team.slug}`),
 ];
 

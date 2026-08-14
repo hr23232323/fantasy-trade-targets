@@ -34,6 +34,21 @@ export default function DataSourcesPage() {
           </div>
         </div>
       </section>
+      <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
+        <div>
+          <span className="eyebrow">Rookie-pick evidence // 24 exact slots</span>
+          <h2 className="section-title mt-6">Current markets plus retained observations.</h2>
+        </div>
+        <div className="space-y-5 text-sm leading-7 text-[#59605c]">
+          <p>The rookie-pick collection reads the 2027 first and second rounds directly from Tradyr&apos;s separate 1QB and Superflex pick markets for 8-, 10-, 12-, 14-, and 16-team leagues. FTT never estimates a missing slot or converts one league format with a generic multiplier.</p>
+          <p>Every successful full-market archive also contributes a compact public observation for each covered pick: UTC time, release ID, 12-team 1QB value, and 12-team Superflex value. The current 28-release backfill begins August 4, 2026, and the scheduled publisher appends new validated observations without rewriting older release IDs.</p>
+          <p>Player equivalents, adjacent-pick gaps, and cross-year matches are deterministic nearest-neighbor views over that same release. They add decision context but never overwrite the source value. Each exact-pick page exposes both a machine-readable JSON record and complete history CSV.</p>
+          <div className="flex flex-wrap gap-3">
+            <a href="/rookie-pick-values" className="border border-[#171c19] bg-[#dfff4f] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">Browse rookie pick files →</a>
+            <a href="/methodology#rookie-pick-values" className="border border-[#171c19] bg-white px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">Inspect exact-pick rules →</a>
+          </div>
+        </div>
+      </section>
       <section id="scoring-data" className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
           <span className="eyebrow">Scoring adjustment // reproducible</span>
@@ -82,7 +97,7 @@ export default function DataSourcesPage() {
       <section className="page-wrap py-8">
         <div className="grid gap-px border border-[#171c19] bg-[#171c19] md:grid-cols-3">
           <article className="bg-[#dfff4f] p-7"><span className="mono-label">Current release</span><h2 className="mt-8 text-2xl font-black tracking-[-0.04em]">Packaged with the application.</h2><p className="mt-4 text-sm leading-7 text-[#3f453f]">The latest validated market variants, compact scoring profiles, reviewed player profiles, and profile histories live in the versioned public release used by every server-rendered page and calculator.</p></article>
-          <article className="bg-[#8bcfff] p-7"><span className="mono-label">Compact history</span><h2 className="mt-8 text-2xl font-black tracking-[-0.04em]">One series per reviewed player.</h2><p className="mt-4 text-sm leading-7 text-[#3f453f]">Timestamped value, overall rank, position rank, and release ID observations are retained chronologically and exposed through player and market downloads.</p></article>
+          <article className="bg-[#8bcfff] p-7"><span className="mono-label">Compact history</span><h2 className="mt-8 text-2xl font-black tracking-[-0.04em]">Reviewed players and exact picks.</h2><p className="mt-4 text-sm leading-7 text-[#3f453f]">Timestamped player value and rank records plus separate 1QB and Superflex observations for 24 exact rookie picks are retained chronologically and exposed through public downloads.</p></article>
           <article className="bg-[#ffb29a] p-7"><span className="mono-label">Full archive</span><h2 className="mt-8 text-2xl font-black tracking-[-0.04em]">Every successful pull is preserved.</h2><p className="mt-4 text-sm leading-7 text-[#3f453f]">Complete market and pick variants are stored as compressed, append-only snapshots in the private build repository. Raw archives are not shipped in the production container and can move to immutable object storage without changing public URLs.</p></article>
         </div>
         <div className="mt-5 flex flex-wrap gap-3">

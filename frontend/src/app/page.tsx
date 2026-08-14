@@ -73,6 +73,12 @@ export default function Home() {
             >
               Compare players
             </Link>
+            <Link
+              href="/rookie-pick-values"
+              className="border border-[#171c19] bg-[#dfff4f] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em]"
+            >
+              Research picks
+            </Link>
           </div>
         </div>
       </section>
@@ -120,6 +126,23 @@ export default function Home() {
                 {playerComparisons.length} head-to-heads →
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="page-wrap pb-20">
+        <div className="grid gap-8 border-y border-[#171c19] py-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
+          <div>
+            <span className="eyebrow">Rookie pick research // exact slots</span>
+            <h2 className="section-title mt-6">24 picks. Every setting attached.</h2>
+          </div>
+          <div>
+            <p className="max-w-2xl text-sm leading-7 text-[#59605c]">
+              Price every 2027 first- and second-round slot in 1QB or Superflex, compare 8- through 16-team leagues, inspect player and cross-year equivalents, and download the dated history.
+            </p>
+            <Link href="/rookie-pick-values" className="mt-6 inline-block border border-[#171c19] bg-[#dfff4f] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.06em] shadow-[4px_4px_0_#171c19]">
+              Browse all 24 rookie picks →
+            </Link>
           </div>
         </div>
       </section>

@@ -46,5 +46,5 @@ test("methodology exposes a stable scoring anchor and plain-language PPR definit
   assert.match(methodology, /neutral roster baseline/);
   assert.match(methodology, /FLEX demand is then assigned/);
   assert.match(methodology, /does not alter anyone&apos;s raw fantasy points/);
-  assert.match(methodology, /Methodology \/\/ 2026\.08\.4/);
+  assert.match(methodology, /Methodology \/\/ 2026\.08\.5/);
 });
