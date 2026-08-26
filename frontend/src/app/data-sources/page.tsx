@@ -41,7 +41,7 @@ export default function DataSourcesPage() {
         </div>
         <div className="space-y-5 text-sm leading-7 text-[#59605c]">
           <p>The rookie-pick collection reads the 2027 first and second rounds directly from Tradyr&apos;s separate 1QB and Superflex pick markets for 8-, 10-, 12-, 14-, and 16-team leagues. FTT never estimates a missing slot or converts one league format with a generic multiplier.</p>
-          <p>Every successful full-market archive also contributes a compact public observation for each covered pick: UTC time, release ID, 12-team 1QB value, and 12-team Superflex value. The current 28-release backfill begins August 4, 2026, and the scheduled publisher appends new validated observations without rewriting older release IDs.</p>
+          <p>Every successful full-market archive also contributes a compact public observation for each covered pick: UTC time, release ID, 12-team 1QB value, and 12-team Superflex value. The initial 28-release backfill begins August 4, 2026, and the scheduled publisher appends new validated observations without rewriting older release IDs.</p>
           <p>Player equivalents, adjacent-pick gaps, and cross-year matches are deterministic nearest-neighbor views over that same release. They add decision context but never overwrite the source value. Each exact-pick page exposes both a machine-readable JSON record and complete history CSV.</p>
           <div className="flex flex-wrap gap-3">
             <a href="/rookie-pick-values" className="border border-[#171c19] bg-[#dfff4f] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">Browse rookie pick files →</a>

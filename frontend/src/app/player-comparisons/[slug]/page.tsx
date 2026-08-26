@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import AnalyticsPageView from "../../components/AnalyticsPageView";
 import JsonLd from "../../components/JsonLd";
+import PlayerPortrait from "../../components/PlayerPortrait";
+import TeamLogo from "../../components/TeamLogo";
 import { TrackedLink } from "../../components/TrackedLink";
 import { getMarket, getPlayerProfile } from "../../lib/market";
 import {
@@ -253,31 +255,36 @@ export default async function PlayerComparisonPage({ params }: PageProps) {
               Release {base.meta.releaseId}
             </span>
           </div>
-          <h1 className="mt-8 max-w-6xl text-[clamp(3rem,7vw,6.5rem)] font-black leading-[0.86] tracking-[-0.075em]">
-            {basePlayers.left.name} <span className="text-[#9b391d]">vs.</span> {basePlayers.right.name}
-          </h1>
-          <div className="mt-8 max-w-4xl border-l-4 border-[#171c19] pl-5">
-            <span className="mono-label">The short answer</span>
-            <p className="mt-3 text-lg font-bold leading-8 sm:text-xl">{shortAnswer}</p>
-          </div>
-          <p className="mt-7 max-w-3xl text-sm leading-7 text-[#414842]">
-            {comparison.editorialLens}
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <TrackedLink
-              href={`/dynasty-trade-calculator?format=dynasty&qbs=2&get=${basePlayers.right.slug}&give=${basePlayers.left.slug}`}
-              analyticsEvent="comparison_calculator_opened"
-              analyticsProperties={{ comparison_slug: comparison.slug, source: "comparison_hero" }}
-              className="border border-[#171c19] bg-[#171c19] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em] text-white shadow-[4px_4px_0_#ff6b3d]"
-            >
-              Price the complete trade →
-            </TrackedLink>
-            <Link
-              href="#league-formats"
-              className="border border-[#171c19] bg-white/70 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em]"
-            >
-              See where the answer changes ↓
-            </Link>
+          <div className="mt-8 grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch">
+            <div className="flex flex-col">
+              <h1 className="max-w-6xl text-[clamp(3rem,6vw,5.8rem)] font-black leading-[0.86] tracking-[-0.075em]">
+                {basePlayers.left.name} <span className="text-[#9b391d]">vs.</span> {basePlayers.right.name}
+              </h1>
+              <div className="mt-8 max-w-4xl border-l-4 border-[#171c19] pl-5">
+                <span className="mono-label">The short answer</span>
+                <p className="mt-3 text-lg font-bold leading-8 sm:text-xl">{shortAnswer}</p>
+              </div>
+              <p className="mt-7 max-w-3xl text-sm leading-7 text-[#414842]">
+                {comparison.editorialLens}
+              </p>
+              <div className="mt-auto flex flex-wrap gap-3 pt-8">
+                <TrackedLink
+                  href={`/dynasty-trade-calculator?format=dynasty&qbs=2&get=${basePlayers.right.slug}&give=${basePlayers.left.slug}`}
+                  analyticsEvent="comparison_calculator_opened"
+                  analyticsProperties={{ comparison_slug: comparison.slug, source: "comparison_hero" }}
+                  className="border border-[#171c19] bg-[#171c19] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em] text-white shadow-[4px_4px_0_#ff6b3d]"
+                >
+                  Price the complete trade →
+                </TrackedLink>
+                <Link
+                  href="#league-formats"
+                  className="border border-[#171c19] bg-white/70 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em]"
+                >
+                  See where the answer changes ↓
+                </Link>
+              </div>
+            </div>
+            <ComparisonHeroDuel left={basePlayers.left} right={basePlayers.right} />
           </div>
         </div>
       </section>
@@ -460,16 +467,45 @@ function playerSchema(player: MarketAsset) {
   };
 }
 
+function ComparisonHeroDuel({ left, right }: { left: MarketAsset; right: MarketAsset }) {
+  return (
+    <div className="grid min-h-[430px] grid-cols-2 gap-3 border border-[#171c19] bg-[#171c19] p-3 shadow-[7px_7px_0_#ff6b3d]">
+      <ComparisonHeroPlayer player={left} priority />
+      <ComparisonHeroPlayer player={right} priority />
+    </div>
+  );
+}
+
+function ComparisonHeroPlayer({ player, priority = false }: { player: MarketAsset; priority?: boolean }) {
+  const page = getPlayerPage(player.slug);
+  return (
+    <Link href={`/players/${player.slug}`} className="group relative overflow-hidden border border-[#171c19] bg-[#e7e2d5]">
+      <PlayerPortrait slug={player.slug} name={player.name} image={page?.image} position={player.position} team={player.team} variant="thumbnail" priority={priority} sizes="(max-width: 1023px) 50vw, 22vw" decorative />
+      <TeamLogo team={player.team} size={42} decorative className="absolute right-3 top-3 z-20" />
+      <span className="absolute left-3 top-3 z-20 border border-[#171c19] bg-[#dfff4f] px-2 py-1 font-mono text-[9px] font-black uppercase">
+        #{player.rank ?? "—"}
+      </span>
+      <span className="absolute inset-x-3 bottom-3 z-20 border border-[#171c19] bg-[#f3f0e7]/95 p-3 shadow-[3px_3px_0_#171c19]">
+        <strong className="block text-lg leading-none tracking-[-0.04em]">{player.name}</strong>
+        <span className="mt-2 flex items-center justify-between font-mono text-[9px] font-black uppercase text-[#69706c]"><span>{player.position}{player.posRank ?? "—"}</span><span className="text-xl text-[#a23616]">{Math.round(player.value)}</span></span>
+      </span>
+    </Link>
+  );
+}
+
 function PlayerValuePanel({ player, accent }: { player: MarketAsset; accent: string }) {
   return (
     <article className={`border border-[#171c19] ${accent} p-6 sm:p-8`}>
       <div className="flex items-start justify-between gap-5">
-        <div>
-          <span className="mono-label">Dynasty Superflex baseline</span>
-          <h2 className="mt-4 text-3xl font-black tracking-[-0.045em]">{player.name}</h2>
-          <p className="mt-2 text-sm font-bold text-[#4b534e]">
-            {player.team ?? "NFL"} · {player.position}{player.posRank ?? "—"} · age {player.age ?? "—"}
-          </p>
+        <div className="flex items-start gap-4">
+          <TeamLogo team={player.team} size={52} />
+          <div>
+            <span className="mono-label">Dynasty Superflex baseline</span>
+            <h2 className="mt-4 text-3xl font-black tracking-[-0.045em]">{player.name}</h2>
+            <p className="mt-2 text-sm font-bold text-[#4b534e]">
+              {player.team ?? "NFL"} · {player.position}{player.posRank ?? "—"} · age {player.age ?? "—"}
+            </p>
+          </div>
         </div>
         <div className="text-right">
           <span className="font-mono text-5xl font-black tabular-nums">{Math.round(player.value)}</span>

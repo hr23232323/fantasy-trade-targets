@@ -1,5 +1,7 @@
 import Link from "next/link";
 import AnalyticsPageView from "./AnalyticsPageView";
+import PlayerPortrait from "./PlayerPortrait";
+import TeamLogo from "./TeamLogo";
 import { TrackedLink } from "./TrackedLink";
 import {
   getScoringImpact,
@@ -9,6 +11,7 @@ import {
   type ImpactSettings,
   type ScoringImpactRow,
 } from "../lib/scoring-impact";
+import { getPlayerPage } from "../lib/player-pages";
 
 export type ScoringResearchConfig = {
   slug: string;
@@ -89,25 +92,47 @@ export default async function ScoringResearchPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }}
       />
       <section className="border-b border-[#171c19] bg-[#171c19] text-white">
-        <div className="page-wrap py-14 sm:py-20">
-          <span className="mono-label text-[#dfff4f]">{config.eyebrow}</span>
-          <h1 className="mt-6 max-w-6xl text-[clamp(3.1rem,8vw,7.4rem)] font-black leading-[0.86] tracking-[-0.08em]">
-            {config.title} <span className="text-[#8bcfff]">{config.accent}</span>
-          </h1>
-          <p className="mt-8 max-w-4xl text-base leading-8 text-white/65">
-            {config.description}
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <TrackedLink
-              href={`/scoring-impact?${query}`}
-              analyticsEvent="scoring_research_lab_opened"
-              analyticsProperties={analyticsProperties}
-              className="border border-white bg-[#dfff4f] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#8bcfff] hover:bg-white"
-            >
-              Open this comparison →
-            </TrackedLink>
-            <Link href="/methodology#league-scoring" className="border border-white/35 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.07em] hover:bg-white hover:text-[#171c19]">Audit the methodology</Link>
+        <div className="page-wrap grid gap-10 py-14 sm:py-20 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+          <div>
+            <span className="mono-label text-[#dfff4f]">{config.eyebrow}</span>
+            <h1 className="mt-6 max-w-6xl text-[clamp(3.1rem,7vw,6.8rem)] font-black leading-[0.86] tracking-[-0.08em]">
+              {config.title} <span className="text-[#8bcfff]">{config.accent}</span>
+            </h1>
+            <p className="mt-8 max-w-4xl text-base leading-8 text-white/65">
+              {config.description}
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <TrackedLink
+                href={`/scoring-impact?${query}`}
+                analyticsEvent="scoring_research_lab_opened"
+                analyticsProperties={analyticsProperties}
+                className="border border-white bg-[#dfff4f] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#8bcfff] hover:bg-white"
+              >
+                Open this comparison →
+              </TrackedLink>
+              <Link href="/methodology#league-scoring" className="border border-white/35 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.07em] hover:bg-white hover:text-[#171c19]">Audit the methodology</Link>
+            </div>
           </div>
+          <aside className="border border-white/30 bg-white/5 p-3 shadow-[8px_8px_0_#8bcfff]" aria-label="Current scoring leaders">
+            <div className="flex items-center justify-between border-b border-white/25 px-2 pb-3">
+              <span className="mono-label text-white/65">Live value board</span>
+              <span className="mono-label text-[#dfff4f]">Top 3</span>
+            </div>
+            <div className="mt-3 grid gap-3">
+              {rankings.slice(0, 3).map((row, index) => (
+                <ResearchPlayerSpotlight key={row.slug} row={row} rank={index + 1} priority={index === 0} />
+              ))}
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section className="border-b border-[#171c19] bg-[#dfff4f]">
+        <div className="page-wrap flex flex-wrap items-center justify-between gap-3 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">
+          <span>{receptionLabel(config.settings.receptionPoints)} scoring</span>
+          <span>{config.settings.passingTdPoints}-point passing TDs</span>
+          <span>{config.settings.numTeams} teams · {config.settings.flexSpots} FLEX</span>
+          <span>Release {impact.market.meta.releaseId}</span>
         </div>
       </section>
 
@@ -135,7 +160,7 @@ export default async function ScoringResearchPage({
               {rankings.map((row, index) => (
                 <tr key={row.id} className="border-b border-[#c8c4b9] last:border-0">
                   <td className="p-4 font-mono font-black">{index + 1}</td>
-                  <td className="p-4"><strong>{row.name}</strong><span className="ml-2 font-mono text-[10px] text-[#69706c]">{row.position}{row.team ? ` · ${row.team}` : ""}</span></td>
+                  <td className="p-4"><ScoringPlayerIdentity row={row} /></td>
                   <td className="p-4 font-mono">{row.baseValue}</td>
                   <td className="p-4 font-mono font-black">{row.adjustedValue}</td>
                   <td className={`p-4 font-mono font-black ${row.valueDelta > 0 ? "text-[#466400]" : row.valueDelta < 0 ? "text-[#a23616]" : "text-[#69706c]"}`}>{row.valueDelta > 0 ? "+" : ""}{row.valueDelta}</td>
@@ -180,8 +205,46 @@ function MoverList({ title, rows, accent }: { title: string; rows: ScoringImpact
     <article className="border border-[#171c19] bg-[#f3f0e7]">
       <h2 className={`${accent} border-b border-[#171c19] p-5 text-3xl font-black tracking-[-0.05em]`}>{title}</h2>
       <div className="divide-y divide-[#c8c4b9]">
-        {rows.length ? rows.map((row) => <div key={row.id} className="flex items-center justify-between gap-4 p-4"><span><strong className="block">{row.name}</strong><small className="text-[#69706c]">{impactWhy(row)}</small></span><strong className="font-mono">{row.valueDelta > 0 ? "+" : ""}{row.valueDelta}</strong></div>) : <p className="p-5 text-sm text-[#69706c]">No players move in this direction.</p>}
+        {rows.length ? rows.map((row) => <div key={row.id} className="flex items-center justify-between gap-4 p-4"><ScoringPlayerIdentity row={row} compact /><strong className="font-mono">{row.valueDelta > 0 ? "+" : ""}{row.valueDelta}</strong></div>) : <p className="p-5 text-sm text-[#69706c]">No players move in this direction.</p>}
       </div>
     </article>
+  );
+}
+
+function ResearchPlayerSpotlight({ row, rank, priority = false }: { row: ScoringImpactRow; rank: number; priority?: boolean }) {
+  const page = getPlayerPage(row.slug);
+  return (
+    <Link href={`/players/${row.slug}`} className="group grid min-h-28 grid-cols-[92px_minmax(0,1fr)_auto] overflow-hidden border border-white/30 bg-[#f3f0e7] text-[#171c19] hover:bg-[#dfff4f]">
+      <span className="relative border-r border-[#171c19]">
+        <PlayerPortrait slug={row.slug} name={row.name} image={page?.image} position={row.position} team={row.team} variant="thumbnail" priority={priority} sizes="92px" decorative />
+      </span>
+      <span className="flex min-w-0 flex-col justify-between p-4">
+        <span className="mono-label text-[#69706c]">#{rank} · {row.position}</span>
+        <strong className="mt-2 text-xl leading-none tracking-[-0.04em]">{row.name}</strong>
+        <span className="mt-2 text-[11px] text-[#69706c]">{impactWhy(row)}</span>
+      </span>
+      <span className="flex flex-col items-end justify-between p-3">
+        <TeamLogo team={row.team} size={34} decorative />
+        <strong className="font-mono text-2xl text-[#a23616]">{row.adjustedValue}</strong>
+      </span>
+    </Link>
+  );
+}
+
+function ScoringPlayerIdentity({ row, compact = false }: { row: ScoringImpactRow; compact?: boolean }) {
+  const page = getPlayerPage(row.slug);
+  return (
+    <Link href={`/players/${row.slug}`} className="group flex min-w-[210px] items-center gap-3">
+      <span className={`relative shrink-0 overflow-hidden border border-[#171c19] ${compact ? "h-11 w-10" : "h-14 w-12"}`}>
+        <PlayerPortrait slug={row.slug} name={row.name} image={page?.image} position={row.position} team={row.team} variant="thumbnail" sizes={compact ? "40px" : "48px"} decorative />
+      </span>
+      <span className="min-w-0">
+        <span className="flex items-center gap-2">
+          <strong className="block truncate group-hover:underline">{row.name}</strong>
+          <TeamLogo team={row.team} size={compact ? 22 : 26} decorative />
+        </span>
+        <small className="mt-1 block text-[#69706c]">{compact ? impactWhy(row) : `${row.position}${row.team ? ` · ${row.team}` : ""}`}</small>
+      </span>
+    </Link>
   );
 }

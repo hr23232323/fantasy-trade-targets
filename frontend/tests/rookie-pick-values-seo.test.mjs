@@ -92,8 +92,12 @@ test("the public history is chronological, deduplicated, and current", () => {
   validateRookiePickHistory({ histories: history.picks, release });
   for (const { id } of manifest) {
     const observations = history.picks[id];
-    assert.equal(observations.length, 28);
-    assert.equal(new Set(observations.map(({ releaseId }) => releaseId)).size, 28);
+    assert.ok(observations.length >= 28, `${id} keeps the initial backfill`);
+    assert.equal(
+      new Set(observations.map(({ releaseId }) => releaseId)).size,
+      observations.length,
+      `${id} keeps one observation per release`,
+    );
     assert.ok(
       observations.every(
         (observation, index) =>
@@ -154,7 +158,7 @@ test("methodology, provenance, and the scheduled pipeline disclose and preserve 
   assert.match(methodology, /PLAYER EQUIVALENT = REVIEWED PLAYER WITH MINIMUM/);
   assert.match(methodology, /bounded draft-board reference/);
   assert.match(dataSources, /Rookie-pick evidence \/\/ 24 exact slots/);
-  assert.match(dataSources, /current 28-release backfill begins August 4, 2026/);
+  assert.match(dataSources, /initial 28-release backfill begins August 4, 2026/);
   assert.match(dataSources, /never overwrite the source value/);
   assert.match(refreshScript, /buildRookiePickHistory/);
   assert.match(refreshScript, /validateRookiePickHistory/);

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import JsonLd from "../../components/JsonLd";
 import AnalyticsPageView from "../../components/AnalyticsPageView";
+import PlayerPortrait from "../../components/PlayerPortrait";
+import TeamLogo from "../../components/TeamLogo";
 import { TrackedAnchor, TrackedLink } from "../../components/TrackedLink";
 import { getMarket } from "../../lib/market";
 import { getPlayerPage } from "../../lib/player-pages";
@@ -189,23 +191,7 @@ export default async function TeamPage({ params }: PageProps) {
               {topAssets.map((asset) => (
                 <tr key={asset.slug}>
                   <td className="px-5 py-4 font-mono text-xs text-[#69706c]">#{asset.rank ?? "—"}</td>
-                  <td className="px-5 py-4 font-bold">
-                    {getPlayerPage(asset.slug) ? (
-                      <TrackedLink
-                        href={`/players/${asset.slug}`}
-                        className="underline decoration-[#ff6b3d] decoration-2 underline-offset-4 hover:bg-[#dfff4f]"
-                        analyticsEvent="team_player_opened"
-                        analyticsProperties={{
-                          team_slug: team.slug,
-                          player_slug: asset.slug,
-                          source: "roster_table",
-                          market_rank: asset.rank ?? null,
-                        }}
-                      >
-                        {asset.name} →
-                      </TrackedLink>
-                    ) : asset.name}
-                  </td>
+                  <td className="px-5 py-4 font-bold"><TeamPlayerIdentity team={team} asset={asset} /></td>
                   <td className="px-5 py-4 font-mono text-xs">{asset.position}{asset.posRank ?? "—"}</td>
                   <td className="px-5 py-4 text-[#69706c]">{asset.age ?? "—"}</td>
                   <td className="px-5 py-4 text-right font-mono text-lg font-black">{Math.round(asset.value)}</td>
@@ -266,7 +252,7 @@ export default async function TeamPage({ params }: PageProps) {
                 return (
                   <tr key={game.gameId}>
                     <td className="px-4 py-4"><strong>Week {game.week}</strong><span className="mt-1 block text-xs text-[#69706c]">{game.weekday}, {formatGameDate(game.date)} · {formatGameTime(game.time)}</span></td>
-                    <td className="px-4 py-4"><Link href={`/teams/${opponent.slug}`} className="font-bold underline decoration-[#ff6b3d] decoration-2 underline-offset-4">{game.site === "away" ? "@ " : "vs. "}{opponent.name}</Link>{game.divisionGame && <span className="ml-2 font-mono text-[8px] font-black uppercase text-[#69706c]">Division</span>}</td>
+                    <td className="px-4 py-4"><span className="flex items-center gap-3"><TeamLogo team={opponent.abbr} size={34} decorative /><span><Link href={`/teams/${opponent.slug}`} className="font-bold underline decoration-[#ff6b3d] decoration-2 underline-offset-4">{game.site === "away" ? "@ " : "vs. "}{opponent.name}</Link>{game.divisionGame && <span className="ml-2 font-mono text-[8px] font-black uppercase text-[#69706c]">Division</span>}</span></span></td>
                     <td className="px-4 py-4"><span className="font-bold capitalize">{game.site}</span><span className="mt-1 block max-w-48 text-xs leading-5 text-[#69706c]">{game.stadium ?? "Venue TBD"}{game.roof ? ` · ${readableSurface(game.roof)}` : ""}</span></td>
                     <td className="px-4 py-4"><span className={`${environmentClass(game.environmentLabel)} inline-flex min-w-24 items-center justify-between gap-3 border border-[#171c19] px-3 py-2 font-mono text-[9px] font-black uppercase`}><span>{game.environmentLabel}</span><span>{game.environmentScore}</span></span></td>
                     <td className="px-4 py-4 text-xs leading-5 text-[#59605c]">{matchupReason(game)}{game.restAdvantage !== null && Math.abs(game.restAdvantage) >= 2 ? ` ${restReason(game.restAdvantage)}` : ""}</td>
@@ -284,7 +270,7 @@ export default async function TeamPage({ params }: PageProps) {
           <h2 className="mt-4 text-3xl font-black tracking-[-0.05em]">Follow the division.</h2>
           <div className="mt-8 divide-y divide-white/15 border-y border-white/15">
             {divisionPeers.map((peer) => (
-              <Link key={peer.abbr} href={`/teams/${peer.slug}`} className="flex items-center justify-between gap-4 py-4 hover:text-[#dfff4f]"><span className="font-bold">{peer.name}</span><span className="font-mono text-[10px] font-black">{formatRecord(peer)} →</span></Link>
+              <Link key={peer.abbr} href={`/teams/${peer.slug}`} className="flex items-center justify-between gap-4 py-4 hover:text-[#dfff4f]"><span className="flex items-center gap-3"><TeamLogo team={peer.abbr} size={36} decorative /><span className="font-bold">{peer.name}</span></span><span className="font-mono text-[10px] font-black">{formatRecord(peer)} →</span></Link>
             ))}
           </div>
         </div>
@@ -313,6 +299,37 @@ export default async function TeamPage({ params }: PageProps) {
         <strong className="text-[#171c19]">Data note:</strong> Market values update daily. The {teamRelease.season} schedule, team metadata, and {teamRelease.baselineSeason} scoring results come from nflverse under CC BY 4.0; matchup temperatures are calculated by Fantasy Trade Target model <span className="font-mono">{teamRelease.modelVersion}</span>. Team names and marks identify their respective clubs. See <Link href="/data-sources" className="underline underline-offset-2">sources, freshness, and limits</Link>.
       </aside>
     </>
+  );
+}
+
+function TeamPlayerIdentity({ team, asset }: { team: TeamProfile; asset: MarketAsset }) {
+  const page = getPlayerPage(asset.slug);
+  const identity = (
+    <span className="group flex min-w-[220px] items-center gap-3">
+      <span className="relative h-14 w-12 shrink-0 overflow-hidden border border-[#171c19] bg-[#e7e2d5]">
+        <PlayerPortrait slug={asset.slug} name={asset.name} image={page?.image} position={asset.position} team={asset.team} variant="thumbnail" sizes="48px" decorative />
+      </span>
+      <span>
+        <strong className="block group-hover:underline">{asset.name}{page ? " →" : ""}</strong>
+        <small className="mt-1 block font-mono text-[9px] font-black uppercase tracking-[0.06em] text-[#69706c]">{team.abbr} · {asset.position}{asset.posRank ?? "—"}</small>
+      </span>
+    </span>
+  );
+
+  if (!page) return identity;
+  return (
+    <TrackedLink
+      href={`/players/${asset.slug}`}
+      analyticsEvent="team_player_opened"
+      analyticsProperties={{
+        team_slug: team.slug,
+        player_slug: asset.slug,
+        source: "roster_table",
+        market_rank: asset.rank ?? null,
+      }}
+    >
+      {identity}
+    </TrackedLink>
   );
 }
 

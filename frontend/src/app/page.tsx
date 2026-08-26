@@ -2,11 +2,15 @@ import Link from "next/link";
 import CalculatorGuide from "./components/CalculatorGuide";
 import FaqBlock from "./components/FaqBlock";
 import MarketBoard from "./components/ServerMarketBoard";
+import PlayerPortrait from "./components/PlayerPortrait";
+import TeamLogo from "./components/TeamLogo";
 import TradeCalculator from "./components/TradeCalculator";
+import { getMarket } from "./lib/market";
 import { buildPageMetadata } from "./lib/metadata";
 import { playerComparisons } from "./lib/player-comparisons";
-import { playerPages } from "./lib/player-pages";
+import { playerPages, type PlayerPageConfig } from "./lib/player-pages";
 import { teams } from "./lib/team-data";
+import type { MarketAsset } from "./types/MarketAsset";
 
 export const metadata = buildPageMetadata({
   title: "Fantasy Football Trade Targets, Calculator & Rankings",
@@ -38,7 +42,18 @@ const homeFaqs = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const market = await getMarket({ format: "dynasty", numQbs: 2 });
+  const heroPlayers = playerPages
+    .map((page) => ({
+      page,
+      player: market.assets.find(
+        (asset) => asset.kind === "player" && asset.slug === page.slug,
+      ),
+    }))
+    .filter((entry): entry is { page: PlayerPageConfig; player: MarketAsset } => Boolean(entry.player))
+    .slice(0, 3);
+
   return (
     <>
       <section className="page-wrap py-14 sm:py-20">
@@ -46,39 +61,54 @@ export default function Home() {
           <span className="eyebrow">Daily market intelligence // $0</span>
           <span className="mono-label text-[#69706c]">Dynasty · redraft · rookie picks</span>
         </div>
-        <h1 className="display-type mt-8 max-w-[1120px] uppercase">
-          Find the target. <span className="text-[#ff6b3d]">Price the move.</span>
-        </h1>
-        <div className="mt-9 grid gap-6 border-t border-[#171c19] pt-6 md:grid-cols-[1fr_auto] md:items-start">
-          <p className="max-w-2xl text-lg font-medium leading-8 text-[#525955]">
-            Free fantasy football trade tools that show their work. Search the market,
-            build the complete offer, and account for the hidden cost of extra roster spots.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="#trade-calculator"
-              className="border border-[#171c19] bg-[#171c19] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em] text-white shadow-[4px_4px_0_#dfff4f]"
-            >
-              Open calculator ↘
-            </Link>
-            <Link
-              href="/fantasy-football-trade-targets"
-              className="border border-[#171c19] bg-white/50 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em]"
-            >
-              Find targets
-            </Link>
-            <Link
-              href="/player-comparisons"
-              className="border border-[#171c19] bg-[#8bcfff] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em]"
-            >
-              Compare players
-            </Link>
-            <Link
-              href="/rookie-pick-values"
-              className="border border-[#171c19] bg-[#dfff4f] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em]"
-            >
-              Research picks
-            </Link>
+        <div className="mt-8 grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch">
+          <div className="flex flex-col justify-between border-t border-[#171c19] pt-7">
+            <div>
+              <h1 className="text-[clamp(3.5rem,7.6vw,7.3rem)] font-black uppercase leading-[0.82] tracking-[-0.078em]">
+                Find the target. <span className="text-[#ff6b3d]">Price the move.</span>
+              </h1>
+              <p className="mt-8 max-w-2xl text-lg font-medium leading-8 text-[#525955]">
+                Free fantasy football trade tools that show their work. Search the market,
+                build the complete offer, and account for the hidden cost of extra roster spots.
+              </p>
+            </div>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="#trade-calculator"
+                className="border border-[#171c19] bg-[#171c19] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em] text-white shadow-[4px_4px_0_#dfff4f]"
+              >
+                Open calculator ↘
+              </Link>
+              <Link
+                href="/fantasy-football-trade-targets"
+                className="border border-[#171c19] bg-white/50 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em]"
+              >
+                Find targets
+              </Link>
+              <Link
+                href="/player-comparisons"
+                className="border border-[#171c19] bg-[#8bcfff] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em]"
+              >
+                Compare players
+              </Link>
+              <Link
+                href="/rookie-pick-values"
+                className="border border-[#171c19] bg-[#dfff4f] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em]"
+              >
+                Research picks
+              </Link>
+            </div>
+          </div>
+          <div className="grid min-h-[510px] grid-cols-2 gap-3 border border-[#171c19] bg-[#171c19] p-3 shadow-[8px_8px_0_#ff6b3d]">
+            {heroPlayers.map(({ page, player }, index) => (
+              <HeroPlayerCard
+                key={page.slug}
+                page={page}
+                player={player}
+                featured={index === 0}
+                priority
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -159,7 +189,8 @@ export default function Home() {
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               {teams.slice(0, 8).map((team) => (
-                <Link key={team.abbr} href={`/teams/${team.slug}`} className="border border-[#171c19] bg-white/55 px-3 py-2 font-mono text-[10px] font-black uppercase tracking-[0.06em] hover:bg-[#8bcfff]">
+                <Link key={team.abbr} href={`/teams/${team.slug}`} className="flex items-center gap-2 border border-[#171c19] bg-white/55 py-1 pl-1 pr-3 font-mono text-[10px] font-black uppercase tracking-[0.06em] hover:bg-[#8bcfff]">
+                  <TeamLogo team={team.abbr} size={30} decorative />
                   {team.abbr} →
                 </Link>
               ))}
@@ -196,5 +227,48 @@ export default function Home() {
 
       <FaqBlock items={homeFaqs} />
     </>
+  );
+}
+
+function HeroPlayerCard({
+  page,
+  player,
+  featured,
+  priority,
+}: {
+  page: PlayerPageConfig;
+  player: MarketAsset;
+  featured: boolean;
+  priority?: boolean;
+}) {
+  return (
+    <Link
+      href={`/players/${page.slug}`}
+      className={`group relative overflow-visible border border-[#171c19] bg-[#e7e2d5] ${featured ? "row-span-2 min-h-[484px]" : "min-h-[235px]"}`}
+      aria-label={`Open ${page.name} player research`}
+    >
+      <PlayerPortrait
+        slug={page.slug}
+        name={page.name}
+        image={page.image}
+        position={player.position}
+        team={player.team}
+        variant="thumbnail"
+        priority={priority}
+        sizes={featured ? "(max-width: 1023px) 50vw, 28vw" : "(max-width: 1023px) 50vw, 18vw"}
+        decorative
+      />
+      <span className="absolute left-3 top-3 z-20 border border-[#171c19] bg-[#dfff4f] px-3 py-2 font-mono text-[9px] font-black uppercase tracking-[0.07em]">
+        #{player.rank ?? "—"} · {player.position}{player.posRank ?? "—"}
+      </span>
+      <TeamLogo team={player.team} size={featured ? 48 : 38} decorative className="absolute right-3 top-3 z-20" />
+      <span className="absolute inset-x-3 bottom-3 z-20 border border-[#171c19] bg-[#f3f0e7]/95 p-3 shadow-[3px_3px_0_#171c19]">
+        <span className="flex items-end justify-between gap-3">
+          <strong className={`${featured ? "text-2xl" : "text-base"} leading-none tracking-[-0.04em]`}>{page.name}</strong>
+          <span className={`${featured ? "text-3xl" : "text-xl"} font-mono font-black leading-none text-[#a23616]`}>{Math.round(player.value)}</span>
+        </span>
+        {featured && <span className="mt-2 block font-mono text-[9px] font-black uppercase tracking-[0.07em] text-[#69706c]">Current dynasty Superflex market</span>}
+      </span>
+    </Link>
   );
 }

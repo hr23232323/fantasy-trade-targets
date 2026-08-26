@@ -1,6 +1,8 @@
 import Link from "next/link";
 import AnalyticsPageView from "../components/AnalyticsPageView";
 import JsonLd from "../components/JsonLd";
+import PlayerPortrait from "../components/PlayerPortrait";
+import TeamLogo from "../components/TeamLogo";
 import { TrackedLink } from "../components/TrackedLink";
 import { getMarket } from "../lib/market";
 import {
@@ -8,6 +10,8 @@ import {
   type ComparisonPosition,
 } from "../lib/player-comparisons";
 import { buildPageMetadata } from "../lib/metadata";
+import { getPlayerPage } from "../lib/player-pages";
+import type { MarketAsset } from "../types/MarketAsset";
 
 const SITE_URL = "https://fantasytradetarget.com";
 const positions: ComparisonPosition[] = ["QB", "RB", "WR", "TE"];
@@ -60,6 +64,10 @@ export default async function PlayerComparisonsPage() {
     left: players.get(comparison.leftSlug),
     right: players.get(comparison.rightSlug),
   }));
+  const featuredPlayers = comparisons
+    .flatMap(({ left, right }) => [left, right])
+    .filter((player): player is MarketAsset => Boolean(player))
+    .slice(0, 4);
   const updated = new Date(market.meta.generatedAt).toLocaleDateString("en-US", {
     dateStyle: "long",
     timeZone: "America/New_York",
@@ -131,38 +139,45 @@ export default async function PlayerComparisonsPage() {
       />
 
       <section className="border-b border-[#171c19] bg-[#171c19] text-white">
-        <div className="page-wrap py-14 sm:py-20">
-          <span className="mono-label text-[#dfff4f]">
-            24 live decisions // updated {updated}
-          </span>
-          <h1 className="mt-7 max-w-6xl text-[clamp(3.1rem,8vw,7rem)] font-black uppercase leading-[0.84] tracking-[-0.078em]">
-            Player vs. player,
-            <span className="block text-[#8bcfff]">with the settings on.</span>
-          </h1>
-          <p className="mt-8 max-w-4xl text-lg font-medium leading-8 text-white/70">
-            Compare 48 distinct players across dynasty Superflex, dynasty 1QB,
-            tight end premium, and redraft—then measure the exact effect of
-            standard, half-PPR, full-PPR, or six-point passing touchdowns. Every
-            answer updates from the same validated market release.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <TrackedLink
-              href="#comparisons"
-              analyticsEvent="comparison_navigation_clicked"
-              analyticsProperties={{ source: "comparison_hub", destination: "comparison_index" }}
-              className="border border-white bg-[#dfff4f] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#ff6b3d]"
-            >
-              Pick a matchup ↓
-            </TrackedLink>
-            <TrackedLink
-              href="/scoring-impact"
-              analyticsEvent="comparison_navigation_clicked"
-              analyticsProperties={{ source: "comparison_hub", destination: "scoring_lab" }}
-              className="border border-white/40 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.07em] hover:bg-white hover:text-[#171c19]"
-            >
-              Test custom settings →
-            </TrackedLink>
+        <div className="page-wrap grid gap-10 py-14 sm:py-20 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+          <div>
+            <span className="mono-label text-[#dfff4f]">
+              24 live decisions // updated {updated}
+            </span>
+            <h1 className="mt-7 max-w-6xl text-[clamp(3.1rem,7vw,6.7rem)] font-black uppercase leading-[0.84] tracking-[-0.078em]">
+              Player vs. player,
+              <span className="block text-[#8bcfff]">with the settings on.</span>
+            </h1>
+            <p className="mt-8 max-w-4xl text-lg font-medium leading-8 text-white/70">
+              Compare 48 distinct players across dynasty Superflex, dynasty 1QB,
+              tight end premium, and redraft—then measure the exact effect of
+              standard, half-PPR, full-PPR, or six-point passing touchdowns. Every
+              answer updates from the same validated market release.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <TrackedLink
+                href="#comparisons"
+                analyticsEvent="comparison_navigation_clicked"
+                analyticsProperties={{ source: "comparison_hub", destination: "comparison_index" }}
+                className="border border-white bg-[#dfff4f] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#ff6b3d]"
+              >
+                Pick a matchup ↓
+              </TrackedLink>
+              <TrackedLink
+                href="/scoring-impact"
+                analyticsEvent="comparison_navigation_clicked"
+                analyticsProperties={{ source: "comparison_hub", destination: "scoring_lab" }}
+                className="border border-white/40 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.07em] hover:bg-white hover:text-[#171c19]"
+              >
+                Test custom settings →
+              </TrackedLink>
+            </div>
           </div>
+          <aside className="grid min-h-[460px] grid-cols-2 gap-3 border border-white/25 bg-white/5 p-3 shadow-[8px_8px_0_#dfff4f]" aria-label="Featured player comparisons">
+            {featuredPlayers.map((player, index) => (
+              <HubPortrait key={player.slug} player={player} priority={index < 2} />
+            ))}
+          </aside>
         </div>
       </section>
 
@@ -240,7 +255,11 @@ export default async function PlayerComparisonsPage() {
                               : "bg-white/65"
                         }`}
                       >
-                        <span className="mono-label text-[#535b56]">
+                        <div className="grid h-36 grid-cols-2 gap-px border border-[#171c19] bg-[#171c19]">
+                          <ComparisonCardPlayer player={comparison.left} />
+                          <ComparisonCardPlayer player={comparison.right} align="right" />
+                        </div>
+                        <span className="mono-label mt-5 inline-flex text-[#535b56]">
                           Current Superflex gap // {Math.round(gap)}
                         </span>
                         <h4 className="mt-5 text-2xl font-black leading-tight tracking-[-0.04em]">
@@ -314,6 +333,33 @@ export default async function PlayerComparisonsPage() {
         </p>
       </aside>
     </>
+  );
+}
+
+function HubPortrait({ player, priority = false }: { player: MarketAsset; priority?: boolean }) {
+  const page = getPlayerPage(player.slug);
+  return (
+    <Link href={`/players/${player.slug}`} className="group relative min-h-[210px] overflow-hidden border border-white/25 bg-[#e7e2d5] text-[#171c19]">
+      <PlayerPortrait slug={player.slug} name={player.name} image={page?.image} position={player.position} team={player.team} variant="thumbnail" priority={priority} sizes="(max-width: 1023px) 50vw, 20vw" decorative />
+      <TeamLogo team={player.team} size={36} decorative className="absolute right-3 top-3 z-20" />
+      <span className="absolute inset-x-3 bottom-3 z-20 border border-[#171c19] bg-[#f3f0e7]/95 p-3 shadow-[3px_3px_0_#171c19]">
+        <strong className="block text-base leading-none tracking-[-0.035em]">{player.name}</strong>
+        <span className="mt-2 flex justify-between font-mono text-[9px] font-black uppercase text-[#69706c]"><span>#{player.rank ?? "—"}</span><span className="text-[#a23616]">{Math.round(player.value)}</span></span>
+      </span>
+    </Link>
+  );
+}
+
+function ComparisonCardPlayer({ player, align = "left" }: { player: MarketAsset; align?: "left" | "right" }) {
+  const page = getPlayerPage(player.slug);
+  return (
+    <span className="relative overflow-hidden bg-[#e7e2d5]">
+      <PlayerPortrait slug={player.slug} name={player.name} image={page?.image} position={player.position} team={player.team} variant="thumbnail" sizes="(max-width: 767px) 50vw, 25vw" decorative />
+      <TeamLogo team={player.team} size={30} decorative className={`absolute top-2 z-20 ${align === "right" ? "left-2" : "right-2"}`} />
+      <span className={`absolute bottom-2 z-20 border border-[#171c19] bg-[#f3f0e7]/95 px-2 py-1 font-mono text-[8px] font-black uppercase ${align === "right" ? "right-2 text-right" : "left-2"}`}>
+        {player.name}
+      </span>
+    </span>
   );
 }
 
