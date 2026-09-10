@@ -40,7 +40,13 @@ test("new releases publish validated compact scoring-profile cohorts", () => {
     Object.keys(profiles).length,
   );
   assert.ok(release.scoringProfilePublication.playerCount >= Object.keys(profiles).length);
-  assert.ok(release.scoringProfilePublication.requestedCount >= 50);
+  if (release.scoringProfilePublication.sourceStatus === "temporarily_unavailable") {
+    assert.equal(release.scoringProfilePublication.requestedCount, 0);
+    assert.equal(release.scoringProfilePublication.refreshedCount, 0);
+    assert.ok(release.scoringProfilePublication.lastAttemptedAt);
+  } else {
+    assert.ok(release.scoringProfilePublication.requestedCount >= 50);
+  }
   assert.ok(release.scoringProfilePublication.requestedCount <= 500);
   for (const [slug, profile] of Object.entries(profiles)) {
     assert.equal(profile.modelVersion, "2026.08.3", `${slug} uses the active model`);
