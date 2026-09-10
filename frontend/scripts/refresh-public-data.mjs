@@ -642,10 +642,25 @@ function validateRelease({
     if (!Array.isArray(payload.data) || payload.data.length < minimumPlayers) {
       throw new Error(`Player market ${key} is unexpectedly small`);
     }
+    if (payload.meta?.access?.limited === true) {
+      throw new Error(`Player market ${key} is an access-limited response`);
+    }
+    if (
+      Number.isFinite(payload.meta?.access?.total) &&
+      payload.meta.access.total !== payload.data.length
+    ) {
+      throw new Error(
+        `Player market ${key} returned ${payload.data.length} of ${payload.meta.access.total} players`,
+      );
+    }
+    const uniqueSlugs = new Set(payload.data.map((player) => player.slug));
+    if (uniqueSlugs.size !== payload.data.length || uniqueSlugs.has(undefined)) {
+      throw new Error(`Player market ${key} contains missing or duplicate slugs`);
+    }
     const priorCount = priorPlayerMarkets?.[key]?.data?.length ?? 0;
     if (payload.data.length < priorCount) {
-      throw new Error(
-        `Player market ${key} regressed from ${priorCount} to ${payload.data.length} players`,
+      console.warn(
+        `Player market ${key} contracted from ${priorCount} to ${payload.data.length} players after full-response validation.`,
       );
     }
   }

@@ -83,10 +83,12 @@ test("publication carries validated scoring evidence through an upstream stats o
   assert.match(publisher, /preserving the prior release/);
 });
 
-test("publication rejects a player market that regresses from its prior release", () => {
+test("publication validates complete markets while allowing upstream roster cleanup", () => {
   assert.match(publisher, /priorPlayerMarkets/);
-  assert.match(publisher, /payload\.data\.length < priorCount/);
-  assert.match(publisher, /regressed from.*players/);
+  assert.match(publisher, /payload\.meta\?\.access\?\.limited === true/);
+  assert.match(publisher, /payload\.meta\.access\.total !== payload\.data\.length/);
+  assert.match(publisher, /uniqueSlugs\.size !== payload\.data\.length/);
+  assert.match(publisher, /contracted from.*after full-response validation/);
 });
 
 test("anonymous publication overlaps slow requests without increasing its start rate", () => {
