@@ -16,6 +16,17 @@ const rookiePickPages = JSON.parse(
   await readFile(new URL("../data/rookie-pick-pages.json", import.meta.url), "utf8"),
 );
 
+const scoringResearchPaths = [
+  "/scoring/redraft-6-point-passing-td-rankings",
+  "/scoring/1qb-6-point-passing-td-rankings",
+  "/scoring/standard-running-back-rankings",
+  "/scoring/half-ppr-running-back-rankings",
+  "/scoring/standard-wide-receiver-rankings",
+  "/scoring/half-ppr-wide-receiver-rankings",
+  "/scoring/standard-tight-end-rankings",
+  "/scoring/half-ppr-tight-end-rankings",
+];
+
 const changedPaths = [
   "",
   "/players",
@@ -33,10 +44,12 @@ const changedPaths = [
   "/fantasy-football-trade-value-chart",
   "/data-sources",
   "/methodology",
+  "/scoring",
   "/scoring-impact",
   "/scoring/6-point-passing-td-rankings",
   "/scoring/half-ppr-trade-values",
   "/scoring/standard-vs-ppr-player-values",
+  ...scoringResearchPaths,
   ...playerPages.map((player) => `/players/${player.slug}`),
   ...playerComparisons.map((comparison) => `/player-comparisons/${comparison.slug}`),
   ...rookiePickPages.map((pick) => `/rookie-pick-values/${pick.slug}`),

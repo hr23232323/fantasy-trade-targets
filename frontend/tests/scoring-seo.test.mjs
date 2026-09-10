@@ -10,6 +10,9 @@ const [
   sixPointPage,
   standardPage,
   halfPprPage,
+  scoringHub,
+  dynamicScoringPage,
+  scoringPageDefinitions,
   sitemap,
   header,
   footer,
@@ -20,6 +23,9 @@ const [
   read("../src/app/scoring/6-point-passing-td-rankings/page.tsx"),
   read("../src/app/scoring/standard-vs-ppr-player-values/page.tsx"),
   read("../src/app/scoring/half-ppr-trade-values/page.tsx"),
+  read("../src/app/scoring/page.tsx"),
+  read("../src/app/scoring/[slug]/page.tsx"),
+  read("../src/app/lib/scoring-research-pages.ts"),
   read("../src/app/sitemap.ts"),
   read("../src/app/components/SiteHeader.tsx"),
   read("../src/app/components/Footer.tsx"),
@@ -31,6 +37,17 @@ const routes = [
   "/scoring/6-point-passing-td-rankings",
   "/scoring/standard-vs-ppr-player-values",
   "/scoring/half-ppr-trade-values",
+];
+
+const newScoringSlugs = [
+  "redraft-6-point-passing-td-rankings",
+  "1qb-6-point-passing-td-rankings",
+  "standard-running-back-rankings",
+  "half-ppr-running-back-rankings",
+  "standard-wide-receiver-rankings",
+  "half-ppr-wide-receiver-rankings",
+  "standard-tight-end-rankings",
+  "half-ppr-tight-end-rankings",
 ];
 
 test("the scoring impact lab is shareable, explainable, and conversion tracked", () => {
@@ -72,5 +89,21 @@ test("every scoring surface is crawlable and internally linked", () => {
       `${route} has a global internal link`,
     );
   }
+  assert.ok(sitemap.includes('"/scoring"'), "/scoring is in the sitemap");
+  assert.ok(indexNow.includes('"/scoring"'), "/scoring is sent to IndexNow");
+  assert.ok(header.includes('href: "/scoring"'), "the scoring hub is in the header");
+  assert.ok(footer.includes('["Scoring rankings", "/scoring"]'), "the scoring hub is in the footer");
+
+  for (const slug of newScoringSlugs) {
+    assert.ok(scoringPageDefinitions.includes(`slug: "${slug}"`), `${slug} has a page definition`);
+    assert.ok(indexNow.includes(`"/scoring/${slug}"`), `${slug} is sent to IndexNow`);
+  }
+  assert.match(sitemap, /scoringResearchPageSlugs\.map/);
+  assert.match(scoringHub, /scoringResearchPages\.map/);
+  assert.match(scoringHub, /"@type": "CollectionPage"/);
+  assert.match(scoringHub, /scoring_research_hub_viewed/);
+  assert.match(dynamicScoringPage, /generateStaticParams/);
+  assert.match(dynamicScoringPage, /generateMetadata/);
+  assert.match(dynamicScoringPage, /ScoringResearchPage/);
   assert.match(header, /label: "Scoring"/);
 });

@@ -178,17 +178,25 @@ const scoringHealthPayload = scoringHealthPlayer
   : null;
 const scoringHealthProfile = buildScoringProfile(scoringHealthPayload?.data);
 if (scoringHealthPlayer && !scoringHealthProfile) {
-  throw new Error(
-    `Tradyr scoring stats are unavailable or unusable for ${scoringHealthPlayer.slug}; preserving the prior release`,
+  if (Object.keys(carriedScoringProfiles).length < 150) {
+    throw new Error(
+      `Tradyr scoring stats are unavailable or unusable for ${scoringHealthPlayer.slug}, and only ${Object.keys(carriedScoringProfiles).length} validated scoring profiles can be carried; preserving the prior release`,
+    );
+  }
+  console.warn(
+    `Tradyr scoring stats are unavailable or unusable for ${scoringHealthPlayer.slug}; publishing fresh markets while carrying ${Object.keys(carriedScoringProfiles).length} validated scoring profiles.`,
   );
 }
-if (scoringHealthPlayer) {
+if (scoringHealthPlayer && scoringHealthProfile) {
   console.log(`Verified scoring stats availability with ${scoringHealthPlayer.slug}.`);
 }
-const scoringHealthWasRequested = scoringCohort.some(
+const scoringRefreshCohort = scoringHealthPlayer && !scoringHealthProfile
+  ? []
+  : scoringCohort;
+const scoringHealthWasRequested = scoringRefreshCohort.some(
   (player) => player.slug === scoringHealthPlayer?.slug,
 );
-const remainingScoringCohort = scoringCohort.filter(
+const remainingScoringCohort = scoringRefreshCohort.filter(
   (player) => player.slug !== scoringHealthPlayer?.slug,
 );
 const remainingScoringStatsResponses = await mapConcurrent(
@@ -200,9 +208,9 @@ const remainingScoringStatsResponses = await mapConcurrent(
       { attempts: 2 },
     );
     const completed = index + 1 + (scoringHealthWasRequested ? 1 : 0);
-    if (completed % 25 === 0 || completed === scoringCohort.length) {
+    if (completed % 25 === 0 || completed === scoringRefreshCohort.length) {
       console.log(
-        `Fetched scoring stats ${completed}/${scoringCohort.length}`,
+        `Fetched scoring stats ${completed}/${scoringRefreshCohort.length}`,
       );
     }
     return { slug: player.slug, payload };
@@ -301,13 +309,17 @@ const scoringProfilePublication = preserveValidatedScoringProfiles
       profileCount: Object.keys(playerScoringProfiles).length,
       playerCount: currentPlayers.length,
       refreshedCount: Object.keys(refreshedScoringProfiles).length,
-      requestedCount: scoringCohort.length,
+      requestedCount: scoringRefreshCohort.length,
       successfulResponseCount: successfulScoringResponseCount,
       unavailableCount: unavailableScoringProfileCount,
       failedRequestCount: failedScoringRequestCount,
+      sourceStatus: scoringHealthPlayer && !scoringHealthProfile
+        ? "temporarily_unavailable"
+        : "available",
+      lastAttemptedAt: new Date().toISOString(),
       nextRefreshCursor: nextScoringRefreshCursor({
         players: currentPlayers,
-        cohort: scoringCohort,
+        cohort: scoringRefreshCohort,
         refreshCursor: priorRefreshCursor,
       }),
     };

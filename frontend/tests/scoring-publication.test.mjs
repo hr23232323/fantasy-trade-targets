@@ -70,11 +70,16 @@ test("carried profiles are model-versioned, finite, and current-market only", ()
   assert.deepEqual(Object.keys(profiles), ["player-1"]);
 });
 
-test("publication fails fast when the upstream scoring layer is unavailable", () => {
+test("publication carries validated scoring evidence through an upstream stats outage", () => {
   assert.match(publisher, /scoringHealthPlayer/);
   assert.match(publisher, /currentPlayersBySlug\.get\("josh-allen-qb"\)/);
   assert.match(publisher, /attempts: 1/);
   assert.match(publisher, /Tradyr scoring stats are unavailable/);
+  assert.match(publisher, /publishing fresh markets while carrying/);
+  assert.match(publisher, /carriedScoringProfiles\)\.length < 150/);
+  assert.match(publisher, /scoringRefreshCohort/);
+  assert.match(publisher, /sourceStatus:/);
+  assert.match(publisher, /temporarily_unavailable/);
   assert.match(publisher, /preserving the prior release/);
 });
 

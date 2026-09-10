@@ -44,8 +44,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const right = getPlayerPage(comparison.rightSlug);
   if (!left || !right) return {};
 
-  const title = `${left.name} vs. ${right.name}: Dynasty Trade Value`;
-  const description = `Compare ${left.name} and ${right.name} across dynasty Superflex, 1QB, redraft, and scoring settings with current values and player-level math.`;
+  const title = `${left.name} or ${right.name}? Dynasty Trade Value`;
+  const description = `Decide between ${left.name} and ${right.name} with current dynasty Superflex, 1QB, redraft, and scoring-specific trade values.`;
 
   return {
     title,

@@ -91,6 +91,16 @@ export default async function ScoringResearchPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }}
       />
+      <nav
+        className="page-wrap flex flex-wrap gap-2 py-4 font-mono text-[10px] font-bold uppercase tracking-[0.08em] text-[#69706c]"
+        aria-label="Breadcrumb"
+      >
+        <Link href="/" className="hover:text-[#171c19] hover:underline">Home</Link>
+        <span aria-hidden="true">/</span>
+        <Link href="/scoring" className="hover:text-[#171c19] hover:underline">Scoring rankings</Link>
+        <span aria-hidden="true">/</span>
+        <span className="text-[#171c19]">{config.title}</span>
+      </nav>
       <section className="border-b border-[#171c19] bg-[#171c19] text-white">
         <div className="page-wrap grid gap-10 py-14 sm:py-20 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
           <div>

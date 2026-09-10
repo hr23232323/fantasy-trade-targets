@@ -1,8 +1,8 @@
 import { buildPageMetadata } from "../lib/metadata";
 
 export const metadata = buildPageMetadata({
-  title: "Free Fantasy Football Trade Meme Generator",
-  description: "Create free fantasy football trade memes for your league chat. Deterministic, no login, and no paid AI call.",
+  title: "Free Fantasy Football Trade Meme Generator — No Signup",
+  description: "Make and download a fantasy football trade meme for your league chat. Free templates, no signup, and no paid AI call.",
   path: "/create-meme",
 });
 

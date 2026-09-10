@@ -15,7 +15,7 @@ const links = [
   { href: "/players", label: "Players" },
   { href: "/market", label: "Market" },
   { href: "/teams", label: "Teams" },
-  { href: "/scoring-impact", label: "Scoring" },
+  { href: "/scoring", label: "Scoring" },
   { href: "/fantasy-trade-calculator", label: "Redraft" },
 ];
 
@@ -65,7 +65,7 @@ export default function SiteHeader() {
                 (link.href === "/fantasy-football-trade-targets" && pathname.startsWith("/fantasy-football-trade-targets/")) ||
                 (link.href === "/market" && pathname.startsWith("/market/")) ||
                 (link.href === "/teams" && pathname.startsWith("/teams/")) ||
-                (link.href === "/scoring-impact" && pathname.startsWith("/scoring"));
+                (link.href === "/scoring" && pathname.startsWith("/scoring"));
               return (
                 <Link
                   key={link.href}
