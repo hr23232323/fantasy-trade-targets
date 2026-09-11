@@ -127,7 +127,12 @@ const marketAndPickResponses = reuseValidatedMarkets
       async (request) => ({ ...request, payload: await fetchJson(request.url) }),
     );
 const playerMarkets = reuseValidatedMarkets
-  ? priorRelease.playerMarkets
+  ? Object.fromEntries(
+      Object.entries(priorRelease.playerMarkets).map(([key, payload]) => [
+        key,
+        normalizePlayerMarketPayload(payload),
+      ]),
+    )
   : Object.fromEntries(
       marketAndPickResponses
         .filter((response) => response.kind === "players")
@@ -594,15 +599,24 @@ function delay(milliseconds) {
 }
 
 function normalizePlayerMarketPayload(payload) {
+  const positionCounts = new Map();
   return {
     ...payload,
-    data: payload.data.map((player) => ({
-      ...player,
-      // Tradyr can round the top normalized score to 1001. Keep the public contract at 0–1000.
-      composite: player.composite > 1000 && player.composite <= 1001
-        ? 1000
-        : player.composite,
-    })),
+    data: payload.data.map((player, index) => {
+      const posRank = (positionCounts.get(player.position) ?? 0) + 1;
+      positionCounts.set(player.position, posRank);
+      return {
+        ...player,
+        // Public ranks are derived from the exact displayed order and values so
+        // source-side tie breaking can never contradict the published table.
+        rank: index + 1,
+        posRank,
+        // Tradyr can round the top normalized score to 1001. Keep the public contract at 0–1000.
+        composite: player.composite > 1000 && player.composite <= 1001
+          ? 1000
+          : player.composite,
+      };
+    }),
   };
 }
 
@@ -696,7 +710,6 @@ function validateRelease({
         !Number.isInteger(player.posRank) || player.posRank < 1 ||
         (index > 0 && payload.data[index - 1].rank > player.rank) ||
         (index > 0 && payload.data[index - 1].composite < player.composite) ||
-        (previousAtPosition && previousAtPosition.rank > player.posRank) ||
         (previousAtPosition && previousAtPosition.composite > player.composite && previousAtPosition.rank >= player.posRank)
       ) {
         throw new Error(`Player market ${key} has an invalid record at rank ${index + 1}`);
@@ -711,6 +724,7 @@ function validateRelease({
     }
   }
   for (const [key, payload] of Object.entries(pickMarkets)) {
+    const supportedTeamCount = Number(key.split(":")[1]);
     const generatedAt = Date.parse(payload.meta?.generatedAt);
     const uniqueIds = new Set(Array.isArray(payload.data) ? payload.data.map((pick) => pick.id) : []);
     if (
@@ -725,7 +739,9 @@ function validateRelease({
         typeof pick.name !== "string" || !pick.name ||
         pick.position !== "PICK" ||
         !Number.isFinite(pick.composite) || pick.composite < 0 || pick.composite > 1000 ||
-        ![1, 2].includes(pick.round) || !Number.isInteger(pick.slot) || pick.slot < 1
+        !/^(2026|2027|2028)$/.test(pick.year) ||
+        ![1, 2, 3, 4].includes(pick.round) ||
+        !Number.isInteger(pick.slot) || pick.slot < 1 || pick.slot > supportedTeamCount
       )
     ) {
       throw new Error(`Pick market ${key} failed identity, scale, or freshness validation`);
@@ -739,8 +755,8 @@ function validateRelease({
     if (!Array.isArray(payload.data.history)) {
       throw new Error(`Player profile ${slug} has an invalid history field`);
     }
-    if (!payload.data.stats?.derivedStats) {
-      throw new Error(`Player profile ${slug} is missing production stats`);
+    if (payload.data.stats != null && !payload.data.stats.derivedStats) {
+      throw new Error(`Player profile ${slug} has malformed production stats`);
     }
     const observations = playerSnapshotHistory[slug];
     if (!Array.isArray(observations) || observations.length < 1) {

@@ -416,7 +416,7 @@ export default async function PlayerComparisonPage({ params }: PageProps) {
             href="/player-comparisons"
             className="border border-[#171c19] bg-white/60 px-6 py-4 font-mono text-xs font-black uppercase tracking-[0.08em]"
           >
-            All 24 comparisons →
+            All comparisons →
           </Link>
         </div>
       </section>

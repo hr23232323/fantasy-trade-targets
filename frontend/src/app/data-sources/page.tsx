@@ -22,7 +22,7 @@ export default function DataSourcesPage() {
       </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
-          <span className="eyebrow">Comparison evidence // 48 players</span>
+          <span className="eyebrow">Comparison evidence // reviewed matchups</span>
           <h2 className="section-title mt-6">No new hidden data source.</h2>
         </div>
         <div className="space-y-5 text-sm leading-7 text-[#59605c]">

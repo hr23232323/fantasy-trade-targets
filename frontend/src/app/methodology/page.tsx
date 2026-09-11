@@ -95,7 +95,7 @@ export default function MethodologyPage() {
             SAME COMPARISON TIER = VALUE GAP ≤ 5%
           </div>
           <p>The five-percent label is a reading aid, not a new trade-value formula. It prevents small score differences from being described as categorical wins. Displayed values retain their underlying market and scoring math; no editorial sentence changes a score. If the higher-valued player changes across settings, the page says the leader flips and directs the reader to the row matching that league.</p>
-          <p>The initial 24 matchups contain 48 distinct top-100 player files and are deliberately curated within meaningful position and value neighborhoods. The collection is not every possible name permutation. Injuries, forecasts, manager preferences, and required trade adds remain outside the comparison answer.</p>
+          <p>The comparison collection begins with deliberately curated player files in meaningful position and value neighborhoods, then expands in reviewed batches. It is not every possible name permutation. Injuries, forecasts, manager preferences, and required trade adds remain outside the comparison answer.</p>
           <a href="/player-comparisons" className="inline-block border border-[#171c19] bg-[#8bcfff] px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#171c19]">Open player comparisons →</a>
         </div>
       </section>

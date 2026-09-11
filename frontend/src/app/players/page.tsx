@@ -148,7 +148,7 @@ export default async function PlayersPage() {
           <div className="mt-5 grid gap-5 md:grid-cols-[1fr_auto] md:items-end">
             <div>
               <h2 className="text-3xl font-black tracking-[-0.045em]">Put two complete player files on the same table.</h2>
-              <p className="mt-3 max-w-3xl text-sm leading-7 text-[#414842]">Twenty-four curated comparisons show current values across Superflex, 1QB, redraft, PPR, six-point passing touchdowns, and tight end premium.</p>
+              <p className="mt-3 max-w-3xl text-sm leading-7 text-[#414842]">Curated comparisons show current values across Superflex, 1QB, redraft, PPR, six-point passing touchdowns, and tight end premium.</p>
             </div>
             <Link href="/player-comparisons" className="border border-[#171c19] bg-[#dfff4f] px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] shadow-[4px_4px_0_#171c19]">Browse comparisons →</Link>
           </div>

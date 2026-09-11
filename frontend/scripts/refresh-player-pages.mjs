@@ -1,7 +1,7 @@
 import { readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-const PLAYER_COUNT = 100;
+const PLAYER_COUNT = 120;
 const USER_AGENT =
   "FantasyTradeTargetData/1.0 (+https://fantasytradetarget.com)";
 const manifestPath = path.resolve("data/player-pages.json");
@@ -88,8 +88,19 @@ async function getCommonsImage(player) {
   const metadata = info.extmetadata ?? {};
   const license = cleanText(metadata.LicenseShortName?.value);
   const author = cleanText(metadata.Artist?.value);
-  if (!license || !author) {
-    throw new Error(`Incomplete Commons attribution for ${player.name}`);
+  const licenseUrl =
+    normalizeHttps(metadata.LicenseUrl?.value) ??
+    "https://creativecommons.org/publicdomain/mark/1.0/";
+  if (
+    !license ||
+    !author ||
+    !info.descriptionurl.startsWith("https://commons.wikimedia.org/") ||
+    !licenseUrl.startsWith("https://creativecommons.org/")
+  ) {
+    console.warn(
+      `No reusable Commons attribution contract for ${player.name}; using the original FTT player-file art.`,
+    );
+    return getOriginalPlayerFileImage(player);
   }
 
   return {
@@ -99,9 +110,7 @@ async function getCommonsImage(player) {
     alt: `Photograph of ${player.name}`,
     author,
     license,
-    licenseUrl:
-      normalizeHttps(metadata.LicenseUrl?.value) ??
-      "https://creativecommons.org/publicdomain/mark/1.0/",
+    licenseUrl,
     sourceUrl: info.descriptionurl,
   };
 }
@@ -170,6 +179,9 @@ function cleanText(value = "") {
 
 function stripQuery(value) {
   const url = new URL(value);
+  if (url.hostname === "thumb.wikimedia.org") {
+    url.hostname = "upload.wikimedia.org";
+  }
   url.search = "";
   return url.toString();
 }

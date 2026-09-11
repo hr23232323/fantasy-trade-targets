@@ -19,7 +19,7 @@ const positions: ComparisonPosition[] = ["QB", "RB", "WR", "TE"];
 export const metadata = buildPageMetadata({
   title: "Fantasy Football Player Comparisons: Dynasty Value",
   description:
-    "Compare 48 fantasy football players head to head across dynasty Superflex, 1QB, redraft, PPR, six-point passing TD, and tight end premium settings.",
+    "Compare fantasy football players head to head across dynasty Superflex, 1QB, redraft, PPR, six-point passing TD, and tight end premium settings.",
   path: "/player-comparisons",
 });
 
@@ -64,6 +64,9 @@ export default async function PlayerComparisonsPage() {
     left: players.get(comparison.leftSlug),
     right: players.get(comparison.rightSlug),
   }));
+  const distinctPlayerCount = new Set(
+    comparisons.flatMap(({ leftSlug, rightSlug }) => [leftSlug, rightSlug]),
+  ).size;
   const featuredPlayers = comparisons
     .flatMap(({ left, right }) => [left, right])
     .filter((player): player is MarketAsset => Boolean(player))
@@ -142,14 +145,14 @@ export default async function PlayerComparisonsPage() {
         <div className="page-wrap grid gap-10 py-14 sm:py-20 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
           <div>
             <span className="mono-label text-[#dfff4f]">
-              24 live decisions // updated {updated}
+              {comparisons.length} live decisions // updated {updated}
             </span>
             <h1 className="mt-7 max-w-6xl text-[clamp(3.1rem,7vw,6.7rem)] font-black uppercase leading-[0.84] tracking-[-0.078em]">
               Player vs. player,
               <span className="block text-[#8bcfff]">with the settings on.</span>
             </h1>
             <p className="mt-8 max-w-4xl text-lg font-medium leading-8 text-white/70">
-              Compare 48 distinct players across dynasty Superflex, dynasty 1QB,
+              Compare {distinctPlayerCount} players across dynasty Superflex, dynasty 1QB,
               tight end premium, and redraft—then measure the exact effect of
               standard, half-PPR, full-PPR, or six-point passing touchdowns. Every
               answer updates from the same validated market release.
@@ -205,11 +208,11 @@ export default async function PlayerComparisonsPage() {
       <section id="comparisons" className="page-wrap scroll-mt-8 py-10">
         <div className="max-w-4xl border-t border-[#171c19] pt-6">
           <span className="eyebrow">Curated head-to-head index</span>
-          <h2 className="section-title mt-5">Twenty-four decisions worth measuring.</h2>
+          <h2 className="section-title mt-5">{comparisons.length} decisions worth measuring.</h2>
           <p className="mt-5 max-w-3xl text-sm leading-7 text-[#69706c]">
             Matchups were selected from meaningful current value neighborhoods,
-            not generated as every possible name combination. No player appears
-            twice, giving the collection 48 unique evidence profiles.
+            not generated as every possible name combination. Every pairing must
+            present a real format, scoring, timeline, or roster-construction decision.
           </p>
         </div>
 

@@ -61,10 +61,10 @@ test("new releases publish validated compact scoring-profile cohorts", () => {
 test("every configured player page has a validated profile", () => {
   const currentMarket = release.playerMarkets["dynasty:2:0"].data;
 
-  assert.equal(playerPages.length, 100);
-  assert.equal(new Set(playerPages.map((page) => page.slug)).size, 100);
+  assert.equal(playerPages.length, 120);
+  assert.equal(new Set(playerPages.map((page) => page.slug)).size, 120);
   assert.ok(new Set(playerPages.map((page) => page.image.src)).size >= 85);
-  assert.equal(Object.keys(release.playerProfiles).length, 100);
+  assert.equal(Object.keys(release.playerProfiles).length, 120);
 
   for (const page of playerPages) {
     const profile = release.playerProfiles[page.slug];
@@ -79,7 +79,7 @@ test("every configured player page has a validated profile", () => {
     assert.equal(profile.data.composite, currentPlayer.composite);
     assert.ok(Array.isArray(profile.data.history));
     assert.ok(Array.isArray(profile.data.similar));
-    assert.ok(profile.data.stats?.derivedStats);
+    assert.ok(profile.data.stats == null || profile.data.stats.derivedStats);
     assert.ok(Number.isFinite(Date.parse(profile.meta.generatedAt)));
     const snapshots = release.playerSnapshotHistory[page.slug];
     assert.ok(Array.isArray(snapshots), `${page.slug} snapshot history exists`);

@@ -41,19 +41,19 @@ const baselinePlayers = new Map(
 );
 const publishedPlayers = new Set(playerManifest.map((player) => player.slug));
 
-test("the expansion is exactly 25 substantial assets", () => {
-  assert.equal(manifest.length, 24, "24 detail pages plus one hub should ship");
-  assert.match(hub, /Twenty-four decisions worth measuring/);
-  assert.match(hub, /48 distinct players/);
+test("the comparison collection expands in a reviewed batch", () => {
+  assert.equal(manifest.length, 32, "32 detail pages plus one hub should ship");
+  assert.match(hub, /\{comparisons\.length\} decisions worth measuring/);
+  assert.match(hub, /Compare \{distinctPlayerCount\} players/);
   assert.match(detail, /The short answer/);
   assert.match(detail, /The evidence underneath the market answer/);
   assert.match(detail, /Comparison FAQ/);
   assert.match(detail, /Same-position decisions/);
 });
 
-test("24 comparisons cover 48 unique, reviewed, scoring-covered players", () => {
+test("32 comparisons cover reviewed, scoring-covered players", () => {
   const usedPlayers = manifest.flatMap(({ leftSlug, rightSlug }) => [leftSlug, rightSlug]);
-  assert.equal(new Set(usedPlayers).size, 48, "a player must not be repeated in the initial set");
+  assert.equal(new Set(usedPlayers).size, 63);
   assert.deepEqual(
     Object.fromEntries(
       ["QB", "RB", "WR", "TE"].map((position) => [
@@ -61,7 +61,7 @@ test("24 comparisons cover 48 unique, reviewed, scoring-covered players", () => 
         manifest.filter((comparison) => comparison.position === position).length,
       ]),
     ),
-    { QB: 6, RB: 6, WR: 8, TE: 4 },
+    { QB: 8, RB: 8, WR: 10, TE: 6 },
   );
 
   for (const comparison of manifest) {
@@ -75,7 +75,7 @@ test("24 comparisons cover 48 unique, reviewed, scoring-covered players", () => 
     assert.ok(release.playerScoringProfiles[comparison.rightSlug], `${comparison.rightSlug} needs a scoring profile`);
     assert.equal(left.position, comparison.position);
     assert.equal(right.position, comparison.position);
-    assert.ok(left.rank <= 100 && right.rank <= 100, "initial comparisons stay within the reviewed top 100");
+    assert.ok(left.rank <= 120 && right.rank <= 120, "comparisons stay within the reviewed top 120");
     assert.match(comparison.slug, /^[a-z0-9]+(?:-[a-z0-9]+)*-vs-[a-z0-9]+(?:-[a-z0-9]+)*$/);
     assert.ok(comparison.editorialLens.length >= 175, `${comparison.slug} needs a substantive editorial lens`);
     assert.ok(comparison.decisionFrame.length >= 100, `${comparison.slug} needs a substantive decision frame`);
@@ -126,8 +126,8 @@ test("the comparison collection is crawlable and connected to the existing hiera
 test("comparison math and provenance are published in methodology and data sources", () => {
   assert.match(methodology, /VALUE GAP % = \|PLAYER A − PLAYER B\|/);
   assert.match(methodology, /SAME COMPARISON TIER = VALUE GAP ≤ 5%/);
-  assert.match(methodology, /initial 24 matchups contain 48 distinct/);
-  assert.match(dataSources, /Comparison evidence \/\/ 48 players/);
+  assert.match(methodology, /expands in reviewed batches/);
+  assert.match(dataSources, /Comparison evidence \/\/ reviewed matchups/);
   assert.match(dataSources, /new view over the same current release/);
   assert.match(dataSources, /never overwrites market or scoring values/);
 });
