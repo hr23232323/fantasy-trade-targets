@@ -1798,5 +1798,305 @@
       "licenseUrl": "https://fantasytradetarget.com/terms-of-service",
       "sourceUrl": "https://fantasytradetarget.com/data-sources"
     }
+  },
+  {
+    "slug": "mike-washington-rb",
+    "name": "Mike Washington",
+    "editorialLens": "Mike Washington's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "/images/player-file-placeholder.svg",
+      "width": 960,
+      "height": 960,
+      "alt": "Fantasy Trade Target player file graphic for Mike Washington",
+      "author": "Fantasy Trade Target Research",
+      "license": "Original site artwork",
+      "licenseUrl": "https://fantasytradetarget.com/terms-of-service",
+      "sourceUrl": "https://fantasytradetarget.com/data-sources"
+    }
+  },
+  {
+    "slug": "jake-ferguson-te",
+    "name": "Jake Ferguson",
+    "editorialLens": "Jake Ferguson's price is especially sensitive to tight end premium scoring; the four-format comparison shows where positional scarcity changes the market.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/84_Jake_Ferguson_%28cropped%29.jpg/960px-84_Jake_Ferguson_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1668,
+      "alt": "Photograph of Jake Ferguson",
+      "author": "Bely Medved",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:84_Jake_Ferguson_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "rico-dowdle-rb",
+    "name": "Rico Dowdle",
+    "editorialLens": "Rico Dowdle's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/c/ca/Rico_Dowdle.jpg",
+      "width": 960,
+      "height": 1187,
+      "alt": "Photograph of Rico Dowdle",
+      "author": "Gamecock Central",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rico_Dowdle.jpg"
+    }
+  },
+  {
+    "slug": "zach-charbonnet-rb",
+    "name": "Zach Charbonnet",
+    "editorialLens": "Zach Charbonnet's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Zach_Charbonnet_2019.09.07_%2848870334696%29_%28cropped%29.jpg/960px-Zach_Charbonnet_2019.09.07_%2848870334696%29_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1339,
+      "alt": "Photograph of Zach Charbonnet",
+      "author": "Maize & Blue Nation",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zach_Charbonnet_2019.09.07_(48870334696)_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "xavier-worthy-wr",
+    "name": "Xavier Worthy",
+    "editorialLens": "Xavier Worthy's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Xavier_Worthy_Chiefs_Training_Camp_2025_%28cropped%29.jpg/960px-Xavier_Worthy_Chiefs_Training_Camp_2025_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1281,
+      "alt": "Photograph of Xavier Worthy",
+      "author": "Staff Sgt. Joshua Hastings",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Xavier_Worthy_Chiefs_Training_Camp_2025_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "michael-pittman-wr",
+    "name": "Michael Pittman",
+    "editorialLens": "Michael Pittman's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "/images/player-file-placeholder.svg",
+      "width": 960,
+      "height": 960,
+      "alt": "Fantasy Trade Target player file graphic for Michael Pittman",
+      "author": "Fantasy Trade Target Research",
+      "license": "Original site artwork",
+      "licenseUrl": "https://fantasytradetarget.com/terms-of-service",
+      "sourceUrl": "https://fantasytradetarget.com/data-sources"
+    }
+  },
+  {
+    "slug": "terrance-ferguson-te",
+    "name": "Terrance Ferguson",
+    "editorialLens": "Terrance Ferguson's price is especially sensitive to tight end premium scoring; the four-format comparison shows where positional scarcity changes the market.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/9/91/Terrance_Ferguson_-_2018_NBA_Summer_League.png",
+      "width": 960,
+      "height": 1394,
+      "alt": "Photograph of Terrance Ferguson",
+      "author": "Thunder Heads",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Terrance_Ferguson_-_2018_NBA_Summer_League.png"
+    }
+  },
+  {
+    "slug": "jakobi-lane-wr",
+    "name": "Ja'Kobi Lane",
+    "editorialLens": "Ja'Kobi Lane's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "/images/player-file-placeholder.svg",
+      "width": 960,
+      "height": 960,
+      "alt": "Fantasy Trade Target player file graphic for Ja'Kobi Lane",
+      "author": "Fantasy Trade Target Research",
+      "license": "Original site artwork",
+      "licenseUrl": "https://fantasytradetarget.com/terms-of-service",
+      "sourceUrl": "https://fantasytradetarget.com/data-sources"
+    }
+  },
+  {
+    "slug": "chuba-hubbard-rb",
+    "name": "Chuba Hubbard",
+    "editorialLens": "Chuba Hubbard's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/5/57/Chuba_Hubbard.png",
+      "width": 960,
+      "height": 1280,
+      "alt": "Photograph of Chuba Hubbard",
+      "author": "CFB ON FOX",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chuba_Hubbard.png"
+    }
+  },
+  {
+    "slug": "wandale-robinson-wr",
+    "name": "Wan'Dale Robinson",
+    "editorialLens": "Wan'Dale Robinson's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Wan%27Dale_Robinson_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1282,
+      "alt": "Photograph of Wan'Dale Robinson",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Wan%27Dale_Robinson_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "mark-andrews-te",
+    "name": "Mark Andrews",
+    "editorialLens": "Mark Andrews's price is especially sensitive to tight end premium scoring; the four-format comparison shows where positional scarcity changes the market.",
+    "image": {
+      "src": "/images/player-file-placeholder.svg",
+      "width": 960,
+      "height": 960,
+      "alt": "Fantasy Trade Target player file graphic for Mark Andrews",
+      "author": "Fantasy Trade Target Research",
+      "license": "Original site artwork",
+      "licenseUrl": "https://fantasytradetarget.com/terms-of-service",
+      "sourceUrl": "https://fantasytradetarget.com/data-sources"
+    }
+  },
+  {
+    "slug": "omar-cooper-wr",
+    "name": "Omar Cooper",
+    "editorialLens": "Omar Cooper's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "/images/player-file-placeholder.svg",
+      "width": 960,
+      "height": 960,
+      "alt": "Fantasy Trade Target player file graphic for Omar Cooper",
+      "author": "Fantasy Trade Target Research",
+      "license": "Original site artwork",
+      "licenseUrl": "https://fantasytradetarget.com/terms-of-service",
+      "sourceUrl": "https://fantasytradetarget.com/data-sources"
+    }
+  },
+  {
+    "slug": "chris-godwin-wr",
+    "name": "Chris Godwin",
+    "editorialLens": "Chris Godwin's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/7/71/Chris_Godwin_%282021%29_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1450,
+      "alt": "Photograph of Chris Godwin",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chris_Godwin_(2021)_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "jk-dobbins-rb",
+    "name": "J.K. Dobbins",
+    "editorialLens": "J.K. Dobbins's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/J._K._Dobbins_2021_%28cropped%29.jpg/960px-J._K._Dobbins_2021_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1155,
+      "alt": "Photograph of J.K. Dobbins",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:J._K._Dobbins_2021_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "dallas-goedert-te",
+    "name": "Dallas Goedert",
+    "editorialLens": "Dallas Goedert's price is especially sensitive to tight end premium scoring; the four-format comparison shows where positional scarcity changes the market.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Dallas_Goedert_%2852510560186%29_%28cropped%29.jpg/960px-Dallas_Goedert_%2852510560186%29_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1052,
+      "alt": "Photograph of Dallas Goedert",
+      "author": "All-Pro Reels",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dallas_Goedert_(52510560186)_(cropped).jpg"
+    }
+  },
+  {
+    "slug": "malachi-fields-wr",
+    "name": "Malachi Fields",
+    "editorialLens": "Malachi Fields's dynasty case combines receiving opportunity with a longer positional value window; compare the usage profile with similarly priced players before making an offer.",
+    "image": {
+      "src": "/images/player-file-placeholder.svg",
+      "width": 960,
+      "height": 960,
+      "alt": "Fantasy Trade Target player file graphic for Malachi Fields",
+      "author": "Fantasy Trade Target Research",
+      "license": "Original site artwork",
+      "licenseUrl": "https://fantasytradetarget.com/terms-of-service",
+      "sourceUrl": "https://fantasytradetarget.com/data-sources"
+    }
+  },
+  {
+    "slug": "eli-stowers-te",
+    "name": "Eli Stowers",
+    "editorialLens": "Eli Stowers's price is especially sensitive to tight end premium scoring; the four-format comparison shows where positional scarcity changes the market.",
+    "image": {
+      "src": "/images/player-file-placeholder.svg",
+      "width": 960,
+      "height": 960,
+      "alt": "Fantasy Trade Target player file graphic for Eli Stowers",
+      "author": "Fantasy Trade Target Research",
+      "license": "Original site artwork",
+      "licenseUrl": "https://fantasytradetarget.com/terms-of-service",
+      "sourceUrl": "https://fantasytradetarget.com/data-sources"
+    }
+  },
+  {
+    "slug": "michael-penix-qb",
+    "name": "Michael Penix",
+    "editorialLens": "Michael Penix's profile is shaped by the premium placed on starting quarterbacks in Superflex; the 1QB comparison shows how much of the price comes from positional scarcity.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/1/13/2024_Atlanta_Falcons_Post-draft_Press_Conference_Michael_Penix_Jr_%28cropped%29.png",
+      "width": 960,
+      "height": 882,
+      "alt": "Photograph of Michael Penix",
+      "author": "Atlanta Falcons",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2024_Atlanta_Falcons_Post-draft_Press_Conference_Michael_Penix_Jr_(cropped).png"
+    }
+  },
+  {
+    "slug": "marshawn-lloyd-rb",
+    "name": "MarShawn Lloyd",
+    "editorialLens": "MarShawn Lloyd's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/MarShawn_Lloyd.jpg/960px-MarShawn_Lloyd.jpg",
+      "width": 960,
+      "height": 1173,
+      "alt": "Photograph of MarShawn Lloyd",
+      "author": "Gamecock Central",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:MarShawn_Lloyd.jpg"
+    }
+  },
+  {
+    "slug": "travis-kelce-te",
+    "name": "Travis Kelce",
+    "editorialLens": "Travis Kelce's price is especially sensitive to tight end premium scoring; the four-format comparison shows where positional scarcity changes the market.",
+    "image": {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/f/f5/Travis_Kelce_in_the_Oval_Office_of_the_White_House_on_June_5%2C_2023_-_P20230605AS-0902_%28cropped%29.jpg",
+      "width": 960,
+      "height": 1260,
+      "alt": "Photograph of Travis Kelce",
+      "author": "Adam Schultz",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Travis_Kelce_in_the_Oval_Office_of_the_White_House_on_June_5,_2023_-_P20230605AS-0902_(cropped).jpg"
+    }
   }
 ]

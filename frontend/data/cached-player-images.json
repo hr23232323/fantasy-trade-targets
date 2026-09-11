@@ -634,5 +634,83 @@
     "src": "/images/players/jacory-croskey-merritt-rb.jpg",
     "width": 687,
     "height": 960
+  },
+  {
+    "slug": "jake-ferguson-te",
+    "src": "/images/players/jake-ferguson-te.jpg",
+    "width": 552,
+    "height": 960
+  },
+  {
+    "slug": "rico-dowdle-rb",
+    "src": "/images/players/rico-dowdle-rb.jpg",
+    "width": 776,
+    "height": 960
+  },
+  {
+    "slug": "zach-charbonnet-rb",
+    "src": "/images/players/zach-charbonnet-rb.jpg",
+    "width": 688,
+    "height": 960
+  },
+  {
+    "slug": "xavier-worthy-wr",
+    "src": "/images/players/xavier-worthy-wr.jpg",
+    "width": 719,
+    "height": 960
+  },
+  {
+    "slug": "terrance-ferguson-te",
+    "src": "/images/players/terrance-ferguson-te.jpg",
+    "width": 661,
+    "height": 960
+  },
+  {
+    "slug": "chuba-hubbard-rb",
+    "src": "/images/players/chuba-hubbard-rb.jpg",
+    "width": 720,
+    "height": 960
+  },
+  {
+    "slug": "wandale-robinson-wr",
+    "src": "/images/players/wandale-robinson-wr.jpg",
+    "width": 718,
+    "height": 960
+  },
+  {
+    "slug": "chris-godwin-wr",
+    "src": "/images/players/chris-godwin-wr.jpg",
+    "width": 635,
+    "height": 960
+  },
+  {
+    "slug": "jk-dobbins-rb",
+    "src": "/images/players/jk-dobbins-rb.jpg",
+    "width": 798,
+    "height": 960
+  },
+  {
+    "slug": "dallas-goedert-te",
+    "src": "/images/players/dallas-goedert-te.jpg",
+    "width": 876,
+    "height": 960
+  },
+  {
+    "slug": "michael-penix-qb",
+    "src": "/images/players/michael-penix-qb.jpg",
+    "width": 960,
+    "height": 882
+  },
+  {
+    "slug": "marshawn-lloyd-rb",
+    "src": "/images/players/marshawn-lloyd-rb.jpg",
+    "width": 785,
+    "height": 960
+  },
+  {
+    "slug": "travis-kelce-te",
+    "src": "/images/players/travis-kelce-te.jpg",
+    "width": 731,
+    "height": 960
   }
 ]
