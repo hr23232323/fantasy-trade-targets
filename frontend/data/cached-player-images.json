@@ -712,5 +712,113 @@
     "src": "/images/players/travis-kelce-te.jpg",
     "width": 731,
     "height": 960
+  },
+  {
+    "slug": "kyle-monangai-rb",
+    "src": "/images/players/kyle-monangai-rb.jpg",
+    "width": 555,
+    "height": 960
+  },
+  {
+    "slug": "tyler-allgeier-rb",
+    "src": "/images/players/tyler-allgeier-rb.jpg",
+    "width": 720,
+    "height": 960
+  },
+  {
+    "slug": "romeo-doubs-wr",
+    "src": "/images/players/romeo-doubs-wr.jpg",
+    "width": 500,
+    "height": 960
+  },
+  {
+    "slug": "tony-pollard-rb",
+    "src": "/images/players/tony-pollard-rb.jpg",
+    "width": 734,
+    "height": 960
+  },
+  {
+    "slug": "courtland-sutton-wr",
+    "src": "/images/players/courtland-sutton-wr.jpg",
+    "width": 823,
+    "height": 960
+  },
+  {
+    "slug": "kenny-gainwell-rb",
+    "src": "/images/players/kenny-gainwell-rb.jpg",
+    "width": 733,
+    "height": 960
+  },
+  {
+    "slug": "aj-barner-te",
+    "src": "/images/players/aj-barner-te.jpg",
+    "width": 727,
+    "height": 960
+  },
+  {
+    "slug": "juwan-johnson-te",
+    "src": "/images/players/juwan-johnson-te.jpg",
+    "width": 572,
+    "height": 960
+  },
+  {
+    "slug": "emmett-johnson-rb",
+    "src": "/images/players/emmett-johnson-rb.jpg",
+    "width": 960,
+    "height": 949
+  },
+  {
+    "slug": "jayden-higgins-wr",
+    "src": "/images/players/jayden-higgins-wr.jpg",
+    "width": 824,
+    "height": 960
+  },
+  {
+    "slug": "stefon-diggs-wr",
+    "src": "/images/players/stefon-diggs-wr.jpg",
+    "width": 759,
+    "height": 960
+  },
+  {
+    "slug": "geno-smith-qb",
+    "src": "/images/players/geno-smith-qb.jpg",
+    "width": 594,
+    "height": 960
+  },
+  {
+    "slug": "jacoby-brissett-qb",
+    "src": "/images/players/jacoby-brissett-qb.jpg",
+    "width": 715,
+    "height": 960
+  },
+  {
+    "slug": "jalen-coker-wr",
+    "src": "/images/players/jalen-coker-wr.jpg",
+    "width": 823,
+    "height": 960
+  },
+  {
+    "slug": "woody-marks-rb",
+    "src": "/images/players/woody-marks-rb.jpg",
+    "width": 960,
+    "height": 960
+  },
+  {
+    "slug": "rashid-shaheed-wr",
+    "src": "/images/players/rashid-shaheed-wr.jpg",
+    "width": 768,
+    "height": 960
+  },
+  {
+    "slug": "carson-beck-qb",
+    "src": "/images/players/carson-beck-qb.jpg",
+    "width": 960,
+    "height": 960
+  },
+  {
+    "slug": "rachaad-white-rb",
+    "src": "/images/players/rachaad-white-rb.jpg",
+    "width": 770,
+    "height": 960
   }
 ]

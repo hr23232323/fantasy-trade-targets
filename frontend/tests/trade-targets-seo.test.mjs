@@ -37,8 +37,8 @@ test("the trade-target hub is crawlable and globally linked", () => {
   }
 });
 
-test("the player footprint publishes the current 140-file batch", () => {
-  assert.equal(playerManifest.length, 140);
+test("the player footprint publishes the current 160-file batch", () => {
+  assert.equal(playerManifest.length, 160);
   assert.match(home, /\{playerPages\.length\} market files/);
   assert.match(playerIndex, /Complete index \/\/ \{playerPages\.length\} profiles/);
   assert.doesNotMatch(home, /50 market files|Browse all 50/);
