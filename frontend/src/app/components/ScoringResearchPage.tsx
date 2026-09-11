@@ -74,7 +74,7 @@ export default async function ScoringResearchPage({
       url: "https://fantasytradetarget.com",
     },
     isBasedOn: "https://api.tradyr.app/docs",
-    measurementTechnique: "Replacement-relative scoring model 2026.08.3",
+    measurementTechnique: "Replacement-relative scoring model 2026.09.1",
   };
 
   return (

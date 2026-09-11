@@ -46,7 +46,7 @@ export default function MethodologyPage() {
           <h2 className="section-title mt-6">Change value, not just points.</h2>
         </div>
         <div className="space-y-5 text-sm leading-7 text-[#59605c]">
-          <p>The published market is the anchor. Full PPR with four points per passing touchdown is the neutral baseline. Selecting six-point passing touchdowns, half PPR, or standard scoring re-prices players by how their fantasy production changes relative to a replacement-level player at the same position. Picks remain unchanged.</p>
+          <p>The published market value is the anchor; it is not itself labeled Standard or PPR. For scoring adjustments, Standard scoring—zero points per reception—with four points per passing touchdown is the neutral reference. Half PPR adds 0.5 points per catch, Full PPR adds one, and six-point passing touchdowns add two per passing score. Each change is measured relative to a replacement-level player at the same position. Picks remain unchanged.</p>
           <p><strong>PPR means points per reception.</strong> The three supported reception settings are:</p>
           <div className="grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-3">
             {[["Standard", "0 points per reception"], ["Half PPR", "0.5 points per reception"], ["Full PPR", "1 point per reception"]].map(([name, definition]) => <div key={name} className="bg-[#f3f0e7] p-4"><strong className="block text-[#171c19]">{name}</strong><span className="mt-1 block font-mono text-[10px] font-bold uppercase tracking-[0.06em] text-[#69706c]">{definition}</span></div>)}

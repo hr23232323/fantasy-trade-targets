@@ -52,7 +52,7 @@ export default async function PlayerComparisonsPage() {
     numQbs: 2,
     numTeams: 12,
     passingTdPoints: 4,
-    receptionPoints: 1,
+    receptionPoints: 0,
   });
   const players = new Map(
     market.assets

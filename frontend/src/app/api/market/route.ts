@@ -23,13 +23,13 @@ export async function GET(request: NextRequest) {
   const passingTdPoints: PassingTdPoints =
     searchParams.get("passingTdPoints") === "6" ? 6 : 4;
   const requestedReceptionPoints = Number(
-    searchParams.get("receptionPoints") ?? 1,
+    searchParams.get("receptionPoints") ?? 0,
   );
   const receptionPoints: ReceptionPoints = [0, 0.5, 1].includes(
     requestedReceptionPoints,
   )
     ? (requestedReceptionPoints as ReceptionPoints)
-    : 1;
+    : 0;
   const rosterValue = <Key extends keyof RosterSettings>(
     key: Key,
     allowed: RosterSettings[Key][],

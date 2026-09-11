@@ -61,7 +61,7 @@ export default async function ScoringImpactPage({ searchParams }: PageProps) {
       <section className="border-b border-[#171c19] bg-[#171c19] text-white">
         <div className="page-wrap grid gap-8 py-14 lg:grid-cols-[1.25fr_0.75fr] lg:items-end">
           <div>
-            <span className="mono-label text-[#dfff4f]">Scoring impact lab // model 2026.08.3</span>
+            <span className="mono-label text-[#dfff4f]">Scoring impact lab // model 2026.09.1</span>
             <h1 className="mt-6 max-w-5xl text-[clamp(3.2rem,8vw,7.8rem)] font-black leading-[0.84] tracking-[-0.08em]">
               See who your rules make valuable.
             </h1>

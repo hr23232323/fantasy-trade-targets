@@ -76,7 +76,7 @@ export default function DataSourcesPage() {
             </article>
           </div>
           <div className="mt-5 border border-[#171c19] bg-white/45 p-5 text-sm leading-7 text-[#59605c]">
-            <strong className="text-[#171c19]">Neutral baseline:</strong> 4-point passing touchdowns and Full PPR use the published market unchanged. A visible “+ / − league” label shows the difference between that base market and the selected scoring context.
+            <strong className="text-[#171c19]">Neutral scoring reference:</strong> Standard scoring and 4-point passing touchdowns use the published market unchanged. A visible “+ / − league” label shows the difference between that market anchor and the selected scoring context.
           </div>
           <div className="mt-5 flex flex-wrap gap-3">
             <a href="/methodology#league-scoring" className="border border-[#171c19] bg-[#171c19] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] text-white">Inspect the exact math →</a>

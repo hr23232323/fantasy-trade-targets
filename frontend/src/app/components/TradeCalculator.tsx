@@ -53,7 +53,7 @@ export default function TradeCalculator({
   const [tep, setTep] = useState(false);
   const [numTeams, setNumTeams] = useState(12);
   const [passingTdPoints, setPassingTdPoints] = useState<PassingTdPoints>(4);
-  const [receptionPoints, setReceptionPoints] = useState<ReceptionPoints>(1);
+  const [receptionPoints, setReceptionPoints] = useState<ReceptionPoints>(0);
   const [rbStarters, setRbStarters] = useState<RosterSettings["rbStarters"]>(2);
   const [wrStarters, setWrStarters] = useState<RosterSettings["wrStarters"]>(3);
   const [teStarters, setTeStarters] = useState<RosterSettings["teStarters"]>(1);

@@ -69,7 +69,7 @@ test("focused scoring pages have unique search intent and evidence", () => {
   assert.match(sixPointPage, /6-Point Passing TD Fantasy Football Rankings/);
   assert.match(sixPointPage, /two additional points per passing TD/i);
   assert.match(standardPage, /Standard vs\. PPR Fantasy Football Player Values/);
-  assert.match(standardPage, /Zero fantasy points are awarded for each reception/);
+  assert.match(standardPage, /Zero fantasy points per reception is the neutral scoring reference/);
   assert.match(halfPprPage, /Half PPR Fantasy Football Trade Values/);
   assert.match(halfPprPage, /Every reception adds 0\.5 fantasy points/);
   assert.match(researchComponent, /"@type": "FAQPage"/);

@@ -1,11 +1,11 @@
-import { SCORING_MODEL_VERSION } from "./scoring-engine.mjs";
+import { SCORING_PROFILE_VERSION } from "./scoring-engine.mjs";
 
 export const DEFAULT_SCORING_PROFILE_BATCH_SIZE = 200;
 
 export function usableScoringProfiles(
   profiles = {},
   currentSlugs = [],
-  modelVersion = SCORING_MODEL_VERSION,
+  modelVersion = SCORING_PROFILE_VERSION,
 ) {
   const current = new Set(currentSlugs);
   return Object.fromEntries(

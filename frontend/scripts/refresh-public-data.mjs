@@ -4,6 +4,7 @@ import path from "node:path";
 import {
   buildScoringProfile,
   SCORING_MODEL_VERSION,
+  SCORING_PROFILE_VERSION,
 } from "../src/app/lib/scoring-engine.mjs";
 import {
   DEFAULT_SCORING_PROFILE_BATCH_SIZE,
@@ -300,12 +301,12 @@ const playerScoringProfiles = usableScoringProfiles(
 const scoringProfilePublication = preserveValidatedScoringProfiles
   ? {
       ...priorRelease.scoringProfilePublication,
-      modelVersion: SCORING_MODEL_VERSION,
+      modelVersion: SCORING_PROFILE_VERSION,
       profileCount: Object.keys(playerScoringProfiles).length,
       playerCount: currentPlayers.length,
     }
   : {
-      modelVersion: SCORING_MODEL_VERSION,
+      modelVersion: SCORING_PROFILE_VERSION,
       profileCount: Object.keys(playerScoringProfiles).length,
       playerCount: currentPlayers.length,
       refreshedCount: Object.keys(refreshedScoringProfiles).length,
@@ -629,7 +630,7 @@ function validateRelease({
   for (const [slug, profile] of Object.entries(playerScoringProfiles)) {
     if (
       !currentPlayersBySlug.has(slug) ||
-      profile.modelVersion !== SCORING_MODEL_VERSION ||
+      profile.modelVersion !== SCORING_PROFILE_VERSION ||
       !Number.isFinite(profile.confidence) ||
       !profile.perGame ||
       Object.values(profile.perGame).some((value) => !Number.isFinite(value))

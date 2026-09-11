@@ -7,6 +7,7 @@ import type {
 } from "../types/MarketAsset";
 
 export const SCORING_MODEL_VERSION: string;
+export const SCORING_PROFILE_VERSION: string;
 export const DEFAULT_SCORING_SETTINGS: Readonly<ScoringSettings>;
 export const DEFAULT_ROSTER_SETTINGS: Readonly<RosterSettings>;
 

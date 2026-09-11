@@ -86,37 +86,39 @@ export default async function PlayerComparisonPage({ params }: PageProps) {
     redraft,
     standard,
     halfPpr,
+    fullPpr,
     sixPoint,
     leftProfilePayload,
     rightProfilePayload,
   ] = await Promise.all([
-    getMarket({ format: "dynasty", numQbs: 2, numTeams: 12, passingTdPoints: 4, receptionPoints: 1 }),
-    getMarket({ format: "dynasty", numQbs: 1, numTeams: 12, passingTdPoints: 4, receptionPoints: 1 }),
-    getMarket({ format: "dynasty", numQbs: 2, tep: true, numTeams: 12, passingTdPoints: 4, receptionPoints: 1 }),
-    getMarket({ format: "redraft", numQbs: 1, numTeams: 12, passingTdPoints: 4, receptionPoints: 1 }),
+    getMarket({ format: "dynasty", numQbs: 2, numTeams: 12, passingTdPoints: 4, receptionPoints: 0 }),
+    getMarket({ format: "dynasty", numQbs: 1, numTeams: 12, passingTdPoints: 4, receptionPoints: 0 }),
+    getMarket({ format: "dynasty", numQbs: 2, tep: true, numTeams: 12, passingTdPoints: 4, receptionPoints: 0 }),
+    getMarket({ format: "redraft", numQbs: 1, numTeams: 12, passingTdPoints: 4, receptionPoints: 0 }),
     getMarket({ format: "dynasty", numQbs: 2, numTeams: 12, passingTdPoints: 4, receptionPoints: 0 }),
     getMarket({ format: "dynasty", numQbs: 2, numTeams: 12, passingTdPoints: 4, receptionPoints: 0.5 }),
-    getMarket({ format: "dynasty", numQbs: 2, numTeams: 12, passingTdPoints: 6, receptionPoints: 1 }),
+    getMarket({ format: "dynasty", numQbs: 2, numTeams: 12, passingTdPoints: 4, receptionPoints: 1 }),
+    getMarket({ format: "dynasty", numQbs: 2, numTeams: 12, passingTdPoints: 6, receptionPoints: 0 }),
     getPlayerProfile(comparison.leftSlug),
     getPlayerProfile(comparison.rightSlug),
   ]);
 
   const basePlayers = pairFromMarket(base, comparison.leftSlug, comparison.rightSlug);
   const formatRows: ComparisonRow[] = [
-    rowFromMarket("Dynasty Superflex", "Two QB-eligible starting slots; 4-point passing TDs and full PPR.", base, comparison.leftSlug, comparison.rightSlug),
-    rowFromMarket("Dynasty 1QB", "One starting quarterback; 4-point passing TDs and full PPR.", oneQb, comparison.leftSlug, comparison.rightSlug),
+    rowFromMarket("Dynasty Superflex", "Two QB-eligible starting slots; 4-point passing TDs and Standard scoring.", base, comparison.leftSlug, comparison.rightSlug),
+    rowFromMarket("Dynasty 1QB", "One starting quarterback; 4-point passing TDs and Standard scoring.", oneQb, comparison.leftSlug, comparison.rightSlug),
     rowFromMarket("Superflex TEP", "Superflex with an additional tight end reception premium.", tePremium, comparison.leftSlug, comparison.rightSlug),
-    rowFromMarket("Redraft 1QB", "Current-season value only; one quarterback and full PPR.", redraft, comparison.leftSlug, comparison.rightSlug),
+    rowFromMarket("Redraft 1QB", "Current-season value only; one quarterback and Standard scoring.", redraft, comparison.leftSlug, comparison.rightSlug),
   ];
   const scoringRows: ComparisonRow[] = comparison.position === "QB"
     ? [
-        rowFromMarket("4-point passing TD", "Each passing touchdown scores four points; full PPR remains on.", base, comparison.leftSlug, comparison.rightSlug),
-        rowFromMarket("6-point passing TD", "Each passing touchdown scores six points; full PPR remains on.", sixPoint, comparison.leftSlug, comparison.rightSlug),
+        rowFromMarket("4-point passing TD", "Each passing touchdown scores four points; Standard scoring remains on.", base, comparison.leftSlug, comparison.rightSlug),
+        rowFromMarket("6-point passing TD", "Each passing touchdown scores six points; Standard scoring remains on.", sixPoint, comparison.leftSlug, comparison.rightSlug),
       ]
     : [
         rowFromMarket("Standard", "Receptions score zero points; yards and touchdowns still score normally.", standard, comparison.leftSlug, comparison.rightSlug),
         rowFromMarket("Half PPR", "Each reception scores 0.5 points.", halfPpr, comparison.leftSlug, comparison.rightSlug),
-        rowFromMarket("Full PPR", "Each reception scores one point.", base, comparison.leftSlug, comparison.rightSlug),
+        rowFromMarket("Full PPR", "Each reception scores one point.", fullPpr, comparison.leftSlug, comparison.rightSlug),
       ];
 
   const gapPercent = percentGap(basePlayers.left, basePlayers.right);

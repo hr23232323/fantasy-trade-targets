@@ -50,7 +50,7 @@ export function buildTradeShareParams({
   });
   if (tep) params.set("tep", "1");
   if (passingTdPoints === 6) params.set("passTd", "6");
-  if ([0, 0.5].includes(Number(receptionPoints))) {
+  if ([0.5, 1].includes(Number(receptionPoints))) {
     params.set("ppr", String(Number(receptionPoints)));
   }
   if ([1, 3].includes(Number(rbStarters))) params.set("rb", String(rbStarters));
@@ -70,10 +70,10 @@ export function resolveTradeShare(searchParams, marketAssets) {
   const requestedTeams = Number(firstParam(searchParams, "teams"));
   const numTeams = VALID_TEAM_COUNTS.has(requestedTeams) ? requestedTeams : 12;
   const passingTdPoints = firstParam(searchParams, "passTd") === "6" ? 6 : 4;
-  const requestedReceptionPoints = Number(firstParam(searchParams, "ppr") ?? 1);
+  const requestedReceptionPoints = Number(firstParam(searchParams, "ppr") ?? 0);
   const receptionPoints = [0, 0.5, 1].includes(requestedReceptionPoints)
     ? requestedReceptionPoints
-    : 1;
+    : 0;
   const requestedRbStarters = Number(firstParam(searchParams, "rb") ?? 2);
   const rbStarters = [1, 2, 3].includes(requestedRbStarters)
     ? requestedRbStarters

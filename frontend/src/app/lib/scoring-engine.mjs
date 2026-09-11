@@ -1,8 +1,9 @@
-export const SCORING_MODEL_VERSION = "2026.08.3";
+export const SCORING_PROFILE_VERSION = "2026.08.3";
+export const SCORING_MODEL_VERSION = "2026.09.1";
 
 export const DEFAULT_SCORING_SETTINGS = Object.freeze({
   passingTdPoints: 4,
-  receptionPoints: 1,
+  receptionPoints: 0,
 });
 
 export const DEFAULT_ROSTER_SETTINGS = Object.freeze({
@@ -145,7 +146,7 @@ export function buildScoringProfile(statsPayload) {
   if (!totalWeight) return null;
 
   return {
-    modelVersion: SCORING_MODEL_VERSION,
+    modelVersion: SCORING_PROFILE_VERSION,
     observedThroughSeason: includedSeasons[0],
     seasons: includedSeasons,
     weightedGames: round(weightedGames, 1),

@@ -93,7 +93,7 @@ test("unknown and duplicate assets are discarded across both sides", () => {
   assert.deepEqual(resolved.sideB, [gibbs]);
   assert.equal(resolved.numTeams, 12);
   assert.equal(resolved.passingTdPoints, 4);
-  assert.equal(resolved.receptionPoints, 1);
+  assert.equal(resolved.receptionPoints, 0);
   assert.equal(resolved.rbStarters, 2);
   assert.equal(resolved.wrStarters, 3);
   assert.equal(resolved.teStarters, 1);
@@ -108,7 +108,7 @@ test("baseline scoring stays compact while scoring variants are explicit", () =>
     tep: false,
     numTeams: 12,
     passingTdPoints: 4,
-    receptionPoints: 1,
+    receptionPoints: 0,
     rbStarters: 2,
     wrStarters: 3,
     teStarters: 1,
@@ -126,7 +126,7 @@ test("baseline scoring stays compact while scoring variants are explicit", () =>
     tep: false,
     numTeams: 10,
     passingTdPoints: 6,
-    receptionPoints: 0,
+    receptionPoints: 1,
     rbStarters: 1,
     wrStarters: 2,
     teStarters: 2,
@@ -136,7 +136,7 @@ test("baseline scoring stays compact while scoring variants are explicit", () =>
     sideB: [],
   });
   assert.equal(standardSixPoint.get("passTd"), "6");
-  assert.equal(standardSixPoint.get("ppr"), "0");
+  assert.equal(standardSixPoint.get("ppr"), "1");
   assert.equal(standardSixPoint.get("rb"), "1");
   assert.equal(standardSixPoint.get("wr"), "2");
   assert.equal(standardSixPoint.get("te"), "2");

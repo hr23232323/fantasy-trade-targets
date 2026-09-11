@@ -23,7 +23,7 @@ export const scoringResearchPages: ScoringResearchPageDefinition[] = [
       "Rank current-season quarterbacks for a six-point passing touchdown league. The board measures each passer against a redraft replacement quarterback instead of adding the same premium to every name.",
     intro:
       "Six-point passing touchdowns reward passing production more heavily, but redraft value still depends on the available replacement tier. Efficient touchdown passers can gain ground on quarterbacks whose fantasy edge comes primarily from rushing, while the market remains the starting point for every adjustment.",
-    settings: { format: "redraft", numQbs: 1, tep: false, numTeams: 12, passingTdPoints: 6, receptionPoints: 1, rbStarters: 2, wrStarters: 3, teStarters: 1, flexSpots: 1, position: "QB" },
+    settings: { format: "redraft", numQbs: 1, tep: false, numTeams: 12, passingTdPoints: 6, receptionPoints: 0, rbStarters: 2, wrStarters: 3, teStarters: 1, flexSpots: 1, position: "QB" },
     eligiblePositions: ["QB"],
     definitions: [
       ["Redraft value", "The ranking measures current-season trade value rather than a multi-year dynasty window."],
@@ -53,7 +53,7 @@ export const scoringResearchPages: ScoringResearchPageDefinition[] = [
       "See how six-point passing touchdowns affect dynasty quarterbacks when only one QB starts. This isolates passing efficiency from the much larger scarcity premium created by Superflex.",
     intro:
       "A 1QB league keeps the replacement quarterback close to the starting tier. That makes it especially important to measure the additional passing-touchdown production over replacement rather than assuming the six-point rule creates a universal quarterback premium.",
-    settings: { format: "dynasty", numQbs: 1, tep: false, numTeams: 12, passingTdPoints: 6, receptionPoints: 1, rbStarters: 2, wrStarters: 3, teStarters: 1, flexSpots: 1, position: "QB" },
+    settings: { format: "dynasty", numQbs: 1, tep: false, numTeams: 12, passingTdPoints: 6, receptionPoints: 0, rbStarters: 2, wrStarters: 3, teStarters: 1, flexSpots: 1, position: "QB" },
     eligiblePositions: ["QB"],
     definitions: [
       ["Dynasty window", "The market anchor prices long-term player value rather than this season alone."],
@@ -112,12 +112,12 @@ export const scoringResearchPages: ScoringResearchPageDefinition[] = [
     description:
       "Current dynasty running back values for Half PPR leagues. The model measures how each back’s reception adjustment compares with the same-position replacement option.",
     intro:
-      "Half PPR keeps receiving work meaningful without granting the full point used by the market baseline. Running backs with different rushing and receiving profiles therefore move by different amounts, even when their overall market prices begin close together.",
+      "Half PPR adds 0.5 points per reception to the Standard scoring reference. Running backs with different rushing and receiving profiles therefore move by different amounts, even when their overall market prices begin close together.",
     settings: { format: "dynasty", numQbs: 2, tep: false, numTeams: 12, passingTdPoints: 4, receptionPoints: 0.5, rbStarters: 2, wrStarters: 3, teStarters: 1, flexSpots: 1, position: "RB" },
     eligiblePositions: ["RB"],
     definitions: [
       ["Half PPR", "Each reception adds 0.5 fantasy points."],
-      ["Full PPR anchor", "The published market begins from one point per reception."],
+      ["Standard baseline", "Zero points per reception is the model's neutral scoring reference."],
       ["Backfield comparison", "The selected RB is measured against replacement at the same position."],
       ["Confidence weighting", "Smaller or older production samples produce smaller adjustments."],
     ],
@@ -154,7 +154,7 @@ export const scoringResearchPages: ScoringResearchPageDefinition[] = [
     faqs: [
       ["Which wide receivers are best in Standard scoring?", "Receivers who preserve more value through yards and touchdowns can gain relative to catch-dependent alternatives. Use the table’s league value rather than reception totals alone."],
       ["Are slot receivers always worse in Standard leagues?", "No. Role labels are not part of the formula. Recorded receptions, yards, touchdowns, replacement production, and confidence determine the adjustment."],
-      ["Do receiving touchdowns score differently?", "No. Receiving touchdowns remain six points. This page changes only points per reception from the Full PPR baseline."],
+      ["Do receiving touchdowns score differently?", "No. Receiving touchdowns remain six points. This page uses the Standard baseline of zero points per reception."],
       ["Why does roster depth matter for receiver value?", "More WR and FLEX starters push replacement deeper. A deeper replacement line can increase the advantage created by an elite receiver."],
     ],
   },
@@ -177,7 +177,7 @@ export const scoringResearchPages: ScoringResearchPageDefinition[] = [
     eligiblePositions: ["WR"],
     definitions: [
       ["Half per catch", "Each reception contributes 0.5 fantasy points."],
-      ["Full PPR anchor", "The neutral published market uses one point per reception."],
+      ["Standard baseline", "The neutral scoring reference uses zero points per reception."],
       ["Receiver demand", "Dedicated WR starters and FLEX demand determine replacement."],
       ["Auditable adjustment", "The table exposes base value, league value, change, and the VORP reason."],
     ],

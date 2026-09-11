@@ -32,7 +32,7 @@ test("data sources documents inputs, scoring definitions, and adjustment guardra
   assert.match(dataSources, /Half PPR:<\/strong> 0\.5 per catch/);
   assert.match(dataSources, /Full PPR:<\/strong> 1 per catch/);
   assert.match(dataSources, /caps movement at ±12% in dynasty or ±20% in redraft/);
-  assert.match(dataSources, /4-point passing touchdowns and Full PPR/);
+  assert.match(dataSources, /Standard scoring and 4-point passing touchdowns/);
   assert.match(dataSources, /dedicated starters and FLEX demand are allocated/);
   assert.match(dataSources, /href="\/scoring-impact"/);
 });

@@ -154,7 +154,7 @@ export async function getMarket(
     Number(settings.receptionPoints),
   )
     ? (Number(settings.receptionPoints) as ReceptionPoints)
-    : 1;
+    : 0;
   const rbStarters = [1, 2, 3].includes(Number(settings.rbStarters))
     ? (Number(settings.rbStarters) as RosterSettings["rbStarters"])
     : 2;

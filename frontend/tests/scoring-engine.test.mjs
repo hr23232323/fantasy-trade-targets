@@ -132,7 +132,7 @@ test("market adjustments compare scoring change with positional replacement", ()
     numTeams: 8,
     numQbs: 1,
     passingTdPoints: 4,
-    receptionPoints: 1,
+    receptionPoints: 0,
   });
   assert.equal(baseline.meta.adjustedCount, 0);
   assert.ok(baseline.assets.every((asset) => asset.value === asset.baseValue));
@@ -142,7 +142,7 @@ test("market adjustments compare scoring change with positional replacement", ()
     numTeams: 8,
     numQbs: 1,
     passingTdPoints: 6,
-    receptionPoints: 1,
+    receptionPoints: 0,
   });
   assert.ok(sixPoint.assets[0].scoringContext.valueDelta > 0);
   assert.ok(sixPoint.assets.at(-1).scoringContext.valueDelta < 0);
@@ -203,7 +203,7 @@ test("extra FLEX spots deepen eligible replacement without changing raw points",
     numTeams: 8,
     numQbs: 1,
     passingTdPoints: 4,
-    receptionPoints: 1,
+    receptionPoints: 0,
     rbStarters: 2,
     wrStarters: 3,
     teStarters: 1,
@@ -216,7 +216,7 @@ test("extra FLEX spots deepen eligible replacement without changing raw points",
     numTeams: 8,
     numQbs: 1,
     passingTdPoints: 4,
-    receptionPoints: 1,
+    receptionPoints: 0,
     rbStarters: 2,
     wrStarters: 3,
     teStarters: 1,
