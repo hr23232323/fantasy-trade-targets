@@ -685,20 +685,23 @@ function validateRelease({
     const positionRanks = new Map();
     for (let index = 0; index < payload.data.length; index += 1) {
       const player = payload.data[index];
-      const expectedPositionRank = (positionRanks.get(player.position) ?? 0) + 1;
+      const previousAtPosition = positionRanks.get(player.position);
       if (
         typeof player.name !== "string" || !player.name.trim() ||
         typeof player.slug !== "string" || !player.slug.trim() ||
         !playerPositions.has(player.position) ||
         (player.team != null && !nflTeams.has(player.team)) ||
         !Number.isFinite(player.composite) || player.composite < 0 || player.composite > 1000 ||
-        player.rank !== index + 1 ||
-        player.posRank !== expectedPositionRank ||
-        (index > 0 && payload.data[index - 1].composite < player.composite)
+        !Number.isInteger(player.rank) || player.rank < 1 ||
+        !Number.isInteger(player.posRank) || player.posRank < 1 ||
+        (index > 0 && payload.data[index - 1].rank > player.rank) ||
+        (index > 0 && payload.data[index - 1].composite < player.composite) ||
+        (previousAtPosition && previousAtPosition.rank > player.posRank) ||
+        (previousAtPosition && previousAtPosition.composite > player.composite && previousAtPosition.rank >= player.posRank)
       ) {
         throw new Error(`Player market ${key} has an invalid record at rank ${index + 1}`);
       }
-      positionRanks.set(player.position, expectedPositionRank);
+      positionRanks.set(player.position, { rank: player.posRank, composite: player.composite });
     }
     const priorCount = priorPlayerMarkets?.[key]?.data?.length ?? 0;
     if (payload.data.length < priorCount) {

@@ -45,8 +45,8 @@ test("TE-premium research is complete, current, crawlable content", () => {
 test("the publisher enforces scale, identity, rank order, and maximum age", () => {
   assert.match(refresh, /MAX_MARKET_AGE_MS/);
   assert.match(refresh, /player\.composite > 1000/);
-  assert.match(refresh, /player\.rank !== index \+ 1/);
-  assert.match(refresh, /player\.posRank !== expectedPositionRank/);
+  assert.match(refresh, /payload\.data\[index - 1\]\.rank > player\.rank/);
+  assert.match(refresh, /previousAtPosition\.rank > player\.posRank/);
   assert.match(refresh, /!playerPositions\.has/);
   assert.match(refresh, /!nflTeams\.has/);
 });
