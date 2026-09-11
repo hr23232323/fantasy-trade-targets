@@ -5,7 +5,7 @@ import TradeCalculator from "../components/TradeCalculator";
 import WebAppSchema from "../components/WebAppSchema";
 import { buildPageMetadata } from "../lib/metadata";
 
-const description = "Use a free dynasty trade calculator with daily player values, exact rookie picks, Superflex, TE premium, league size, and roster-cost adjustments.";
+const description = "Use a free dynasty trade calculator with current player values, exact rookie picks, Superflex, TE premium, league size, and roster-cost adjustments.";
 
 export const metadata = buildPageMetadata({
   title: "Free Dynasty Trade Calculator",
@@ -43,9 +43,10 @@ export default function DynastyTradeCalculatorPage() {
       <WebAppSchema name="Fantasy Trade Target Dynasty Trade Calculator" description={description} path="/dynasty-trade-calculator" />
       <PageHero
         eyebrow="Free dynasty trade calculator"
-        title="Every player. Every pick."
-        accent="One honest number."
-        description="Compare unlimited dynasty trade packages with daily market values and a transparent roster-cost adjustment. Built for 1QB, Superflex, TE premium, and leagues from 8 to 16 teams."
+        title="Dynasty trade calculator"
+        accent="for Superflex, 1QB & TEP."
+        description="Compare unlimited dynasty trade packages with the latest validated market values and a transparent roster-cost adjustment. Built for 1QB, Superflex, TE premium, and leagues from 8 to 16 teams."
+        showRelease
       />
       <div className="page-wrap"><TradeCalculator defaultFormat="dynasty" defaultNumQbs={2} /></div>
       <CalculatorGuide mode="dynasty" />

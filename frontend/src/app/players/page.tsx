@@ -55,7 +55,7 @@ export default async function PlayersPage() {
               Substantial dynasty player files built for trade research, timestamped market context, and direct answers grounded in visible evidence.
             </p>
             <p className="mt-4 font-mono text-[10px] font-bold uppercase leading-5 tracking-[0.07em] text-[#69706c]">
-              Daily composite market · Updated {formatDate(market.meta.generatedAt)}
+              Current composite market · Updated {formatDate(market.meta.generatedAt)}
             </p>
           </div>
         </div>

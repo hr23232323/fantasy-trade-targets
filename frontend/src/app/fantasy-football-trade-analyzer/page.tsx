@@ -38,9 +38,10 @@ export default function FantasyFootballTradeAnalyzerPage() {
       <WebAppSchema name="Fantasy Football Trade Analyzer" description={description} path="/fantasy-football-trade-analyzer" />
       <PageHero
         eyebrow="Fantasy football trade analyzer"
-        title="Who wins the trade?"
-        accent="Show the math."
+        title="Fantasy football trade analyzer"
+        accent="for redraft leagues."
         description="Build both sides of a current-season trade and get a fast, deterministic verdict. No login, no AI guess, and no pretending four bench pieces equal one weekly hammer."
+        showRelease
       />
       <div className="page-wrap"><TradeCalculator defaultFormat="redraft" defaultNumQbs={1} /></div>
       <CalculatorGuide mode="redraft" />

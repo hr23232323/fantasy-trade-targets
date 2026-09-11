@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getMarketReleaseInfo } from "../lib/market";
 
 type PageHeroProps = {
   eyebrow: string;
@@ -9,6 +10,7 @@ type PageHeroProps = {
   primaryLabel?: string;
   secondaryHref?: string;
   secondaryLabel?: string;
+  showRelease?: boolean;
 };
 
 export default function PageHero({
@@ -20,10 +22,26 @@ export default function PageHero({
   primaryLabel = "Build a trade",
   secondaryHref = "/methodology",
   secondaryLabel = "See the methodology",
+  showRelease = false,
 }: PageHeroProps) {
+  const release = showRelease ? getMarketReleaseInfo() : null;
+  const updated = release
+    ? new Date(release.capturedAt).toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        timeZone: "America/New_York",
+        timeZoneName: "short",
+      })
+    : null;
   return (
     <section className="page-wrap py-14 sm:py-20">
-      <span className="eyebrow">{eyebrow}</span>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <span className="eyebrow">{eyebrow}</span>
+        {release && <span className="mono-label text-[#69706c]">Last successful update: {updated} · {release.releaseId}</span>}
+      </div>
       <div className="mt-8 grid gap-8 lg:grid-cols-[1.45fr_0.55fr] lg:items-end">
         <h1 className="display-type max-w-5xl uppercase">
           {title} {accent && <span className="text-[#ff6b3d]">{accent}</span>}

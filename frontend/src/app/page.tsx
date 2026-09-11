@@ -13,9 +13,9 @@ import { teams } from "./lib/team-data";
 import type { MarketAsset } from "./types/MarketAsset";
 
 export const metadata = buildPageMetadata({
-  title: "Fantasy Football Trade Targets, Calculator & Rankings",
+  title: "Fantasy Football Trade Tools, Calculator & Rankings",
   description:
-    "Find fantasy football trade targets, compare complete offers, and browse daily dynasty values. Free, no login, with Superflex, TE premium, and rookie picks.",
+    "Compare complete fantasy football offers, research players, and browse current dynasty rankings. Free, no login, with Superflex, TE premium, and rookie picks.",
   path: "",
 });
 
@@ -65,8 +65,9 @@ export default async function Home() {
           <div className="flex flex-col justify-between border-t border-[#171c19] pt-7">
             <div>
               <h1 className="text-[clamp(3.5rem,7.6vw,7.3rem)] font-black uppercase leading-[0.82] tracking-[-0.078em]">
-                Find the target. <span className="text-[#ff6b3d]">Price the move.</span>
+                Fantasy football trade <span className="text-[#ff6b3d]">tools & rankings.</span>
               </h1>
+              <p className="mt-6 font-mono text-xs font-black uppercase tracking-[0.1em]">Find the target. Price the move.</p>
               <p className="mt-8 max-w-2xl text-lg font-medium leading-8 text-[#525955]">
                 Free fantasy football trade tools that show their work. Search the market,
                 build the complete offer, and account for the hidden cost of extra roster spots.

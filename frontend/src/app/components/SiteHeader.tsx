@@ -28,7 +28,7 @@ export default function SiteHeader() {
       <div className="border-b border-[#171c19] bg-[#171c19] text-[#dfff4f]">
         <div className="page-wrap flex h-8 items-center justify-between font-mono text-[10px] font-bold uppercase tracking-[0.12em]">
           <span>Free. No login. No nonsense.</span>
-          <span className="hidden sm:inline">Market values refresh daily</span>
+          <span className="hidden sm:inline">Updates publish only after validation</span>
         </div>
       </div>
       <div className="border-b border-[#171c19] bg-[#f3f0e7]/95 backdrop-blur">

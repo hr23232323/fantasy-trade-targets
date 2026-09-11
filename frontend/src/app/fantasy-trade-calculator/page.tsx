@@ -18,12 +18,12 @@ const faqs = [
   {
     question: "Is this fantasy trade calculator free?",
     answer:
-      "Yes. The calculator is free, requires no account, and uses a cached daily market feed so each trade can be evaluated without a paid AI call.",
+      "Yes. The calculator is free, requires no account, and uses the latest validated cached market release so each trade can be evaluated without a paid AI call.",
   },
   {
     question: "How often do fantasy trade values change?",
     answer:
-      "Values can move quickly after injuries, role changes, and breakout games. The underlying market feed refreshes daily, and the update date is shown inside the calculator.",
+      "Values can move quickly after injuries, role changes, and breakout games. The page shows the last successful release timestamp; invalid refreshes do not replace it.",
   },
   {
     question: "Can I compare more than two players?",
@@ -38,11 +38,12 @@ export default function FantasyTradeCalculatorPage() {
       <WebAppSchema name="Fantasy Trade Target Calculator" description={description} path="/fantasy-trade-calculator" />
       <PageHero
         eyebrow="Free fantasy trade calculator"
-        title="Make the offer."
-        accent="Know the price."
+        title="Fantasy trade calculator"
+        accent="for dynasty & redraft."
         description="Compare current-season player values across complete trade packages, then browse the market for the missing piece that balances the deal."
         secondaryHref="/fantasy-football-trade-value-chart"
         secondaryLabel="Browse the redraft chart"
+        showRelease
       />
       <div className="page-wrap"><TradeCalculator defaultFormat="redraft" defaultNumQbs={1} /></div>
       <div className="page-wrap pt-20">

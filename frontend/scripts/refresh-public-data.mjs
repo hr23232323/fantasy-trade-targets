@@ -22,6 +22,9 @@ const formats = ["dynasty", "redraft"];
 const quarterbackSettings = [1, 2];
 const tepSettings = [false, true];
 const teamCounts = [8, 10, 12, 14, 16];
+const playerPositions = new Set(["QB", "RB", "WR", "TE"]);
+const nflTeams = new Set(["ARI", "ATL", "BAL", "BUF", "CAR", "CHI", "CIN", "CLE", "DAL", "DEN", "DET", "GB", "HOU", "IND", "JAX", "KC", "LAC", "LAR", "LV", "MIA", "MIN", "NE", "NO", "NYG", "NYJ", "PHI", "PIT", "SEA", "SF", "TB", "TEN", "WAS"]);
+const MAX_MARKET_AGE_MS = 48 * 60 * 60 * 1_000;
 let capturedAt = new Date();
 const hasApiKey = Boolean(process.env.TRADYR_API_KEY);
 const requestIntervalMs = hasApiKey ? 75 : 1_100;
@@ -128,7 +131,7 @@ const playerMarkets = reuseValidatedMarkets
   : Object.fromEntries(
       marketAndPickResponses
         .filter((response) => response.kind === "players")
-        .map((response) => [response.key, response.payload]),
+        .map((response) => [response.key, normalizePlayerMarketPayload(response.payload)]),
     );
 const pickMarkets = reuseValidatedMarkets
   ? priorRelease.pickMarkets
@@ -590,6 +593,19 @@ function delay(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
+function normalizePlayerMarketPayload(payload) {
+  return {
+    ...payload,
+    data: payload.data.map((player) => ({
+      ...player,
+      // Tradyr can round the top normalized score to 1001. Keep the public contract at 0–1000.
+      composite: player.composite > 1000 && player.composite <= 1001
+        ? 1000
+        : player.composite,
+    })),
+  };
+}
+
 async function waitForRequestSlot() {
   const now = Date.now();
   const scheduledAt = Math.max(now, nextRequestAt);
@@ -658,11 +674,58 @@ function validateRelease({
     if (uniqueSlugs.size !== payload.data.length || uniqueSlugs.has(undefined)) {
       throw new Error(`Player market ${key} contains missing or duplicate slugs`);
     }
+    const generatedAt = Date.parse(payload.meta?.generatedAt);
+    if (
+      !Number.isFinite(generatedAt) ||
+      generatedAt > capturedAt.getTime() + 5 * 60 * 1_000 ||
+      capturedAt.getTime() - generatedAt > MAX_MARKET_AGE_MS
+    ) {
+      throw new Error(`Player market ${key} is older than the 48-hour publication limit`);
+    }
+    const positionRanks = new Map();
+    for (let index = 0; index < payload.data.length; index += 1) {
+      const player = payload.data[index];
+      const expectedPositionRank = (positionRanks.get(player.position) ?? 0) + 1;
+      if (
+        typeof player.name !== "string" || !player.name.trim() ||
+        typeof player.slug !== "string" || !player.slug.trim() ||
+        !playerPositions.has(player.position) ||
+        (player.team != null && !nflTeams.has(player.team)) ||
+        !Number.isFinite(player.composite) || player.composite < 0 || player.composite > 1000 ||
+        player.rank !== index + 1 ||
+        player.posRank !== expectedPositionRank ||
+        (index > 0 && payload.data[index - 1].composite < player.composite)
+      ) {
+        throw new Error(`Player market ${key} has an invalid record at rank ${index + 1}`);
+      }
+      positionRanks.set(player.position, expectedPositionRank);
+    }
     const priorCount = priorPlayerMarkets?.[key]?.data?.length ?? 0;
     if (payload.data.length < priorCount) {
       console.warn(
         `Player market ${key} contracted from ${priorCount} to ${payload.data.length} players after full-response validation.`,
       );
+    }
+  }
+  for (const [key, payload] of Object.entries(pickMarkets)) {
+    const generatedAt = Date.parse(payload.meta?.generatedAt);
+    const uniqueIds = new Set(Array.isArray(payload.data) ? payload.data.map((pick) => pick.id) : []);
+    if (
+      !Array.isArray(payload.data) ||
+      payload.data.length < 12 ||
+      uniqueIds.size !== payload.data.length ||
+      !Number.isFinite(generatedAt) ||
+      generatedAt > capturedAt.getTime() + 5 * 60 * 1_000 ||
+      capturedAt.getTime() - generatedAt > MAX_MARKET_AGE_MS ||
+      payload.data.some((pick) =>
+        typeof pick.id !== "string" || !pick.id ||
+        typeof pick.name !== "string" || !pick.name ||
+        pick.position !== "PICK" ||
+        !Number.isFinite(pick.composite) || pick.composite < 0 || pick.composite > 1000 ||
+        ![1, 2].includes(pick.round) || !Number.isInteger(pick.slot) || pick.slot < 1
+      )
+    ) {
+      throw new Error(`Pick market ${key} failed identity, scale, or freshness validation`);
     }
   }
   for (const slug of playerSlugs) {

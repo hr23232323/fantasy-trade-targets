@@ -8,6 +8,11 @@ const SITE_URL = "https://fantasytradetarget.com";
 
 const establishedPages = [
   {
+    slug: "te-premium-rankings",
+    title: "TE premium dynasty rankings",
+    description: "Complete tight-end trade values and live differences versus the standard Superflex market.",
+  },
+  {
     slug: "6-point-passing-td-rankings",
     title: "6-point passing TD rankings",
     description:

@@ -38,9 +38,10 @@ export default function SuperflexCalculatorPage() {
       <WebAppSchema name="Dynasty Superflex Trade Calculator" description={description} path="/dynasty-superflex-trade-calculator" />
       <PageHero
         eyebrow="Dynasty Superflex trade calculator"
-        title="Two QB slots."
-        accent="A different market."
+        title="Dynasty Superflex trade calculator"
+        accent="for players & rookie picks."
         description="Stop pricing Superflex trades with 1QB values. Compare quarterbacks, skill players, and exact rookie picks on a daily two-quarterback market."
+        showRelease
       />
       <div className="page-wrap"><TradeCalculator defaultFormat="dynasty" defaultNumQbs={2} /></div>
       <CalculatorGuide mode="superflex" />

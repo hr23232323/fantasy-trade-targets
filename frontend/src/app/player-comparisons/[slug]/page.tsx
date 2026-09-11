@@ -43,9 +43,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const left = getPlayerPage(comparison.leftSlug);
   const right = getPlayerPage(comparison.rightSlug);
   if (!left || !right) return {};
-
-  const title = `${left.name} or ${right.name}? Dynasty Trade Value`;
-  const description = `Decide between ${left.name} and ${right.name} with current dynasty Superflex, 1QB, redraft, and scoring-specific trade values.`;
+  const market = await getMarket({ format: "dynasty", numQbs: 2, numTeams: 12 });
+  const players = pairFromMarket(market, comparison.leftSlug, comparison.rightSlug);
+  const leader = getLeader(players.left, players.right);
+  const trailer = leader.slug === players.left.slug ? players.right : players.left;
+  const year = new Date(market.meta.generatedAt).getFullYear();
+  const updated = new Date(market.meta.generatedAt).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "America/New_York",
+  });
+  const title = `${left.name} vs. ${right.name} (${year}): Who Has More Dynasty Value?`;
+  const description = `${leader.name} leads ${trailer.name} ${Math.round(leader.value)}–${Math.round(trailer.value)} in current Superflex dynasty value. Compare 1QB, TEP, redraft, and PPR settings. Updated ${updated}.`;
 
   return {
     title,
@@ -260,7 +270,7 @@ export default async function PlayerComparisonPage({ params }: PageProps) {
           <div className="mt-8 grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch">
             <div className="flex flex-col">
               <h1 className="max-w-6xl text-[clamp(3rem,6vw,5.8rem)] font-black leading-[0.86] tracking-[-0.075em]">
-                {basePlayers.left.name} <span className="text-[#9b391d]">vs.</span> {basePlayers.right.name}
+                {basePlayers.left.name} or {basePlayers.right.name}: <span className="text-[#9b391d]">who has more dynasty value?</span>
               </h1>
               <div className="mt-8 max-w-4xl border-l-4 border-[#171c19] pl-5">
                 <span className="mono-label">The short answer</span>
@@ -271,7 +281,7 @@ export default async function PlayerComparisonPage({ params }: PageProps) {
               </p>
               <div className="mt-auto flex flex-wrap gap-3 pt-8">
                 <TrackedLink
-                  href={`/dynasty-trade-calculator?format=dynasty&qbs=2&get=${basePlayers.right.slug}&give=${basePlayers.left.slug}`}
+                  href={`/dynasty-trade-calculator?format=dynasty&qbs=2&get=${basePlayers.right.id}&send=${basePlayers.left.id}`}
                   analyticsEvent="comparison_calculator_opened"
                   analyticsProperties={{ comparison_slug: comparison.slug, source: "comparison_hero" }}
                   className="border border-[#171c19] bg-[#171c19] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em] text-white shadow-[4px_4px_0_#ff6b3d]"
@@ -395,7 +405,7 @@ export default async function PlayerComparisonPage({ params }: PageProps) {
         </h2>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <TrackedLink
-            href={`/dynasty-trade-calculator?format=dynasty&qbs=2&get=${basePlayers.right.slug}&give=${basePlayers.left.slug}`}
+            href={`/dynasty-trade-calculator?format=dynasty&qbs=2&get=${basePlayers.right.id}&send=${basePlayers.left.id}`}
             analyticsEvent="comparison_calculator_opened"
             analyticsProperties={{ comparison_slug: comparison.slug, source: "comparison_footer" }}
             className="border border-[#171c19] bg-[#dfff4f] px-6 py-4 font-mono text-xs font-black uppercase tracking-[0.08em] shadow-[5px_5px_0_#171c19]"

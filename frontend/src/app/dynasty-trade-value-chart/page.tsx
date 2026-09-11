@@ -6,7 +6,7 @@ import { buildPageMetadata } from "../lib/metadata";
 export const metadata = buildPageMetadata({
   title: "Dynasty Trade Value Chart",
   description:
-    "Browse a free dynasty trade value chart with daily player market scores, exact rookie picks, age, position, and direct trade calculator links.",
+    "Browse a free dynasty trade value chart with current player market scores, exact rookie picks, age, position, and direct trade calculator links.",
   path: "/dynasty-trade-value-chart",
 });
 
@@ -33,14 +33,15 @@ export default function DynastyTradeValueChartPage() {
     <>
       <PageHero
         eyebrow="Dynasty trade value chart"
-        title="The market,"
-        accent="ranked daily."
+        title="Dynasty trade value chart"
+        accent="for Superflex & 1QB."
         description="Searchable dynasty player and rookie-pick values for 1QB and Superflex trade research. Every row can become a preloaded offer."
         primaryHref="#value-chart"
         primaryLabel="Open value chart"
+        showRelease
       />
       <div id="value-chart" className="page-wrap scroll-mt-8">
-        <MarketBoard heading="Dynasty trade values" description="Daily composite market scores for players and exact rookie picks. Filter the board, find the tier, then build the offer." />
+        <MarketBoard heading="Dynasty trade values" description="Latest validated composite market scores for players and exact rookie picks. Filter the board, find the tier, then build the offer." />
       </div>
       <FaqBlock items={faqs} title="Using the value chart." />
     </>

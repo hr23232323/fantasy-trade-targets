@@ -33,11 +33,12 @@ export default function FantasyFootballTradeValueChartPage() {
     <>
       <PageHero
         eyebrow="Fantasy football trade value chart"
-        title="Today’s players."
-        accent="Today’s price."
+        title="Fantasy football trade value chart"
+        accent="for current-season trades."
         description="A searchable current-season market board for comparing trade targets before you send the offer."
         primaryHref="#value-chart"
         primaryLabel="Browse player values"
+        showRelease
       />
       <div id="value-chart" className="page-wrap scroll-mt-8">
         <MarketBoard

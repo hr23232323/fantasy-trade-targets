@@ -56,7 +56,7 @@ export default function CreateMemePage() {
       <section className="page-wrap py-14 sm:py-20">
         <span className="eyebrow">Trade meme generator // still unhinged</span>
         <div className="mt-8 grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
-          <h1 className="display-type uppercase">Send the offer. <span className="text-[#ff6b3d]">Then send the meme.</span></h1>
+          <div><h1 className="display-type uppercase">Fantasy football trade <span className="text-[#ff6b3d]">meme generator.</span></h1><p className="mt-5 font-mono text-xs font-black uppercase tracking-[0.1em]">Send the offer. Then send the meme.</p></div>
           <p className="border-l border-[#171c19] pl-5 text-base leading-7 text-[#59605c]">
             A free deterministic meme generator for your league chat. No AI call, no account,
             and no reason to send another “thoughts?” text by itself.

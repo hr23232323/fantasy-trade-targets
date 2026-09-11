@@ -47,6 +47,7 @@ const changedPaths = [
   "/scoring",
   "/scoring-impact",
   "/scoring/6-point-passing-td-rankings",
+  "/scoring/te-premium-rankings",
   "/scoring/half-ppr-trade-values",
   "/scoring/standard-vs-ppr-player-values",
   ...scoringResearchPaths,

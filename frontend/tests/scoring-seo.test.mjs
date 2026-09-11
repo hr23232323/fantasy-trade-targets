@@ -35,6 +35,7 @@ const [
 const routes = [
   "/scoring-impact",
   "/scoring/6-point-passing-td-rankings",
+  "/scoring/te-premium-rankings",
   "/scoring/standard-vs-ppr-player-values",
   "/scoring/half-ppr-trade-values",
 ];
