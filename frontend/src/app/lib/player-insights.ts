@@ -3,6 +3,14 @@ import type {
   PlayerProfile,
   PlayerSnapshotObservation,
 } from "../types/PlayerProfile";
+import {
+  calculateHistoryMovement,
+  carryHistoryForward as carryHistoryForwardCore,
+  findNearestHistoryIndex as findNearestHistoryIndexCore,
+  getHistoryChartScale as getHistoryChartScaleCore,
+  getTimeRatio as getTimeRatioCore,
+  normalizeHistory as normalizeHistoryCore,
+} from "./player-history.mjs";
 
 export type Movement = {
   label: string;
@@ -11,27 +19,37 @@ export type Movement = {
   observedDays: number;
 };
 
-function parseHistoryDate(value: string) {
-  if (/^\d{6}$/.test(value)) {
-    const year = 2000 + Number(value.slice(0, 2));
-    const month = Number(value.slice(2, 4)) - 1;
-    const day = Number(value.slice(4, 6));
-    const date = new Date(Date.UTC(year, month, day));
-    return Number.isNaN(date.getTime()) ? null : date;
-  }
-
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? null : date;
+export function normalizeHistory(points: HistoryPoint[]) {
+  return normalizeHistoryCore(points) as Array<HistoryPoint & { parsedDate: Date }>;
 }
 
-export function normalizeHistory(points: HistoryPoint[]) {
-  return points
-    .map((point) => ({ ...point, parsedDate: parseHistoryDate(point.date) }))
-    .filter(
-      (point): point is HistoryPoint & { parsedDate: Date } =>
-        Boolean(point.parsedDate) && Number.isFinite(point.value),
-    )
-    .sort((a, b) => a.parsedDate.getTime() - b.parsedDate.getTime());
+export type DisplayHistoryPoint = HistoryPoint & {
+  parsedDate: Date;
+  carried: boolean;
+};
+
+export function carryHistoryForward(points: HistoryPoint[]) {
+  return carryHistoryForwardCore(points) as DisplayHistoryPoint[];
+}
+
+export function getHistoryChartScale(points: HistoryPoint[]) {
+  return getHistoryChartScaleCore(points) as {
+    min: number;
+    max: number;
+    observedMin: number;
+    observedMax: number;
+  };
+}
+
+export function getTimeRatio(date: Date, firstDate: Date, lastDate: Date) {
+  return getTimeRatioCore(date, firstDate, lastDate) as number;
+}
+
+export function findNearestHistoryIndex(
+  points: DisplayHistoryPoint[],
+  targetTime: number,
+) {
+  return findNearestHistoryIndexCore(points, targetTime) as number;
 }
 
 export type PublishedHistorySeries = {
@@ -81,31 +99,7 @@ export function calculateMovement(
   points: HistoryPoint[],
   targetDays: number,
 ): Movement | null {
-  const history = normalizeHistory(points);
-  const current = history.at(-1);
-  if (!current || history.length < 2) return null;
-
-  const targetTime =
-    current.parsedDate.getTime() - targetDays * 24 * 60 * 60 * 1000;
-  const candidates = history.filter(
-    (point) => point.parsedDate.getTime() <= targetTime,
-  );
-  const baseline = candidates.at(-1) ?? history[0];
-  if (!baseline || baseline.value === 0 || baseline === current) return null;
-
-  const valueChange = current.value - baseline.value;
-  const percentChange = (valueChange / baseline.value) * 100;
-  const observedDays = Math.round(
-    (current.parsedDate.getTime() - baseline.parsedDate.getTime()) /
-      (24 * 60 * 60 * 1000),
-  );
-
-  return {
-    label: `${targetDays}-day`,
-    valueChange,
-    percentChange,
-    observedDays,
-  };
+  return calculateHistoryMovement(points, targetDays) as Movement | null;
 }
 
 export function getProductionCards(player: PlayerProfile) {

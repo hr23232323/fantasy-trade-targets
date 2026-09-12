@@ -410,13 +410,19 @@ function ValueCard({
 function MovementCard({ movement }: { movement: ReturnType<typeof calculateMovement> }) {
   if (!movement) return null;
   const positive = movement.valueChange >= 0;
+  const requestedDays = Number.parseInt(movement.label, 10);
+  const usesEarliestAvailable = Number.isFinite(requestedDays) && movement.observedDays < requestedDays;
   return (
     <div className="min-w-32 border border-[#171c19] bg-white/55 px-4 py-3">
       <span className="mono-label text-[#69706c]">{movement.label} move</span>
       <p className={`mt-1 font-mono text-xl font-black ${positive ? "text-[#2f6f3e]" : "text-[#a23616]"}`}>
         {positive ? "+" : ""}{movement.percentChange.toFixed(1)}%
       </p>
-      <p className="mt-1 text-[10px] text-[#69706c]">nearest {movement.observedDays}-day observation</p>
+      <p className="mt-1 text-[10px] text-[#69706c]">
+        {usesEarliestAvailable
+          ? `earliest available · ${movement.observedDays} days of history`
+          : `nearest ${movement.observedDays}-day observation`}
+      </p>
     </div>
   );
 }

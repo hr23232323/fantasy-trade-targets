@@ -16,6 +16,7 @@ import {
   buildRookiePickHistory,
   validateRookiePickHistory,
 } from "../src/app/lib/rookie-pick-history.mjs";
+import { buildPlayerSnapshotHistory } from "../src/app/lib/player-history.mjs";
 
 const API_BASE = "https://api.tradyr.app/v1";
 const formats = ["dynasty", "redraft"];
@@ -796,49 +797,6 @@ function validateRelease({
       throw new Error(`Player profile ${slug} has a stale FTT snapshot history`);
     }
   }
-}
-
-function buildPlayerSnapshotHistory({ existing, releases, playerSlugs }) {
-  const histories = Object.fromEntries(
-    playerSlugs.map((slug) => [
-      slug,
-      Array.isArray(existing?.[slug]) ? [...existing[slug]] : [],
-    ]),
-  );
-
-  for (const release of releases) {
-    if (!release?.releaseId || !release?.capturedAt) continue;
-    const market = release.playerMarkets?.["dynasty:2:0"]?.data;
-    if (!Array.isArray(market)) continue;
-
-    for (const slug of playerSlugs) {
-      const player = market.find((candidate) => candidate.slug === slug);
-      if (!player || !Number.isFinite(player.composite)) continue;
-      histories[slug].push({
-        observedAt: release.capturedAt,
-        value: player.composite,
-        rank: player.rank ?? null,
-        posRank: player.posRank ?? null,
-        releaseId: release.releaseId,
-      });
-    }
-  }
-
-  for (const slug of playerSlugs) {
-    histories[slug] = Array.from(
-      new Map(
-        histories[slug].map((observation) => [
-          observation.releaseId,
-          observation,
-        ]),
-      ).values(),
-    ).sort(
-      (left, right) =>
-        new Date(left.observedAt).getTime() - new Date(right.observedAt).getTime(),
-    );
-  }
-
-  return histories;
 }
 
 async function readJsonIfPresent(filePath) {
