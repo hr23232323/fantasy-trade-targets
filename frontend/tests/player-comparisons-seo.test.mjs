@@ -39,10 +39,13 @@ const [
 const baselinePlayers = new Map(
   release.playerMarkets["dynasty:2:0"].data.map((player) => [player.slug, player]),
 );
+const comparisonMarkets = ["dynasty:2:0", "dynasty:1:0", "dynasty:2:1", "redraft:1:0"].map(
+  (key) => [key, new Set(release.playerMarkets[key].data.map((player) => player.slug))],
+);
 const publishedPlayers = new Set(playerManifest.map((player) => player.slug));
 
 test("the comparison collection expands in reviewed batches", () => {
-  assert.equal(manifest.length, 56, "56 detail pages plus one hub should ship");
+  assert.equal(manifest.length, 64, "64 detail pages plus one hub should ship");
   assert.match(hub, /\{comparisons\.length\} decisions worth measuring/);
   assert.match(hub, /Compare \{distinctPlayerCount\} players/);
   assert.match(detail, /The short answer/);
@@ -51,9 +54,9 @@ test("the comparison collection expands in reviewed batches", () => {
   assert.match(detail, /Same-position decisions/);
 });
 
-test("56 comparisons cover reviewed, scoring-covered players", () => {
+test("64 comparisons cover reviewed, scoring-covered players", () => {
   const usedPlayers = manifest.flatMap(({ leftSlug, rightSlug }) => [leftSlug, rightSlug]);
-  assert.equal(new Set(usedPlayers).size, 100);
+  assert.equal(new Set(usedPlayers).size, 111);
   assert.deepEqual(
     Object.fromEntries(
       ["QB", "RB", "WR", "TE"].map((position) => [
@@ -61,7 +64,7 @@ test("56 comparisons cover reviewed, scoring-covered players", () => {
         manifest.filter((comparison) => comparison.position === position).length,
       ]),
     ),
-    { QB: 12, RB: 15, WR: 16, TE: 13 },
+    { QB: 12, RB: 18, WR: 21, TE: 13 },
   );
 
   for (const comparison of manifest) {
@@ -73,6 +76,10 @@ test("56 comparisons cover reviewed, scoring-covered players", () => {
     assert.ok(publishedPlayers.has(comparison.rightSlug), `${comparison.rightSlug} needs a complete player page`);
     assert.ok(release.playerScoringProfiles[comparison.leftSlug], `${comparison.leftSlug} needs a scoring profile`);
     assert.ok(release.playerScoringProfiles[comparison.rightSlug], `${comparison.rightSlug} needs a scoring profile`);
+    for (const [marketKey, playerSlugs] of comparisonMarkets) {
+      assert.ok(playerSlugs.has(comparison.leftSlug), `${comparison.leftSlug} must exist in ${marketKey}`);
+      assert.ok(playerSlugs.has(comparison.rightSlug), `${comparison.rightSlug} must exist in ${marketKey}`);
+    }
     assert.equal(left.position, comparison.position);
     assert.equal(right.position, comparison.position);
     assert.ok(Number.isInteger(left.rank) && Number.isInteger(right.rank), "comparisons retain current published ranks");

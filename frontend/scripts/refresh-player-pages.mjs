@@ -1,7 +1,7 @@
 import { readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-const PLAYER_COUNT = 180;
+const PLAYER_COUNT = 200;
 const USER_AGENT =
   "FantasyTradeTargetData/1.0 (+https://fantasytradetarget.com)";
 const manifestPath = path.resolve("data/player-pages.json");
