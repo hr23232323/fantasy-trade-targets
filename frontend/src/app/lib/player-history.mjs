@@ -96,7 +96,7 @@ export function calculateHistoryMovement(points, targetDays) {
   const candidates = history.filter(
     (point) => point.parsedDate.getTime() <= targetTime,
   );
-  const baseline = candidates.at(-1) ?? history[0];
+  const baseline = candidates.at(-1);
   if (!baseline || baseline.value === 0 || baseline === current) return null;
 
   return {

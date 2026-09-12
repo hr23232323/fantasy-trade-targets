@@ -111,6 +111,15 @@ test("movement uses a real prior observation and never a carried or missing zero
   assert.equal(movement.observedDays, 31);
 });
 
+test("movement stays hidden until the requested history exists", () => {
+  const movement = calculateHistoryMovement([
+    { date: "2026-08-01T00:00:00Z", value: 1000 },
+    { date: "2026-09-01T00:00:00Z", value: 990 },
+  ], 90);
+
+  assert.equal(movement, null);
+});
+
 test("production histories stay bounded and contain no fabricated missing-day zeroes", () => {
   for (const slug of ["josh-allen-qb", "bijan-robinson-rb"]) {
     const points = release.playerSnapshotHistory[slug];
@@ -128,7 +137,8 @@ test("the complete chart surface supports pointer, touch, click, and keyboard in
   assert.match(chartSource, /ArrowLeft/);
   assert.match(chartSource, /ArrowRight/);
   assert.match(chartSource, /aria-live="polite"/);
-  assert.match(chartSource, /Last known value carried forward/);
-  assert.match(chartSource, /fixed 0–\{scale\.max\.toLocaleString\(\)\}/);
-  assert.match(playerPageSource, /earliest available · \$\{movement\.observedDays\} days of history/);
+  assert.doesNotMatch(chartSource, /Last known value carried forward/);
+  assert.doesNotMatch(chartSource, /missing daily positions are shown as carried forward/);
+  assert.match(chartSource, /Historical market value on a 0–\{scale\.max\.toLocaleString\(\)\} scale/);
+  assert.doesNotMatch(playerPageSource, /earliest available|nearest .*day observation/);
 });

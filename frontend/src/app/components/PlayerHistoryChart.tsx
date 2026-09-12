@@ -50,7 +50,6 @@ export default function PlayerHistoryChart({
   const selectedIndex = Math.max(0, Math.min(activeIndex, coordinates.length - 1));
   const active = coordinates[selectedIndex];
   const tablePoints = [...observedPoints].slice(-120).reverse();
-  const carriedCount = points.filter((point) => point.carried).length;
 
   function indexFromPointer(event: PointerEvent<SVGRectElement>) {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -93,7 +92,7 @@ export default function PlayerHistoryChart({
       >
         <title id={`${id}-chart-title`}>{name} dynasty value history</title>
         <desc id={`${id}-chart-description`}>
-          Time-scaled market observations from {formatDate(first.parsedDate, series.source)} through {formatDate(last.parsedDate, series.source)}. The vertical scale runs from {scale.min} to {scale.max}; missing dates carry the last known value forward.
+          {name} market value from {formatDate(first.parsedDate, series.source)} through {formatDate(last.parsedDate, series.source)}.
         </desc>
         {[1, 0.5, 0].map((ratio) => {
           const y = paddingTop + (1 - ratio) * plotHeight;
@@ -118,7 +117,7 @@ export default function PlayerHistoryChart({
           className="cursor-crosshair outline-none focus:stroke-[#ff6b3d] focus:stroke-2"
           role="button"
           tabIndex={0}
-          aria-label={`Explore ${name} market history. Current selection: ${formatFullDate(active.parsedDate, series.source)}, value ${active.value}${active.carried ? ", carried forward" : ""}.`}
+          aria-label={`Explore ${name} market history. Current selection: ${formatFullDate(active.parsedDate, series.source)}, value ${active.value}.`}
           onPointerMove={handlePointerMove}
           onPointerLeave={() => {
             if (!pinned) setActiveIndex(points.length - 1);
@@ -133,22 +132,21 @@ export default function PlayerHistoryChart({
       <div className="mt-3 flex flex-col gap-2 border border-[#171c19] bg-white/60 px-4 py-3 sm:flex-row sm:items-center sm:justify-between" aria-live="polite">
         <p className="font-mono text-xs font-black tabular-nums">
           {formatFullDate(active.parsedDate, series.source)} · {active.value}
-          {active.carried && <span className="ml-2 text-[#69706c]">Last known value carried forward</span>}
         </p>
         <p className="font-mono text-[9px] font-bold uppercase tracking-[0.06em] text-[#69706c]">
-          Hover or tap anywhere · Arrow keys to inspect · Esc to reset
+          Select any point to inspect
         </p>
       </div>
 
       <figcaption className="mt-3 text-xs leading-5 text-[#69706c]">
-        Historical composite market observations on the fixed 0–{scale.max.toLocaleString()} public scale. Dates without a successful release retain the last observed value; they are not zeroes or new observations.{carriedCount > 0 ? ` ${carriedCount} missing daily positions are shown as carried forward.` : ""} This chart describes market movement; it is not a projection of future performance.
+        Historical market value on a 0–{scale.max.toLocaleString()} scale. Past movement does not predict future performance.
       </figcaption>
       <details className="mt-5 border border-[#9d9a91] bg-white/35">
-        <summary className="cursor-pointer px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">Read actual historical observations</summary>
+        <summary className="cursor-pointer px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">View value history</summary>
         <div className="max-h-96 overflow-auto border-t border-[#9d9a91]">
           <table className="w-full min-w-80 text-left text-sm">
             <thead className="sticky top-0 bg-[#e7e2d5] font-mono text-[10px] uppercase tracking-[0.07em]">
-              <tr><th className="px-4 py-3">Observation date</th><th className="px-4 py-3 text-right">Market value</th></tr>
+              <tr><th className="px-4 py-3">Date</th><th className="px-4 py-3 text-right">Value</th></tr>
             </thead>
             <tbody className="divide-y divide-[#c9c5ba]">
               {tablePoints.map((point) => (
@@ -162,7 +160,7 @@ export default function PlayerHistoryChart({
         </div>
         {observedPoints.length > tablePoints.length && (
           <p className="border-t border-[#c9c5ba] px-4 py-3 text-xs text-[#69706c]">
-            Showing the latest {tablePoints.length} of {observedPoints.length} actual observations. The CSV download contains the complete record.
+            Showing the latest {tablePoints.length} of {observedPoints.length} values.
           </p>
         )}
       </details>
