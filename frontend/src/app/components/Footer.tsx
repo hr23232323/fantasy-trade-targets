@@ -15,6 +15,7 @@ const tools = [
   ["Player research", "/players"],
   ["Market data", "/market"],
   ["Team outlooks", "/teams"],
+  ["Weekly matchups", "/fantasy-football-matchups"],
   ["Redraft analyzer", "/fantasy-football-trade-analyzer"],
   ["Superflex calculator", "/dynasty-superflex-trade-calculator"],
   ["Dynasty rankings", "/dynasty-rankings"],

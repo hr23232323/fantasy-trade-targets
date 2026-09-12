@@ -5,6 +5,7 @@ import { playerComparisons } from "./lib/player-comparisons";
 import { rookiePickPages } from "./lib/rookie-picks";
 import { scoringResearchPageSlugs } from "./lib/scoring-research-pages";
 import { teamRelease, teams } from "./lib/team-data";
+import { weeklyMatchupSlugs } from "./lib/weekly-matchups";
 
 const BASE_URL = "https://fantasytradetarget.com";
 
@@ -19,6 +20,7 @@ const staticRoutes = [
   "/dynasty-trade-value-chart",
   "/editorial-policy",
   "/fantasy-football-trade-analyzer",
+  "/fantasy-football-matchups",
   "/fantasy-football-trade-targets",
   "/fantasy-football-trade-value-chart",
   "/fantasy-trade-calculator",
@@ -43,6 +45,7 @@ const marketDrivenRoutes = new Set([
   "",
   "/dynasty-rankings",
   "/fantasy-football-trade-targets",
+  "/fantasy-football-matchups",
   "/market",
   "/player-comparisons",
   "/players",
@@ -75,6 +78,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...scoringResearchPageSlugs.map((slug) => ({
       url: `${BASE_URL}/scoring/${slug}`,
       lastModified: marketUpdated,
+    })),
+    ...weeklyMatchupSlugs.map((slug) => ({
+      url: `${BASE_URL}/fantasy-football-matchups/${slug}`,
+      lastModified: teamRelease.capturedAt,
     })),
     ...teams.map((team) => ({
       url: `${BASE_URL}/teams/${team.slug}`,

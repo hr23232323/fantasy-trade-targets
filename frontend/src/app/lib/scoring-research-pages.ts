@@ -7,7 +7,7 @@ export type ScoringResearchPageDefinition = ScoringResearchConfig & {
   cardDescription: string;
 };
 
-export const scoringResearchPages: ScoringResearchPageDefinition[] = [
+const establishedResearchPages: ScoringResearchPageDefinition[] = [
   {
     slug: "redraft-6-point-passing-td-rankings",
     metadataTitle: "Redraft 6-Point Passing TD Quarterback Rankings",
@@ -248,6 +248,135 @@ export const scoringResearchPages: ScoringResearchPageDefinition[] = [
       ["Can two-TE leagues use this page?", "Use it as a starting point, then open the scoring-impact lab and select two dedicated tight end starters to deepen replacement."],
     ],
   },
+];
+
+type RankingSeed = {
+  slug: string;
+  format: "dynasty" | "redraft";
+  position: "ALL" | "QB" | "RB" | "WR" | "TE";
+  receptionPoints: 0 | 0.5 | 1;
+  numQbs: 1 | 2;
+  passingTdPoints?: 4 | 6;
+  teStarters?: 1 | 2;
+  tep?: boolean;
+  title: string;
+  accent: string;
+  metadataTitle: string;
+};
+
+const positionNames = {
+  ALL: "player",
+  QB: "quarterback",
+  RB: "running back",
+  WR: "wide receiver",
+  TE: "tight end",
+} as const;
+
+const positionPlural = {
+  ALL: "players",
+  QB: "quarterbacks",
+  RB: "running backs",
+  WR: "wide receivers",
+  TE: "tight ends",
+} as const;
+
+function scoringName(points: RankingSeed["receptionPoints"]) {
+  if (points === 0) return "Standard";
+  if (points === 0.5) return "Half PPR";
+  return "PPR";
+}
+
+function buildRankingPage(seed: RankingSeed): ScoringResearchPageDefinition {
+  const scoring = scoringName(seed.receptionPoints);
+  const format = seed.format === "dynasty" ? "dynasty" : "redraft";
+  const position = positionNames[seed.position];
+  const players = positionPlural[seed.position];
+  const qbFormat = seed.numQbs === 2 ? "Superflex" : "1QB";
+  const passing = seed.passingTdPoints ?? 4;
+  const twoTe = seed.teStarters === 2;
+  const premium = Boolean(seed.tep);
+  const eligiblePositions =
+    seed.position === "ALL"
+      ? (["QB", "RB", "WR", "TE"] as const)
+      : ([seed.position] as const);
+  const leagueDetail = [
+    `${seed.format === "dynasty" ? "Long-term" : "Current-season"} market`,
+    seed.position === "QB" ? `${qbFormat} demand` : scoring,
+    premium ? "TE premium" : null,
+    twoTe ? "two starting tight ends" : null,
+    `${passing}-point passing TDs`,
+  ].filter(Boolean).join(" · ");
+
+  return {
+    slug: seed.slug,
+    metadataTitle: seed.metadataTitle,
+    metadataDescription: `Current ${format} ${position} rankings for ${scoring}${premium ? " tight end premium" : ""} leagues, with live trade values and replacement-relative scoring context.`,
+    cardTitle: `${seed.title} ${seed.accent}`.replace(/\.$/, ""),
+    cardDescription: `${leagueDetail}. A live board built from the validated market and same-position replacement.`,
+    eyebrow: `Scoring research // ${format} ${position}`,
+    title: seed.title,
+    accent: seed.accent,
+    description: `Rank ${players} for a ${format} ${scoring}${premium ? " tight end premium" : ""} league. Every value starts with the current market and changes only when the player’s scoring profile separates from same-position replacement.`,
+    intro: `${seed.metadataTitle} should answer a league-specific question, not paste a generic list under a new label. This board uses the ${format} market, ${qbFormat} roster demand, ${scoring} reception rules${twoTe ? ", two dedicated tight end starters" : ""}${premium ? ", and a tight end reception premium" : ""}. The value change is measured against the replacement option at the same position, so the table shows where this exact setup produces a real difference.`,
+    settings: {
+      format: seed.format,
+      numQbs: seed.numQbs,
+      tep: premium,
+      numTeams: 12,
+      passingTdPoints: passing,
+      receptionPoints: seed.receptionPoints,
+      rbStarters: 2,
+      wrStarters: 3,
+      teStarters: seed.teStarters ?? 1,
+      flexSpots: 1,
+      position: seed.position,
+    },
+    eligiblePositions: [...eligiblePositions],
+    definitions: [
+      [seed.format === "dynasty" ? "Dynasty market" : "Redraft market", seed.format === "dynasty" ? "Values price a multi-season roster asset and can include rookie picks in the wider market." : "Values price the current season rather than long-term age and resale value."],
+      [scoring, scoring === "Standard" ? "Receptions score zero points; receiving yards and touchdowns still count." : scoring === "Half PPR" ? "Every reception adds 0.5 fantasy points." : "Every reception adds one fantasy point."],
+      [qbFormat, seed.numQbs === 2 ? "Two quarterback-eligible lineup spots deepen quarterback replacement." : "One starting quarterback keeps the replacement tier closer to the starters."],
+      [twoTe ? "Two-TE replacement" : `${position === "player" ? "Positional" : position} replacement`, twoTe ? "Two dedicated tight end starters per team push the usable TE pool deeper." : `Each ${position} is measured against the replacement option created by this lineup.`],
+    ],
+    faqs: [
+      [`Who leads these ${seed.metadataTitle.toLowerCase()}?`, `The live table above is the current answer. It combines the validated ${format} market with ${scoring} scoring over replacement and changes when a new market release is published.`],
+      [`How is this different from a generic ${format} ranking?`, `The board uses ${scoring} reception scoring, ${qbFormat} quarterback demand${twoTe ? ", and two starting tight ends" : ""}${premium ? ", plus a tight end premium" : ""}. Those settings can change both replacement and the price gap between players.`],
+      ["Are these weekly projections?", "No. These are current trade values adjusted with recorded production and positional replacement. They do not predict this week’s touches, touchdowns, injuries, or coaching decisions."],
+      ["Can I change the roster settings?", "Yes. Open the scoring-impact lab to change league size, quarterback demand, dedicated starters, FLEX depth, reception scoring, and passing-touchdown points."],
+    ],
+  };
+}
+
+const expandedRankingSeeds: RankingSeed[] = [
+  { slug: "ppr-running-back-rankings", format: "dynasty", position: "RB", receptionPoints: 1, numQbs: 2, title: "PPR dynasty", accent: "running back rankings.", metadataTitle: "PPR Dynasty Running Back Rankings" },
+  { slug: "ppr-wide-receiver-rankings", format: "dynasty", position: "WR", receptionPoints: 1, numQbs: 2, title: "PPR dynasty", accent: "wide receiver rankings.", metadataTitle: "PPR Dynasty Wide Receiver Rankings" },
+  { slug: "ppr-tight-end-rankings", format: "dynasty", position: "TE", receptionPoints: 1, numQbs: 2, title: "PPR dynasty", accent: "tight end rankings.", metadataTitle: "PPR Dynasty Tight End Rankings" },
+  { slug: "redraft-standard-running-back-rankings", format: "redraft", position: "RB", receptionPoints: 0, numQbs: 1, title: "Standard redraft", accent: "running back rankings.", metadataTitle: "Standard Redraft Running Back Rankings" },
+  { slug: "redraft-half-ppr-running-back-rankings", format: "redraft", position: "RB", receptionPoints: 0.5, numQbs: 1, title: "Half PPR redraft", accent: "running back rankings.", metadataTitle: "Half PPR Redraft Running Back Rankings" },
+  { slug: "redraft-ppr-running-back-rankings", format: "redraft", position: "RB", receptionPoints: 1, numQbs: 1, title: "PPR redraft", accent: "running back rankings.", metadataTitle: "PPR Redraft Running Back Rankings" },
+  { slug: "redraft-standard-wide-receiver-rankings", format: "redraft", position: "WR", receptionPoints: 0, numQbs: 1, title: "Standard redraft", accent: "wide receiver rankings.", metadataTitle: "Standard Redraft Wide Receiver Rankings" },
+  { slug: "redraft-half-ppr-wide-receiver-rankings", format: "redraft", position: "WR", receptionPoints: 0.5, numQbs: 1, title: "Half PPR redraft", accent: "wide receiver rankings.", metadataTitle: "Half PPR Redraft Wide Receiver Rankings" },
+  { slug: "redraft-ppr-wide-receiver-rankings", format: "redraft", position: "WR", receptionPoints: 1, numQbs: 1, title: "PPR redraft", accent: "wide receiver rankings.", metadataTitle: "PPR Redraft Wide Receiver Rankings" },
+  { slug: "redraft-standard-tight-end-rankings", format: "redraft", position: "TE", receptionPoints: 0, numQbs: 1, title: "Standard redraft", accent: "tight end rankings.", metadataTitle: "Standard Redraft Tight End Rankings" },
+  { slug: "redraft-half-ppr-tight-end-rankings", format: "redraft", position: "TE", receptionPoints: 0.5, numQbs: 1, title: "Half PPR redraft", accent: "tight end rankings.", metadataTitle: "Half PPR Redraft Tight End Rankings" },
+  { slug: "redraft-ppr-tight-end-rankings", format: "redraft", position: "TE", receptionPoints: 1, numQbs: 1, title: "PPR redraft", accent: "tight end rankings.", metadataTitle: "PPR Redraft Tight End Rankings" },
+  { slug: "dynasty-superflex-quarterback-rankings", format: "dynasty", position: "QB", receptionPoints: 0, numQbs: 2, title: "Dynasty Superflex", accent: "quarterback rankings.", metadataTitle: "Dynasty Superflex Quarterback Rankings" },
+  { slug: "dynasty-1qb-quarterback-rankings", format: "dynasty", position: "QB", receptionPoints: 0, numQbs: 1, title: "Dynasty 1QB", accent: "quarterback rankings.", metadataTitle: "Dynasty 1QB Quarterback Rankings" },
+  { slug: "redraft-quarterback-rankings", format: "redraft", position: "QB", receptionPoints: 0, numQbs: 1, title: "Redraft", accent: "quarterback rankings.", metadataTitle: "Redraft Fantasy Football Quarterback Rankings" },
+  { slug: "redraft-superflex-quarterback-rankings", format: "redraft", position: "QB", receptionPoints: 0, numQbs: 2, title: "Redraft Superflex", accent: "quarterback rankings.", metadataTitle: "Redraft Superflex Quarterback Rankings" },
+  { slug: "redraft-superflex-6-point-passing-td-rankings", format: "redraft", position: "QB", receptionPoints: 0, numQbs: 2, passingTdPoints: 6, title: "Redraft Superflex six-point", accent: "quarterback rankings.", metadataTitle: "Redraft Superflex 6-Point Passing TD Rankings" },
+  { slug: "dynasty-ppr-rankings", format: "dynasty", position: "ALL", receptionPoints: 1, numQbs: 2, title: "Dynasty PPR", accent: "rankings.", metadataTitle: "Dynasty PPR Rankings" },
+  { slug: "dynasty-half-ppr-rankings", format: "dynasty", position: "ALL", receptionPoints: 0.5, numQbs: 2, title: "Dynasty Half PPR", accent: "rankings.", metadataTitle: "Dynasty Half PPR Rankings" },
+  { slug: "redraft-ppr-rankings", format: "redraft", position: "ALL", receptionPoints: 1, numQbs: 1, title: "Redraft PPR", accent: "rankings.", metadataTitle: "Redraft PPR Fantasy Football Rankings" },
+  { slug: "redraft-half-ppr-rankings", format: "redraft", position: "ALL", receptionPoints: 0.5, numQbs: 1, title: "Redraft Half PPR", accent: "rankings.", metadataTitle: "Redraft Half PPR Fantasy Football Rankings" },
+  { slug: "redraft-standard-rankings", format: "redraft", position: "ALL", receptionPoints: 0, numQbs: 1, title: "Redraft Standard", accent: "rankings.", metadataTitle: "Standard Redraft Fantasy Football Rankings" },
+  { slug: "two-tight-end-dynasty-rankings", format: "dynasty", position: "TE", receptionPoints: 1, numQbs: 2, teStarters: 2, title: "Two-tight-end dynasty", accent: "rankings.", metadataTitle: "Two-Tight-End Dynasty Rankings" },
+  { slug: "two-tight-end-te-premium-rankings", format: "dynasty", position: "TE", receptionPoints: 1, numQbs: 2, teStarters: 2, tep: true, title: "Two-TE premium", accent: "dynasty rankings.", metadataTitle: "Two-TE Premium Dynasty Rankings" },
+];
+
+export const scoringResearchPages: ScoringResearchPageDefinition[] = [
+  ...establishedResearchPages,
+  ...expandedRankingSeeds.map(buildRankingPage),
 ];
 
 export const scoringResearchPageSlugs = scoringResearchPages.map(

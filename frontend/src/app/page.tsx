@@ -198,6 +198,9 @@ export default async function Home() {
               <Link href="/teams" className="border border-[#171c19] bg-[#171c19] px-3 py-2 font-mono text-[10px] font-black uppercase tracking-[0.06em] text-white hover:bg-[#a23616]">
                 Browse all 32 →
               </Link>
+              <Link href="/fantasy-football-matchups" className="border border-[#171c19] bg-[#8bcfff] px-3 py-2 font-mono text-[10px] font-black uppercase tracking-[0.06em] hover:bg-white">
+                Browse all 18 weeks →
+              </Link>
             </div>
           </div>
         </div>

@@ -49,6 +49,30 @@ const newScoringSlugs = [
   "half-ppr-wide-receiver-rankings",
   "standard-tight-end-rankings",
   "half-ppr-tight-end-rankings",
+  "ppr-running-back-rankings",
+  "ppr-wide-receiver-rankings",
+  "ppr-tight-end-rankings",
+  "redraft-standard-running-back-rankings",
+  "redraft-half-ppr-running-back-rankings",
+  "redraft-ppr-running-back-rankings",
+  "redraft-standard-wide-receiver-rankings",
+  "redraft-half-ppr-wide-receiver-rankings",
+  "redraft-ppr-wide-receiver-rankings",
+  "redraft-standard-tight-end-rankings",
+  "redraft-half-ppr-tight-end-rankings",
+  "redraft-ppr-tight-end-rankings",
+  "dynasty-superflex-quarterback-rankings",
+  "dynasty-1qb-quarterback-rankings",
+  "redraft-quarterback-rankings",
+  "redraft-superflex-quarterback-rankings",
+  "redraft-superflex-6-point-passing-td-rankings",
+  "dynasty-ppr-rankings",
+  "dynasty-half-ppr-rankings",
+  "redraft-ppr-rankings",
+  "redraft-half-ppr-rankings",
+  "redraft-standard-rankings",
+  "two-tight-end-dynasty-rankings",
+  "two-tight-end-te-premium-rankings",
 ];
 
 test("the scoring impact lab is shareable, explainable, and conversion tracked", () => {
@@ -99,6 +123,7 @@ test("every scoring surface is crawlable and internally linked", () => {
     assert.ok(scoringPageDefinitions.includes(`slug: "${slug}"`), `${slug} has a page definition`);
     assert.ok(indexNow.includes(`"/scoring/${slug}"`), `${slug} is sent to IndexNow`);
   }
+  assert.equal(newScoringSlugs.length, 32, "32 focused dynamic scoring boards ship");
   assert.match(sitemap, /scoringResearchPageSlugs\.map/);
   assert.match(scoringHub, /scoringResearchPages\.map/);
   assert.match(scoringHub, /"@type": "CollectionPage"/);

@@ -574,5 +574,325 @@
     "position": "WR",
     "editorialLens": "This receiver comparison separates market price from scoring fit and current-season utility. Standard, half-PPR, and full-PPR use player-specific reception evidence against WR replacement, while the redraft row gives contenders a distinct answer for the present window.",
     "decisionFrame": "Use the league’s reception setting and competitive window together, but keep any add bounded by the baseline dynasty gap rather than narrative alone."
+  },
+  {
+    "slug": "jaxson-dart-vs-brock-purdy",
+    "leftSlug": "jaxson-dart-qb",
+    "rightSlug": "brock-purdy-qb",
+    "position": "QB",
+    "editorialLens": "This quarterback comparison puts a rising young market price beside an established producer in a similar dynasty range. Superflex, 1QB, redraft, and six-point passing-touchdown rows separate scarcity, current utility, and passing production without inventing a projection.",
+    "decisionFrame": "Use the dynasty row for the long window and redraft for immediate need, then require the six-point setting to show a real edge before changing the price."
+  },
+  {
+    "slug": "patrick-mahomes-vs-jalen-hurts",
+    "leftSlug": "patrick-mahomes-qb",
+    "rightSlug": "jalen-hurts-qb",
+    "position": "QB",
+    "editorialLens": "Two proven premium quarterbacks create a clean test of market value versus scoring fit. The six-point passing-touchdown row measures passing output over replacement, while the 1QB and redraft rows show whether the Superflex dynasty answer survives a different league context.",
+    "decisionFrame": "Treat either player as a cornerstone, but price a swap from the displayed format gap rather than career reputation or one preferred style of quarterback play."
+  },
+  {
+    "slug": "joe-burrow-vs-lamar-jackson",
+    "leftSlug": "joe-burrow-qb",
+    "rightSlug": "lamar-jackson-qb",
+    "position": "QB",
+    "editorialLens": "This elite-quarterback decision is exactly where passing-touchdown scoring can matter without erasing the market anchor. The page measures six-point passing production against replacement and keeps 1QB, Superflex, dynasty, and redraft prices visible as separate questions.",
+    "decisionFrame": "Start with the row matching your quarterback demand, then use the six-point result as a measured adjustment—not permission to add a major asset automatically."
+  },
+  {
+    "slug": "caleb-williams-vs-jayden-daniels",
+    "leftSlug": "caleb-williams-qb",
+    "rightSlug": "jayden-daniels-qb",
+    "position": "QB",
+    "editorialLens": "Two young franchise quarterbacks make this a long-horizon decision with meaningful differences across market format and passing-touchdown rules. The comparison keeps observed scoring evidence, positional replacement, and the current composite market in distinct roles.",
+    "decisionFrame": "Use Superflex dynasty as the main price, inspect 1QB before paying for scarcity your league does not have, and keep any add inside the measured gap."
+  },
+  {
+    "slug": "drake-maye-vs-lamar-jackson",
+    "leftSlug": "drake-maye-qb",
+    "rightSlug": "lamar-jackson-qb",
+    "position": "QB",
+    "editorialLens": "This top-tier comparison tests a younger market trajectory against an established elite quarterback. Six-point passing touchdowns, 1QB replacement, and redraft value can narrow or widen the baseline without turning age or recent scoring into an unsupported forecast.",
+    "decisionFrame": "Match the row to the league and roster window first; only move a premium pick when the current value gap remains clear across the settings that matter."
+  },
+  {
+    "slug": "cj-stroud-vs-kyler-murray",
+    "leftSlug": "cj-stroud-qb",
+    "rightSlug": "kyler-murray-qb",
+    "position": "QB",
+    "editorialLens": "These quarterbacks can occupy a similar trade tier for different reasons, making format and scoring context useful tiebreakers. The page shows current dynasty, redraft, 1QB, Superflex, four-point, and six-point answers without blending them into one opinion.",
+    "decisionFrame": "Choose the row that matches your league and timeline, then keep the offer proportional when the players remain inside the same measured tier."
+  },
+  {
+    "slug": "tyler-shough-vs-cam-ward",
+    "leftSlug": "tyler-shough-qb",
+    "rightSlug": "cam-ward-qb",
+    "position": "QB",
+    "editorialLens": "This young-quarterback comparison focuses on two assets whose dynasty price can move faster than a settled veteran market. Replacement-relative passing evidence and distinct redraft, 1QB, and Superflex rows keep that volatility from becoming a made-up future outcome.",
+    "decisionFrame": "Use the current market as the negotiating anchor and resist paying for an imagined ceiling unless the format-specific gap already supports the extra value."
+  },
+  {
+    "slug": "bryce-young-vs-sam-darnold",
+    "leftSlug": "bryce-young-qb",
+    "rightSlug": "sam-darnold-qb",
+    "position": "QB",
+    "editorialLens": "This comparison separates dynasty runway from current-season quarterback utility. The Superflex and 1QB rows show how much price comes from starter scarcity, while passing-touchdown scoring measures each player against the same quarterback replacement point.",
+    "decisionFrame": "Contenders should inspect redraft utility and rebuilders the dynasty market, but neither side should pay a scarcity premium that a 1QB lineup cannot use."
+  },
+  {
+    "slug": "matthew-stafford-vs-dak-prescott",
+    "leftSlug": "matthew-stafford-qb",
+    "rightSlug": "dak-prescott-qb",
+    "position": "QB",
+    "editorialLens": "Two veteran quarterbacks make this a direct comparison of immediate utility, dynasty runway, and passing-touchdown fit. The page keeps redraft and long-term prices apart, then shows whether six-point passing scores create a meaningful replacement-relative change.",
+    "decisionFrame": "Price a contender move from redraft first, confirm the dynasty downside separately, and avoid adding value when the relevant rows stay in the same tier."
+  },
+  {
+    "slug": "jaxson-dart-vs-trevor-lawrence",
+    "leftSlug": "jaxson-dart-qb",
+    "rightSlug": "trevor-lawrence-qb",
+    "position": "QB",
+    "editorialLens": "This quarterback decision puts a newer dynasty asset against an established starter with a longer market record. Separate Superflex, 1QB, redraft, and passing-touchdown rows show whether the current price is driven by scarcity, season value, or scoring fit.",
+    "decisionFrame": "Use the dynasty baseline for the trade, redraft for a lineup emergency, and make any added piece reflect the measured gap rather than novelty or name recognition."
+  },
+  {
+    "slug": "quinshon-judkins-vs-breece-hall",
+    "leftSlug": "quinshon-judkins-rb",
+    "rightSlug": "breece-hall-rb",
+    "position": "RB",
+    "editorialLens": "This running back comparison puts two valuable dynasty assets with different market paths into the same scoring frame. Standard, Half PPR, Full PPR, and redraft values reveal whether reception production or current-season price actually changes the answer.",
+    "decisionFrame": "Anchor to dynasty for the long-term swap, check redraft if points now are the goal, and keep any add proportional to the league-specific value gap."
+  },
+  {
+    "slug": "javonte-williams-vs-kyren-williams",
+    "leftSlug": "javonte-williams-rb",
+    "rightSlug": "kyren-williams-rb",
+    "position": "RB",
+    "editorialLens": "Two similarly priced running backs create a useful test of reception scoring and current utility. The model measures each player’s scoring change against RB replacement, then keeps the redraft market separate from the longer dynasty decision.",
+    "decisionFrame": "Let the exact PPR row break a close tie and use redraft only for the current window; do not turn a narrow gap into an oversized offer."
+  },
+  {
+    "slug": "derrick-henry-vs-saquon-barkley",
+    "leftSlug": "derrick-henry-rb",
+    "rightSlug": "saquon-barkley-rb",
+    "position": "RB",
+    "editorialLens": "This veteran running back decision is built for contenders who need to separate current production value from dynasty resale price. Standard through Full PPR rows measure receiving differences against replacement instead of relying on a generic player archetype.",
+    "decisionFrame": "Begin with redraft when buying this season’s lineup points, then check whether the dynasty discount and scoring gap justify the complete trade package."
+  },
+  {
+    "slug": "derrick-henry-vs-christian-mccaffrey",
+    "leftSlug": "derrick-henry-rb",
+    "rightSlug": "christian-mccaffrey-rb",
+    "position": "RB",
+    "editorialLens": "Two veteran stars create a direct Standard-versus-PPR question alongside a separate win-now market. The comparison uses recorded receiving production over RB replacement and does not convert reputation, health assumptions, or future workload into hidden value.",
+    "decisionFrame": "Use redraft and the actual reception setting together, then discount the offer only as much as the published dynasty market already supports."
+  },
+  {
+    "slug": "cam-skattebo-vs-bucky-irving",
+    "leftSlug": "cam-skattebo-rb",
+    "rightSlug": "bucky-irving-rb",
+    "position": "RB",
+    "editorialLens": "This close running back market is a good place to test whether scoring format produces a real edge. Standard, Half PPR, Full PPR, dynasty, and redraft values share the same replacement logic while answering different roster questions.",
+    "decisionFrame": "Let the relevant scoring row settle a near-even price, but do not add a premium asset unless the players clearly leave the same market tier."
+  },
+  {
+    "slug": "bucky-irving-vs-travis-etienne",
+    "leftSlug": "bucky-irving-rb",
+    "rightSlug": "travis-etienne-rb",
+    "position": "RB",
+    "editorialLens": "These backs sit close enough for reception scoring and competitive window to matter. The page measures player-specific Standard-to-PPR movement against RB replacement and displays redraft separately so immediate need does not silently overwrite dynasty price.",
+    "decisionFrame": "Use PPR fit as a tiebreaker, redraft for a contender’s current need, and keep the final offer tied to the displayed market difference."
+  },
+  {
+    "slug": "travis-etienne-vs-treveyon-henderson",
+    "leftSlug": "travis-etienne-rb",
+    "rightSlug": "treveyon-henderson-rb",
+    "position": "RB",
+    "editorialLens": "This running back comparison contrasts a veteran current-season asset with a younger dynasty price. Standard, Half PPR, and Full PPR changes come from recorded production over replacement, while redraft isolates the lineup-now case.",
+    "decisionFrame": "Choose the market matching your roster window, then use reception scoring to refine the price rather than treating age or role expectations as facts."
+  },
+  {
+    "slug": "dandre-swift-vs-josh-jacobs",
+    "leftSlug": "dandre-swift-rb",
+    "rightSlug": "josh-jacobs-rb",
+    "position": "RB",
+    "editorialLens": "Two veteran backs with different receiving histories make this a practical format-specific trade decision. The table shows exactly how Standard, Half PPR, Full PPR, dynasty, and redraft alter the current value gap over RB replacement.",
+    "decisionFrame": "Match the row to the league and timeline first; when the result stays close, prefer roster fit instead of forcing a meaningful add."
+  },
+  {
+    "slug": "rj-harvey-vs-bhayshul-tuten",
+    "leftSlug": "rj-harvey-rb",
+    "rightSlug": "bhayshul-tuten-rb",
+    "position": "RB",
+    "editorialLens": "This young running back comparison keeps speculative upside inside a visible market framework. Reception scoring is applied only through recorded player evidence over replacement, and redraft remains separate from the longer dynasty price.",
+    "decisionFrame": "Use the current values as the offer anchor and let a genuine scoring edge break the tie, without paying for a future workload the data does not claim."
+  },
+  {
+    "slug": "ashton-jeanty-vs-bijan-robinson",
+    "leftSlug": "ashton-jeanty-rb",
+    "rightSlug": "bijan-robinson-rb",
+    "position": "RB",
+    "editorialLens": "This premium running back comparison asks how much separates an elite market leader from another top dynasty asset. Standard through Full PPR and redraft rows show whether scoring or current utility closes the baseline gap.",
+    "decisionFrame": "Treat the top asset’s market premium as real until the relevant league row narrows it, and do not assume two elite names require a straight swap."
+  },
+  {
+    "slug": "jahmyr-gibbs-vs-ashton-jeanty",
+    "leftSlug": "jahmyr-gibbs-rb",
+    "rightSlug": "ashton-jeanty-rb",
+    "position": "RB",
+    "editorialLens": "Two elite dynasty running backs create a high-stakes comparison where even a modest percentage gap can equal a useful pick. The page shows the market baseline plus Standard, Half PPR, Full PPR, and current-season redraft answers.",
+    "decisionFrame": "Use percentage gap and tier context before attaching a pick, and verify that the premium survives the scoring format your league actually uses."
+  },
+  {
+    "slug": "chase-brown-vs-kenneth-walker",
+    "leftSlug": "chase-brown-rb",
+    "rightSlug": "kenneth-walker-rb",
+    "position": "RB",
+    "editorialLens": "This near-tier running back decision tests whether reception scoring changes an already close dynasty market. Player-specific Standard-to-PPR movement is measured against replacement, with a separate redraft row for immediate lineup value.",
+    "decisionFrame": "Let the actual scoring setting and roster window break the tie, while keeping any balancing asset small when the baseline values remain close."
+  },
+  {
+    "slug": "rashee-rice-vs-zay-flowers",
+    "leftSlug": "rashee-rice-wr",
+    "rightSlug": "zay-flowers-wr",
+    "position": "WR",
+    "editorialLens": "These receivers begin in nearly the same dynasty range, so reception scoring and current-season value can produce the actionable difference. The page measures each profile against WR replacement instead of awarding a generic PPR label.",
+    "decisionFrame": "Use the exact reception row to break a close market tie and inspect redraft separately before a contender adds anything beyond the measured gap."
+  },
+  {
+    "slug": "zay-flowers-vs-luther-burden",
+    "leftSlug": "zay-flowers-wr",
+    "rightSlug": "luther-burden-wr",
+    "position": "WR",
+    "editorialLens": "This receiver comparison puts established market value and a younger dynasty asset on equal footing. Standard, Half PPR, Full PPR, and redraft rows expose whether reception production or competitive window changes the current order.",
+    "decisionFrame": "Choose the row matching the roster’s timeline, then keep any add proportional when the league-specific values remain inside one tier."
+  },
+  {
+    "slug": "aj-brown-vs-jaylen-waddle",
+    "leftSlug": "aj-brown-wr",
+    "rightSlug": "jaylen-waddle-wr",
+    "position": "WR",
+    "editorialLens": "Two established receivers make this a clean dynasty-runway versus immediate-utility decision. Reception scoring is measured against the same WR replacement line, while the redraft market gives contenders a separate view of present value.",
+    "decisionFrame": "Start with dynasty or redraft according to the roster window, then use the exact PPR setting to decide whether the displayed gap deserves an add."
+  },
+  {
+    "slug": "tee-higgins-vs-rome-odunze",
+    "leftSlug": "tee-higgins-wr",
+    "rightSlug": "rome-odunze-wr",
+    "position": "WR",
+    "editorialLens": "This close receiver tier compares two different dynasty timelines without guessing future roles. Standard through Full PPR adjustments use recorded reception production over replacement, and redraft remains a distinct current-season market.",
+    "decisionFrame": "Use the format row that matches the decision and treat a narrow result as preference, not evidence that the other manager owes a meaningful premium."
+  },
+  {
+    "slug": "marvin-harrison-jr-vs-jameson-williams",
+    "leftSlug": "marvin-harrison-jr-wr",
+    "rightSlug": "jameson-williams-wr",
+    "position": "WR",
+    "editorialLens": "This receiver decision separates long-term market price, current-season utility, and reception scoring. The page keeps Standard, Half PPR, Full PPR, dynasty, and redraft values visible so one narrative cannot stand in for every format.",
+    "decisionFrame": "Price the trade from the relevant market first, then use reception scoring only where the measured replacement-relative difference supports it."
+  },
+  {
+    "slug": "brian-thomas-vs-parker-washington",
+    "leftSlug": "brian-thomas-wr",
+    "rightSlug": "parker-washington-wr",
+    "position": "WR",
+    "editorialLens": "A same-team receiver comparison makes the market gap and reception evidence more useful than a vague offense narrative. Standard through Full PPR values are calculated independently, with redraft showing the current-season price beside dynasty.",
+    "decisionFrame": "Respect a clear market tier difference, and use the scoring rows to size the gap rather than assuming teammates share the same role or ceiling."
+  },
+  {
+    "slug": "matthew-golden-vs-jordan-addison",
+    "leftSlug": "matthew-golden-wr",
+    "rightSlug": "jordan-addison-wr",
+    "position": "WR",
+    "editorialLens": "These similarly priced receivers create a useful choice between different career stages and current roles. The comparison uses measured reception scoring over WR replacement and a separate redraft market, without inventing future target shares.",
+    "decisionFrame": "Let the roster window choose dynasty or redraft, then use the actual PPR setting as the tiebreaker when the baseline remains close."
+  },
+  {
+    "slug": "alec-pierce-vs-josh-downs",
+    "leftSlug": "alec-pierce-wr",
+    "rightSlug": "josh-downs-wr",
+    "position": "WR",
+    "editorialLens": "This same-team receiver decision is built to reveal whether reception scoring separates two different production profiles. Standard, Half PPR, Full PPR, dynasty, and redraft stay visible rather than collapsing role assumptions into one ranking.",
+    "decisionFrame": "Use the reception row matching the league and keep any balancing piece small unless the current market and redraft context point the same way."
+  },
+  {
+    "slug": "puka-nacua-vs-justin-jefferson",
+    "leftSlug": "puka-nacua-wr",
+    "rightSlug": "justin-jefferson-wr",
+    "position": "WR",
+    "editorialLens": "Two elite receivers create a premium trade decision where a modest percentage gap can still carry real value. The page compares Standard, Half PPR, Full PPR, dynasty, and redraft using the same WR replacement framework.",
+    "decisionFrame": "Check the percentage gap before attaching a premium pick, and require the difference to persist in the league’s reception setting and roster window."
+  },
+  {
+    "slug": "ceedee-lamb-vs-malik-nabers",
+    "leftSlug": "ceedee-lamb-wr",
+    "rightSlug": "malik-nabers-wr",
+    "position": "WR",
+    "editorialLens": "This top-tier receiver comparison measures an established elite market against a younger premium asset. Reception scoring and redraft context can move the price, but the current dynasty composite remains the transparent starting point.",
+    "decisionFrame": "Treat a small top-tier difference as negotiable, but do not ignore a clear current market gap simply because both players belong in elite lineups."
+  },
+  {
+    "slug": "drake-london-vs-george-pickens",
+    "leftSlug": "drake-london-wr",
+    "rightSlug": "george-pickens-wr",
+    "position": "WR",
+    "editorialLens": "These high-value receivers can trade differently in dynasty, redraft, and reception-based formats. The page measures each Standard-to-PPR change against WR replacement, keeping scoring evidence separate from market price and future expectations.",
+    "decisionFrame": "Use the league-specific row to price the difference and avoid paying for an assumed target profile that the published data does not claim."
+  },
+  {
+    "slug": "nico-collins-vs-tetairoa-mcmillan",
+    "leftSlug": "nico-collins-wr",
+    "rightSlug": "tetairoa-mcmillan-wr",
+    "position": "WR",
+    "editorialLens": "This receiver comparison contrasts an established high-end market with a younger dynasty asset at a nearby price. Standard through Full PPR and redraft rows show where reception profile or current window creates a measurable difference.",
+    "decisionFrame": "Choose the market that matches your roster timeline, then keep any add inside the displayed scoring-specific gap rather than paying for age alone."
+  },
+  {
+    "slug": "chris-olave-vs-emeka-egbuka",
+    "leftSlug": "chris-olave-wr",
+    "rightSlug": "emeka-egbuka-wr",
+    "position": "WR",
+    "editorialLens": "Two valuable receivers with close market prices make reception scoring and dynasty timeline legitimate tiebreakers. The comparison calculates Standard, Half PPR, Full PPR, and redraft views independently against the same WR replacement line.",
+    "decisionFrame": "Let the relevant league row settle a close offer, while keeping the trade balanced when neither player leaves the current value tier."
+  },
+  {
+    "slug": "george-kittle-vs-sam-laporta",
+    "leftSlug": "george-kittle-te",
+    "rightSlug": "sam-laporta-te",
+    "position": "TE",
+    "editorialLens": "This tight end comparison separates a veteran win-now market from a younger dynasty asset. Standard through Full PPR values use TE replacement, while the premium and redraft rows show whether scarcity or current utility changes the answer.",
+    "decisionFrame": "Use redraft for immediate lineup value and dynasty for the longer window, then check the exact tight end and reception settings before pricing an add."
+  },
+  {
+    "slug": "dalton-kincaid-vs-kyle-pitts",
+    "leftSlug": "dalton-kincaid-te",
+    "rightSlug": "kyle-pitts-te",
+    "position": "TE",
+    "editorialLens": "Two similarly priced tight ends can separate meaningfully when reception scoring and positional replacement are explicit. The page keeps Standard, Half PPR, Full PPR, TEP, dynasty, and redraft prices distinct instead of guessing future opportunity.",
+    "decisionFrame": "Treat the result as a roster-fit decision and avoid paying a meaningful premium unless the exact league setting creates a clear measured edge."
+  },
+  {
+    "slug": "tyler-warren-vs-sam-laporta",
+    "leftSlug": "tyler-warren-te",
+    "rightSlug": "sam-laporta-te",
+    "position": "TE",
+    "editorialLens": "This high-value tight end comparison is designed for managers weighing two different dynasty timelines. Reception and TEP adjustments are measured over TE replacement, with redraft shown separately from the dynasty market.",
+    "decisionFrame": "Use redraft for immediate need and the exact reception rule for the final price check, while keeping any add tied to the current dynasty gap."
+  },
+  {
+    "slug": "sam-laporta-vs-harold-fannin",
+    "leftSlug": "sam-laporta-te",
+    "rightSlug": "harold-fannin-te",
+    "position": "TE",
+    "editorialLens": "This high-interest tight end comparison tests two strong dynasty prices across ordinary reception scoring, TE premium, and redraft. The model measures each player over tight end replacement instead of treating the premium as a blanket multiplier.",
+    "decisionFrame": "Check the TEP row before paying a positional premium, then confirm that the dynasty or redraft market matches the roster window behind the move."
+  },
+  {
+    "slug": "tucker-kraft-vs-kyle-pitts",
+    "leftSlug": "tucker-kraft-te",
+    "rightSlug": "kyle-pitts-te",
+    "position": "TE",
+    "editorialLens": "These tight ends occupy a decision range where market price, reception volume, and premium scoring can pull in different directions. Standard, Half PPR, Full PPR, TEP, dynasty, and redraft remain visible as separate answers.",
+    "decisionFrame": "Use the row matching the league and competitive window, and keep any add proportional when the current values remain within the same tight end tier."
   }
 ]
