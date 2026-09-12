@@ -61,10 +61,10 @@ test("new releases publish validated compact scoring-profile cohorts", () => {
 test("every configured player page has a validated profile", () => {
   const currentMarket = release.playerMarkets["dynasty:2:0"].data;
 
-  assert.equal(playerPages.length, 200);
-  assert.equal(new Set(playerPages.map((page) => page.slug)).size, 200);
+  assert.equal(playerPages.length, 220);
+  assert.equal(new Set(playerPages.map((page) => page.slug)).size, 220);
   assert.ok(new Set(playerPages.map((page) => page.image.src)).size >= 85);
-  assert.equal(Object.keys(release.playerProfiles).length, 200);
+  assert.equal(Object.keys(release.playerProfiles).length, 220);
 
   for (const page of playerPages) {
     const profile = release.playerProfiles[page.slug];

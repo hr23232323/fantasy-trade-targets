@@ -976,5 +976,107 @@
     "src": "/images/players/dontayvion-wicks-wr.jpg",
     "width": 720,
     "height": 960
+  },
+  {
+    "slug": "braelon-allen-rb",
+    "src": "/images/players/braelon-allen-rb.jpg",
+    "width": 888,
+    "height": 960
+  },
+  {
+    "slug": "keaton-mitchell-rb",
+    "src": "/images/players/keaton-mitchell-rb.jpg",
+    "width": 640,
+    "height": 960
+  },
+  {
+    "slug": "adonai-mitchell-wr",
+    "src": "/images/players/adonai-mitchell-wr.jpg",
+    "width": 744,
+    "height": 960
+  },
+  {
+    "slug": "greg-dulcich-te",
+    "src": "/images/players/greg-dulcich-te.jpg",
+    "width": 566,
+    "height": 960
+  },
+  {
+    "slug": "jaylin-noel-wr",
+    "src": "/images/players/jaylin-noel-wr.jpg",
+    "width": 960,
+    "height": 945
+  },
+  {
+    "slug": "drew-allar-qb",
+    "src": "/images/players/drew-allar-qb.jpg",
+    "width": 672,
+    "height": 960
+  },
+  {
+    "slug": "alvin-kamara-rb",
+    "src": "/images/players/alvin-kamara-rb.jpg",
+    "width": 694,
+    "height": 960
+  },
+  {
+    "slug": "shedeur-sanders-qb",
+    "src": "/images/players/shedeur-sanders-qb.jpg",
+    "width": 687,
+    "height": 960
+  },
+  {
+    "slug": "jerry-jeudy-wr",
+    "src": "/images/players/jerry-jeudy-wr.jpg",
+    "width": 676,
+    "height": 960
+  },
+  {
+    "slug": "cade-otton-te",
+    "src": "/images/players/cade-otton-te.jpg",
+    "width": 614,
+    "height": 960
+  },
+  {
+    "slug": "tyrone-tracy-rb",
+    "src": "/images/players/tyrone-tracy-rb.jpg",
+    "width": 819,
+    "height": 960
+  },
+  {
+    "slug": "keon-coleman-wr",
+    "src": "/images/players/keon-coleman-wr.jpg",
+    "width": 720,
+    "height": 960
+  },
+  {
+    "slug": "ted-hurst-wr",
+    "src": "/images/players/ted-hurst-wr.jpg",
+    "width": 745,
+    "height": 960
+  },
+  {
+    "slug": "keenan-allen-wr",
+    "src": "/images/players/keenan-allen-wr.jpg",
+    "width": 681,
+    "height": 960
+  },
+  {
+    "slug": "malik-davis-rb",
+    "src": "/images/players/malik-davis-rb.jpg",
+    "width": 879,
+    "height": 960
+  },
+  {
+    "slug": "mac-jones-qb",
+    "src": "/images/players/mac-jones-qb.jpg",
+    "width": 766,
+    "height": 960
+  },
+  {
+    "slug": "pat-freiermuth-te",
+    "src": "/images/players/pat-freiermuth-te.jpg",
+    "width": 720,
+    "height": 960
   }
 ]

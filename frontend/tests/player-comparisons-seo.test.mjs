@@ -45,7 +45,7 @@ const comparisonMarkets = ["dynasty:2:0", "dynasty:1:0", "dynasty:2:1", "redraft
 const publishedPlayers = new Set(playerManifest.map((player) => player.slug));
 
 test("the comparison collection expands in reviewed batches", () => {
-  assert.equal(manifest.length, 64, "64 detail pages plus one hub should ship");
+  assert.equal(manifest.length, 72, "72 detail pages plus one hub should ship");
   assert.match(hub, /\{comparisons\.length\} decisions worth measuring/);
   assert.match(hub, /Compare \{distinctPlayerCount\} players/);
   assert.match(detail, /The short answer/);
@@ -54,9 +54,9 @@ test("the comparison collection expands in reviewed batches", () => {
   assert.match(detail, /Same-position decisions/);
 });
 
-test("64 comparisons cover reviewed, scoring-covered players", () => {
+test("72 comparisons cover reviewed, scoring-covered players", () => {
   const usedPlayers = manifest.flatMap(({ leftSlug, rightSlug }) => [leftSlug, rightSlug]);
-  assert.equal(new Set(usedPlayers).size, 111);
+  assert.equal(new Set(usedPlayers).size, 118);
   assert.deepEqual(
     Object.fromEntries(
       ["QB", "RB", "WR", "TE"].map((position) => [
@@ -64,7 +64,7 @@ test("64 comparisons cover reviewed, scoring-covered players", () => {
         manifest.filter((comparison) => comparison.position === position).length,
       ]),
     ),
-    { QB: 12, RB: 18, WR: 21, TE: 13 },
+    { QB: 12, RB: 24, WR: 23, TE: 13 },
   );
 
   for (const comparison of manifest) {
