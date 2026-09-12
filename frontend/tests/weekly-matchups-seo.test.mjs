@@ -2,9 +2,10 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-const [hub, detail, data, sitemap, indexNow, home, footer, release] = await Promise.all([
+const [hub, detail, gameDetail, data, sitemap, indexNow, home, footer, release] = await Promise.all([
   readFile(new URL("../src/app/fantasy-football-matchups/page.tsx", import.meta.url), "utf8"),
   readFile(new URL("../src/app/fantasy-football-matchups/[slug]/page.tsx", import.meta.url), "utf8"),
+  readFile(new URL("../src/app/fantasy-football-matchups/[slug]/[gameSlug]/page.tsx", import.meta.url), "utf8"),
   readFile(new URL("../src/app/lib/weekly-matchups.ts", import.meta.url), "utf8"),
   readFile(new URL("../src/app/sitemap.ts", import.meta.url), "utf8"),
   readFile(new URL("../scripts/submit-indexnow.mjs", import.meta.url), "utf8"),
@@ -50,4 +51,23 @@ test("weekly matchup pages are crawlable and connected to the site", () => {
   assert.match(indexNow, /"\/fantasy-football-matchups"/);
   assert.match(home, /href="\/fantasy-football-matchups"/);
   assert.match(footer, /\["Weekly matchups", "\/fantasy-football-matchups"\]/);
+});
+
+test("the Week 1 experiment publishes every individual game and links from the slate", () => {
+  const uniqueGames = new Set(
+    Object.values(release.teams)
+      .flatMap((team) => team.schedule)
+      .filter((game) => game.week === 1)
+      .map((game) => game.gameId),
+  );
+  assert.equal(uniqueGames.size, 16);
+  assert.match(data, /matchupExperimentWeek = 1/);
+  assert.match(data, /matchupExperimentGames/);
+  assert.match(data, /matchupGameSlug/);
+  assert.match(detail, /Open this matchup/);
+  assert.match(gameDetail, /generateStaticParams/);
+  assert.match(gameDetail, /game_matchup_experiment_viewed/);
+  assert.match(gameDetail, /not an injury report, projection, start\/sit recommendation, or betting pick/i);
+  assert.match(sitemap, /matchupExperimentGames\.map/);
+  assert.match(indexNow, /matchupExperimentPaths/);
 });

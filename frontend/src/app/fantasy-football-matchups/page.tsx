@@ -61,6 +61,9 @@ export default function WeeklyMatchupsHub() {
             );
           })}
         </div>
+        <div className="mt-8 flex justify-end">
+          <Link href="/fantasy-football-strength-of-schedule" className="border border-[#171c19] bg-[#dfff4f] px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.08em] shadow-[4px_4px_0_#171c19]">Rank every team by week →</Link>
+        </div>
       </section>
 
       <aside className="page-wrap border-t border-[#9d9a91] py-8 text-xs leading-6 text-[#69706c]">

@@ -3,6 +3,7 @@ import type { TeamGame, TeamProfile } from "../types/Team";
 
 export const regularSeasonWeeks = Array.from({ length: 18 }, (_, index) => index + 1);
 export const weeklyMatchupSlugs = regularSeasonWeeks.map((week) => `week-${week}`);
+export const matchupExperimentWeek = 1;
 
 export type WeeklyMatchup = {
   gameId: string;
@@ -64,6 +65,26 @@ export function getWeeklyMatchups(week: number): WeeklyMatchup[] {
   return matchups.sort((left, right) =>
     `${left.date}T${left.time ?? "23:59"}`.localeCompare(`${right.date}T${right.time ?? "23:59"}`),
   );
+}
+
+export function matchupGameSlug(matchup: WeeklyMatchup) {
+  return `${matchup.away.slug}-vs-${matchup.home.slug}`;
+}
+
+export const matchupExperimentGames = getWeeklyMatchups(matchupExperimentWeek).map(
+  (matchup) => ({
+    weekSlug: `week-${matchup.week}`,
+    gameSlug: matchupGameSlug(matchup),
+    gameId: matchup.gameId,
+  }),
+);
+
+export function getMatchupExperimentGame(weekSlug: string, gameSlug: string) {
+  const week = weekFromSlug(weekSlug);
+  if (week !== matchupExperimentWeek) return null;
+  return getWeeklyMatchups(week).find(
+    (matchup) => matchupGameSlug(matchup) === gameSlug,
+  ) ?? null;
 }
 
 export function getWeekDateRange(week: number) {

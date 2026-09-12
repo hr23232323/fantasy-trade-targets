@@ -16,6 +16,8 @@ import {
 } from "../../lib/team-data";
 import {
   getWeeklyMatchups,
+  matchupExperimentWeek,
+  matchupGameSlug,
   matchupIsComplete,
   weekFromSlug,
   weeklyMatchupRelease,
@@ -108,6 +110,14 @@ export default async function WeeklyMatchupPage({ params }: PageProps) {
                   <dt className="text-[#69706c]">Venue</dt><dd className="font-medium">{matchup.stadium ?? "TBD"}</dd>
                   <dt className="text-[#69706c]">Surface</dt><dd className="font-medium">{readableSurface(matchup.surface) ?? "TBD"}{matchup.roof ? ` · ${readableSurface(matchup.roof)}` : ""}</dd>
                 </dl>
+                {week === matchupExperimentWeek ? (
+                  <Link
+                    href={`/fantasy-football-matchups/${slug}/${matchupGameSlug(matchup)}`}
+                    className="mt-5 block border border-[#171c19] bg-white px-4 py-3 text-center font-mono text-[10px] font-black uppercase tracking-[0.08em] hover:bg-[#dfff4f]"
+                  >
+                    Open this matchup →
+                  </Link>
+                ) : null}
               </article>
             );
           })}

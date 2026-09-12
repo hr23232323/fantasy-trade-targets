@@ -2,10 +2,12 @@ import type { MetadataRoute } from "next";
 import { getMarketReleaseInfo } from "./lib/market";
 import { playerPages } from "./lib/player-pages";
 import { playerComparisons } from "./lib/player-comparisons";
+import { playerPickComparisons } from "./lib/player-pick-comparisons";
 import { rookiePickPages } from "./lib/rookie-picks";
 import { scoringResearchPageSlugs } from "./lib/scoring-research-pages";
+import { scheduleRatingSlugs } from "./lib/schedule-ratings";
 import { teamRelease, teams } from "./lib/team-data";
-import { weeklyMatchupSlugs } from "./lib/weekly-matchups";
+import { matchupExperimentGames, weeklyMatchupSlugs } from "./lib/weekly-matchups";
 
 const BASE_URL = "https://fantasytradetarget.com";
 
@@ -21,6 +23,7 @@ const staticRoutes = [
   "/editorial-policy",
   "/fantasy-football-trade-analyzer",
   "/fantasy-football-matchups",
+  "/fantasy-football-strength-of-schedule",
   "/fantasy-football-trade-targets",
   "/fantasy-football-trade-value-chart",
   "/fantasy-trade-calculator",
@@ -29,6 +32,7 @@ const staticRoutes = [
   "/market",
   "/players",
   "/player-comparisons",
+  "/player-vs-rookie-pick",
   "/privacy-policy",
   "/rookie-pick-values",
   "/scoring",
@@ -48,6 +52,7 @@ const marketDrivenRoutes = new Set([
   "/fantasy-football-matchups",
   "/market",
   "/player-comparisons",
+  "/player-vs-rookie-pick",
   "/players",
   "/rookie-pick-values",
   "/scoring",
@@ -71,6 +76,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE_URL}/player-comparisons/${comparison.slug}`,
       lastModified: marketUpdated,
     })),
+    ...playerPickComparisons.map((comparison) => ({
+      url: `${BASE_URL}/player-vs-rookie-pick/${comparison.slug}`,
+      lastModified: marketUpdated,
+    })),
     ...rookiePickPages.map((pick) => ({
       url: `${BASE_URL}/rookie-pick-values/${pick.slug}`,
       lastModified: marketUpdated,
@@ -81,6 +90,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...weeklyMatchupSlugs.map((slug) => ({
       url: `${BASE_URL}/fantasy-football-matchups/${slug}`,
+      lastModified: teamRelease.capturedAt,
+    })),
+    ...matchupExperimentGames.map(({ weekSlug, gameSlug }) => ({
+      url: `${BASE_URL}/fantasy-football-matchups/${weekSlug}/${gameSlug}`,
+      lastModified: teamRelease.capturedAt,
+    })),
+    ...scheduleRatingSlugs.map((slug) => ({
+      url: `${BASE_URL}/fantasy-football-strength-of-schedule/${slug}`,
       lastModified: teamRelease.capturedAt,
     })),
     ...teams.map((team) => ({

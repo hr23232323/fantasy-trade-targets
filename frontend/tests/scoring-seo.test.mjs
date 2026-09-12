@@ -73,6 +73,16 @@ const newScoringSlugs = [
   "redraft-standard-rankings",
   "two-tight-end-dynasty-rankings",
   "two-tight-end-te-premium-rankings",
+  "8-team-superflex-dynasty-rankings",
+  "10-team-superflex-dynasty-rankings",
+  "12-team-superflex-dynasty-rankings",
+  "14-team-superflex-dynasty-rankings",
+  "16-team-superflex-dynasty-rankings",
+  "8-team-1qb-dynasty-rankings",
+  "10-team-1qb-dynasty-rankings",
+  "12-team-1qb-dynasty-rankings",
+  "14-team-1qb-dynasty-rankings",
+  "16-team-1qb-dynasty-rankings",
 ];
 
 test("the scoring impact lab is shareable, explainable, and conversion tracked", () => {
@@ -123,7 +133,7 @@ test("every scoring surface is crawlable and internally linked", () => {
     assert.ok(scoringPageDefinitions.includes(`slug: "${slug}"`), `${slug} has a page definition`);
     assert.ok(indexNow.includes(`"/scoring/${slug}"`), `${slug} is sent to IndexNow`);
   }
-  assert.equal(newScoringSlugs.length, 32, "32 focused dynamic scoring boards ship");
+  assert.equal(newScoringSlugs.length, 42, "42 focused dynamic scoring boards ship");
   assert.match(sitemap, /scoringResearchPageSlugs\.map/);
   assert.match(scoringHub, /scoringResearchPages\.map/);
   assert.match(scoringHub, /"@type": "CollectionPage"/);

@@ -123,6 +123,7 @@ export default function RookiePickValuesPage() {
           <div className="mt-8 flex flex-wrap gap-3">
             <TrackedLink href="#pick-index" analyticsEvent="rookie_pick_navigation_clicked" analyticsProperties={{ source: "rookie_pick_hub", destination: "pick_index" }} className="border border-white bg-[#dfff4f] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#ff6b3d]">Choose an exact pick ↓</TrackedLink>
             <TrackedLink href="/dynasty-trade-calculator" analyticsEvent="rookie_pick_navigation_clicked" analyticsProperties={{ source: "rookie_pick_hub", destination: "calculator" }} className="border border-white/40 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.07em] hover:bg-white hover:text-[#171c19]">Price a complete offer →</TrackedLink>
+            <TrackedLink href="/player-vs-rookie-pick" analyticsEvent="rookie_pick_navigation_clicked" analyticsProperties={{ source: "rookie_pick_hub", destination: "player_vs_pick" }} className="border border-white/40 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.07em] hover:bg-white hover:text-[#171c19]">Compare players vs. picks →</TrackedLink>
           </div>
         </div>
       </section>

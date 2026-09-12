@@ -4,6 +4,8 @@ Date: 2026-09-12
 Market: United States, Google Search  
 Primary audience: redraft and dynasty fantasy football managers
 
+Ongoing launch and measurement decisions follow the bounded cohort process in [SEO_EXPERIMENT_PLAYBOOK.md](./SEO_EXPERIMENT_PLAYBOOK.md). That file is the durable rule for deciding what to test, when to measure, and when a page type earns another batch.
+
 ## Decision
 
 The best immediate expansion is not a generic fantasy news section or a sports-betting pivot. Fantasy Trade Target already earns search visibility where a page gives one current, measurable answer: scoring-format rankings, exact player comparisons, rookie-pick values, and player market files. The next release should deepen those clusters and introduce weekly schedule pages that the current data can support without pretending to offer projections.

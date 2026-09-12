@@ -12,6 +12,9 @@ const teamRelease = JSON.parse(
 const playerComparisons = JSON.parse(
   await readFile(new URL("../data/player-comparisons.json", import.meta.url), "utf8"),
 );
+const playerPickComparisons = JSON.parse(
+  await readFile(new URL("../data/player-pick-comparisons.json", import.meta.url), "utf8"),
+);
 const rookiePickPages = JSON.parse(
   await readFile(new URL("../data/rookie-pick-pages.json", import.meta.url), "utf8"),
 );
@@ -49,12 +52,41 @@ const scoringResearchPaths = [
   "/scoring/redraft-standard-rankings",
   "/scoring/two-tight-end-dynasty-rankings",
   "/scoring/two-tight-end-te-premium-rankings",
+  "/scoring/8-team-superflex-dynasty-rankings",
+  "/scoring/10-team-superflex-dynasty-rankings",
+  "/scoring/12-team-superflex-dynasty-rankings",
+  "/scoring/14-team-superflex-dynasty-rankings",
+  "/scoring/16-team-superflex-dynasty-rankings",
+  "/scoring/8-team-1qb-dynasty-rankings",
+  "/scoring/10-team-1qb-dynasty-rankings",
+  "/scoring/12-team-1qb-dynasty-rankings",
+  "/scoring/14-team-1qb-dynasty-rankings",
+  "/scoring/16-team-1qb-dynasty-rankings",
 ];
 
 const weeklyMatchupPaths = Array.from(
   { length: 18 },
   (_, index) => `/fantasy-football-matchups/week-${index + 1}`,
 );
+const scheduleRatingPaths = Array.from(
+  { length: 18 },
+  (_, index) => `/fantasy-football-strength-of-schedule/week-${index + 1}`,
+);
+const teamAliases = { LA: "LAR", SFO: "SF", TBB: "TB", OAK: "LV", SD: "LAC", STL: "LAR" };
+const canonicalTeam = (abbr) => teamAliases[abbr] ?? abbr;
+const matchupExperimentPaths = [];
+const seenWeekOneGames = new Set();
+for (const team of Object.values(teamRelease.teams)) {
+  for (const game of team.schedule.filter((candidate) => candidate.week === 1)) {
+    if (seenWeekOneGames.has(game.gameId)) continue;
+    seenWeekOneGames.add(game.gameId);
+    const opponent = teamRelease.teams[canonicalTeam(game.opponentAbbr)];
+    if (!opponent) continue;
+    const away = game.site === "away" ? team : opponent;
+    const home = game.site === "away" ? opponent : team;
+    matchupExperimentPaths.push(`/fantasy-football-matchups/week-1/${away.slug}-vs-${home.slug}`);
+  }
+}
 
 const changedPaths = [
   "",
@@ -70,8 +102,10 @@ const changedPaths = [
   "/fantasy-trade-calculator",
   "/fantasy-football-trade-analyzer",
   "/fantasy-football-matchups",
+  "/fantasy-football-strength-of-schedule",
   "/fantasy-football-trade-targets",
   "/fantasy-football-trade-value-chart",
+  "/player-vs-rookie-pick",
   "/data-sources",
   "/methodology",
   "/scoring",
@@ -82,8 +116,11 @@ const changedPaths = [
   "/scoring/standard-vs-ppr-player-values",
   ...scoringResearchPaths,
   ...weeklyMatchupPaths,
+  ...matchupExperimentPaths,
+  ...scheduleRatingPaths,
   ...playerPages.map((player) => `/players/${player.slug}`),
   ...playerComparisons.map((comparison) => `/player-comparisons/${comparison.slug}`),
+  ...playerPickComparisons.map((comparison) => `/player-vs-rookie-pick/${comparison.slug}`),
   ...rookiePickPages.map((pick) => `/rookie-pick-values/${pick.slug}`),
   ...Object.values(teamRelease.teams).map((team) => `/teams/${team.slug}`),
 ];
