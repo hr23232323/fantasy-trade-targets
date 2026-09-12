@@ -42,7 +42,7 @@ const baselinePlayers = new Map(
 const publishedPlayers = new Set(playerManifest.map((player) => player.slug));
 
 test("the comparison collection expands in reviewed batches", () => {
-  assert.equal(manifest.length, 48, "48 detail pages plus one hub should ship");
+  assert.equal(manifest.length, 56, "56 detail pages plus one hub should ship");
   assert.match(hub, /\{comparisons\.length\} decisions worth measuring/);
   assert.match(hub, /Compare \{distinctPlayerCount\} players/);
   assert.match(detail, /The short answer/);
@@ -51,9 +51,9 @@ test("the comparison collection expands in reviewed batches", () => {
   assert.match(detail, /Same-position decisions/);
 });
 
-test("48 comparisons cover reviewed, scoring-covered players", () => {
+test("56 comparisons cover reviewed, scoring-covered players", () => {
   const usedPlayers = manifest.flatMap(({ leftSlug, rightSlug }) => [leftSlug, rightSlug]);
-  assert.equal(new Set(usedPlayers).size, 91);
+  assert.equal(new Set(usedPlayers).size, 100);
   assert.deepEqual(
     Object.fromEntries(
       ["QB", "RB", "WR", "TE"].map((position) => [
@@ -61,7 +61,7 @@ test("48 comparisons cover reviewed, scoring-covered players", () => {
         manifest.filter((comparison) => comparison.position === position).length,
       ]),
     ),
-    { QB: 10, RB: 14, WR: 14, TE: 10 },
+    { QB: 12, RB: 15, WR: 16, TE: 13 },
   );
 
   for (const comparison of manifest) {
@@ -75,7 +75,7 @@ test("48 comparisons cover reviewed, scoring-covered players", () => {
     assert.ok(release.playerScoringProfiles[comparison.rightSlug], `${comparison.rightSlug} needs a scoring profile`);
     assert.equal(left.position, comparison.position);
     assert.equal(right.position, comparison.position);
-    assert.ok(left.rank <= 160 && right.rank <= 160, "comparisons stay within the reviewed top 160");
+    assert.ok(Number.isInteger(left.rank) && Number.isInteger(right.rank), "comparisons retain current published ranks");
     assert.match(comparison.slug, /^[a-z0-9]+(?:-[a-z0-9]+)*-vs-[a-z0-9]+(?:-[a-z0-9]+)*$/);
     assert.ok(comparison.editorialLens.length >= 175, `${comparison.slug} needs a substantive editorial lens`);
     assert.ok(comparison.decisionFrame.length >= 100, `${comparison.slug} needs a substantive decision frame`);

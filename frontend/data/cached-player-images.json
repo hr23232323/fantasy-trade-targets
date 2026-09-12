@@ -820,5 +820,95 @@
     "src": "/images/players/rachaad-white-rb.jpg",
     "width": 770,
     "height": 960
+  },
+  {
+    "slug": "tua-tagovailoa-qb",
+    "src": "/images/players/tua-tagovailoa-qb.jpg",
+    "width": 694,
+    "height": 960
+  },
+  {
+    "slug": "chig-okonkwo-te",
+    "src": "/images/players/chig-okonkwo-te.jpg",
+    "width": 802,
+    "height": 960
+  },
+  {
+    "slug": "germie-bernard-wr",
+    "src": "/images/players/germie-bernard-wr.jpg",
+    "width": 960,
+    "height": 960
+  },
+  {
+    "slug": "jakobi-meyers-wr",
+    "src": "/images/players/jakobi-meyers-wr.jpg",
+    "width": 732,
+    "height": 960
+  },
+  {
+    "slug": "aaron-rodgers-qb",
+    "src": "/images/players/aaron-rodgers-qb.jpg",
+    "width": 733,
+    "height": 960
+  },
+  {
+    "slug": "tj-hockenson-te",
+    "src": "/images/players/tj-hockenson-te.jpg",
+    "width": 960,
+    "height": 701
+  },
+  {
+    "slug": "dalton-schultz-te",
+    "src": "/images/players/dalton-schultz-te.jpg",
+    "width": 712,
+    "height": 960
+  },
+  {
+    "slug": "khalil-shakir-wr",
+    "src": "/images/players/khalil-shakir-wr.jpg",
+    "width": 527,
+    "height": 960
+  },
+  {
+    "slug": "kaelon-black-rb",
+    "src": "/images/players/kaelon-black-rb.jpg",
+    "width": 960,
+    "height": 960
+  },
+  {
+    "slug": "ricky-pearsall-wr",
+    "src": "/images/players/ricky-pearsall-wr.jpg",
+    "width": 792,
+    "height": 960
+  },
+  {
+    "slug": "kirk-cousins-qb",
+    "src": "/images/players/kirk-cousins-qb.jpg",
+    "width": 619,
+    "height": 960
+  },
+  {
+    "slug": "hunter-henry-te",
+    "src": "/images/players/hunter-henry-te.jpg",
+    "width": 783,
+    "height": 960
+  },
+  {
+    "slug": "zachariah-branch-wr",
+    "src": "/images/players/zachariah-branch-wr.jpg",
+    "width": 960,
+    "height": 960
+  },
+  {
+    "slug": "deshaun-watson-qb",
+    "src": "/images/players/deshaun-watson-qb.jpg",
+    "width": 820,
+    "height": 960
+  },
+  {
+    "slug": "dylan-sampson-rb",
+    "src": "/images/players/dylan-sampson-rb.jpg",
+    "width": 719,
+    "height": 960
   }
 ]

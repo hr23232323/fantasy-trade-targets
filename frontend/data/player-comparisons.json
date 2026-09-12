@@ -382,5 +382,69 @@
     "position": "TE",
     "editorialLens": "This tight end trade sits close enough for reception scoring and TEP to matter more than a small rank difference. The comparison applies each player’s observed profile relative to the same position baseline and keeps redraft visible.",
     "decisionFrame": "Check the dedicated TEP row before paying a premium, and use redraft only when the deal is explicitly solving a current-season lineup need."
+  },
+  {
+    "slug": "tua-tagovailoa-vs-geno-smith",
+    "leftSlug": "tua-tagovailoa-qb",
+    "rightSlug": "geno-smith-qb",
+    "position": "QB",
+    "editorialLens": "This veteran quarterback comparison starts with a narrow Superflex market gap and tests it across 1QB, redraft, and passing-touchdown scoring. The separate contexts make scarcity and immediate utility visible without turning either into a forecast.",
+    "decisionFrame": "Use the six-point passing-TD and redraft rows to break a close call, but keep the offer modest when the dynasty market remains in one tier."
+  },
+  {
+    "slug": "aaron-rodgers-vs-kirk-cousins",
+    "leftSlug": "aaron-rodgers-qb",
+    "rightSlug": "kirk-cousins-qb",
+    "position": "QB",
+    "editorialLens": "Two veteran quarterbacks with nearly identical dynasty prices create a clean current-utility decision. Superflex and 1QB expose scarcity, while redraft and six-point passing touchdowns test which player better fits the immediate window.",
+    "decisionFrame": "Treat the dynasty near-tie as the anchor and allow only a meaningful format-specific difference to justify anything beyond a straight swap."
+  },
+  {
+    "slug": "dylan-sampson-vs-rachaad-white",
+    "leftSlug": "dylan-sampson-rb",
+    "rightSlug": "rachaad-white-rb",
+    "position": "RB",
+    "editorialLens": "This lower-cost running back matchup contrasts two market paths while keeping uncertain future workloads outside the answer. Standard, half-PPR, and full-PPR measure whether current reception evidence creates a league-specific edge.",
+    "decisionFrame": "Use the PPR table as a tiebreaker, and avoid attaching a meaningful pick when both backs remain inside the same speculative dynasty tier."
+  },
+  {
+    "slug": "khalil-shakir-vs-kayshon-boutte",
+    "leftSlug": "khalil-shakir-wr",
+    "rightSlug": "kayshon-boutte-wr",
+    "position": "WR",
+    "editorialLens": "Two receivers in the same value neighborhood can separate when their reception profiles are measured against the same WR replacement line. The comparison shows standard, half-PPR, full-PPR, dynasty, and redraft answers independently.",
+    "decisionFrame": "Let your actual reception setting break a close market tie, but do not convert a small scoring difference into an oversized trade premium."
+  },
+  {
+    "slug": "kayshon-boutte-vs-rashid-shaheed",
+    "leftSlug": "kayshon-boutte-wr",
+    "rightSlug": "rashid-shaheed-wr",
+    "position": "WR",
+    "editorialLens": "This practical receiver decision asks whether an apparent dynasty gap holds under current-season pricing and reception scoring. Every adjustment uses player-level evidence relative to WR replacement rather than a blanket position modifier.",
+    "decisionFrame": "Check redraft for a contender move and PPR for scoring fit; otherwise keep the baseline market difference as the negotiation ceiling."
+  },
+  {
+    "slug": "chig-okonkwo-vs-michael-mayer",
+    "leftSlug": "chig-okonkwo-te",
+    "rightSlug": "michael-mayer-te",
+    "position": "TE",
+    "editorialLens": "An exact baseline tie between two tight ends makes this a clean scoring experiment. Ordinary PPR and dedicated tight end premium are calculated separately against same-position replacement to show whether the league setting creates a winner.",
+    "decisionFrame": "If neither PPR nor TEP creates separation, accept the market tie and choose based on roster construction rather than inventing precision."
+  },
+  {
+    "slug": "oronde-gadsden-vs-juwan-johnson",
+    "leftSlug": "oronde-gadsden-te",
+    "rightSlug": "juwan-johnson-te",
+    "position": "TE",
+    "editorialLens": "This tight end comparison balances dynasty runway with current utility at a modest market cost. The format and scoring tables isolate redraft value, ordinary reception scoring, and TEP without mixing those separate decisions.",
+    "decisionFrame": "Rebuilders should anchor to dynasty, contenders should inspect redraft, and both should require the TEP row to support any league-specific premium."
+  },
+  {
+    "slug": "michael-mayer-vs-aj-barner",
+    "leftSlug": "michael-mayer-te",
+    "rightSlug": "aj-barner-te",
+    "position": "TE",
+    "editorialLens": "Two inexpensive dynasty tight ends sit close enough that league settings can matter more than raw rank. This page separates ordinary PPR from tight end premium and compares both changes with the same positional replacement baseline.",
+    "decisionFrame": "Use TEP only when your league awards it, and keep the complete offer inside the same value tier unless the measured gap clearly widens."
   }
 ]
