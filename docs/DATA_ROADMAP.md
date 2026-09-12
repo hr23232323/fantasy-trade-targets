@@ -101,10 +101,10 @@ data library. A failed refresh leaves the previous release intact.
 ### nflverse
 
 - **Product job:** play-by-play, weekly/player stats, snap participation, rosters, schedules, depth context, and IDs for production-vs-market signals.
-- **Shipping now:** all 32 current team identities, the complete current regular-season schedule, venue/surface/roof fields, rest context, and prior-season scoring baselines. The packaged team release records source URLs, SHA-256 hashes, row counts, capture time, and the FTT model version.
+- **Shipping now:** all 32 current team identities and schedules; current player rosters and injury/practice rows; three seasons of weekly player statistics and offensive snap participation. Player pages show Standard, Half PPR, and PPR results, compact recent game logs, full-season summaries, and current availability context. Each packaged release records source URLs, SHA-256 hashes, row counts, capture time, and the FTT model version.
 - **Rights:** the [nflverse automated data repository](https://github.com/nflverse/nflverse-data) is published under CC BY 4.0; the nflverse software projects also publish license text. Preserve dataset-specific notices and attribution.
 - **Refresh:** weekly/player stats after games; schedules daily; play-by-play after games and corrections.
-- **Identifiers:** `gsis_id` / `nflverse_id` mapped to Sleeper IDs using nflverse player ID files and a manually reviewed exception table.
+- **Identifiers:** current nflverse rosters join the market's Sleeper IDs to `gsis_id` for weekly statistics and `pfr_id` for snap counts. Missing joins stay visibly unavailable and fail publication if coverage drops below the tested floor.
 - **Derived features:** value vs expected points, routes/targets per snap, weighted opportunities, age-adjusted production, consistency, playoff schedule, and “market has not caught up” trade-target scores.
 - **Validation:** every season ingest records source URL, release tag/hash, downloaded timestamp, schema hash, and row count.
 
@@ -113,7 +113,8 @@ data library. A failed refresh leaves the previous release intact.
 ### Injury / practice / transaction feed
 
 - **Product job:** availability status, practice participation, IR/PUP/NFI, suspensions, transactions, and depth-chart movement.
-- **Preferred path:** license a feed that explicitly allows commercial display and derived alerts. Candidates to evaluate include SportsDataIO, Sportradar, or another contracted provider.
+- **Shipping now:** nflverse structured weekly injury and practice rows are displayed as factual current context on player, team, and matchup pages.
+- **Preferred expansion path:** license a faster feed that explicitly allows commercial display and derived alerts before adding real-time inactive status, transactions, alerts, or news. Candidates to evaluate include SportsDataIO, Sportradar, or another contracted provider.
 - **Fallback:** link to official reports rather than scraping and republishing protected editorial text.
 - **Refresh:** 5–15 minutes in-season; slower overnight/off-season.
 - **Rules:** store structured facts and source URLs, not full copyrighted articles. Every status needs `reported_at`, `effective_at`, `source`, and confidence.

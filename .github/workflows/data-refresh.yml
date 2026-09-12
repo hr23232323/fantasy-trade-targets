@@ -21,6 +21,7 @@ jobs:
       changed: ${{ steps.publish.outputs.changed }}
       market_outcome: ${{ steps.market_refresh.outcome }}
       team_outcome: ${{ steps.team_refresh.outcome }}
+      nflverse_outcome: ${{ steps.nflverse_refresh.outcome }}
 
     steps:
     - name: Checkout current main
@@ -51,6 +52,12 @@ jobs:
       continue-on-error: true
       run: npm run data:teams
 
+    - id: nflverse_refresh
+      name: Refresh NFL player context and game logs
+      working-directory: frontend
+      continue-on-error: true
+      run: npm run data:nflverse
+
     - id: publish
       name: Commit validated data changes
       if: always()
@@ -58,7 +65,7 @@ jobs:
       run: |
         git config user.name "Fantasy Trade Target Data"
         git config user.email "data@fantasytradetarget.com"
-        git add frontend/data/public-release.json frontend/data/rookie-pick-history.json frontend/data/team-release.json data/player-snapshot-history.json data/snapshots
+        git add frontend/data/public-release.json frontend/data/rookie-pick-history.json frontend/data/team-release.json frontend/data/nflverse-player-release.json data/player-snapshot-history.json data/snapshots
 
         if git diff --cached --quiet; then
           echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -88,6 +95,7 @@ jobs:
       (needs.refresh.result == 'failure' ||
        needs.refresh.outputs.market_outcome != 'success' ||
        needs.refresh.outputs.team_outcome != 'success' ||
+       needs.refresh.outputs.nflverse_outcome != 'success' ||
        (needs.refresh.outputs.changed == 'true' && needs.deploy.result != 'success'))
     runs-on: ubuntu-latest
     steps:

@@ -282,6 +282,8 @@ function buildTeamGame(game, teamAbbr, baseline, defenseRanks) {
     stadium: game.stadium || null,
     roof: game.roof || null,
     surface: game.surface || null,
+    temperatureF: numberOrNull(game.temp),
+    windMph: numberOrNull(game.wind),
     teamRest,
     opponentRest,
     restAdvantage:

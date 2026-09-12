@@ -1,6 +1,7 @@
 import { getPlayerMarketContexts, getPlayerProfile } from "../../../lib/market";
 import { getPlayerPage, playerPageSlugs } from "../../../lib/player-pages";
 import { selectPublishedHistory } from "../../../lib/player-insights";
+import { getNflversePlayer, nflversePlayerRelease } from "../../../lib/nflverse";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -33,6 +34,7 @@ export async function GET(
       player: profile.data,
       publishedHistory,
       fttSnapshotHistory: profile.snapshotHistory,
+      nflPerformance: getNflversePlayer(slug),
       marketContexts: {
         dynastySuperflex: contexts.superflex ?? null,
         dynasty1Qb: contexts.oneQb ?? null,
@@ -40,6 +42,11 @@ export async function GET(
         redraft1Qb: contexts.redraft ?? null,
       },
       source: profile.meta,
+      nflverseSource: {
+        releaseId: nflversePlayerRelease.releaseId,
+        capturedAt: nflversePlayerRelease.capturedAt,
+        license: nflversePlayerRelease.license,
+      },
     },
     {
       headers: {

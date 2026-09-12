@@ -12,6 +12,8 @@ export type TeamGame = {
   stadium: string | null;
   roof: string | null;
   surface: string | null;
+  temperatureF: number | null;
+  windMph: number | null;
   teamRest: number | null;
   opponentRest: number | null;
   restAdvantage: number | null;

@@ -8,6 +8,7 @@ import { scoringResearchPageSlugs } from "./lib/scoring-research-pages";
 import { scheduleRatingSlugs } from "./lib/schedule-ratings";
 import { teamRelease, teams } from "./lib/team-data";
 import { matchupExperimentGames, weeklyMatchupSlugs } from "./lib/weekly-matchups";
+import { nflversePlayerRelease } from "./lib/nflverse";
 
 const BASE_URL = "https://fantasytradetarget.com";
 
@@ -63,6 +64,7 @@ const marketDrivenRoutes = new Set([
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const marketUpdated = getMarketReleaseInfo().capturedAt;
+  const playerUpdated = new Date(Math.max(Date.parse(marketUpdated), Date.parse(nflversePlayerRelease.capturedAt))).toISOString();
   return [
     ...staticRoutes.map((route) => ({
       url: `${BASE_URL}${route}`,
@@ -70,7 +72,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...playerPages.map((player) => ({
       url: `${BASE_URL}/players/${player.slug}`,
-      lastModified: marketUpdated,
+      lastModified: playerUpdated,
     })),
     ...playerComparisons.map((comparison) => ({
       url: `${BASE_URL}/player-comparisons/${comparison.slug}`,

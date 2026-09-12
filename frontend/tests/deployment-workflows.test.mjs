@@ -22,6 +22,7 @@ test("scheduled data publication owns refreshes and deploys changed releases", (
   assert.match(dataWorkflow, /schedule:/);
   assert.match(dataWorkflow, /npm run data:refresh/);
   assert.match(dataWorkflow, /npm run data:teams/);
+  assert.match(dataWorkflow, /npm run data:nflverse/);
   assert.match(dataWorkflow, /needs\.refresh\.outputs\.changed == 'true'/);
   assert.match(dataWorkflow, /uses: \.\/\.github\/workflows\/_deploy\.yml/);
 });

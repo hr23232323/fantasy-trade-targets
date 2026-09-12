@@ -5,6 +5,7 @@ import JsonLd from "../../components/JsonLd";
 import AnalyticsPageView from "../../components/AnalyticsPageView";
 import PlayerPortrait from "../../components/PlayerPortrait";
 import PlayerHistoryChart from "../../components/PlayerHistoryChart";
+import PlayerPerformance from "../../components/PlayerPerformance";
 import { TrackedAnchor, TrackedLink } from "../../components/TrackedLink";
 import {
   getPlayerMarketContexts,
@@ -288,6 +289,8 @@ export default async function PlayerPage({ params }: PageProps) {
           footer="Advanced usage describes opportunity and role. Missing metrics remain visibly unavailable."
         />
       </section>
+
+      <PlayerPerformance slug={profile.slug} name={profile.name} position={profile.position} />
 
       <section className="page-wrap grid gap-8 py-16 lg:grid-cols-2">
         <div className="border border-[#171c19] bg-[#171c19] p-6 text-white sm:p-8">

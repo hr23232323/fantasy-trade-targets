@@ -6,6 +6,7 @@ import JsonLd from "../../../components/JsonLd";
 import TeamLogo from "../../../components/TeamLogo";
 import { buildPageMetadata } from "../../../lib/metadata";
 import { getMarket } from "../../../lib/market";
+import { availabilityLabel } from "../../../lib/nflverse";
 import { hasPlayerPage } from "../../../lib/player-pages";
 import {
   environmentClass,
@@ -116,7 +117,7 @@ export default async function MatchupExperimentPage({ params }: PageProps) {
         <div className="grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2 lg:grid-cols-4">
           <Fact label="Kickoff" value={`${matchup.weekday}, ${formatGameDate(matchup.date)}`} detail={formatGameTime(matchup.time)} />
           <Fact label="Venue" value={matchup.stadium ?? "TBD"} detail={matchup.awayView.site === "neutral" ? "Neutral site" : `${matchup.home.name} home game`} />
-          <Fact label="Field" value={readableSurface(matchup.surface) ?? "TBD"} detail={readableSurface(matchup.roof) ?? "Roof TBD"} />
+          <Fact label="Field" value={readableSurface(matchup.surface) ?? "TBD"} detail={gameConditions(matchup.awayView)} />
           <Fact label="Status" value={matchupIsComplete(matchup) ? "Final" : "Scheduled"} detail={matchupIsComplete(matchup) ? `${matchup.awayView.teamScore}–${matchup.homeView.teamScore}` : `Week ${matchup.week}`} />
         </div>
       </section>
@@ -161,7 +162,7 @@ function TeamPanel({ team, matchup, assets }: { team: "away" | "home"; matchup: 
       <div className="mt-3 divide-y divide-[#c8c4b9] border-y border-[#c8c4b9]">
         {assets.map((asset) => (
           <div key={asset.slug} className="flex items-center justify-between gap-4 py-3 text-sm">
-            {hasPlayerPage(asset.slug) ? <Link href={`/players/${asset.slug}`} className="font-bold hover:underline">{asset.name} <span className="font-normal text-[#69706c]">{asset.position}</span></Link> : <strong>{asset.name} <span className="font-normal text-[#69706c]">{asset.position}</span></strong>}
+            <span>{hasPlayerPage(asset.slug) ? <Link href={`/players/${asset.slug}`} className="font-bold hover:underline">{asset.name} <span className="font-normal text-[#69706c]">{asset.position}</span></Link> : <strong>{asset.name} <span className="font-normal text-[#69706c]">{asset.position}</span></strong>}<small className="mt-1 block font-mono text-[9px] font-bold uppercase text-[#69706c]">{availabilityLabel(asset.slug)}</small></span>
             <span className="font-mono font-black">{Math.round(asset.value)}</span>
           </div>
         ))}
@@ -172,6 +173,15 @@ function TeamPanel({ team, matchup, assets }: { team: "away" | "home"; matchup: 
 
 function Fact({ label, value, detail }: { label: string; value: string; detail: string }) {
   return <dl className="bg-[#f3f0e7] p-5"><dt className="mono-label text-[#69706c]">{label}</dt><dd className="mt-4 text-xl font-black tracking-[-0.035em]">{value}</dd><dd className="mt-2 text-xs text-[#69706c]">{detail}</dd></dl>;
+}
+
+function gameConditions(game: WeeklyMatchup["awayView"]) {
+  const conditions = [
+    readableSurface(game.roof),
+    game.temperatureF === null ? null : `${Math.round(game.temperatureF)}°F`,
+    game.windMph === null ? null : `${Math.round(game.windMph)} mph wind`,
+  ].filter(Boolean);
+  return conditions.length > 0 ? conditions.join(" · ") : "Conditions TBD";
 }
 
 function buildSchema(pageUrl: string, matchup: WeeklyMatchup) {

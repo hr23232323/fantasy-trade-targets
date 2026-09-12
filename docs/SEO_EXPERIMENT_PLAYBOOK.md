@@ -22,6 +22,20 @@ Player comparisons are the control. They already earned page-one impressions and
 | E4: league-size rankings | “N-team Superflex/1QB dynasty rankings” | 5 league sizes × 2 QB formats = 10 | `scoring_research_viewed` with `scoring_page` | Initial cohort shipped |
 | Gated: start/sit | “Who should I start this week?” | Do not publish yet | Reserved | Needs weekly projections and availability data |
 
+## nflverse experiment queue
+
+The direct nflverse release integration adds three seasons of weekly player results, snap participation, current rosters, injury/practice rows, and schedule conditions where recorded. These are the next bounded experiments, in priority order:
+
+| Priority | Experiment | First cohort | Distinct answer | Launch gate |
+|---|---|---:|---|---|
+| 1 | Weekly usage risers and fallers | 4 pages: QB, RB, WR, TE for the latest complete week | Who gained or lost snaps, targets, carries, and target share versus their recent baseline? | Two complete current-season weeks and stable snap/stat refreshes |
+| 2 | Volume versus market value | 12–20 player pages | Which players have opportunity that is materially ahead of or behind their dynasty price? | Minimum two recent games plus a reproducible gap formula |
+| 3 | Player game-log search pages | 12–20 high-demand players | What did the player score each week in Standard, Half PPR, and PPR, with role context? | Search Console demand beyond the existing player URL; avoid splitting identical intent |
+| 4 | Injury and practice status hubs | 16 weekly team/slate pages | Which fantasy-relevant players have a listed designation, and what changed since the previous report? | Faster refresh SLA, status history, automatic stale-state suppression |
+| 5 | Evidence-backed start/sit comparisons | 10–20 close calls for one active week | Which player projects better after recent usage, availability, opponent position defense, and league scoring? | All start/sit gates below; nflverse alone is not a projection system |
+
+Do not ship all five together. Start with weekly usage once Week 2 is complete, measure it against the comparison control, then release the next cohort only after the Day 7 read. Existing player, team, and matchup pages should absorb the new evidence now because it improves pages users already reach without creating new index inventory.
+
 Collection hubs are navigation, not detail-page experiments. They should be reported separately from their cohorts.
 
 ## Why these four tests

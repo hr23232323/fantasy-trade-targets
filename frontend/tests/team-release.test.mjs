@@ -56,6 +56,8 @@ test("every team has identity, a complete schedule, and a scored baseline", () =
       assert.match(game.date, /^\d{4}-\d{2}-\d{2}$/);
       assert.ok(game.environmentScore >= 0 && game.environmentScore <= 100);
       assert.ok(["Hot", "Warm", "Balanced", "Cool", "Cold"].includes(game.environmentLabel));
+      assert.ok(game.temperatureF === null || Number.isFinite(game.temperatureF));
+      assert.ok(game.windMph === null || Number.isFinite(game.windMph));
       assert.equal(game.opponentBaseline.season, teamRelease.baselineSeason);
       assert.ok(game.opponentBaseline.scoringDefenseRank >= 1);
       scheduledGames.set(game.gameId, (scheduledGames.get(game.gameId) ?? 0) + 1);

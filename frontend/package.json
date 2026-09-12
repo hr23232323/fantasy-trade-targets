@@ -8,6 +8,7 @@
     "start": "next start",
     "data:refresh": "node scripts/refresh-public-data.mjs",
     "data:teams": "node scripts/refresh-team-data.mjs",
+    "data:nflverse": "node scripts/refresh-nflverse-data.mjs",
     "data:players": "node scripts/refresh-player-pages.mjs",
     "data:player-images": "node scripts/cache-player-images.mjs",
     "data:pick-history": "node scripts/backfill-rookie-pick-history.mjs",

@@ -9,6 +9,7 @@ import TeamLogo from "../../components/TeamLogo";
 import { TrackedAnchor, TrackedLink } from "../../components/TrackedLink";
 import { getMarket } from "../../lib/market";
 import { getPlayerPage } from "../../lib/player-pages";
+import { availabilityLabel } from "../../lib/nflverse";
 import {
   averageEnvironment,
   environmentClass,
@@ -185,7 +186,7 @@ export default async function TeamPage({ params }: PageProps) {
         <div className="mt-8 overflow-x-auto border border-[#171c19] bg-white/55">
           <table className="w-full min-w-[720px] border-collapse text-left text-sm">
             <thead className="bg-[#171c19] font-mono text-[10px] uppercase tracking-[0.08em] text-white">
-              <tr><th className="px-5 py-4">Overall</th><th className="px-5 py-4">Player</th><th className="px-5 py-4">Position</th><th className="px-5 py-4">Age</th><th className="px-5 py-4 text-right">Market score</th></tr>
+              <tr><th className="px-5 py-4">Overall</th><th className="px-5 py-4">Player</th><th className="px-5 py-4">Position</th><th className="px-5 py-4">Availability</th><th className="px-5 py-4">Age</th><th className="px-5 py-4 text-right">Market score</th></tr>
             </thead>
             <tbody className="divide-y divide-[#bcb9ae]">
               {topAssets.map((asset) => (
@@ -193,6 +194,7 @@ export default async function TeamPage({ params }: PageProps) {
                   <td className="px-5 py-4 font-mono text-xs text-[#69706c]">#{asset.rank ?? "—"}</td>
                   <td className="px-5 py-4 font-bold"><TeamPlayerIdentity team={team} asset={asset} /></td>
                   <td className="px-5 py-4 font-mono text-xs">{asset.position}{asset.posRank ?? "—"}</td>
+                  <td className="px-5 py-4 text-xs font-bold">{availabilityLabel(asset.slug)}</td>
                   <td className="px-5 py-4 text-[#69706c]">{asset.age ?? "—"}</td>
                   <td className="px-5 py-4 text-right font-mono text-lg font-black">{Math.round(asset.value)}</td>
                 </tr>
@@ -253,7 +255,7 @@ export default async function TeamPage({ params }: PageProps) {
                   <tr key={game.gameId}>
                     <td className="px-4 py-4"><strong>Week {game.week}</strong><span className="mt-1 block text-xs text-[#69706c]">{game.weekday}, {formatGameDate(game.date)} · {formatGameTime(game.time)}</span></td>
                     <td className="px-4 py-4"><span className="flex items-center gap-3"><TeamLogo team={opponent.abbr} size={34} decorative /><span><Link href={`/teams/${opponent.slug}`} className="font-bold underline decoration-[#ff6b3d] decoration-2 underline-offset-4">{game.site === "away" ? "@ " : "vs. "}{opponent.name}</Link>{game.divisionGame && <span className="ml-2 font-mono text-[8px] font-black uppercase text-[#69706c]">Division</span>}</span></span></td>
-                    <td className="px-4 py-4"><span className="font-bold capitalize">{game.site}</span><span className="mt-1 block max-w-48 text-xs leading-5 text-[#69706c]">{game.stadium ?? "Venue TBD"}{game.roof ? ` · ${readableSurface(game.roof)}` : ""}</span></td>
+                    <td className="px-4 py-4"><span className="font-bold capitalize">{game.site}</span><span className="mt-1 block max-w-48 text-xs leading-5 text-[#69706c]">{game.stadium ?? "Venue TBD"}{game.roof ? ` · ${readableSurface(game.roof)}` : ""}{game.temperatureF !== null ? ` · ${Math.round(game.temperatureF)}°F` : ""}{game.windMph !== null ? ` · ${Math.round(game.windMph)} mph wind` : ""}</span></td>
                     <td className="px-4 py-4"><span className={`${environmentClass(game.environmentLabel)} inline-flex min-w-24 items-center justify-between gap-3 border border-[#171c19] px-3 py-2 font-mono text-[9px] font-black uppercase`}><span>{game.environmentLabel}</span><span>{game.environmentScore}</span></span></td>
                     <td className="px-4 py-4 text-xs leading-5 text-[#59605c]">{matchupReason(game)}{game.restAdvantage !== null && Math.abs(game.restAdvantage) >= 2 ? ` ${restReason(game.restAdvantage)}` : ""}</td>
                   </tr>

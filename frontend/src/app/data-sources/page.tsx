@@ -1,5 +1,6 @@
 import PageHero from "../components/PageHero";
 import { buildPageMetadata } from "../lib/metadata";
+import { nflversePlayerRelease } from "../lib/nflverse";
 
 export const metadata = buildPageMetadata({
   title: "Fantasy Football Data Sources & Update Schedule",
@@ -18,6 +19,21 @@ export default function DataSourcesPage() {
           <article className="bg-[#d7b6ff] p-7 sm:p-10"><span className="mono-label">Teams // schedule + context</span><h2 className="mt-10 text-4xl font-black tracking-[-0.055em]">nflverse</h2><p className="mt-4 text-sm leading-7 text-[#3f453f]">All 32 teams, the complete current schedule, venues, rest, surfaces, and prior-season scoring results. FTT records source hashes and derives the visible matchup-temperature model under CC BY 4.0 attribution.</p><a href="https://github.com/nflverse/nflverse-data" target="_blank" rel="noopener noreferrer" className="mt-7 inline-block border-b-2 border-[#171c19] font-mono text-xs font-black uppercase">Inspect the data project ↗</a></article>
           <article className="bg-[#8bcfff] p-7 sm:p-10"><span className="mono-label">Local // deterministic</span><h2 className="mt-10 text-4xl font-black tracking-[-0.055em]">Trade engine</h2><p className="mt-4 text-sm leading-7 text-[#3f453f]">Scoring-relative player values, roster-shape and FLEX replacement, head-to-head comparisons, raw totals, roster-cost weights, verdict thresholds, share URLs, and balancing suggestions execute locally and deterministically. They do not require a model call or third-party trade-evaluation request.</p><a href="/methodology" className="mt-7 inline-block border-b-2 border-[#171c19] font-mono text-xs font-black uppercase">Inspect the formula →</a></article>
           <article className="bg-[#ffb29a] p-7 sm:p-10"><span className="mono-label">Images // licensed</span><h2 className="mt-10 text-4xl font-black tracking-[-0.055em]">Commons + original art</h2><p className="mt-4 text-sm leading-7 text-[#3f453f]">Player pages use Wikimedia API-selected images with reviewed Creative Commons terms. When no clearly reusable portrait exists, the profile uses original FTT player-file artwork instead. Every record retains its creator, source, and terms; Sleeper and ESPN player-image hotlinks are not used.</p><a href="https://commons.wikimedia.org" target="_blank" rel="noopener noreferrer" className="mt-7 inline-block border-b-2 border-[#171c19] font-mono text-xs font-black uppercase">Visit Commons ↗</a></article>
+        </div>
+      </section>
+      <section id="nflverse-player-data" className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
+        <div>
+          <span className="eyebrow">NFL results + availability</span>
+          <h2 className="section-title mt-6">Game logs with a paper trail.</h2>
+        </div>
+        <div className="space-y-5 text-sm leading-7 text-[#59605c]">
+          <p>Player pages combine current rosters and injury reports with regular-season weekly statistics and offensive snap counts from nflverse. The app currently covers <strong>{nflversePlayerRelease.coverage.rosterMapped} roster matches</strong> and <strong>{nflversePlayerRelease.coverage.playersWithGames} player game histories</strong> across {nflversePlayerRelease.seasons.join(", ")}.</p>
+          <p>Fantasy Trade Target reads the project&apos;s versioned release files directly, records a hash and row count for every input, and packages only the fields used on the site. Season summaries retain the complete three-season window; player tables show the ten most recent games. The release is refreshed with the rest of the scheduled data publication.</p>
+          <p>The underlying data is attributed to nflverse under <a href={nflversePlayerRelease.license.url} target="_blank" rel="license noopener" className="font-bold underline">CC BY 4.0</a>. The current integration does not use player headshots or FTN charting data, and it does not turn an injury or practice row into a medical prediction.</p>
+          <div className="flex flex-wrap gap-3">
+            <a href={nflversePlayerRelease.license.projectUrl} target="_blank" rel="noopener noreferrer" className="border border-[#171c19] bg-[#d7b6ff] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">Inspect nflverse data ↗</a>
+            <a href="/players" className="border border-[#171c19] bg-white px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">Browse player files →</a>
+          </div>
         </div>
       </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
@@ -105,7 +121,7 @@ export default function DataSourcesPage() {
           <a href="/market/data.json" className="border border-[#171c19] bg-white px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">Download public release ↓</a>
         </div>
       </section>
-      <section className="page-wrap py-20"><span className="eyebrow">Next data layers</span><h2 className="section-title mt-6 max-w-4xl">Current evidence first. New evidence only when it is ready.</h2><div className="mt-10 grid border-l border-t border-[#171c19] sm:grid-cols-2 lg:grid-cols-4">{[['Sleeper league context','Scoring, roster slots, taxi, IR, picks, standings, and manager-specific needs.'],['Market-gap models','FTT-owned comparisons between market movement, opportunity, usage, and production.'],['Availability signals','Injuries, practice reports, transactions, depth charts, and verified news.'],['Accepted trades','An anonymized, rights-reviewed corpus of completed prices by format and league size.']].map(([title,body]) => <article key={title} className="border-b border-r border-[#171c19] bg-white/30 p-6"><h3 className="text-lg font-black tracking-[-0.03em]">{title}</h3><p className="mt-3 text-sm leading-6 text-[#69706c]">{body}</p></article>)}</div></section>
+      <section className="page-wrap py-20"><span className="eyebrow">Next data layers</span><h2 className="section-title mt-6 max-w-4xl">Current evidence first. New evidence only when it is ready.</h2><div className="mt-10 grid border-l border-t border-[#171c19] sm:grid-cols-2 lg:grid-cols-3">{[['Sleeper league context','Scoring, roster slots, taxi, IR, picks, standings, and manager-specific needs.'],['Market-gap models','FTT-owned comparisons between market movement, opportunity, usage, and production.'],['Accepted trades','An anonymized, rights-reviewed corpus of completed prices by format and league size.']].map(([title,body]) => <article key={title} className="border-b border-r border-[#171c19] bg-white/30 p-6"><h3 className="text-lg font-black tracking-[-0.03em]">{title}</h3><p className="mt-3 text-sm leading-6 text-[#69706c]">{body}</p></article>)}</div></section>
     </>
   );
 }
