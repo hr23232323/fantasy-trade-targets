@@ -1,6 +1,6 @@
 # SEO experiment and scale playbook
 
-Last updated: 2026-09-12  
+Last updated: 2026-09-14
 Owner: Fantasy Trade Target
 
 ## The operating rule
@@ -20,6 +20,8 @@ Player comparisons are the control. They already earned page-one impressions and
 | E2: weekly schedule ratings | “Week N fantasy strength of schedule” | All 18 regular-season weeks | `schedule_rating_experiment_viewed` | Initial cohort shipped |
 | E3: player vs. exact rookie pick | “Player or 2027 pick X?” | 20 close market decisions | `player_pick_comparison_experiment_viewed` | Initial cohort shipped |
 | E4: league-size rankings | “N-team Superflex/1QB dynasty rankings” | 5 league sizes × 2 QB formats = 10 | `scoring_research_viewed` with `scoring_page` | Initial cohort shipped |
+| E5: position schedule | “Best fantasy schedule for RB/WR/TE/QB” | 4 complete 32-team rankings | `position_schedule_viewed` | Initial cohort shipped |
+| E6: weekly usage | “Week N snaps, targets, and carries” | 4 position reports per complete week | `weekly_usage_report_viewed` | Armed; publishes only after full-week verification |
 | Gated: start/sit | “Who should I start this week?” | Do not publish yet | Reserved | Needs weekly projections and availability data |
 
 ## nflverse experiment queue
@@ -28,13 +30,13 @@ The direct nflverse release integration adds three seasons of weekly player resu
 
 | Priority | Experiment | First cohort | Distinct answer | Launch gate |
 |---|---|---:|---|---|
-| 1 | Weekly usage risers and fallers | 4 pages: QB, RB, WR, TE for the latest complete week | Who gained or lost snaps, targets, carries, and target share versus their recent baseline? | Two complete current-season weeks and stable snap/stat refreshes |
+| 1 | Weekly usage risers and fallers | 4 pages: QB, RB, WR, TE for the latest complete week | Who gained or lost snaps, targets, carries, and target share versus their recent baseline? | Every scheduled game final, with matching player stats and snap coverage |
 | 2 | Volume versus market value | 12–20 player pages | Which players have opportunity that is materially ahead of or behind their dynasty price? | Minimum two recent games plus a reproducible gap formula |
 | 3 | Player game-log search pages | 12–20 high-demand players | What did the player score each week in Standard, Half PPR, and PPR, with role context? | Search Console demand beyond the existing player URL; avoid splitting identical intent |
 | 4 | Injury and practice status hubs | 16 weekly team/slate pages | Which fantasy-relevant players have a listed designation, and what changed since the previous report? | Faster refresh SLA, status history, automatic stale-state suppression |
 | 5 | Evidence-backed start/sit comparisons | 10–20 close calls for one active week | Which player projects better after recent usage, availability, opponent position defense, and league scoring? | All start/sit gates below; nflverse alone is not a projection system |
 
-Do not ship all five together. Start with weekly usage once Week 2 is complete, measure it against the comparison control, then release the next cohort only after the Day 7 read. Existing player, team, and matchup pages should absorb the new evidence now because it improves pages users already reach without creating new index inventory.
+Position schedule and weekly usage are the first two nflverse cohorts. Measure them separately against the comparison control, then release the next page type only after the Day 7 read. Existing player, team, and matchup pages should continue absorbing useful evidence without creating duplicate index inventory.
 
 Collection hubs are navigation, not detail-page experiments. They should be reported separately from their cohorts.
 
@@ -50,7 +52,7 @@ Scale path if it works: publish every game for the next active week, not all rem
 
 Search demand exists for fantasy football strength of schedule. Existing team and matchup pages expose the raw context; this cohort changes the answer into a ranked list of all 32 teams for each week. Each page uses a distinct weekly schedule and produces one auditable table.
 
-Scale path if it works: add position-specific schedule grades only after position-level fantasy points allowed are ingested and validated.
+Scale path if it works: the four position-specific rankings are now the bounded follow-on cohort. Add schedule-adjusted or week-specific position pages only after this cohort earns discovery and useful downstream actions.
 
 ### E3: player vs. exact rookie pick
 

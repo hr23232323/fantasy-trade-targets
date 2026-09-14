@@ -2,7 +2,7 @@ import Link from "next/link";
 import AnalyticsPageView from "../components/AnalyticsPageView";
 import JsonLd from "../components/JsonLd";
 import { buildPageMetadata } from "../lib/metadata";
-import { getWeeklyScheduleRatings, scheduleRatingSlugs } from "../lib/schedule-ratings";
+import { getWeeklyScheduleRatings, positionScheduleConfigs, scheduleRatingSlugs } from "../lib/schedule-ratings";
 import { environmentClass, teamRelease } from "../lib/team-data";
 
 const SITE_URL = "https://fantasytradetarget.com";
@@ -25,6 +25,13 @@ export default function StrengthOfScheduleHub() {
           <p className="mt-8 max-w-4xl text-lg font-medium leading-8">Choose a week to rank all 32 teams by opponent scoring defense, site, and rest. The result describes the team scoring environment; it does not turn last season into a player projection.</p>
         </div>
       </section>
+      <section className="page-wrap pt-14">
+        <span className="eyebrow bg-[#ffb29a]">By position</span>
+        <h2 className="section-title mt-6 max-w-4xl">Find the defenses that give up points where you need them.</h2>
+        <div className="mt-8 grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2 lg:grid-cols-4">
+          {positionScheduleConfigs.map((config, index) => <Link key={config.slug} href={`/fantasy-football-strength-of-schedule/${config.slug}`} className={`group p-6 hover:bg-white ${index % 2 ? "bg-[#8bcfff]" : "bg-[#dfff4f]"}`}><span className="mono-label">Standard · Half PPR · PPR</span><h2 className="mt-5 text-2xl font-black tracking-[-0.04em]">{config.label}s</h2><span className="mt-6 block font-mono text-[10px] font-black uppercase tracking-[0.08em] group-hover:underline">See all 32 teams →</span></Link>)}
+        </div>
+      </section>
       <section className="page-wrap py-14">
         <div className="grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2 lg:grid-cols-3">
           {scheduleRatingSlugs.map((slug, index) => {
@@ -43,7 +50,7 @@ export default function StrengthOfScheduleHub() {
           })}
         </div>
       </section>
-      <aside className="page-wrap border-t border-[#9d9a91] py-8 text-xs leading-6 text-[#69706c]">Model <span className="font-mono">{teamRelease.modelVersion}</span> uses {teamRelease.baselineSeason} scoring defense, site, and rest. It does not include player usage, position-specific fantasy points, injuries, projections, weather, or betting lines.</aside>
+      <aside className="page-wrap border-t border-[#9d9a91] py-8 text-xs leading-6 text-[#69706c]">Weekly team ratings use {teamRelease.baselineSeason} scoring defense, site, and rest. Position pages use fantasy points allowed by position. Neither is an individual player projection.</aside>
     </>
   );
 }

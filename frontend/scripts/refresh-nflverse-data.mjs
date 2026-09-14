@@ -104,6 +104,11 @@ for (const row of downloads.injuries.rows) {
   }
 }
 
+const positionDefense = buildPositionDefense(
+  downloads[`stats_${season - 1}`].rows,
+  season - 1,
+);
+
 const players = Object.fromEntries(publishedPlayers.map((player) => {
   const roster = rosterBySleeper.get(String(player.sleeperId));
   const injury = roster?.gsis_id ? injuryByGsis.get(roster.gsis_id) : null;
@@ -141,8 +146,8 @@ const players = Object.fromEntries(publishedPlayers.map((player) => {
 validate({ players, publishedPlayers, season, seasons, downloads });
 
 const release = {
-  schemaVersion: 1,
-  modelVersion: "nflverse-player-context-2026.09.1",
+  schemaVersion: 2,
+  modelVersion: "nflverse-player-context-2026.09.2",
   releaseId: `ftt-nflverse-${capturedAt.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "")}`,
   capturedAt: capturedAt.toISOString(),
   season,
@@ -166,6 +171,7 @@ const release = {
     playersWithCurrentSeasonGames: Object.values(players).filter((player) => player.games.some((game) => game.season === season)).length,
     playersWithInjuryRows: Object.values(players).filter((player) => player.injury).length,
   },
+  positionDefense,
   players,
 };
 
@@ -195,6 +201,43 @@ function summarizeSeasons(games) {
     pprPointsPerGame: round(summary.fantasyPointsPpr / summary.games, 1),
     offenseSnapsPerGame: summary.snapGames ? round(summary.offenseSnaps / summary.snapGames, 1) : null,
   }));
+}
+
+function buildPositionDefense(rows, baselineSeason) {
+  const positions = new Set(["QB", "RB", "WR", "TE"]);
+  const gamesByTeamPosition = new Map();
+
+  for (const row of rows) {
+    if (row.season_type !== "REG" || Number(row.season) !== baselineSeason || !positions.has(row.position)) continue;
+    const opponent = canonicalAbbr(row.opponent_team);
+    if (!opponent || !row.game_id) continue;
+    const key = `${opponent}:${row.position}`;
+    const games = gamesByTeamPosition.get(key) ?? new Map();
+    const game = games.get(row.game_id) ?? { standard: 0, halfPpr: 0, ppr: 0 };
+    game.standard += numberOrZero(row.fantasy_points);
+    game.halfPpr += numberOrZero(row.fantasy_points) + numberOrZero(row.receptions) * 0.5;
+    game.ppr += numberOrZero(row.fantasy_points_ppr);
+    games.set(row.game_id, game);
+    gamesByTeamPosition.set(key, games);
+  }
+
+  const teams = Object.fromEntries(Object.keys(teamRelease.teams).map((team) => [
+    team,
+    Object.fromEntries([...positions].map((position) => {
+      const games = [...(gamesByTeamPosition.get(`${team}:${position}`)?.values() ?? [])];
+      const total = (field) => games.reduce((sum, game) => sum + game[field], 0);
+      return [position, {
+        games: games.length,
+        pointsPerGame: {
+          standard: round(total("standard") / games.length, 1),
+          halfPpr: round(total("halfPpr") / games.length, 1),
+          ppr: round(total("ppr") / games.length, 1),
+        },
+      }];
+    })),
+  ]));
+
+  return { season: baselineSeason, teams };
 }
 
 function compactStats(row, fields) {
@@ -255,6 +298,16 @@ function validate({ players, publishedPlayers, season, seasons, downloads }) {
   if (downloads.roster.rows.length < 2500) throw new Error("NFLverse roster release is unexpectedly sparse");
   if (downloads[`stats_${season - 1}`].rows.length < 15000) throw new Error("Prior-season player stats are unexpectedly sparse");
   if (downloads[`snaps_${season - 1}`].rows.length < 20000) throw new Error("Prior-season snap counts are unexpectedly sparse");
+  const positionDefense = buildPositionDefense(downloads[`stats_${season - 1}`].rows, season - 1);
+  if (Object.keys(positionDefense.teams).length !== 32) throw new Error("Position defense must cover all 32 teams");
+  for (const [team, positions] of Object.entries(positionDefense.teams)) {
+    for (const position of ["QB", "RB", "WR", "TE"]) {
+      const summary = positions[position];
+      if (!summary || summary.games < 16 || Object.values(summary.pointsPerGame).some((value) => !Number.isFinite(value))) {
+        throw new Error(`${team} ${position} position defense is incomplete`);
+      }
+    }
+  }
   for (const [slug, player] of Object.entries(players)) {
     if (player.games.length > 20) throw new Error(`${slug} exceeds the 20-game public history bound`);
     for (const game of player.games) {

@@ -17,7 +17,7 @@ const [manifest, playerPage, playerData, performance, teamPage, matchupPage, sit
 ]);
 
 test("nflverse player release is versioned, attributed, and covers every player file", () => {
-  assert.equal(release.schemaVersion, 1);
+  assert.equal(release.schemaVersion, 2);
   assert.match(release.releaseId, /^ftt-nflverse-\d{8}T\d{6}Z$/);
   assert.match(release.modelVersion, /^nflverse-player-context-/);
   assert.ok(Number.isFinite(Date.parse(release.capturedAt)));
@@ -28,6 +28,21 @@ test("nflverse player release is versioned, attributed, and covers every player 
   assert.equal(Object.keys(release.players).length, manifest.length);
   assert.ok(release.coverage.rosterMapped >= 210);
   assert.ok(release.coverage.playersWithGames >= 180);
+});
+
+test("position-defense aggregates cover every team and supported scoring format", () => {
+  assert.equal(release.positionDefense.season, release.season - 1);
+  assert.equal(Object.keys(release.positionDefense.teams).length, 32);
+  for (const positions of Object.values(release.positionDefense.teams)) {
+    assert.deepEqual(Object.keys(positions).sort(), ["QB", "RB", "TE", "WR"]);
+    for (const summary of Object.values(positions)) {
+      assert.ok(summary.games >= 16);
+      const { standard, halfPpr, ppr } = summary.pointsPerGame;
+      assert.ok([standard, halfPpr, ppr].every(Number.isFinite));
+      assert.ok(halfPpr >= standard);
+      assert.ok(ppr >= halfPpr);
+    }
+  }
 });
 
 test("every source is an official versioned release asset with integrity metadata", () => {

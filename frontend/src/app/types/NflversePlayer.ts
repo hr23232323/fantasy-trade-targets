@@ -76,5 +76,16 @@ export type NflversePlayerRelease = {
     playersWithCurrentSeasonGames: number;
     playersWithInjuryRows: number;
   };
+  positionDefense: {
+    season: number;
+    teams: Record<string, Record<"QB" | "RB" | "WR" | "TE", {
+      games: number;
+      pointsPerGame: {
+        standard: number;
+        halfPpr: number;
+        ppr: number;
+      };
+    }>>;
+  };
   players: Record<string, NflversePlayerContext>;
 };

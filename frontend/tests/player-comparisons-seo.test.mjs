@@ -126,6 +126,7 @@ test("the comparison collection is crawlable and connected to the existing hiera
   assert.match(indexNow, /playerComparisons\.map/);
   assert.match(comparisonLib, /playerComparisonSlugs/);
   assert.match(comparisonLib, /getRelatedComparisons/);
+  assert.match(comparisonLib, /supportedPlayerSlugs/);
   assert.match(playerDetail, /getComparisonForPlayer/);
   assert.match(playerDetail, /Compare with \{comparisonOpponent\.name\}/);
 });

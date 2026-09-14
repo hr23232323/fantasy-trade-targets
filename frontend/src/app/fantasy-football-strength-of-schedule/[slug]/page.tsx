@@ -7,17 +7,24 @@ import TeamLogo from "../../components/TeamLogo";
 import { buildPageMetadata } from "../../lib/metadata";
 import { getMarket } from "../../lib/market";
 import { hasPlayerPage } from "../../lib/player-pages";
-import { getScheduleRatingWeek, getWeeklyScheduleRatings, scheduleRatingSlugs } from "../../lib/schedule-ratings";
+import { getPositionScheduleConfig, getScheduleRatingWeek, getWeeklyScheduleRatings, positionScheduleSlugs, scheduleRatingSlugs } from "../../lib/schedule-ratings";
 import { environmentClass, formatGameDate, formatGameTime, getTeamAssets, teamRelease } from "../../lib/team-data";
+import PositionSchedulePage from "./PositionSchedulePage";
 
 const SITE_URL = "https://fantasytradetarget.com";
 type PageProps = { params: Promise<{ slug: string }> };
 
 export const dynamicParams = false;
-export function generateStaticParams() { return scheduleRatingSlugs.map((slug) => ({ slug })); }
+export function generateStaticParams() { return [...scheduleRatingSlugs, ...positionScheduleSlugs].map((slug) => ({ slug })); }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
+  const position = getPositionScheduleConfig(slug);
+  if (position) return buildPageMetadata({
+    title: `${position.label} Fantasy Football Strength of Schedule (2026)`,
+    description: `Rank every NFL team's remaining ${position.singular} schedule using Standard, Half PPR, and PPR fantasy points allowed by upcoming opponents.`,
+    path: `/fantasy-football-strength-of-schedule/${slug}`,
+  });
   const week = getScheduleRatingWeek(slug);
   if (!week) return {};
   return buildPageMetadata({
@@ -29,6 +36,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function WeeklyScheduleRatingPage({ params }: PageProps) {
   const { slug } = await params;
+  const position = getPositionScheduleConfig(slug);
+  if (position) return <PositionSchedulePage config={position} />;
   const week = getScheduleRatingWeek(slug);
   if (!week) notFound();
   const [ratings, market] = await Promise.all([

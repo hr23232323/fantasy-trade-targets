@@ -1,4 +1,5 @@
 import comparisonManifest from "../../../data/player-comparisons.json";
+import publicRelease from "../../../data/public-release.json";
 
 export type ComparisonPosition = "QB" | "RB" | "WR" | "TE";
 
@@ -11,10 +12,17 @@ export type PlayerComparisonConfig = {
   decisionFrame: string;
 };
 
-export const playerComparisons = comparisonManifest.map((comparison) => ({
-  ...comparison,
-  position: comparison.position as ComparisonPosition,
-})) satisfies PlayerComparisonConfig[];
+const requiredMarketKeys = ["dynasty:2:0", "dynasty:1:0", "dynasty:2:1", "redraft:1:0"] as const;
+const supportedPlayerSlugs = requiredMarketKeys
+  .map((key) => new Set(publicRelease.playerMarkets[key].data.map(({ slug }) => slug)))
+  .reduce((supported, market) => new Set([...supported].filter((slug) => market.has(slug))));
+
+export const playerComparisons = comparisonManifest
+  .filter(({ leftSlug, rightSlug }) => supportedPlayerSlugs.has(leftSlug) && supportedPlayerSlugs.has(rightSlug))
+  .map((comparison) => ({
+    ...comparison,
+    position: comparison.position as ComparisonPosition,
+  })) satisfies PlayerComparisonConfig[];
 
 export const playerComparisonSlugs = playerComparisons.map(
   (comparison) => comparison.slug,

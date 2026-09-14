@@ -18,6 +18,7 @@ const tools = [
   ["Team outlooks", "/teams"],
   ["Weekly matchups", "/fantasy-football-matchups"],
   ["Strength of schedule", "/fantasy-football-strength-of-schedule"],
+  ["Weekly usage", "/fantasy-football-usage"],
   ["Redraft analyzer", "/fantasy-football-trade-analyzer"],
   ["Superflex calculator", "/dynasty-superflex-trade-calculator"],
   ["Dynasty rankings", "/dynasty-rankings"],

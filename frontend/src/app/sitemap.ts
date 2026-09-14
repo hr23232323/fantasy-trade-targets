@@ -5,8 +5,9 @@ import { playerComparisons } from "./lib/player-comparisons";
 import { playerPickComparisons } from "./lib/player-pick-comparisons";
 import { rookiePickPages } from "./lib/rookie-picks";
 import { scoringResearchPageSlugs } from "./lib/scoring-research-pages";
-import { scheduleRatingSlugs } from "./lib/schedule-ratings";
+import { positionScheduleSlugs, scheduleRatingSlugs } from "./lib/schedule-ratings";
 import { teamRelease, teams } from "./lib/team-data";
+import { publishedUsageWeeks, usagePositionConfigs, usageWeekPath } from "./lib/usage-reports";
 import { matchupExperimentGames, weeklyMatchupSlugs } from "./lib/weekly-matchups";
 import { nflversePlayerRelease } from "./lib/nflverse";
 
@@ -25,6 +26,7 @@ const staticRoutes = [
   "/fantasy-football-trade-analyzer",
   "/fantasy-football-matchups",
   "/fantasy-football-strength-of-schedule",
+  "/fantasy-football-usage",
   "/fantasy-football-trade-targets",
   "/fantasy-football-trade-value-chart",
   "/fantasy-trade-calculator",
@@ -68,7 +70,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...staticRoutes.map((route) => ({
       url: `${BASE_URL}${route}`,
-      ...(marketDrivenRoutes.has(route) ? { lastModified: marketUpdated } : {}),
+      ...(marketDrivenRoutes.has(route)
+        ? { lastModified: marketUpdated }
+        : route === "/fantasy-football-usage"
+          ? { lastModified: nflversePlayerRelease.capturedAt }
+          : {}),
     })),
     ...playerPages.map((player) => ({
       url: `${BASE_URL}/players/${player.slug}`,
@@ -102,6 +108,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE_URL}/fantasy-football-strength-of-schedule/${slug}`,
       lastModified: teamRelease.capturedAt,
     })),
+    ...positionScheduleSlugs.map((slug) => ({
+      url: `${BASE_URL}/fantasy-football-strength-of-schedule/${slug}`,
+      lastModified: nflversePlayerRelease.capturedAt,
+    })),
+    ...publishedUsageWeeks.flatMap((week) => usagePositionConfigs.map(({ slug }) => ({
+      url: `${BASE_URL}${usageWeekPath(week, slug)}`,
+      lastModified: nflversePlayerRelease.capturedAt,
+    }))),
     ...teams.map((team) => ({
       url: `${BASE_URL}/teams/${team.slug}`,
       lastModified: teamRelease.capturedAt,

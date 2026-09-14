@@ -9,8 +9,14 @@ const playerPages = JSON.parse(
 const teamRelease = JSON.parse(
   await readFile(new URL("../data/team-release.json", import.meta.url), "utf8"),
 );
-const playerComparisons = JSON.parse(
+const nflversePlayerRelease = JSON.parse(
+  await readFile(new URL("../data/nflverse-player-release.json", import.meta.url), "utf8"),
+);
+const configuredPlayerComparisons = JSON.parse(
   await readFile(new URL("../data/player-comparisons.json", import.meta.url), "utf8"),
+);
+const publicRelease = JSON.parse(
+  await readFile(new URL("../data/public-release.json", import.meta.url), "utf8"),
 );
 const playerPickComparisons = JSON.parse(
   await readFile(new URL("../data/player-pick-comparisons.json", import.meta.url), "utf8"),
@@ -18,6 +24,10 @@ const playerPickComparisons = JSON.parse(
 const rookiePickPages = JSON.parse(
   await readFile(new URL("../data/rookie-pick-pages.json", import.meta.url), "utf8"),
 );
+const supportedComparisonPlayers = ["dynasty:2:0", "dynasty:1:0", "dynasty:2:1", "redraft:1:0"]
+  .map((market) => new Set(publicRelease.playerMarkets[market].data.map((player) => player.slug)))
+  .reduce((supported, market) => new Set([...supported].filter((slug) => market.has(slug))));
+const playerComparisons = configuredPlayerComparisons.filter(({ leftSlug, rightSlug }) => supportedComparisonPlayers.has(leftSlug) && supportedComparisonPlayers.has(rightSlug));
 
 const scoringResearchPaths = [
   "/scoring/redraft-6-point-passing-td-rankings",
@@ -72,6 +82,31 @@ const scheduleRatingPaths = Array.from(
   { length: 18 },
   (_, index) => `/fantasy-football-strength-of-schedule/week-${index + 1}`,
 );
+const positionSchedulePaths = ["quarterbacks", "running-backs", "wide-receivers", "tight-ends"]
+  .map((position) => `/fantasy-football-strength-of-schedule/${position}`);
+const usagePositionPaths = [];
+for (let week = 1; week <= 18; week += 1) {
+  const games = [];
+  const seenGames = new Set();
+  for (const team of Object.values(teamRelease.teams)) {
+    for (const game of team.schedule.filter((candidate) => candidate.week === week)) {
+      if (!seenGames.has(game.gameId)) {
+        seenGames.add(game.gameId);
+        games.push(game);
+      }
+    }
+  }
+  const statGames = new Set();
+  const snapGames = new Set();
+  for (const player of Object.values(nflversePlayerRelease.players)) {
+    for (const game of player.games.filter((candidate) => candidate.season === nflversePlayerRelease.season && candidate.week === week)) {
+      statGames.add(game.gameId);
+      if (game.offenseSnapPct !== null) snapGames.add(game.gameId);
+    }
+  }
+  const ready = games.length > 0 && games.every((game) => game.result !== null && statGames.has(game.gameId) && snapGames.has(game.gameId));
+  if (ready) for (const position of ["quarterbacks", "running-backs", "wide-receivers", "tight-ends"]) usagePositionPaths.push(`/fantasy-football-usage/week-${week}/${position}`);
+}
 const teamAliases = { LA: "LAR", SFO: "SF", TBB: "TB", OAK: "LV", SD: "LAC", STL: "LAR" };
 const canonicalTeam = (abbr) => teamAliases[abbr] ?? abbr;
 const matchupExperimentPaths = [];
@@ -103,6 +138,7 @@ const changedPaths = [
   "/fantasy-football-trade-analyzer",
   "/fantasy-football-matchups",
   "/fantasy-football-strength-of-schedule",
+  "/fantasy-football-usage",
   "/fantasy-football-trade-targets",
   "/fantasy-football-trade-value-chart",
   "/player-vs-rookie-pick",
@@ -118,6 +154,8 @@ const changedPaths = [
   ...weeklyMatchupPaths,
   ...matchupExperimentPaths,
   ...scheduleRatingPaths,
+  ...positionSchedulePaths,
+  ...usagePositionPaths,
   ...playerPages.map((player) => `/players/${player.slug}`),
   ...playerComparisons.map((comparison) => `/player-comparisons/${comparison.slug}`),
   ...playerPickComparisons.map((comparison) => `/player-vs-rookie-pick/${comparison.slug}`),
