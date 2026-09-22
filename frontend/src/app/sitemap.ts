@@ -5,7 +5,7 @@ import { playerComparisons } from "./lib/player-comparisons";
 import { playerPickComparisons } from "./lib/player-pick-comparisons";
 import { rookiePickPages } from "./lib/rookie-picks";
 import { scoringResearchPageSlugs } from "./lib/scoring-research-pages";
-import { positionScheduleSlugs, scheduleRatingSlugs } from "./lib/schedule-ratings";
+import { positionScheduleSlugs, positionWeekScheduleSlugs, scheduleRatingSlugs } from "./lib/schedule-ratings";
 import { teamRelease, teams } from "./lib/team-data";
 import { publishedUsageWeeks, usagePositionConfigs, usageWeekPath } from "./lib/usage-reports";
 import { matchupExperimentGames, weeklyMatchupSlugs } from "./lib/weekly-matchups";
@@ -82,7 +82,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...playerComparisons.map((comparison) => ({
       url: `${BASE_URL}/player-comparisons/${comparison.slug}`,
-      lastModified: marketUpdated,
+      lastModified: playerUpdated,
     })),
     ...playerPickComparisons.map((comparison) => ({
       url: `${BASE_URL}/player-vs-rookie-pick/${comparison.slug}`,
@@ -111,6 +111,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...positionScheduleSlugs.map((slug) => ({
       url: `${BASE_URL}/fantasy-football-strength-of-schedule/${slug}`,
       lastModified: nflversePlayerRelease.capturedAt,
+    })),
+    ...positionWeekScheduleSlugs.map((slug) => ({
+      url: `${BASE_URL}/fantasy-football-strength-of-schedule/${slug}`,
+      lastModified: playerUpdated,
     })),
     ...publishedUsageWeeks.flatMap((week) => usagePositionConfigs.map(({ slug }) => ({
       url: `${BASE_URL}${usageWeekPath(week, slug)}`,

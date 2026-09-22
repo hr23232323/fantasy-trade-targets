@@ -21,7 +21,20 @@ export const positionScheduleConfigs = [
 
 export const positionScheduleSlugs = positionScheduleConfigs.map(({ slug }) => slug);
 
+const positionWeekScheduleWeeks = [3, 4] as const;
+
+export const positionWeekScheduleConfigs = positionWeekScheduleWeeks.flatMap((week) =>
+  positionScheduleConfigs.map((config) => ({
+    ...config,
+    week,
+    slug: `week-${week}-${config.slug}`,
+  })),
+);
+
+export const positionWeekScheduleSlugs = positionWeekScheduleConfigs.map(({ slug }) => slug);
+
 export type PositionScheduleConfig = (typeof positionScheduleConfigs)[number];
+export type PositionWeekScheduleConfig = (typeof positionWeekScheduleConfigs)[number];
 
 export type PositionScheduleRating = {
   rank: number;
@@ -51,6 +64,31 @@ export function getScheduleRatingWeek(slug: string) {
 
 export function getPositionScheduleConfig(slug: string) {
   return positionScheduleConfigs.find((config) => config.slug === slug) ?? null;
+}
+
+export function getPositionWeekScheduleConfig(slug: string) {
+  return positionWeekScheduleConfigs.find((config) => config.slug === slug) ?? null;
+}
+
+export function getPositionWeekScheduleRatings(config: PositionWeekScheduleConfig) {
+  const positionDefense = nflversePlayerRelease.positionDefense?.teams;
+  if (!positionDefense) return [];
+  return teams
+    .flatMap((team) => {
+      const game = team.schedule.find((candidate) => candidate.week === config.week);
+      const opponent = game ? getTeamByAbbr(game.opponentAbbr) : undefined;
+      const pointsAllowed = opponent
+        ? positionDefense[opponent.abbr]?.[config.position]?.pointsPerGame
+        : undefined;
+      return game && opponent && pointsAllowed
+        ? [{ team, opponent, game, pointsAllowed }]
+        : [];
+    })
+    .sort((left, right) =>
+      right.pointsAllowed.ppr - left.pointsAllowed.ppr ||
+      left.team.name.localeCompare(right.team.name),
+    )
+    .map((row, index) => ({ ...row, rank: index + 1 }));
 }
 
 export function getPositionScheduleRatings(config: PositionScheduleConfig): PositionScheduleRating[] {

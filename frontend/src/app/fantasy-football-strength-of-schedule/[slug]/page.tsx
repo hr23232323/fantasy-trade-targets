@@ -7,18 +7,25 @@ import TeamLogo from "../../components/TeamLogo";
 import { buildPageMetadata } from "../../lib/metadata";
 import { getMarket } from "../../lib/market";
 import { hasPlayerPage } from "../../lib/player-pages";
-import { getPositionScheduleConfig, getScheduleRatingWeek, getWeeklyScheduleRatings, positionScheduleSlugs, scheduleRatingSlugs } from "../../lib/schedule-ratings";
+import { getPositionScheduleConfig, getPositionWeekScheduleConfig, getScheduleRatingWeek, getWeeklyScheduleRatings, positionScheduleSlugs, positionWeekScheduleSlugs, scheduleRatingSlugs } from "../../lib/schedule-ratings";
 import { environmentClass, formatGameDate, formatGameTime, getTeamAssets, teamRelease } from "../../lib/team-data";
 import PositionSchedulePage from "./PositionSchedulePage";
+import PositionWeekSchedulePage from "./PositionWeekSchedulePage";
 
 const SITE_URL = "https://fantasytradetarget.com";
 type PageProps = { params: Promise<{ slug: string }> };
 
 export const dynamicParams = false;
-export function generateStaticParams() { return [...scheduleRatingSlugs, ...positionScheduleSlugs].map((slug) => ({ slug })); }
+export function generateStaticParams() { return [...scheduleRatingSlugs, ...positionScheduleSlugs, ...positionWeekScheduleSlugs].map((slug) => ({ slug })); }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
+  const positionWeek = getPositionWeekScheduleConfig(slug);
+  if (positionWeek) return buildPageMetadata({
+    title: `Week ${positionWeek.week} ${positionWeek.label} Fantasy Football Matchups (2026)`,
+    description: `Rank all 32 Week ${positionWeek.week} ${positionWeek.singular} matchups by Standard, Half PPR, and PPR fantasy points allowed, with current player links.`,
+    path: `/fantasy-football-strength-of-schedule/${slug}`,
+  });
   const position = getPositionScheduleConfig(slug);
   if (position) return buildPageMetadata({
     title: `${position.label} Fantasy Football Strength of Schedule (2026)`,
@@ -36,6 +43,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function WeeklyScheduleRatingPage({ params }: PageProps) {
   const { slug } = await params;
+  const positionWeek = getPositionWeekScheduleConfig(slug);
+  if (positionWeek) return <PositionWeekSchedulePage config={positionWeek} />;
   const position = getPositionScheduleConfig(slug);
   if (position) return <PositionSchedulePage config={position} />;
   const week = getScheduleRatingWeek(slug);

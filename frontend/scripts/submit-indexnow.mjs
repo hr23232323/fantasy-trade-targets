@@ -84,6 +84,10 @@ const scheduleRatingPaths = Array.from(
 );
 const positionSchedulePaths = ["quarterbacks", "running-backs", "wide-receivers", "tight-ends"]
   .map((position) => `/fantasy-football-strength-of-schedule/${position}`);
+const positionWeekSchedulePaths = [3, 4].flatMap((week) =>
+  ["quarterbacks", "running-backs", "wide-receivers", "tight-ends"]
+    .map((position) => `/fantasy-football-strength-of-schedule/week-${week}-${position}`),
+);
 const usagePositionPaths = [];
 for (let week = 1; week <= 18; week += 1) {
   const games = [];
@@ -155,6 +159,7 @@ const changedPaths = [
   ...matchupExperimentPaths,
   ...scheduleRatingPaths,
   ...positionSchedulePaths,
+  ...positionWeekSchedulePaths,
   ...usagePositionPaths,
   ...playerPages.map((player) => `/players/${player.slug}`),
   ...playerComparisons.map((comparison) => `/player-comparisons/${comparison.slug}`),

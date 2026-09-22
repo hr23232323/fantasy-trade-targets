@@ -18,6 +18,7 @@ const [
   playerDetail,
   methodology,
   dataSources,
+  nflverseLib,
 ] = await Promise.all([
   readFile(new URL("../data/player-comparisons.json", import.meta.url), "utf8").then(JSON.parse),
   readFile(new URL("../data/player-pages.json", import.meta.url), "utf8").then(JSON.parse),
@@ -34,6 +35,7 @@ const [
   readFile(new URL("../src/app/players/[slug]/page.tsx", import.meta.url), "utf8"),
   readFile(new URL("../src/app/methodology/page.tsx", import.meta.url), "utf8"),
   readFile(new URL("../src/app/data-sources/page.tsx", import.meta.url), "utf8"),
+  readFile(new URL("../src/app/lib/nflverse.ts", import.meta.url), "utf8"),
 ]);
 
 const baselinePlayers = new Map(
@@ -57,7 +59,7 @@ const publishedComparisons = manifest.filter(
 );
 
 test("the comparison collection expands in reviewed batches", () => {
-  assert.equal(manifest.length, 112, "112 detail pages plus one hub should ship");
+  assert.equal(manifest.length, 132, "132 detail pages plus one hub should ship");
   assert.match(hub, /\{comparisons\.length\} decisions worth measuring/);
   assert.match(hub, /Compare \{distinctPlayerCount\} players/);
   assert.match(detail, /The short answer/);
@@ -66,7 +68,7 @@ test("the comparison collection expands in reviewed batches", () => {
   assert.match(detail, /Same-position decisions/);
 });
 
-test("112 comparisons cover reviewed, scoring-covered players", () => {
+test("132 comparisons cover reviewed, scoring-covered players", () => {
   const usedPlayers = manifest.flatMap(({ leftSlug, rightSlug }) => [leftSlug, rightSlug]);
   assert.ok(new Set(usedPlayers).size >= 130);
   assert.deepEqual(
@@ -76,7 +78,7 @@ test("112 comparisons cover reviewed, scoring-covered players", () => {
         manifest.filter((comparison) => comparison.position === position).length,
       ]),
     ),
-    { QB: 22, RB: 36, WR: 36, TE: 18 },
+    { QB: 24, RB: 41, WR: 45, TE: 22 },
   );
 
   for (const comparison of manifest) {
@@ -138,7 +140,13 @@ test("comparison pages have AEO structure, transparent boundaries, and analytics
   assert.match(detail, /player_comparison_viewed/);
   assert.match(detail, /comparison_calculator_opened/);
   assert.match(detail, /scoring_leader_flip/);
-  assert.match(detail, /This comparison does not include injury news, projections/);
+  assert.match(detail, /This comparison does not include player projections, live inactive decisions/);
+  assert.match(detail, /What changed on the field/);
+  assert.match(detail, /Latest usage/);
+  assert.match(detail, /Listed availability/);
+  assert.match(detail, /nflversePlayerRelease\.releaseId/);
+  assert.match(nflverseLib, /getRecentPlayerContext/);
+  assert.match(nflverseLib, /opportunityChange/);
   assert.match(hub, /"@type": "CollectionPage"/);
   assert.match(hub, /player_comparison_hub_viewed/);
   assert.match(hub, /not generated as every possible name combination/);

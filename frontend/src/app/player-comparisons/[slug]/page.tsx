@@ -8,6 +8,11 @@ import TeamLogo from "../../components/TeamLogo";
 import { TrackedLink } from "../../components/TrackedLink";
 import { getMarket, getPlayerProfile } from "../../lib/market";
 import {
+  getRecentPlayerContext,
+  nflversePlayerRelease,
+  type RecentPlayerContext,
+} from "../../lib/nflverse";
+import {
   getPlayerComparison,
   getRelatedComparisons,
   playerComparisonSlugs,
@@ -137,6 +142,8 @@ export default async function PlayerComparisonPage({ params }: PageProps) {
   const trailer = leader.slug === basePlayers.left.slug ? basePlayers.right : basePlayers.left;
   const formatSummary = summarizeRows(formatRows);
   const scoringSummary = summarizeRows(scoringRows);
+  const leftRecent = getRecentPlayerContext(comparison.leftSlug);
+  const rightRecent = getRecentPlayerContext(comparison.rightSlug);
   const leftProduction = getProductionCards(leftProfilePayload.data).slice(0, 6);
   const rightProduction = getProductionCards(rightProfilePayload.data).slice(0, 6);
   const related = getRelatedComparisons(comparison).map((item) => {
@@ -306,6 +313,20 @@ export default async function PlayerComparisonPage({ params }: PageProps) {
         <PlayerValuePanel player={basePlayers.right} accent="bg-[#ffb29a]" />
       </section>
 
+      {leftRecent && rightRecent ? (
+        <section className="page-wrap py-14">
+          <SectionIntro
+            eyebrow={`Latest usage // through Week ${Math.max(leftRecent.week, rightRecent.week)}`}
+            title="What changed on the field?"
+            copy="Recent workload and listed availability add context to the market price. They describe what happened; they do not predict the next game."
+          />
+          <div className="grid gap-px border border-[#171c19] bg-[#171c19] lg:grid-cols-2">
+            <RecentContextPanel player={basePlayers.left} context={leftRecent} />
+            <RecentContextPanel player={basePlayers.right} context={rightRecent} />
+          </div>
+        </section>
+      ) : null}
+
       <section id="league-formats" className="page-wrap scroll-mt-8 py-14">
         <SectionIntro
           eyebrow="Same players // four markets"
@@ -357,7 +378,7 @@ export default async function PlayerComparisonPage({ params }: PageProps) {
           </h2>
           <p className="mt-5 text-sm leading-7 text-[#414842]">{comparison.decisionFrame}</p>
           <p className="mt-4 text-sm leading-7 text-[#414842]">
-            {straightUpAnswer} Injury status, starting-lineup need, and manager-specific preference are outside this model.
+            {straightUpAnswer} Recent usage and listed availability provide context, but starting-lineup need and manager-specific preference remain outside the model.
           </p>
         </div>
         <div>
@@ -423,7 +444,7 @@ export default async function PlayerComparisonPage({ params }: PageProps) {
 
       <aside className="page-wrap border-t border-[#9d9a91] pt-5 text-[11px] leading-6 text-[#69706c]">
         <p className="max-w-6xl">
-          <strong className="text-[#171c19]">Data note:</strong> Updated {updated} ET from validated release <span className="font-mono">{base.meta.releaseId}</span>. Values are composite market reference points attributed in <Link href="/data-sources" className="underline">data sources</Link>. Scoring and roster adjustments follow the deterministic <Link href="/methodology#league-scoring" className="underline">published methodology</Link>. This comparison does not include injury news, projections, accepted-trade distributions, or your league mates’ preferences.
+          <strong className="text-[#171c19]">Data note:</strong> Updated {updated} ET from validated market release <span className="font-mono">{base.meta.releaseId}</span>. Recent usage and listed availability come from nflverse release <span className="font-mono">{nflversePlayerRelease.releaseId}</span>. Sources are attributed in <Link href="/data-sources" className="underline">data sources</Link>. This comparison does not include player projections, live inactive decisions, accepted-trade distributions, or your league mates’ preferences.
         </p>
       </aside>
     </>
@@ -532,6 +553,47 @@ function PlayerValuePanel({ player, accent }: { player: MarketAsset; accent: str
       </Link>
     </article>
   );
+}
+
+function RecentContextPanel({ player, context }: { player: MarketAsset; context: RecentPlayerContext }) {
+  const change = context.opportunityChange;
+  const changeLabel = change === null
+    ? "No prior-week comparison"
+    : `${change > 0 ? "+" : ""}${change} from the prior recorded week`;
+  const usageSlug = ({ QB: "quarterbacks", RB: "running-backs", WR: "wide-receivers", TE: "tight-ends" } as Record<string, string>)[player.position];
+  return (
+    <article className="bg-[#f3f0e7] p-6 sm:p-8">
+      <div className="flex items-start justify-between gap-5">
+        <div>
+          <span className="mono-label">Week {context.week}{context.opponent ? ` · vs. ${context.opponent}` : ""}</span>
+          <h3 className="mt-4 text-3xl font-black tracking-[-0.045em]">{player.name}</h3>
+        </div>
+        <TeamLogo team={player.team} size={48} decorative />
+      </div>
+      <dl className="mt-7 grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-3">
+        <ContextMetric label="PPR points" value={metric(context.fantasyPointsPpr)} detail="Latest game" />
+        <ContextMetric label={context.opportunityLabel} value={metric(context.opportunity)} detail={changeLabel} />
+        <ContextMetric label="Snap share" value={context.snapPct === null ? "—" : `${Math.round(context.snapPct * 100)}%`} detail="Latest game" />
+      </dl>
+      <p className="mt-5 text-sm leading-7 text-[#414842]"><strong className="text-[#171c19]">Listed availability:</strong> {context.availability}{context.availabilityDetail ? ` · ${context.availabilityDetail}` : ""}.</p>
+      {usageSlug ? <Link href={`/fantasy-football-usage/week-${context.week}/${usageSlug}`} className="mt-5 inline-block font-mono text-[10px] font-black uppercase tracking-[0.08em] underline">See the Week {context.week} {player.position} usage report →</Link> : null}
+    </article>
+  );
+}
+
+function ContextMetric({ label, value, detail }: { label: string; value: string; detail: string }) {
+  return (
+    <div className="bg-white/80 p-4">
+      <dt className="font-mono text-[9px] font-black uppercase tracking-[0.08em] text-[#69706c]">{label}</dt>
+      <dd className="mt-2 font-mono text-2xl font-black tabular-nums">{value}</dd>
+      <span className="mt-2 block text-[11px] leading-5 text-[#69706c]">{detail}</span>
+    </div>
+  );
+}
+
+function metric(value: number | null) {
+  if (value === null) return "—";
+  return Number.isInteger(value) ? String(value) : value.toFixed(1);
 }
 
 function SectionIntro({

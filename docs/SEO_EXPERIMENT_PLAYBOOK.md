@@ -1,6 +1,6 @@
 # SEO experiment and scale playbook
 
-Last updated: 2026-09-14
+Last updated: 2026-09-22
 Owner: Fantasy Trade Target
 
 ## The operating rule
@@ -15,13 +15,14 @@ Player comparisons are the control. They already earned page-one impressions and
 
 | Cohort | Search question | Initial set | Primary event | Status |
 |---|---|---:|---|---|
-| Control: player comparisons | “Player A or Player B dynasty?” | 112 curated comparisons | `player_comparison_viewed` | Proven; scale selectively |
+| Control: player comparisons | “Player A or Player B dynasty?” | 132 curated comparisons | `player_comparison_viewed` | Proven; latest batch selected from Week 2 usage, availability, market proximity, and Search Console demand |
 | E1: individual game matchups | “Team A vs. Team B fantasy matchup” | All 16 Week 1 games | `game_matchup_experiment_viewed` | Initial cohort shipped |
 | E2: weekly schedule ratings | “Week N fantasy strength of schedule” | All 18 regular-season weeks | `schedule_rating_experiment_viewed` | Initial cohort shipped |
 | E3: player vs. exact rookie pick | “Player or 2027 pick X?” | 20 close market decisions | `player_pick_comparison_experiment_viewed` | Initial cohort shipped |
 | E4: league-size rankings | “N-team Superflex/1QB dynasty rankings” | 5 league sizes × 2 QB formats = 10 | `scoring_research_viewed` with `scoring_page` | Initial cohort shipped |
 | E5: position schedule | “Best fantasy schedule for RB/WR/TE/QB” | 4 complete 32-team rankings | `position_schedule_viewed` | Initial cohort shipped |
 | E6: weekly usage | “Week N snaps, targets, and carries” | 4 position reports per complete week | `weekly_usage_report_viewed` | Armed; publishes only after full-week verification |
+| E7: weekly position matchups | “Best Week N matchups for QB/RB/WR/TE” | 4 positions × Weeks 3–4 = 8 | `position_week_schedule_viewed` | Initial cohort shipped after E2 and E5 cleared discovery and CTR thresholds |
 | Gated: start/sit | “Who should I start this week?” | Do not publish yet | Reserved | Needs weekly projections and availability data |
 
 ## nflverse experiment queue
@@ -37,6 +38,14 @@ The direct nflverse release integration adds three seasons of weekly player resu
 | 5 | Evidence-backed start/sit comparisons | 10–20 close calls for one active week | Which player projects better after recent usage, availability, opponent position defense, and league scoring? | All start/sit gates below; nflverse alone is not a projection system |
 
 Position schedule and weekly usage are the first two nflverse cohorts. Measure them separately against the comparison control, then release the next page type only after the Day 7 read. Existing player, team, and matchup pages should continue absorbing useful evidence without creating duplicate index inventory.
+
+## September 22 scale decision
+
+- Player comparisons produced 377 clicks from 22,102 impressions in the latest 28-day export, so the control expanded by 20 reviewed decisions.
+- The new pairs were selected from current Week 2 opportunity or snap changes, current listed availability, close validated market values, and observed comparison-query demand. They were not generated from every possible pair.
+- Weekly schedule ratings produced 11 clicks from 119 impressions at 9.2% CTR. Position schedule pages produced 3 clicks from 52 impressions at 5.8% CTR. E7 combines those two winning intents in one bounded eight-page cohort.
+- The general Week 2 matchup page ranked at position 7.6 but earned 2 clicks from 2,681 impressions. Its title, first answer, and ranked summary were revised once before any additional game-level expansion.
+- Weekly usage reports remain on hold for additional page expansion. Existing reports receive internal links and another measurement window first.
 
 Collection hubs are navigation, not detail-page experiments. They should be reported separately from their cohorts.
 

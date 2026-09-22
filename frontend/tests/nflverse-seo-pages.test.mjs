@@ -3,12 +3,15 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
-const [release, teams, scheduleLib, usageLib, schedulePage, usageHub, usagePage, sitemap, indexNow, footer, playbook] = await Promise.all([
+const [release, teams, scheduleLib, usageLib, schedulePage, positionWeekPage, scheduleRoute, scheduleHub, usageHub, usagePage, sitemap, indexNow, footer, playbook] = await Promise.all([
   read("../data/nflverse-player-release.json").then(JSON.parse),
   read("../data/team-release.json").then(JSON.parse),
   read("../src/app/lib/schedule-ratings.ts"),
   read("../src/app/lib/usage-reports.ts"),
   read("../src/app/fantasy-football-strength-of-schedule/[slug]/PositionSchedulePage.tsx"),
+  read("../src/app/fantasy-football-strength-of-schedule/[slug]/PositionWeekSchedulePage.tsx"),
+  read("../src/app/fantasy-football-strength-of-schedule/[slug]/page.tsx"),
+  read("../src/app/fantasy-football-strength-of-schedule/page.tsx"),
   read("../src/app/fantasy-football-usage/page.tsx"),
   read("../src/app/fantasy-football-usage/[weekSlug]/[positionSlug]/page.tsx"),
   read("../src/app/sitemap.ts"),
@@ -27,6 +30,20 @@ test("position schedule publishes four distinct, complete rankings", () => {
   assert.match(schedulePage, /Schedule context, then player context/);
   assert.match(sitemap, /positionScheduleSlugs\.map/);
   assert.match(indexNow, /positionSchedulePaths/);
+});
+
+test("the schedule winner expands into complete Week 3 and Week 4 position cohorts", () => {
+  assert.match(scheduleLib, /positionWeekScheduleWeeks = \[3, 4\]/);
+  assert.match(scheduleLib, /getPositionWeekScheduleRatings/);
+  assert.match(scheduleLib, /pointsAllowed\.ppr/);
+  assert.match(scheduleRoute, /PositionWeekSchedulePage/);
+  assert.match(scheduleRoute, /positionWeekScheduleSlugs/);
+  assert.match(scheduleHub, /Weeks 3–4 · by position/);
+  assert.match(positionWeekPage, /position_week_schedule_viewed/);
+  assert.match(positionWeekPage, /all 32 teams/i);
+  assert.match(positionWeekPage, /A better matchup can help\. Role still comes first/);
+  assert.match(sitemap, /positionWeekScheduleSlugs\.map/);
+  assert.match(indexNow, /positionWeekSchedulePaths/);
 });
 
 test("usage pages require final games plus matching stats and snaps", () => {
@@ -56,7 +73,7 @@ test("usage pages require final games plus matching stats and snaps", () => {
 });
 
 test("consumer pages explain the product without internal planning language", () => {
-  const visiblePages = `${schedulePage}\n${usageHub}\n${usagePage}`;
+  const visiblePages = `${schedulePage}\n${positionWeekPage}\n${usageHub}\n${usagePage}`;
   for (const phrase of ["implementation note", "publication gate", "SEO experiment", "cohort", "pipeline", "as you requested", "our conversation"]) {
     assert.doesNotMatch(visiblePages, new RegExp(phrase, "i"));
   }

@@ -36,6 +36,9 @@ test("weekly matchup collection publishes one complete regular-season slate per 
 });
 
 test("weekly matchup pages provide data-backed context without claiming projections or injuries", () => {
+  assert.match(detail, /Best & Worst Spots/);
+  assert.match(detail, /Best overall environments/);
+  assert.match(detail, /The three warmest Week/);
   assert.match(detail, /current top redraft assets/i);
   assert.match(detail, /opponent scoring context/i);
   assert.match(detail, /environmentScore/);

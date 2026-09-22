@@ -7,6 +7,7 @@ import TeamLogo from "../../components/TeamLogo";
 import { buildPageMetadata } from "../../lib/metadata";
 import { getMarket } from "../../lib/market";
 import { hasPlayerPage } from "../../lib/player-pages";
+import { getWeeklyScheduleRatings } from "../../lib/schedule-ratings";
 import {
   environmentClass,
   formatGameDate,
@@ -39,9 +40,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const week = weekFromSlug(slug);
   if (!week) return {};
+  const ratings = getWeeklyScheduleRatings(week);
+  const best = ratings[0];
+  const toughest = ratings.at(-1);
   return buildPageMetadata({
-    title: `Week ${week} Fantasy Football Matchups & Schedule (2026)`,
-    description: `Every Week ${week} NFL matchup with current fantasy player values, opponent scoring context, venue, surface, and rest for the 2026 season.`,
+    title: `Week ${week} Fantasy Football Matchups: Best & Worst Spots (2026)`,
+    description: `${best?.team.name ?? "See which team"} has the best Week ${week} fantasy matchup and ${toughest?.team.name ?? "which team"} has the toughest. Rank every game with current player values.`,
     path: `/fantasy-football-matchups/${slug}`,
   });
 }
@@ -60,6 +64,9 @@ export default async function WeeklyMatchupPage({ params }: PageProps) {
   const firstDate = matchups[0].date;
   const lastDate = matchups[matchups.length - 1].date;
   const complete = matchups.filter(matchupIsComplete).length;
+  const ratings = getWeeklyScheduleRatings(week);
+  const bestSpots = ratings.slice(0, 3);
+  const toughest = ratings.at(-1);
   const pageUrl = `${SITE_URL}/fantasy-football-matchups/${slug}`;
 
   return (
@@ -81,13 +88,28 @@ export default async function WeeklyMatchupPage({ params }: PageProps) {
           <div>
             <span className="eyebrow bg-white">2026 fantasy football // weekly slate</span>
             <h1 className="mt-7 max-w-5xl text-[clamp(3.2rem,8vw,7rem)] font-black uppercase leading-[0.84] tracking-[-0.078em]">
-              Week {week} <span className="text-[#a23616]">fantasy football matchups.</span>
+              Week {week} fantasy football <span className="text-[#a23616]">matchups &amp; best spots.</span>
             </h1>
           </div>
           <div className="border-l border-[#171c19] pl-5">
-            <p className="text-base font-medium leading-7 text-[#414742]">Every game, each team’s current top redraft assets, and the scoring environment created by opponent history, site, and rest.</p>
+            <p className="text-base font-medium leading-7 text-[#414742]">{bestSpots[0]?.team.name ?? "The top team"} draws the strongest overall scoring environment this week. {toughest ? `${toughest.team.name} has the lowest-rated spot.` : ""} Every game below includes current top redraft assets and opponent scoring context.</p>
             <p className="mt-5 font-mono text-[10px] font-black uppercase tracking-[0.08em]">{formatRange(firstDate, lastDate)} · {matchups.length} games</p>
           </div>
+        </div>
+      </section>
+
+      <section className="page-wrap py-12">
+        <span className="eyebrow bg-[#ffb29a]">Best overall environments</span>
+        <h2 className="mt-6 max-w-4xl text-4xl font-black tracking-[-0.055em]">The three warmest Week {week} team matchups.</h2>
+        <div className="mt-8 grid gap-px border border-[#171c19] bg-[#171c19] md:grid-cols-3">
+          {bestSpots.map((row) => (
+            <article key={row.team.abbr} className="bg-white/70 p-6">
+              <div className="flex items-center justify-between gap-4"><TeamLogo team={row.team.abbr} size={46} decorative /><span className={`${environmentClass(row.game.environmentLabel)} border border-[#171c19] px-3 py-2 font-mono text-xl font-black`}>{row.game.environmentScore}</span></div>
+              <h2 className="mt-5 text-2xl font-black tracking-[-0.04em]">{row.team.name}</h2>
+              <p className="mt-2 text-sm text-[#69706c]">{row.game.site === "away" ? "at" : "vs."} {row.opponent.name} · opponent scoring defense No. {row.game.opponentBaseline.scoringDefenseRank ?? "—"}</p>
+              <Link href={`/teams/${row.team.slug}`} className="mt-5 inline-block font-mono text-[10px] font-black uppercase tracking-[0.08em] underline">Open team outlook →</Link>
+            </article>
+          ))}
         </div>
       </section>
 

@@ -894,5 +894,165 @@
     "position": "TE",
     "editorialLens": "These tight ends occupy a decision range where market price, reception volume, and premium scoring can pull in different directions. Standard, Half PPR, Full PPR, TEP, dynasty, and redraft remain visible as separate answers.",
     "decisionFrame": "Use the row matching the league and competitive window, and keep any add proportional when the current values remain within the same tight end tier."
+  },
+  {
+    "slug": "joe-burrow-vs-caleb-williams",
+    "leftSlug": "joe-burrow-qb",
+    "rightSlug": "caleb-williams-qb",
+    "position": "QB",
+    "editorialLens": "A current availability question around Burrow meets a closely priced younger quarterback in Williams. The comparison keeps the Week 2 context visible while dynasty Superflex, 1QB, redraft, and passing-touchdown settings establish the actual trade price.",
+    "decisionFrame": "Use the listed availability as current context rather than a permanent discount, then decide whether the measured Superflex gap supports moving between the two quarterback timelines."
+  },
+  {
+    "slug": "kyler-murray-vs-sam-darnold",
+    "leftSlug": "kyler-murray-qb",
+    "rightSlug": "sam-darnold-qb",
+    "position": "QB",
+    "editorialLens": "Both quarterbacks entered the week with recent availability changes and sit in the same Superflex price neighborhood. Current usage and status are shown beside the market so a short-term headline does not silently become a long-term dynasty valuation.",
+    "decisionFrame": "Confirm the latest listed availability, then use the Superflex and 1QB rows to separate temporary lineup risk from the durable market difference."
+  },
+  {
+    "slug": "tank-bigsby-vs-brian-robinson",
+    "leftSlug": "tank-bigsby-rb",
+    "rightSlug": "brian-robinson-rb",
+    "position": "RB",
+    "editorialLens": "Bigsby and Robinson both earned larger Week 2 workloads while landing almost exactly together in the current dynasty market. The page puts carries, targets, snaps, and scoring format beside the price so one touchdown or game script does not decide the trade alone.",
+    "decisionFrame": "Treat the latest opportunity increase as evidence of role, then require the market and reception-setting rows to justify paying beyond a straight swap."
+  },
+  {
+    "slug": "aaron-jones-vs-braelon-allen",
+    "leftSlug": "aaron-jones-rb",
+    "rightSlug": "braelon-allen-rb",
+    "position": "RB",
+    "editorialLens": "Jones reached an 81% snap share and 23 combined carries plus targets in Week 2, while Allen carries the younger dynasty profile at nearly the same market price. This comparison makes the contender-versus-horizon decision explicit instead of hiding it in one rank.",
+    "decisionFrame": "Contenders can price Jones through the redraft row, while longer-window rosters should use the dynasty and reception-setting gaps before choosing Allen."
+  },
+  {
+    "slug": "blake-corum-vs-jaylen-warren",
+    "leftSlug": "blake-corum-rb",
+    "rightSlug": "jaylen-warren-rb",
+    "position": "RB",
+    "editorialLens": "Corum and Warren both posted sharp Week 2 snap-share gains, and their dynasty values remain close enough for the role changes to matter. The page compares those observed workloads without turning one game into an unsupported rest-of-season projection.",
+    "decisionFrame": "Use the workload change to identify the live decision, then let current dynasty value, redraft price, and reception scoring determine whether either side deserves an add."
+  },
+  {
+    "slug": "omarion-hampton-vs-devon-achane",
+    "leftSlug": "omarion-hampton-rb",
+    "rightSlug": "devon-achane-rb",
+    "position": "RB",
+    "editorialLens": "Hampton and Achane each handled at least 25 combined carries and targets in Week 2 while remaining close in the elite dynasty running back tier. Their workload, PPR production, redraft value, and reception sensitivity create a timely high-end trade decision.",
+    "decisionFrame": "Start with the narrow dynasty gap, then check whether current-season value and the exact reception setting create enough separation to justify more than preference."
+  },
+  {
+    "slug": "bucky-irving-vs-javonte-williams",
+    "leftSlug": "bucky-irving-rb",
+    "rightSlug": "javonte-williams-rb",
+    "position": "RB",
+    "editorialLens": "Irving's Week 2 snap share climbed to 78% while his current dynasty value landed almost level with Williams. The comparison connects that role signal to the published market and scoring rows without assuming the newest workload automatically persists.",
+    "decisionFrame": "Use the latest workload as supporting context, then price the exchange from the dynasty, redraft, and reception rows instead of chasing the most recent box score."
+  },
+  {
+    "slug": "puka-nacua-vs-jaxon-smith-njigba",
+    "leftSlug": "puka-nacua-wr",
+    "rightSlug": "jaxon-smith-njigba-wr",
+    "position": "WR",
+    "editorialLens": "Nacua's listed hip status and Smith-Njigba's 42.5-point PPR Week 2 make this an immediate elite-receiver question. The page separates short-term availability and recent production from the current dynasty price across Standard, Half PPR, Full PPR, and redraft.",
+    "decisionFrame": "Do not turn a one-week availability gap into a permanent dynasty discount; use the current market and reception rows to set the durable price."
+  },
+  {
+    "slug": "devonta-smith-vs-zay-flowers",
+    "leftSlug": "devonta-smith-wr",
+    "rightSlug": "zay-flowers-wr",
+    "position": "WR",
+    "editorialLens": "Smith rose from six to 13 targets in Week 2 while Flowers carried a listed hamstring designation, yet their dynasty values are almost identical. That combination makes recent role, availability, and reception scoring directly relevant to the trade decision.",
+    "decisionFrame": "Check the latest availability first, then use the nearly even market and league-specific reception rows to avoid overpricing either short-term development."
+  },
+  {
+    "slug": "jaylen-waddle-vs-tee-higgins",
+    "leftSlug": "jaylen-waddle-wr",
+    "rightSlug": "tee-higgins-wr",
+    "position": "WR",
+    "editorialLens": "Waddle jumped from three to 10 targets and 21.8 PPR points in Week 2, while Higgins also drew nine targets in a changing Cincinnati passing game. Their nearby dynasty prices create a useful test of role evidence, scoring format, and roster window.",
+    "decisionFrame": "Use two weeks of workload as context rather than certainty, then let the current dynasty and redraft rows set the actual one-for-one price."
+  },
+  {
+    "slug": "parker-washington-vs-jameson-williams",
+    "leftSlug": "parker-washington-wr",
+    "rightSlug": "jameson-williams-wr",
+    "position": "WR",
+    "editorialLens": "Washington reached 12 targets and an 81% snap share in Week 2, bringing his market price close to Williams. The comparison tests whether the observed role growth is already reflected in dynasty value and how the answer changes in redraft and PPR formats.",
+    "decisionFrame": "Reward repeatable opportunity rather than one result, and keep the trade price tied to the current format row while the new role develops."
+  },
+  {
+    "slug": "adonai-mitchell-vs-malik-washington",
+    "leftSlug": "adonai-mitchell-wr",
+    "rightSlug": "malik-washington-wr",
+    "position": "WR",
+    "editorialLens": "Mitchell drew 12 targets in Week 2, while Washington's five-target role gained relevance as Miami's receiver rotation changed. Their nearly equal dynasty prices make this a practical depth decision grounded in snaps, targets, market value, and reception scoring.",
+    "decisionFrame": "Favor the role evidence that best fits your roster, but keep any add small until the workload persists and the published market creates a wider gap."
+  },
+  {
+    "slug": "deebo-samuel-vs-tre-tucker",
+    "leftSlug": "deebo-samuel-wr",
+    "rightSlug": "tre-tucker-wr",
+    "position": "WR",
+    "editorialLens": "Tucker turned seven Week 2 targets into 119 yards and a touchdown while Samuel's snap share increased in a changing San Francisco receiver room. Their current values put a breakout role beside a proven veteran across dynasty, redraft, and reception scoring.",
+    "decisionFrame": "Use the target and snap changes as evidence of current opportunity, then let the dynasty and redraft rows decide whether the breakout is worth paying over the veteran."
+  },
+  {
+    "slug": "nico-collins-vs-chris-olave",
+    "leftSlug": "nico-collins-wr",
+    "rightSlug": "chris-olave-wr",
+    "position": "WR",
+    "editorialLens": "Collins and Olave entered the week with listed hamstring concerns and sit only a small distance apart in dynasty value. Showing availability beside the market helps distinguish a temporary lineup problem from the longer-term receiver trade decision.",
+    "decisionFrame": "Verify the latest status before a weekly lineup move, but use dynasty and scoring-specific value—not the injury headline alone—to price a long-term trade."
+  },
+  {
+    "slug": "ladd-mcconkey-vs-emeka-egbuka",
+    "leftSlug": "ladd-mcconkey-wr",
+    "rightSlug": "emeka-egbuka-wr",
+    "position": "WR",
+    "editorialLens": "McConkey's listed rib issue places short-term availability beside Egbuka's nearby dynasty price. The comparison keeps that current context separate from the underlying Standard, Half PPR, Full PPR, redraft, and dynasty values.",
+    "decisionFrame": "Use availability to manage the immediate week, then require the market and reception rows to support any lasting discount in a dynasty exchange."
+  },
+  {
+    "slug": "rome-odunze-vs-marvin-harrison-jr",
+    "leftSlug": "rome-odunze-wr",
+    "rightSlug": "marvin-harrison-jr-wr",
+    "position": "WR",
+    "editorialLens": "Odunze's snap share climbed from 48% to 84% in Week 2 while Harrison remained on the field without matching target volume. Their close young-receiver values create a timely comparison between role growth, market conviction, and format sensitivity.",
+    "decisionFrame": "Separate routes and snaps from earned targets, then use the current dynasty gap and PPR rows to decide whether either young receiver warrants an add."
+  },
+  {
+    "slug": "dallas-goedert-vs-juwan-johnson",
+    "leftSlug": "dallas-goedert-te",
+    "rightSlug": "juwan-johnson-te",
+    "position": "TE",
+    "editorialLens": "Goedert's listed knee issue changed Philadelphia's tight end picture while Johnson remained one of the most searched current tight end decisions on the site. Their nearly identical dynasty values make workload and availability useful context for the trade.",
+    "decisionFrame": "Use the newest role and status information for immediate planning, then price the longer-term exchange from the dynasty, redraft, and tight end premium rows."
+  },
+  {
+    "slug": "aj-barner-vs-oronde-gadsden",
+    "leftSlug": "aj-barner-te",
+    "rightSlug": "oronde-gadsden-te",
+    "position": "TE",
+    "editorialLens": "Gadsden's snap share climbed from 18% to 44% in Week 2 while Barner remained almost even in the dynasty tight end market. The page tests whether the growing role creates a meaningful difference across redraft, reception, and tight end premium settings.",
+    "decisionFrame": "Treat the snap increase as evidence of a larger route to opportunity, then use the dynasty and TEP rows to avoid paying ahead of actual target growth."
+  },
+  {
+    "slug": "tucker-kraft-vs-sam-laporta",
+    "leftSlug": "tucker-kraft-te",
+    "rightSlug": "sam-laporta-te",
+    "position": "TE",
+    "editorialLens": "Kraft played 98% of offensive snaps in Week 2 while LaPorta reached a similar near-full-time role and scored 17.2 PPR points. Their workload strength and close dynasty prices make this a clean tight end premium and reception-scoring decision.",
+    "decisionFrame": "Use target volume to distinguish full-time routes from empty snaps, then let the TEP and dynasty rows determine whether the current gap deserves an add."
+  },
+  {
+    "slug": "brenton-strange-vs-oronde-gadsden",
+    "leftSlug": "brenton-strange-te",
+    "rightSlug": "oronde-gadsden-te",
+    "position": "TE",
+    "editorialLens": "Gadsden's snap share climbed from 18% to 44% in Week 2 while Strange remained a closely priced tight end with established search demand. The comparison connects the growing role to dynasty, redraft, reception scoring, and TEP without projecting it forward.",
+    "decisionFrame": "Treat the snap increase as a reason to compare the players now, not as proof of a permanent lead, and keep the trade anchored to the current format-specific market."
   }
 ]
