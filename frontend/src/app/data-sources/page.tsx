@@ -27,12 +27,13 @@ export default function DataSourcesPage() {
           <h2 className="section-title mt-6">Game logs with a paper trail.</h2>
         </div>
         <div className="space-y-5 text-sm leading-7 text-[#59605c]">
-          <p>Player pages combine current rosters and injury reports with regular-season weekly statistics and offensive snap counts from nflverse. The app currently covers <strong>{nflversePlayerRelease.coverage.rosterMapped} roster matches</strong> and <strong>{nflversePlayerRelease.coverage.playersWithGames} player game histories</strong> across {nflversePlayerRelease.seasons.join(", ")}.</p>
-          <p>Fantasy Trade Target reads the project&apos;s versioned release files directly, records a hash and row count for every input, and packages only the fields used on the site. Season summaries retain the complete three-season window; player tables show the ten most recent games. The release is refreshed with the rest of the scheduled data publication.</p>
+          <p>Player pages combine current rosters and weekly injury reports with regular-season statistics and offensive snap counts from nflverse. The app currently covers <strong>{nflversePlayerRelease.coverage.rosterMapped} roster matches</strong> and <strong>{nflversePlayerRelease.coverage.playersWithGames} player game histories</strong> across {nflversePlayerRelease.seasons.join(", ")}.</p>
+          <p>Fantasy Trade Target reads the project&apos;s versioned release files directly, records a hash and row count for every input, and packages only the fields used on the site. Season summaries retain the complete three-season window; player tables show the most recent games; availability logs preserve one structured record per reported week. The release is refreshed with the rest of the scheduled data publication.</p>
           <p>The underlying data is attributed to nflverse under <a href={nflversePlayerRelease.license.url} target="_blank" rel="license noopener" className="font-bold underline">CC BY 4.0</a>. The current integration does not use player headshots or FTN charting data, and it does not turn an injury or practice row into a medical prediction.</p>
           <div className="flex flex-wrap gap-3">
             <a href={nflversePlayerRelease.license.projectUrl} target="_blank" rel="noopener noreferrer" className="border border-[#171c19] bg-[#d7b6ff] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">Inspect nflverse data ↗</a>
             <a href="/players" className="border border-[#171c19] bg-white px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">Browse player files →</a>
+            <a href="/fantasy-football-injuries" className="border border-[#171c19] bg-[#ffb29a] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">Open injury report →</a>
           </div>
         </div>
       </section>

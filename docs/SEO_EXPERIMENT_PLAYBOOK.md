@@ -23,7 +23,8 @@ Player comparisons are the control. They already earned page-one impressions and
 | E5: position schedule | “Best fantasy schedule for RB/WR/TE/QB” | 4 complete 32-team rankings | `position_schedule_viewed` | Initial cohort shipped |
 | E6: weekly usage | “Week N snaps, targets, and carries” | 4 position reports per complete week | `weekly_usage_report_viewed` | Armed; publishes only after full-week verification |
 | E7: weekly position matchups | “Best Week N matchups for QB/RB/WR/TE” | 4 positions × Weeks 3–4 = 8 | `position_week_schedule_viewed` | Initial cohort shipped after E2 and E5 cleared discovery and CTR thresholds |
-| Gated: start/sit | “Who should I start this week?” | Do not publish yet | Reserved | Needs weekly projections and availability data |
+| E8: start/sit decisions | “Who should I start this week?” | 20 reviewed Week 3 decisions | `start_sit_comparison_viewed` | Initial cohort shipped with a guarded first-party range model and automatic result grading |
+| E9: injury availability | “Who is listed on the fantasy injury report?” | Current hub + complete weekly archives | `fantasy_injury_report_viewed` | Initial cohort shipped; stale report weeks are explicit and never adjust a newer projection |
 
 ## nflverse experiment queue
 
@@ -34,8 +35,8 @@ The direct nflverse release integration adds three seasons of weekly player resu
 | 1 | Weekly usage risers and fallers | 4 pages: QB, RB, WR, TE for the latest complete week | Who gained or lost snaps, targets, carries, and target share versus their recent baseline? | Every scheduled game final, with matching player stats and snap coverage |
 | 2 | Volume versus market value | 12–20 player pages | Which players have opportunity that is materially ahead of or behind their dynasty price? | Minimum two recent games plus a reproducible gap formula |
 | 3 | Player game-log search pages | 12–20 high-demand players | What did the player score each week in Standard, Half PPR, and PPR, with role context? | Search Console demand beyond the existing player URL; avoid splitting identical intent |
-| 4 | Injury and practice status hubs | 16 weekly team/slate pages | Which fantasy-relevant players have a listed designation, and what changed since the previous report? | Faster refresh SLA, status history, automatic stale-state suppression |
-| 5 | Evidence-backed start/sit comparisons | 10–20 close calls for one active week | Which player projects better after recent usage, availability, opponent position defense, and league scoring? | All start/sit gates below; nflverse alone is not a projection system |
+| 4 | Injury and practice status hubs | Current report + one archive per available week | Which fantasy-relevant players have a listed designation, and what changed since the previous report? | Shipped with status history and automatic stale-state suppression |
+| 5 | Evidence-backed start/sit comparisons | 20 close calls for one active week | Which player has the stronger range after recorded scoring, recent usage, same-week availability, opponent position defense, and league scoring? | Shipped after the V1 lineup-lean gates below passed |
 
 Position schedule and weekly usage are the first two nflverse cohorts. Measure them separately against the comparison control, then release the next page type only after the Day 7 read. Existing player, team, and matchup pages should continue absorbing useful evidence without creating duplicate index inventory.
 
@@ -48,6 +49,14 @@ Position schedule and weekly usage are the first two nflverse cohorts. Measure t
 - Weekly usage reports remain on hold for additional page expansion. Existing reports receive internal links and another measurement window first.
 
 Collection hubs are navigation, not detail-page experiments. They should be reported separately from their cohorts.
+
+## September 22 start/sit launch decision
+
+- E8 launches 20 stable player-pair URLs and one evergreen current-week hub. The pair URL accumulates authority; its title, evidence, matchup, availability and grade move with the active week.
+- The model publishes Standard, Half PPR and PPR floor–median–ceiling ranges. It blends up to 18 prior-season games with current-season results, then applies tightly capped usage and opponent-position adjustments.
+- The Week 2 holdout covered 160 player observations. Half PPR mean absolute error was 5.60 points versus 7.29 for the previous-game baseline and 5.64 for the prior-season PPG baseline. This is a small edge over the stronger baseline, so the cohort stays bounded at 20 until live grading provides more evidence.
+- Same-week Out, Doubtful, Questionable and practice participation can adjust a projection. An older injury row cannot. Every completed pair publishes the actual result and whether the pregame lean was correct.
+- E9 preserves the source's weekly availability history, publishes only meaningful fantasy-player listings, displays the latest available report week, and explicitly says when the active week's structured report has not arrived.
 
 ## Why these four tests
 
@@ -143,19 +152,20 @@ Also retain:
 - Do not publish sports-betting pages without live permitted odds, freshness enforcement, disclosures, and legal review.
 - Do not publish start/sit pages until all required inputs below pass freshness and backtest gates.
 
-## Start/sit launch gate
+## Start/sit launch gate — V1 lineup lean
 
-Start/sit is the largest adjacent search opportunity, but it is a product/data experiment before it is an SEO template. Public pages require:
+Start/sit is the largest adjacent search opportunity, but it remains a product/data experiment before it becomes a large template. The initial public cohort requires:
 
-1. weekly player median, floor, and ceiling projections;
-2. opponent fantasy points allowed by position, adjusted for schedule already faced;
-3. current snaps, routes, attempts, targets, carries, and red-zone work;
-4. practice participation, game designation, inactive status, depth chart, and transaction state;
-5. Standard, Half PPR, PPR, four-/six-point passing TD, 1QB, and Superflex settings;
-6. timestamps and automatic invalidation when required inputs are stale;
-7. backtests against simple market-rank and recent-points baselines.
+1. player floor, median, and ceiling ranges calculated only from recorded games available before the target week;
+2. opponent fantasy points allowed by position with a tightly capped adjustment;
+3. current snaps plus position-relevant attempts, targets, and carries;
+4. practice participation and game designation applied only when the report week equals the target week;
+5. Standard, Half PPR and PPR outputs with four-point passing touchdowns clearly labeled;
+6. visible source timestamps and automatic stale-status suppression;
+7. a holdout backtest against previous-game and prior-season PPG baselines;
+8. automatic postgame grading with the original pregame lean preserved by the deterministic model version.
 
-Once those exist, launch 10–20 genuinely close player decisions for one active week. Do not generate every pair. The public answer should state the projected gap and the strongest inputs, not certainty or rumor summaries.
+The next projection upgrade remains gated on routes, red-zone work, official inactive status, schedule-adjusted opponent defense, weather and broader historical backtests. Do not generate every pair. The public answer states the estimated gap and strongest inputs without certainty or rumor summaries.
 
 ## Research source
 

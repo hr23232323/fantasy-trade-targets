@@ -10,6 +10,8 @@ import { teamRelease, teams } from "./lib/team-data";
 import { publishedUsageWeeks, usagePositionConfigs, usageWeekPath } from "./lib/usage-reports";
 import { matchupExperimentGames, weeklyMatchupSlugs } from "./lib/weekly-matchups";
 import { nflversePlayerRelease } from "./lib/nflverse";
+import { injuryReportWeeks, injuryWeekPath } from "./lib/injuries";
+import { startSitComparisons, startSitPath } from "./lib/start-sit";
 
 const BASE_URL = "https://fantasytradetarget.com";
 
@@ -25,11 +27,13 @@ const staticRoutes = [
   "/editorial-policy",
   "/fantasy-football-trade-analyzer",
   "/fantasy-football-matchups",
+  "/fantasy-football-injuries",
   "/fantasy-football-strength-of-schedule",
   "/fantasy-football-usage",
   "/fantasy-football-trade-targets",
   "/fantasy-football-trade-value-chart",
   "/fantasy-trade-calculator",
+  "/who-should-i-start",
   "/faq",
   "/methodology",
   "/market",
@@ -64,6 +68,12 @@ const marketDrivenRoutes = new Set([
   "/scoring/standard-vs-ppr-player-values",
 ]);
 
+const nflverseDrivenRoutes = new Set([
+  "/fantasy-football-injuries",
+  "/fantasy-football-usage",
+  "/who-should-i-start",
+]);
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const marketUpdated = getMarketReleaseInfo().capturedAt;
   const playerUpdated = new Date(Math.max(Date.parse(marketUpdated), Date.parse(nflversePlayerRelease.capturedAt))).toISOString();
@@ -72,7 +82,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE_URL}${route}`,
       ...(marketDrivenRoutes.has(route)
         ? { lastModified: marketUpdated }
-        : route === "/fantasy-football-usage"
+        : nflverseDrivenRoutes.has(route)
           ? { lastModified: nflversePlayerRelease.capturedAt }
           : {}),
     })),
@@ -83,6 +93,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...playerComparisons.map((comparison) => ({
       url: `${BASE_URL}/player-comparisons/${comparison.slug}`,
       lastModified: playerUpdated,
+    })),
+    ...startSitComparisons.map((comparison) => ({
+      url: `${BASE_URL}${startSitPath(comparison.slug)}`,
+      lastModified: nflversePlayerRelease.capturedAt,
+    })),
+    ...injuryReportWeeks.map((week) => ({
+      url: `${BASE_URL}${injuryWeekPath(week)}`,
+      lastModified: nflversePlayerRelease.capturedAt,
     })),
     ...playerPickComparisons.map((comparison) => ({
       url: `${BASE_URL}/player-vs-rookie-pick/${comparison.slug}`,

@@ -17,7 +17,7 @@ const [manifest, playerPage, playerData, performance, teamPage, matchupPage, sit
 ]);
 
 test("nflverse player release is versioned, attributed, and covers every player file", () => {
-  assert.equal(release.schemaVersion, 2);
+  assert.equal(release.schemaVersion, 3);
   assert.match(release.releaseId, /^ftt-nflverse-\d{8}T\d{6}Z$/);
   assert.match(release.modelVersion, /^nflverse-player-context-/);
   assert.ok(Number.isFinite(Date.parse(release.capturedAt)));
@@ -64,6 +64,11 @@ test("player rows are bounded, ordered, and scoring math stays coherent", () => 
     assert.match(player.sleeperId, /^\d+$/);
     assert.ok(player.games.length <= 20);
     assert.ok(player.seasons.length <= 3);
+    assert.ok(player.injuryHistory.length <= 18);
+    assert.deepEqual(player.injury, player.injuryHistory[0] ?? null);
+    for (let index = 1; index < player.injuryHistory.length; index += 1) {
+      assert.ok((player.injuryHistory[index - 1].week ?? 0) >= (player.injuryHistory[index].week ?? 0));
+    }
     for (let index = 1; index < player.games.length; index += 1) {
       const previous = player.games[index - 1];
       const current = player.games[index];

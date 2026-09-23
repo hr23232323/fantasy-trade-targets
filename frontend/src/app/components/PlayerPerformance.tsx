@@ -23,6 +23,15 @@ export default function PlayerPerformance({ slug, name, position }: { slug: stri
         <ContextCard label="Practice report" value={injury?.practiceStatus ?? "No limitation listed"} detail={injury?.practicePrimaryInjury ?? injury?.practiceSecondaryInjury ?? "No practice injury listed"} accent="bg-[#d7b6ff]" />
       </div>
 
+      {context.injuryHistory.length > 0 ? (
+        <div className="mt-8 overflow-x-auto border border-[#171c19] bg-white/55">
+          <table className="w-full min-w-[720px] text-left text-sm">
+            <thead className="bg-[#171c19] font-mono text-[10px] uppercase tracking-[0.08em] text-white"><tr><th className="p-4">Availability week</th><th className="p-4">Game status</th><th className="p-4">Practice</th><th className="p-4">Listed injury</th></tr></thead>
+            <tbody className="divide-y divide-[#bcb9ae]">{context.injuryHistory.slice(0, 6).map((report) => <tr key={report.week}><td className="p-4 font-black"><Link href={`/fantasy-football-injuries/week-${report.week}`} className="hover:underline">Week {report.week}</Link></td><td className="p-4 font-mono">{report.reportStatus ?? "No game designation"}</td><td className="p-4">{report.practiceStatus ?? "Not listed"}</td><td className="p-4 font-bold">{report.reportPrimaryInjury ?? report.practicePrimaryInjury ?? report.reportSecondaryInjury ?? report.practiceSecondaryInjury ?? "Not specified"}</td></tr>)}</tbody>
+          </table>
+        </div>
+      ) : null}
+
       {context.seasons.length > 0 ? (
         <div className="mt-8 overflow-x-auto border border-[#171c19] bg-white/55">
           <table className="w-full min-w-[640px] text-left text-sm">

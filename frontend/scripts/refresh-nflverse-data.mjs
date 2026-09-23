@@ -95,13 +95,12 @@ for (const year of seasons) {
   }
 }
 
-const injuryByGsis = new Map();
+const injuriesByGsis = new Map();
 for (const row of downloads.injuries.rows) {
   if (!row.gsis_id) continue;
-  const current = injuryByGsis.get(row.gsis_id);
-  if (!current || Number(row.week || 0) >= Number(current.week || 0)) {
-    injuryByGsis.set(row.gsis_id, row);
-  }
+  const history = injuriesByGsis.get(row.gsis_id) ?? [];
+  history.push(row);
+  injuriesByGsis.set(row.gsis_id, history);
 }
 
 const positionDefense = buildPositionDefense(
@@ -111,7 +110,11 @@ const positionDefense = buildPositionDefense(
 
 const players = Object.fromEntries(publishedPlayers.map((player) => {
   const roster = rosterBySleeper.get(String(player.sleeperId));
-  const injury = roster?.gsis_id ? injuryByGsis.get(roster.gsis_id) : null;
+  const injuryHistory = (roster?.gsis_id ? injuriesByGsis.get(roster.gsis_id) : null)
+    ?.sort((left, right) => Number(right.week || 0) - Number(left.week || 0))
+    .map(compactInjury)
+    .slice(0, 18) ?? [];
+  const injury = injuryHistory[0] ?? null;
   const allGames = (gamesBySlug.get(player.slug) ?? [])
     .sort((left, right) => right.season - left.season || right.week - left.week);
   const games = allGames.slice(0, 20);
@@ -130,14 +133,8 @@ const players = Object.fromEntries(publishedPlayers.map((player) => {
       yearsExperience: integerOrNull(roster.years_exp),
       week: integerOrNull(roster.week),
     } : null,
-    injury: injury ? {
-      week: integerOrNull(injury.week),
-      reportPrimaryInjury: injury.report_primary_injury || null,
-      reportStatus: injury.report_status || null,
-      practicePrimaryInjury: injury.practice_primary_injury || null,
-      practiceSecondaryInjury: injury.practice_secondary_injury || null,
-      practiceStatus: injury.practice_status || null,
-    } : null,
+    injury,
+    injuryHistory,
     games,
     seasons: summarizeSeasons(allGames),
   }];
@@ -146,8 +143,8 @@ const players = Object.fromEntries(publishedPlayers.map((player) => {
 validate({ players, publishedPlayers, season, seasons, downloads });
 
 const release = {
-  schemaVersion: 2,
-  modelVersion: "nflverse-player-context-2026.09.2",
+  schemaVersion: 3,
+  modelVersion: "nflverse-player-context-2026.09.3",
   releaseId: `ftt-nflverse-${capturedAt.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "")}`,
   capturedAt: capturedAt.toISOString(),
   season,
@@ -201,6 +198,18 @@ function summarizeSeasons(games) {
     pprPointsPerGame: round(summary.fantasyPointsPpr / summary.games, 1),
     offenseSnapsPerGame: summary.snapGames ? round(summary.offenseSnaps / summary.snapGames, 1) : null,
   }));
+}
+
+function compactInjury(injury) {
+  return {
+    week: integerOrNull(injury.week),
+    reportPrimaryInjury: injury.report_primary_injury || null,
+    reportSecondaryInjury: injury.report_secondary_injury || null,
+    reportStatus: injury.report_status || null,
+    practicePrimaryInjury: injury.practice_primary_injury || null,
+    practiceSecondaryInjury: injury.practice_secondary_injury || null,
+    practiceStatus: injury.practice_status || null,
+  };
 }
 
 function buildPositionDefense(rows, baselineSeason) {
@@ -310,6 +319,12 @@ function validate({ players, publishedPlayers, season, seasons, downloads }) {
   }
   for (const [slug, player] of Object.entries(players)) {
     if (player.games.length > 20) throw new Error(`${slug} exceeds the 20-game public history bound`);
+    if (player.injuryHistory.length > 18) throw new Error(`${slug} exceeds the 18-week injury history bound`);
+    for (let index = 1; index < player.injuryHistory.length; index += 1) {
+      if ((player.injuryHistory[index - 1].week ?? 0) < (player.injuryHistory[index].week ?? 0)) {
+        throw new Error(`${slug} injury history is not newest-first`);
+      }
+    }
     for (const game of player.games) {
       if (!Number.isInteger(game.season) || !Number.isInteger(game.week) || !game.gameId) throw new Error(`${slug} has an invalid game log`);
       for (const value of [game.fantasyPoints, game.fantasyPointsHalfPpr, game.fantasyPointsPpr, game.offenseSnapPct]) {

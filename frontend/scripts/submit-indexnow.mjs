@@ -15,6 +15,9 @@ const nflversePlayerRelease = JSON.parse(
 const configuredPlayerComparisons = JSON.parse(
   await readFile(new URL("../data/player-comparisons.json", import.meta.url), "utf8"),
 );
+const startSitComparisons = JSON.parse(
+  await readFile(new URL("../data/start-sit-comparisons.json", import.meta.url), "utf8"),
+);
 const publicRelease = JSON.parse(
   await readFile(new URL("../data/public-release.json", import.meta.url), "utf8"),
 );
@@ -126,6 +129,9 @@ for (const team of Object.values(teamRelease.teams)) {
     matchupExperimentPaths.push(`/fantasy-football-matchups/week-1/${away.slug}-vs-${home.slug}`);
   }
 }
+const injuryWeeks = [...new Set(Object.values(nflversePlayerRelease.players)
+  .flatMap((player) => (player.injuryHistory ?? []).map((report) => report.week))
+  .filter(Number.isInteger))].sort((left, right) => left - right);
 
 const changedPaths = [
   "",
@@ -141,10 +147,12 @@ const changedPaths = [
   "/fantasy-trade-calculator",
   "/fantasy-football-trade-analyzer",
   "/fantasy-football-matchups",
+  "/fantasy-football-injuries",
   "/fantasy-football-strength-of-schedule",
   "/fantasy-football-usage",
   "/fantasy-football-trade-targets",
   "/fantasy-football-trade-value-chart",
+  "/who-should-i-start",
   "/player-vs-rookie-pick",
   "/data-sources",
   "/methodology",
@@ -161,6 +169,8 @@ const changedPaths = [
   ...positionSchedulePaths,
   ...positionWeekSchedulePaths,
   ...usagePositionPaths,
+  ...injuryWeeks.map((week) => `/fantasy-football-injuries/week-${week}`),
+  ...startSitComparisons.map((comparison) => `/who-should-i-start/${comparison.slug}`),
   ...playerPages.map((player) => `/players/${player.slug}`),
   ...playerComparisons.map((comparison) => `/player-comparisons/${comparison.slug}`),
   ...playerPickComparisons.map((comparison) => `/player-vs-rookie-pick/${comparison.slug}`),

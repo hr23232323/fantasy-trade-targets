@@ -27,6 +27,16 @@ export type NflverseSeasonSummary = {
   offenseSnapsPerGame: number | null;
 };
 
+export type NflverseInjuryReport = {
+  week: number | null;
+  reportPrimaryInjury: string | null;
+  reportSecondaryInjury: string | null;
+  reportStatus: string | null;
+  practicePrimaryInjury: string | null;
+  practiceSecondaryInjury: string | null;
+  practiceStatus: string | null;
+};
+
 export type NflversePlayerContext = {
   slug: string;
   sleeperId: string;
@@ -42,14 +52,8 @@ export type NflversePlayerContext = {
     yearsExperience: number | null;
     week: number | null;
   } | null;
-  injury: {
-    week: number | null;
-    reportPrimaryInjury: string | null;
-    reportStatus: string | null;
-    practicePrimaryInjury: string | null;
-    practiceSecondaryInjury: string | null;
-    practiceStatus: string | null;
-  } | null;
+  injury: NflverseInjuryReport | null;
+  injuryHistory: NflverseInjuryReport[];
   games: NflverseGameLog[];
   seasons: NflverseSeasonSummary[];
 };

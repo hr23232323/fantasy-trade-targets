@@ -3,6 +3,8 @@ import { TrackedLink } from "./TrackedLink";
 
 const tools = [
   ["Dynasty calculator", "/dynasty-trade-calculator"],
+  ["Who should I start?", "/who-should-i-start"],
+  ["Fantasy football injuries", "/fantasy-football-injuries"],
   ["Fantasy football trade targets", "/fantasy-football-trade-targets"],
   ["Player comparisons", "/player-comparisons"],
   ["Player vs. rookie pick", "/player-vs-rookie-pick"],

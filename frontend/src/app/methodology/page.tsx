@@ -142,6 +142,21 @@ export default function MethodologyPage() {
           <p>The score describes an overall scoring environment. It does not include positional fantasy points allowed, current injuries, depth-chart changes, weather, or player usage, so it is never presented as a start/sit projection.</p>
         </div>
       </section>
+      <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
+        <div><span className="eyebrow">09 // Start / sit ranges</span><h2 className="section-title mt-6">A weekly lean that grades itself.</h2></div>
+        <div className="space-y-5 text-sm leading-7 text-[#59605c]">
+          <p>The weekly lineup model starts with each player&apos;s recorded fantasy-point distribution. Up to 18 prior-season games provide the stable baseline; completed current-season games receive increasing weight as the sample grows.</p>
+          <p>Recent position-specific volume—attempts plus carries for quarterbacks, carries plus targets for running backs, and targets for receivers and tight ends—combines with offensive snap share. That role adjustment is capped at ±4%. The opponent&apos;s prior-season fantasy points allowed to the position adds a separate adjustment capped at ±6%.</p>
+          <div className="border border-[#171c19] bg-[#171c19] p-6 font-mono text-xs font-bold leading-6 text-[#dfff4f] sm:text-sm">
+            BASELINE = PRIOR-SEASON PPG BLENDED WITH COMPLETED CURRENT GAMES<br />
+            WEEKLY MEDIAN = BASELINE × CAPPED ROLE FACTOR × CAPPED MATCHUP FACTOR<br />
+            FLOOR / CEILING = 25TH / 75TH PERCENTILE × THE SAME GUARDED FACTORS
+          </div>
+          <p>Availability changes the estimate only when the injury-report week equals the target week. Older designations remain in the availability archive but never silently reduce a current projection. Once both players finish, the page displays their actual points and whether the original deterministic lean was correct.</p>
+          <p>The Week 2 holdout included 160 player observations. Half PPR mean absolute error was 5.60 points, compared with 7.29 for using the previous game and 5.64 for prior-season PPG alone. Because that edge over the stronger baseline is small, the initial public cohort remains limited to 20 reviewed decisions.</p>
+          <a href="/who-should-i-start" className="inline-block border border-[#171c19] bg-[#dfff4f] px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#171c19]">Open Week 3 start / sit →</a>
+        </div>
+      </section>
       <section className="page-wrap border-t border-[#171c19] py-14">
         <div className="max-w-3xl"><span className="eyebrow">Known limits</span><h2 className="section-title mt-6">What the model does not pretend to know.</h2><p className="mt-6 text-base leading-8 text-[#59605c]">Scoring adjustments are a historical scoring fit, not a projection of future games. This release models four- versus six-point passing touchdowns; standard, half, or full PPR; league size; one-QB versus Superflex demand; dedicated RB/WR/TE starters; and zero to three RB/WR/TE FLEX spots. It does not yet model yardage bonuses, first downs, custom turnover rules, TE-premium scoring beyond the selected source market, position-restricted FLEX variants, bench depth, standings, player exposure, injury tolerance, or another manager’s incentives. The result remains a transparent market baseline, with league-aware Sleeper analysis labeled separately when it arrives.</p></div>
       </section>
