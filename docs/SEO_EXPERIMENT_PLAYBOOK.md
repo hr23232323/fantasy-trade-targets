@@ -23,7 +23,7 @@ Player comparisons are the control. They already earned page-one impressions and
 | E5: position schedule | “Best fantasy schedule for RB/WR/TE/QB” | 4 complete 32-team rankings | `position_schedule_viewed` | Initial cohort shipped |
 | E6: weekly usage | “Week N snaps, targets, and carries” | 4 position reports per complete week | `weekly_usage_report_viewed` | Armed; publishes only after full-week verification |
 | E7: weekly position matchups | “Best Week N matchups for QB/RB/WR/TE” | 4 positions × Weeks 3–4 = 8 | `position_week_schedule_viewed` | Initial cohort shipped after E2 and E5 cleared discovery and CTR thresholds |
-| E8: start/sit decisions | “Who should I start this week?” | 20 reviewed Week 3 decisions | `start_sit_comparison_viewed` | Initial cohort shipped with a guarded first-party range model and automatic result grading |
+| E8: start/sit decisions | “Who should I start this week?” | 50 reviewed decisions plus an any-player comparison builder | `start_sit_comparison_viewed` | Stable pair URLs roll forward each week with a guarded first-party range model and automatic result grading |
 | E9: injury availability | “Who is listed on the fantasy injury report?” | Current hub + complete weekly archives | `fantasy_injury_report_viewed` | Initial cohort shipped; stale report weeks are explicit and never adjust a newer projection |
 
 ## nflverse experiment queue
@@ -36,7 +36,7 @@ The direct nflverse release integration adds three seasons of weekly player resu
 | 2 | Volume versus market value | 12–20 player pages | Which players have opportunity that is materially ahead of or behind their dynasty price? | Minimum two recent games plus a reproducible gap formula |
 | 3 | Player game-log search pages | 12–20 high-demand players | What did the player score each week in Standard, Half PPR, and PPR, with role context? | Search Console demand beyond the existing player URL; avoid splitting identical intent |
 | 4 | Injury and practice status hubs | Current report + one archive per available week | Which fantasy-relevant players have a listed designation, and what changed since the previous report? | Shipped with status history and automatic stale-state suppression |
-| 5 | Evidence-backed start/sit comparisons | 20 close calls for one active week | Which player has the stronger range after recorded scoring, recent usage, same-week availability, opponent position defense, and league scoring? | Shipped after the V1 lineup-lean gates below passed |
+| 5 | Evidence-backed start/sit comparisons | 50 reviewed calls plus on-demand pair URLs | Which player has the stronger range after recorded scoring, recent usage, same-week availability, opponent position defense, and league scoring? | Shipped after the V1 lineup-lean gates below passed |
 
 Position schedule and weekly usage are the first two nflverse cohorts. Measure them separately against the comparison control, then release the next page type only after the Day 7 read. Existing player, team, and matchup pages should continue absorbing useful evidence without creating duplicate index inventory.
 
@@ -76,7 +76,7 @@ Scale path if it works: the four position-specific rankings are now the bounded 
 
 Exact rookie-pick pages already earn clicks, and player comparisons already earn impressions. This cohort tests the intersection: a known player against one exact pick in both Superflex and 1QB. The first 20 pairs were chosen because their current Superflex values are close, not because every player/pick combination deserves a page.
 
-Scale path if it works: add the next 20 closest, non-duplicate decisions from Search Console queries and the current market. Rebuild a pair when its gap becomes too wide; do not silently swap the URL’s subjects.
+Scale path: the hub accepts any supported QB-vs-QB or FLEX-eligible pairing and assigns it a stable, shareable URL. The sitemap starts with 50 reviewed decisions chosen from search demand, current redraft relevance, recorded opportunity, and close early-season production. Add future sitemap cohorts without silently swapping an existing URL’s subjects.
 
 ### E4: league-size rankings
 

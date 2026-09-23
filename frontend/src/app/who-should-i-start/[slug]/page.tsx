@@ -7,12 +7,12 @@ import PlayerPortrait from "../../components/PlayerPortrait";
 import TeamLogo from "../../components/TeamLogo";
 import { nflversePlayerRelease } from "../../lib/nflverse";
 import { getPlayerPage } from "../../lib/player-pages";
-import { activeStartSitWeek, getStartSitComparison, getStartSitDecisions, startSitPath, startSitSlugs, type StartSitDecision } from "../../lib/start-sit";
+import { activeStartSitWeek, getStartSitComparison, getStartSitDecisions, startSitPathForPlayers, startSitSlugs, type StartSitDecision } from "../../lib/start-sit";
 
 const SITE_URL = "https://fantasytradetarget.com";
 type PageProps = { params: Promise<{ slug: string }> };
 
-export const dynamicParams = false;
+export const dynamicParams = true;
 export function generateStaticParams() {
   return startSitSlugs.map((slug) => ({ slug }));
 }
@@ -25,14 +25,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const right = getPlayerPage(comparison.rightSlug);
   const decision = getStartSitDecisions(comparison).find(({ scoring }) => scoring.key === "half-ppr");
   if (!left || !right || !decision) return {};
+  const canonicalPath = startSitPathForPlayers(comparison.leftSlug, comparison.rightSlug);
   const leader = decision.winner.side === "left" ? decision.left : decision.right;
   const title = `${left.name} or ${right.name}: Who Should I Start Week ${activeStartSitWeek}?`;
   const description = `Start ${leader.name} in Week ${activeStartSitWeek}. Compare Half PPR, PPR and Standard projections using recent usage, matchup strength and current-week availability.`;
   return {
     title,
     description,
-    alternates: { canonical: startSitPath(slug) },
-    openGraph: { type: "article", url: startSitPath(slug), title, description, images: [{ url: left.image.src, width: left.image.width, height: left.image.height, alt: left.image.alt }] },
+    alternates: { canonical: canonicalPath },
+    openGraph: { type: "article", url: canonicalPath, title, description, images: [{ url: left.image.src, width: left.image.width, height: left.image.height, alt: left.image.alt }] },
     twitter: { card: "summary_large_image", title, description, images: [left.image.src] },
   };
 }
@@ -52,7 +53,9 @@ export default async function StartSitComparisonPage({ params }: PageProps) {
     ? `${leader.name} has the narrow Week ${activeStartSitWeek} lean over ${trailer.name}.`
     : `Start ${leader.name} over ${trailer.name} in Week ${activeStartSitWeek}.`;
   const updated = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", timeZone: "America/New_York", timeZoneName: "short" }).format(new Date(nflversePlayerRelease.capturedAt));
-  const usagePosition = ({ QB: "quarterbacks", RB: "running-backs", WR: "wide-receivers", TE: "tight-ends" } as const)[comparison.position];
+  const usagePosition = comparison.position === "FLEX"
+    ? null
+    : ({ QB: "quarterbacks", RB: "running-backs", WR: "wide-receivers", TE: "tight-ends" } as const)[comparison.position];
   const previousDecision = activeStartSitWeek > 3
     ? getStartSitDecisions(comparison, activeStartSitWeek - 1).find(({ scoring }) => scoring.key === "half-ppr") ?? null
     : null;
@@ -67,7 +70,7 @@ export default async function StartSitComparisonPage({ params }: PageProps) {
   return (
     <>
       <AnalyticsPageView eventName="start_sit_comparison_viewed" properties={{ week: activeStartSitWeek, comparison: slug, position: comparison.position, leader: leader.slug, projected_gap: primary.winner.gap }} />
-      <JsonLd data={buildSchema(slug, comparison, decisions, verdict)} />
+      <JsonLd data={buildSchema(startSitPathForPlayers(comparison.leftSlug, comparison.rightSlug), comparison, decisions, verdict)} />
       <nav className="page-wrap flex flex-wrap gap-2 py-4 font-mono text-[10px] font-bold uppercase tracking-[0.08em] text-[#69706c]" aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/who-should-i-start">Start / Sit</Link><span>/</span><span className="text-[#171c19]">{leftPage.name} vs. {rightPage.name}</span></nav>
 
       <section className="border-y border-[#171c19] bg-[#dfff4f]">
@@ -104,7 +107,7 @@ export default async function StartSitComparisonPage({ params }: PageProps) {
       {gradedDecision ? <ResultSection decision={gradedDecision} week={gradedWeek} /> : null}
 
       <section className="page-wrap grid gap-6 py-12 md:grid-cols-3">
-        <Link href={`/fantasy-football-usage/week-${Math.max(1, activeStartSitWeek - 1)}/${usagePosition}`} className="border border-[#171c19] bg-white p-6 shadow-[4px_4px_0_#171c19] hover:-translate-y-1"><span className="eyebrow">Recent usage</span><strong className="mt-5 block text-xl">Check snaps and opportunities →</strong></Link>
+        <Link href={usagePosition ? `/fantasy-football-usage/week-${Math.max(1, activeStartSitWeek - 1)}/${usagePosition}` : "/fantasy-football-usage"} className="border border-[#171c19] bg-white p-6 shadow-[4px_4px_0_#171c19] hover:-translate-y-1"><span className="eyebrow">Recent usage</span><strong className="mt-5 block text-xl">Check snaps and opportunities →</strong></Link>
         <Link href="/fantasy-football-injuries" className="border border-[#171c19] bg-white p-6 shadow-[4px_4px_0_#171c19] hover:-translate-y-1"><span className="eyebrow">Availability</span><strong className="mt-5 block text-xl">Open the injury report →</strong></Link>
         <Link href="/fantasy-trade-calculator" className="border border-[#171c19] bg-white p-6 shadow-[4px_4px_0_#171c19] hover:-translate-y-1"><span className="eyebrow">Rest of season</span><strong className="mt-5 block text-xl">Compare redraft value →</strong></Link>
       </section>
@@ -138,8 +141,8 @@ function ResultSection({ decision, week }: { decision: StartSitDecision; week: n
   return <section className={`border-b border-[#171c19] ${correct ? "bg-[#dfff4f]" : "bg-[#ffb29a]"}`}><div className="page-wrap py-12"><span className="eyebrow bg-white">Week {week} final result</span><h2 className="section-title mt-6">{actualWinner.name} scored more. The pregame lean was {correct ? "right" : "wrong"}.</h2><p className="mt-5 text-sm">{decision.left.name}: {leftActual.toFixed(1)} Half PPR · {decision.right.name}: {rightActual.toFixed(1)} Half PPR.</p></div></section>;
 }
 
-function buildSchema(slug: string, comparison: NonNullable<ReturnType<typeof getStartSitComparison>>, decisions: StartSitDecision[], verdict: string) {
+function buildSchema(canonicalPath: string, comparison: NonNullable<ReturnType<typeof getStartSitComparison>>, decisions: StartSitDecision[], verdict: string) {
   const left = getPlayerPage(comparison.leftSlug)!;
   const right = getPlayerPage(comparison.rightSlug)!;
-  return [{ "@context": "https://schema.org", "@type": "Article", headline: `${left.name} or ${right.name}: who should I start in Week ${activeStartSitWeek}?`, description: verdict, dateModified: nflversePlayerRelease.capturedAt, mainEntityOfPage: `${SITE_URL}${startSitPath(slug)}`, author: { "@type": "Organization", name: "Fantasy Trade Target", url: SITE_URL } }, { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [{ "@type": "Question", name: `Should I start ${left.name} or ${right.name} in Week ${activeStartSitWeek}?`, acceptedAnswer: { "@type": "Answer", text: verdict } }, { "@type": "Question", name: "Does PPR scoring change the answer?", acceptedAnswer: { "@type": "Answer", text: decisions.map((decision) => `${decision.scoring.label}: ${decision.winner.side === "left" ? left.name : right.name}`).join("; ") } }] }];
+  return [{ "@context": "https://schema.org", "@type": "Article", headline: `${left.name} or ${right.name}: who should I start in Week ${activeStartSitWeek}?`, description: verdict, dateModified: nflversePlayerRelease.capturedAt, mainEntityOfPage: `${SITE_URL}${canonicalPath}`, author: { "@type": "Organization", name: "Fantasy Trade Target", url: SITE_URL } }, { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [{ "@type": "Question", name: `Should I start ${left.name} or ${right.name} in Week ${activeStartSitWeek}?`, acceptedAnswer: { "@type": "Answer", text: verdict } }, { "@type": "Question", name: "Does PPR scoring change the answer?", acceptedAnswer: { "@type": "Answer", text: decisions.map((decision) => `${decision.scoring.label}: ${decision.winner.side === "left" ? left.name : right.name}`).join("; ") } }] }];
 }

@@ -4,21 +4,22 @@ import test from "node:test";
 import { fantasyPoints, projectPlayerWeek } from "../src/app/lib/start-sit-model.mjs";
 
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
-const [manifest, release, teams, publicRelease, hub, detail, library, sitemap, indexNow, playbook] = await Promise.all([
+const [manifest, release, teams, publicRelease, hub, detail, builder, library, sitemap, indexNow, playbook] = await Promise.all([
   read("../data/start-sit-comparisons.json").then(JSON.parse),
   read("../data/nflverse-player-release.json").then(JSON.parse),
   read("../data/team-release.json").then(JSON.parse),
   read("../data/public-release.json").then(JSON.parse),
   read("../src/app/who-should-i-start/page.tsx"),
   read("../src/app/who-should-i-start/[slug]/page.tsx"),
+  read("../src/app/components/StartSitBuilder.tsx"),
   read("../src/app/lib/start-sit.ts"),
   read("../src/app/sitemap.ts"),
   read("../scripts/submit-indexnow.mjs"),
   read("../../docs/SEO_EXPERIMENT_PLAYBOOK.md"),
 ]);
 
-test("start/sit launches one bounded cohort of real current players", () => {
-  assert.equal(manifest.length, 20);
+test("start/sit publishes 50 reviewed matchups with real current players", () => {
+  assert.equal(manifest.length, 50);
   assert.equal(new Set(manifest.map(({ slug }) => slug)).size, manifest.length);
   const redraft = new Set(publicRelease.playerMarkets["redraft:1:0"].data.map(({ slug }) => slug));
   for (const comparison of manifest) {
@@ -88,9 +89,13 @@ test("start/sit pages answer the query, grade results, and stay connected", () =
   assert.match(detail, /ResultSection/);
   assert.match(detail, /same-week listed availability/i);
   assert.match(detail, /official inactive list/i);
+  assert.match(detail, /dynamicParams = true/);
+  assert.match(builder, /start_sit_custom_comparison_submitted/);
+  assert.match(builder, /Choose any two quarterbacks/);
   assert.match(library, /activeStartSitWeek/);
+  assert.match(library, /startSitPlayerOptions/);
+  assert.match(library, /comparisonPosition/);
   assert.match(sitemap, /startSitComparisons/);
   assert.match(indexNow, /startSitComparisons/);
   assert.match(playbook, /start\/sit/i);
 });
-
