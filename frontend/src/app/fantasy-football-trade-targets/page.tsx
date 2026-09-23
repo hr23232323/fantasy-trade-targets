@@ -1,6 +1,7 @@
 import Link from "next/link";
 import AnalyticsPageView from "../components/AnalyticsPageView";
 import JsonLd from "../components/JsonLd";
+import PlayerThumbnail from "../components/PlayerThumbnail";
 import { TrackedLink } from "../components/TrackedLink";
 import { getMarket } from "../lib/market";
 import { buildPageMetadata } from "../lib/metadata";
@@ -382,7 +383,7 @@ function TargetBoard({
           <tbody className="divide-y divide-[#bcb9ae]">
             {rows.map(({ player, dynastyRank, redraftRank, read }) => (
               <tr key={player.slug}>
-                <td className="px-5 py-4 font-black">
+                <td className="px-5 py-4 font-black"><div className="flex items-center gap-3"><PlayerThumbnail slug={player.slug} name={player.name} position={player.position} team={player.team} size={48} />
                   {hasPlayerPage(player.slug) ? (
                     <TrackedLink
                       href={`/players/${player.slug}`}
@@ -412,7 +413,7 @@ function TargetBoard({
                     >
                       {player.name} →
                     </TrackedLink>
-                  )}
+                  )}</div>
                 </td>
                 <td className="px-5 py-4 font-mono text-xs text-[#69706c]">{player.team || "FA"} · {player.position}{player.posRank ?? "—"}</td>
                 <td className="px-5 py-4 font-mono font-black">#{dynastyRank ?? "—"}</td>

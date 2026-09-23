@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import AnalyticsPageView from "../../../components/AnalyticsPageView";
 import JsonLd from "../../../components/JsonLd";
+import PlayerThumbnail from "../../../components/PlayerThumbnail";
 import TeamLogo from "../../../components/TeamLogo";
 import { buildPageMetadata } from "../../../lib/metadata";
 import { getMarket } from "../../../lib/market";
@@ -162,7 +163,7 @@ function TeamPanel({ team, matchup, assets }: { team: "away" | "home"; matchup: 
       <div className="mt-3 divide-y divide-[#c8c4b9] border-y border-[#c8c4b9]">
         {assets.map((asset) => (
           <div key={asset.slug} className="flex items-center justify-between gap-4 py-3 text-sm">
-            <span>{hasPlayerPage(asset.slug) ? <Link href={`/players/${asset.slug}`} className="font-bold hover:underline">{asset.name} <span className="font-normal text-[#69706c]">{asset.position}</span></Link> : <strong>{asset.name} <span className="font-normal text-[#69706c]">{asset.position}</span></strong>}<small className="mt-1 block font-mono text-[9px] font-bold uppercase text-[#69706c]">{availabilityLabel(asset.slug)}</small></span>
+            <span className="flex items-center gap-3"><PlayerThumbnail slug={asset.slug} name={asset.name} position={asset.position} team={asset.team} size={40} /><span>{hasPlayerPage(asset.slug) ? <Link href={`/players/${asset.slug}`} className="font-bold hover:underline">{asset.name} <span className="font-normal text-[#69706c]">{asset.position}</span></Link> : <strong>{asset.name} <span className="font-normal text-[#69706c]">{asset.position}</span></strong>}<small className="mt-1 block font-mono text-[9px] font-bold uppercase text-[#69706c]">{availabilityLabel(asset.slug)}</small></span></span>
             <span className="font-mono font-black">{Math.round(asset.value)}</span>
           </div>
         ))}

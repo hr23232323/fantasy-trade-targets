@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import AnalyticsPageView from "../../components/AnalyticsPageView";
 import JsonLd from "../../components/JsonLd";
+import PlayerPortrait from "../../components/PlayerPortrait";
 import { TrackedLink } from "../../components/TrackedLink";
 import { buildPageMetadata } from "../../lib/metadata";
+import { getPlayerPage } from "../../lib/player-pages";
 import { getPlayerPickComparison, getPlayerPickComparisonResearch, getRelatedPlayerPickComparisons, pickLabel, playerPickComparisonSlugs } from "../../lib/player-pick-comparisons";
 
 const SITE_URL = "https://fantasytradetarget.com";
@@ -33,6 +35,7 @@ export default async function PlayerVsPickPage({ params }: PageProps) {
   if (!page) notFound();
   const research = await getPlayerPickComparisonResearch(page);
   const player = research.superflex.player.name;
+  const playerPage = getPlayerPage(page.playerSlug);
   const pick = pickLabel(page.pickId);
   const shortAnswer = verdict(player, pick, research.superflex);
   const pageUrl = `${SITE_URL}/player-vs-rookie-pick/${slug}`;
@@ -50,7 +53,8 @@ export default async function PlayerVsPickPage({ params }: PageProps) {
       <JsonLd data={buildSchema(pageUrl, player, pick, research, faq)} />
       <nav className="page-wrap flex flex-wrap gap-2 py-4 font-mono text-[10px] font-bold uppercase tracking-[0.08em] text-[#69706c]" aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/player-vs-rookie-pick">Player vs. pick</Link><span>/</span><span className="text-[#171c19]">{player} vs. {pick}</span></nav>
       <section className="border-y border-[#171c19] bg-[#dfff4f]">
-        <div className="page-wrap py-14 sm:py-20">
+        <div className="page-wrap grid gap-8 py-14 sm:py-20 lg:grid-cols-[1fr_280px] lg:items-center">
+          <div>
           <span className="eyebrow bg-white">Dynasty decision // known player or exact pick</span>
           <h1 className="mt-7 max-w-6xl text-[clamp(3rem,7vw,6.8rem)] font-black uppercase leading-[0.84] tracking-[-0.075em]">{player} vs. <span className="text-[#a23616]">{pick}.</span></h1>
           <div className="mt-8 max-w-4xl border-l-4 border-[#171c19] pl-5"><span className="mono-label">The short answer</span><p className="mt-3 text-lg font-bold leading-8">{shortAnswer}</p></div>
@@ -58,6 +62,8 @@ export default async function PlayerVsPickPage({ params }: PageProps) {
             <TrackedLink href={`/dynasty-trade-calculator?format=dynasty&qbs=2&get=${page.playerSlug}&send=${page.pickId}`} analyticsEvent="player_pick_calculator_opened" analyticsProperties={{ comparison_slug: slug, player_slug: page.playerSlug, pick_id: page.pickId, format: "superflex" }} className="border border-[#171c19] bg-[#171c19] px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.08em] text-white shadow-[4px_4px_0_#ff6b3d]">Open this trade →</TrackedLink>
             <Link href={`/players/${page.playerSlug}`} className="border border-[#171c19] bg-white/70 px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.08em]">Open player file →</Link>
           </div>
+          </div>
+          <div className="relative h-[300px] w-full max-w-[280px] justify-self-center lg:justify-self-end"><PlayerPortrait slug={page.playerSlug} name={player} image={playerPage?.image} position={research.superflex.player.position} team={research.superflex.player.team} variant="card" priority sizes="280px" /></div>
         </div>
       </section>
       <section className="page-wrap py-14">

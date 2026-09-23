@@ -67,6 +67,7 @@ export function getStartSitComparison(slug: string) {
 export type StartSitSide = {
   slug: string;
   name: string;
+  position: "QB" | "RB" | "WR" | "TE";
   team: string | null;
   opponent: string | null;
   projection: StartSitProjection;
@@ -124,7 +125,7 @@ function buildSide(slug: string, week: number, receptionPoints: 0 | 0.5 | 1): St
   if (!player || !page) return null;
   const projection = projectPlayerWeek({ player, week, season: nflversePlayerRelease.season, opponentAllowed: allowed, leagueMedianAllowed: leagueMedian, receptionPoints, passingTdPoints: 4 });
   if (!projection) return null;
-  return { slug, name: page.name, team: team?.abbr ?? null, opponent: opponent?.abbr ?? null, projection };
+  return { slug, name: page.name, position, team: team?.abbr ?? null, opponent: opponent?.abbr ?? null, projection };
 }
 
 function isFantasyPosition(position: unknown): position is "QB" | "RB" | "WR" | "TE" {

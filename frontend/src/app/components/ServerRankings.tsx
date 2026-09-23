@@ -3,6 +3,7 @@ import { getMarket, getPlayerSnapshotHistory } from "../lib/market";
 import { hasPlayerPage } from "../lib/player-pages";
 import type { MarketAsset, Position } from "../types/MarketAsset";
 import JsonLd from "./JsonLd";
+import PlayerThumbnail from "./PlayerThumbnail";
 
 const sections: Array<{ position: Position; label: string; accent: string }> = [
   { position: "QB", label: "Quarterbacks", accent: "bg-[#8bcfff]" },
@@ -78,7 +79,7 @@ export default async function ServerRankings() {
             <tbody className="divide-y divide-[#c9c5ba]">{group.assets.map((asset, index) => {
               const alternate = oneQbById.get(asset.id);
               const change = sevenDayChange(asset);
-              return <tr key={asset.id} className="hover:bg-white/70"><td className="p-3 font-mono text-xs font-black text-[#69706c]">{index + 1}</td><td className="p-3"><AssetName asset={asset} /></td><td className="p-3 text-right font-mono font-black tabular-nums">{Math.round(asset.value)}</td><td className="p-3 text-right font-mono tabular-nums">{alternate ? Math.round(alternate.value) : "—"}</td><td className={`p-3 text-right font-mono font-black tabular-nums ${change === null ? "text-[#8a8f8b]" : change > 0 ? "text-[#466400]" : change < 0 ? "text-[#a23616]" : "text-[#69706c]"}`}>{change === null ? "—" : `${change > 0 ? "+" : ""}${change}`}</td></tr>;
+              return <tr key={asset.id} className="hover:bg-white/70"><td className="p-3 font-mono text-xs font-black text-[#69706c]">{index + 1}</td><td className="p-3"><AssetName asset={asset} showPhoto={index < 24} /></td><td className="p-3 text-right font-mono font-black tabular-nums">{Math.round(asset.value)}</td><td className="p-3 text-right font-mono tabular-nums">{alternate ? Math.round(alternate.value) : "—"}</td><td className={`p-3 text-right font-mono font-black tabular-nums ${change === null ? "text-[#8a8f8b]" : change > 0 ? "text-[#466400]" : change < 0 ? "text-[#a23616]" : "text-[#69706c]"}`}>{change === null ? "—" : `${change > 0 ? "+" : ""}${change}`}</td></tr>;
             })}</tbody>
           </table></div>
         </article>
@@ -88,7 +89,7 @@ export default async function ServerRankings() {
   );
 }
 
-function AssetName({ asset }: { asset: MarketAsset }) {
-  const label = <><span className="font-bold">{asset.name}</span><span className="ml-2 font-mono text-[9px] uppercase text-[#69706c]">{asset.kind === "player" ? `${asset.team || "FA"} · ${asset.position}${asset.posRank ?? "—"}` : asset.tier || "pick"}</span></>;
-  return asset.kind === "player" && hasPlayerPage(asset.slug) ? <Link href={`/players/${asset.slug}`} className="hover:text-[#a23616] hover:underline hover:underline-offset-4">{label}</Link> : <span>{label}</span>;
+function AssetName({ asset, showPhoto = true }: { asset: MarketAsset; showPhoto?: boolean }) {
+  const label = <>{asset.kind === "player" && showPhoto ? <PlayerThumbnail slug={asset.slug} name={asset.name} position={asset.position} team={asset.team} size={40} /> : null}<span><span className="font-bold">{asset.name}</span><span className="ml-2 font-mono text-[9px] uppercase text-[#69706c]">{asset.kind === "player" ? `${asset.team || "FA"} · ${asset.position}${asset.posRank ?? "—"}` : asset.tier || "pick"}</span></span></>;
+  return asset.kind === "player" && hasPlayerPage(asset.slug) ? <Link href={`/players/${asset.slug}`} className="flex items-center gap-3 hover:text-[#a23616] hover:underline hover:underline-offset-4">{label}</Link> : <span className="flex items-center gap-3">{label}</span>;
 }

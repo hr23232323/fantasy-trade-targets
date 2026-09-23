@@ -2,14 +2,22 @@ import assert from "node:assert/strict";
 import { readFile, stat } from "node:fs/promises";
 import test from "node:test";
 
-const [portrait, playerPage, playerIndex, styles, pageRecords, tradeRecords, cachedImages] = await Promise.all([
+const [portrait, thumbnail, playerPage, playerIndex, styles, pageRecords, tradeRecords, cachedImages, startSitHub, injuryTable, usageReport, rankings, tradeTargets, playerPickHub, matchupDetail] = await Promise.all([
   readFile(new URL("../src/app/components/PlayerPortrait.tsx", import.meta.url), "utf8"),
+  readFile(new URL("../src/app/components/PlayerThumbnail.tsx", import.meta.url), "utf8"),
   readFile(new URL("../src/app/players/[slug]/page.tsx", import.meta.url), "utf8"),
   readFile(new URL("../src/app/players/page.tsx", import.meta.url), "utf8"),
   readFile(new URL("../src/app/globals.css", import.meta.url), "utf8"),
   readFile(new URL("../data/player-pages.json", import.meta.url), "utf8").then(JSON.parse),
   readFile(new URL("../data/trade-player-images.json", import.meta.url), "utf8").then(JSON.parse),
   readFile(new URL("../data/cached-player-images.json", import.meta.url), "utf8").then(JSON.parse),
+  readFile(new URL("../src/app/who-should-i-start/page.tsx", import.meta.url), "utf8"),
+  readFile(new URL("../src/app/components/InjuryReportTable.tsx", import.meta.url), "utf8"),
+  readFile(new URL("../src/app/fantasy-football-usage/[weekSlug]/[positionSlug]/page.tsx", import.meta.url), "utf8"),
+  readFile(new URL("../src/app/components/ServerRankings.tsx", import.meta.url), "utf8"),
+  readFile(new URL("../src/app/fantasy-football-trade-targets/page.tsx", import.meta.url), "utf8"),
+  readFile(new URL("../src/app/player-vs-rookie-pick/page.tsx", import.meta.url), "utf8"),
+  readFile(new URL("../src/app/fantasy-football-matchups/[slug]/[gameSlug]/page.tsx", import.meta.url), "utf8"),
 ]);
 
 test("player portraits have one responsive, position-aware treatment", () => {
@@ -82,4 +90,12 @@ test("player pages and both directory densities use the shared portrait", () => 
   assert.match(playerIndex, /variant="card"/);
   assert.match(playerIndex, /variant="thumbnail"/);
   assert.match(playerIndex, /decorative/);
+});
+
+test("weekly and decision pages use the shared compact player photo treatment", () => {
+  assert.match(thumbnail, /getTradePlayerImage/);
+  assert.match(thumbnail, /variant="thumbnail"/);
+  for (const surface of [startSitHub, injuryTable, usageReport, rankings, tradeTargets, playerPickHub, matchupDetail]) {
+    assert.match(surface, /PlayerThumbnail/);
+  }
 });

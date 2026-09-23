@@ -1,6 +1,7 @@
 import Link from "next/link";
 import AnalyticsPageView from "../components/AnalyticsPageView";
 import JsonLd from "../components/JsonLd";
+import PlayerThumbnail from "../components/PlayerThumbnail";
 import { buildPageMetadata } from "../lib/metadata";
 import { getPlayerPickComparisonResearch, pickLabel, playerPickComparisons } from "../lib/player-pick-comparisons";
 
@@ -34,6 +35,7 @@ export default async function PlayerVsPickHub() {
             return (
               <Link key={item.page.slug} href={`/player-vs-rookie-pick/${item.page.slug}`} className={`group p-6 hover:bg-white ${index % 4 < 2 ? "bg-[#f3f0e7]" : "bg-[#dfff4f]"}`}>
                 <span className="mono-label text-[#69706c]">12-team Superflex</span>
+                <PlayerThumbnail slug={row.player.slug} name={row.player.name} position={row.player.position} team={row.player.team} size={72} className="mt-5" />
                 <h2 className="mt-5 text-2xl font-black tracking-[-0.045em]">{row.player.name} vs. {pick}</h2>
                 <p className="mt-4 font-mono text-sm font-black text-[#a23616]">{answer}</p>
                 <p className="mt-3 text-xs leading-6 text-[#59605c]">Player {Math.round(row.player.value)} · Pick {Math.round(row.pick.value)} · {row.gapPercent}% gap</p>
