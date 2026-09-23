@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import AnalyticsPageView from "../../components/AnalyticsPageView";
 import JsonLd from "../../components/JsonLd";
 import PlayerPortrait from "../../components/PlayerPortrait";
+import PlayerThumbnail from "../../components/PlayerThumbnail";
 import TeamLogo from "../../components/TeamLogo";
 import { nflversePlayerRelease } from "../../lib/nflverse";
 import { getPlayerPage } from "../../lib/player-pages";
@@ -89,17 +90,12 @@ export default async function StartSitComparisonPage({ params }: PageProps) {
 
       <section className="page-wrap pb-14">
         <div className="mb-6 flex flex-wrap items-end justify-between gap-4"><div><span className="eyebrow">Scoring changes the call</span><h2 className="section-title mt-5">Week {activeStartSitWeek} projection by format.</h2></div><span className="font-mono text-xs font-bold uppercase">4 points per passing TD</span></div>
-        <div className="overflow-x-auto border border-[#171c19] bg-white/55">
-          <table className="w-full min-w-[760px] text-left text-sm">
-            <thead className="bg-[#171c19] font-mono text-[10px] uppercase tracking-[0.08em] text-white"><tr><th className="p-4">Format</th><th className="p-4">Recommended start</th><th className="p-4">{leftPage.name}</th><th className="p-4">{rightPage.name}</th><th className="p-4">Gap</th><th className="p-4">Confidence</th></tr></thead>
-            <tbody className="divide-y divide-[#bcb9ae]">{decisions.map((decision) => {
-              const winner = decision.winner.side === "left" ? decision.left : decision.right;
-              const confidence = lowerConfidence(decision.left.projection.confidence, decision.right.projection.confidence);
-              return <tr key={decision.scoring.key}><td className="p-4 font-black">{decision.scoring.label}</td><td className="p-4 font-black text-[#174f35]">{decision.winner.close ? `${winner.name} · close` : winner.name}</td><td className="p-4 font-mono">{range(decision.left.projection)}</td><td className="p-4 font-mono">{range(decision.right.projection)}</td><td className="p-4 font-mono font-black">{decision.winner.gap.toFixed(1)}</td><td className="p-4 font-mono">{confidence}</td></tr>;
-            })}</tbody>
-          </table>
-        </div>
-        <p className="mt-4 text-xs leading-6 text-[#69706c]">Each range is floor–median–ceiling, built from the player&apos;s recorded game distribution and adjusted within guarded limits for current role and matchup. It is an estimate, not a guarantee.</p>
+        <div className="grid gap-5">{decisions.map((decision) => {
+          const winner = decision.winner.side === "left" ? decision.left : decision.right;
+          const confidence = lowerConfidence(decision.left.projection.confidence, decision.right.projection.confidence);
+          return <article key={decision.scoring.key} className="border border-[#171c19] bg-white shadow-[4px_4px_0_#171c19]"><header className="flex flex-wrap items-center justify-between gap-3 border-b border-[#171c19] bg-[#171c19] px-5 py-4 text-white"><div><span className="font-mono text-[10px] font-black uppercase tracking-[0.08em] text-[#dfff4f]">{decision.scoring.label}</span><h3 className="mt-1 text-xl font-black">Start {winner.name}{decision.winner.close ? " — close call" : ""}</h3></div><div className="flex gap-2 font-mono text-[9px] font-black uppercase"><span className="border border-white/40 px-3 py-2">{decision.winner.gap.toFixed(1)}-point gap</span><span className="border border-white/40 px-3 py-2">{confidence} confidence</span></div></header><div className="grid gap-px bg-[#171c19] md:grid-cols-2"><ProjectionCard side={decision.left} recommended={decision.winner.side === "left"} /><ProjectionCard side={decision.right} recommended={decision.winner.side === "right"} /></div></article>;
+        })}</div>
+        <p className="mt-5 text-xs leading-6 text-[#69706c]">Floor and ceiling show the lower and upper ends of the player&apos;s recent scoring range. The projection is the middle estimate after current role, matchup, and same-week availability are applied.</p>
       </section>
 
       <section className="border-y border-[#171c19] bg-[#8bcfff]"><div className="page-wrap grid gap-8 py-12 lg:grid-cols-2"><div><span className="eyebrow bg-white">Why the model leans this way</span><h2 className="section-title mt-6">Role first. Matchup second. Availability always visible.</h2></div><div className="space-y-4 text-sm leading-7"><p>{comparison.selectionReason}</p><p>{factorSentence(primary.left)} {factorSentence(primary.right)}</p><p>Availability adjustments apply only when the source contains a Week {activeStartSitWeek} report. Older designations remain visible in the injury archive but do not reduce this projection.</p></div></div></section>
@@ -128,9 +124,16 @@ function PlayerCard({ page, side, recommended }: { page: NonNullable<ReturnType<
 }
 
 function Metric({ label, value }: { label: string; value: string }) { return <div className="border-r border-[#171c19] p-3 last:border-r-0"><span className="block font-mono text-[9px] font-bold uppercase text-[#69706c]">{label}</span><strong className="mt-1 block text-xl">{value}</strong></div>; }
-function range(projection: StartSitDecision["left"]["projection"]) { return `${projection.floor.toFixed(1)}–${projection.median.toFixed(1)}–${projection.ceiling.toFixed(1)}`; }
 function lowerConfidence(left: string, right: string) { const rank = { Low: 0, Medium: 1, High: 2 } as const; return rank[left as keyof typeof rank] <= rank[right as keyof typeof rank] ? left : right; }
 function factorSentence(side: StartSitDecision["left"]) { const usage = side.projection.usageFactor > 1.02 ? "recent role raises the estimate" : side.projection.usageFactor < 0.98 ? "recent role lowers the estimate" : "recent role is near baseline"; const matchup = side.projection.matchupFactor > 1.02 ? "the matchup helps" : side.projection.matchupFactor < 0.98 ? "the matchup is tougher" : "the matchup is neutral"; return `${side.name}: ${usage}, and ${matchup}.`; }
+
+function ProjectionCard({ side, recommended }: { side: StartSitDecision["left"]; recommended: boolean }) {
+  return <section className={`p-5 ${recommended ? "bg-[#dfff4f]" : "bg-[#f3f0e7]"}`}><div className="flex items-center gap-3"><PlayerThumbnail slug={side.slug} name={side.name} position={side.position} team={side.team} size={56} /><div><span className="font-mono text-[9px] font-black uppercase text-[#69706c]">{recommended ? "Recommended start" : "Other option"}</span><h4 className="mt-1 text-xl font-black tracking-[-0.035em]">{side.name}</h4><span className="text-xs text-[#59605c]">{side.team ?? "—"} vs. {side.opponent ?? "TBD"}</span></div></div><dl className="mt-5 grid grid-cols-3 border border-[#171c19] bg-white/70 text-center"><ProjectionMetric label="Floor" value={side.projection.floor} /><ProjectionMetric label="Projection" value={side.projection.median} emphasized /><ProjectionMetric label="Ceiling" value={side.projection.ceiling} /></dl></section>;
+}
+
+function ProjectionMetric({ label, value, emphasized = false }: { label: string; value: number; emphasized?: boolean }) {
+  return <div className={`border-r border-[#171c19] p-3 last:border-r-0 ${emphasized ? "bg-white" : ""}`}><dt className="font-mono text-[8px] font-black uppercase tracking-[0.06em] text-[#69706c]">{label}</dt><dd className={`mt-2 font-mono font-black ${emphasized ? "text-2xl text-[#174f35]" : "text-lg"}`}>{value.toFixed(1)}</dd></div>;
+}
 
 function ResultSection({ decision, week }: { decision: StartSitDecision; week: number }) {
   const leftActual = decision.left.projection.actual!;

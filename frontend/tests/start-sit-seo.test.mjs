@@ -85,7 +85,10 @@ test("start/sit pages answer the query, grade results, and stay connected", () =
   assert.match(hub, /Who should I/);
   assert.match(hub, /Standard · Half PPR · PPR/);
   assert.match(detail, /Start lean/);
-  assert.match(detail, /floor–median–ceiling/);
+  assert.match(detail, /ProjectionCard/);
+  assert.match(detail, /Floor/);
+  assert.match(detail, /Projection/);
+  assert.match(detail, /Ceiling/);
   assert.match(detail, /ResultSection/);
   assert.match(detail, /same-week listed availability/i);
   assert.match(detail, /official inactive list/i);
