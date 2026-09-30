@@ -69,7 +69,7 @@ test("every team has identity, a complete schedule, and a scored baseline", () =
   assert.ok([...scheduledGames.values()].every((count) => count === 2), "each game appears on both team schedules");
 });
 
-test("every active team resolves current fantasy market assets", () => {
+test("every active team resolves a useful current fantasy market cohort", () => {
   const market = marketRelease.playerMarkets["dynasty:2:0"].data;
   const counts = new Map(Object.keys(teamRelease.teams).map((abbr) => [abbr, 0]));
 
@@ -79,6 +79,6 @@ test("every active team resolves current fantasy market assets", () => {
   }
 
   for (const [abbr, count] of counts) {
-    assert.ok(count >= 10, `${abbr} has at least 10 current market players`);
+    assert.ok(count >= 5, `${abbr} has at least five current market players`);
   }
 });

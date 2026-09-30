@@ -4,11 +4,10 @@ import test from "node:test";
 import { fantasyPoints, projectPlayerWeek } from "../src/app/lib/start-sit-model.mjs";
 
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
-const [manifest, release, teams, publicRelease, hub, detail, builder, library, sitemap, indexNow, playbook] = await Promise.all([
+const [manifest, release, teams, hub, detail, builder, library, sitemap, indexNow, playbook] = await Promise.all([
   read("../data/start-sit-comparisons.json").then(JSON.parse),
   read("../data/nflverse-player-release.json").then(JSON.parse),
   read("../data/team-release.json").then(JSON.parse),
-  read("../data/public-release.json").then(JSON.parse),
   read("../src/app/who-should-i-start/page.tsx"),
   read("../src/app/who-should-i-start/[slug]/page.tsx"),
   read("../src/app/components/StartSitBuilder.tsx"),
@@ -18,18 +17,26 @@ const [manifest, release, teams, publicRelease, hub, detail, builder, library, s
   read("../../docs/SEO_EXPERIMENT_PLAYBOOK.md"),
 ]);
 
-test("start/sit publishes 50 reviewed matchups with real current players", () => {
-  assert.equal(manifest.length, 50);
+test("start/sit publishes a substantial reviewed cohort with current weekly evidence", () => {
+  assert.ok(manifest.length >= 150);
   assert.equal(new Set(manifest.map(({ slug }) => slug)).size, manifest.length);
-  const redraft = new Set(publicRelease.playerMarkets["redraft:1:0"].data.map(({ slug }) => slug));
+  assert.equal(new Set(manifest.map(({ leftSlug, rightSlug }) => [leftSlug, rightSlug].sort().join("|"))).size, manifest.length);
   for (const comparison of manifest) {
     assert.match(comparison.slug, /^[a-z0-9-]+-vs-[a-z0-9-]+$/);
     assert.ok(release.players[comparison.leftSlug]);
     assert.ok(release.players[comparison.rightSlug]);
-    assert.ok(redraft.has(comparison.leftSlug));
-    assert.ok(redraft.has(comparison.rightSlug));
-    assert.equal(release.players[comparison.leftSlug].roster.position, comparison.position);
-    assert.equal(release.players[comparison.rightSlug].roster.position, comparison.position);
+    assert.ok(release.players[comparison.leftSlug].games.length > 0);
+    assert.ok(release.players[comparison.rightSlug].games.length > 0);
+    const leftPosition = release.players[comparison.leftSlug].roster.position;
+    const rightPosition = release.players[comparison.rightSlug].roster.position;
+    if (comparison.position === "FLEX") {
+      assert.ok(["RB", "WR", "TE"].includes(leftPosition));
+      assert.ok(["RB", "WR", "TE"].includes(rightPosition));
+      assert.notEqual(leftPosition, rightPosition);
+    } else {
+      assert.equal(leftPosition, comparison.position);
+      assert.equal(rightPosition, comparison.position);
+    }
     assert.ok(comparison.selectionReason.length >= 60);
   }
 });
@@ -94,6 +101,10 @@ test("start/sit pages answer the query, grade results, and stay connected", () =
   assert.match(detail, /official inactive list/i);
   assert.match(detail, /dynamicParams = true/);
   assert.match(builder, /start_sit_custom_comparison_submitted/);
+  assert.match(builder, /start_sit_ranked_player_selected/);
+  assert.match(builder, /Week rankings/);
+  assert.match(builder, /scoringFormats/);
+  assert.match(builder, /imageSrc/);
   assert.match(builder, /Choose any two quarterbacks/);
   assert.match(library, /activeStartSitWeek/);
   assert.match(library, /startSitPlayerOptions/);

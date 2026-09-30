@@ -37,7 +37,7 @@ export const startSitPlayerOptions = Object.values(nflversePlayerRelease.players
     const page = getPlayerPage(player.slug);
     const position = player.roster?.position;
     if (!page || !isFantasyPosition(position) || !player.games.some((game) => game.season < nflversePlayerRelease.season || game.week < activeStartSitWeek)) return [];
-    return [{ slug: player.slug, urlSlug: toUrlPlayerSlug(player.slug), name: page.name, position, team: player.roster?.team ?? null }];
+    return [{ slug: player.slug, urlSlug: startSitUrlPlayerSlug(player.slug), name: page.name, position, team: player.roster?.team ?? null }];
   })
   .sort((left, right) => left.name.localeCompare(right.name));
 
@@ -80,10 +80,12 @@ export type StartSitDecision = {
   winner: { side: "left" | "right"; gap: number; close: boolean };
 };
 
+export type StartSitRanking = StartSitSide & { rank: number };
+
 export function getStartSitDecisions(comparison: StartSitConfig, week = activeStartSitWeek): StartSitDecision[] {
   return startSitScoringFormats.flatMap((scoring) => {
-    const left = buildSide(comparison.leftSlug, week, scoring.receptionPoints);
-    const right = buildSide(comparison.rightSlug, week, scoring.receptionPoints);
+    const left = getStartSitSide(comparison.leftSlug, week, scoring.receptionPoints);
+    const right = getStartSitSide(comparison.rightSlug, week, scoring.receptionPoints);
     const winner = projectionWinner(left?.projection ?? null, right?.projection ?? null);
     return left && right && winner ? [{ scoring, left, right, winner }] : [];
   });
@@ -100,10 +102,33 @@ export function startSitPathForPlayers(leftSlug: string, rightSlug: string) {
   );
   if (reviewed) return startSitPath(reviewed.slug);
   const [left, right] = [leftSlug, rightSlug].sort();
-  return startSitPath(`${toUrlPlayerSlug(left)}-vs-${toUrlPlayerSlug(right)}`);
+  return startSitPath(`${startSitUrlPlayerSlug(left)}-vs-${startSitUrlPlayerSlug(right)}`);
 }
 
-function buildSide(slug: string, week: number, receptionPoints: 0 | 0.5 | 1): StartSitSide | null {
+export function getStartSitRankings({
+  week = activeStartSitWeek,
+  receptionPoints = 0.5,
+  position,
+}: {
+  week?: number;
+  receptionPoints?: 0 | 0.5 | 1;
+  position?: StartSitConfig["position"];
+} = {}): StartSitRanking[] {
+  const eligiblePositions = position === "FLEX" ? new Set(["RB", "WR", "TE"]) : null;
+  const sides = startSitPlayerOptions.flatMap((player) => {
+    if (position && position !== "FLEX" && player.position !== position) return [];
+    if (eligiblePositions && !eligiblePositions.has(player.position)) return [];
+    const side = getStartSitSide(player.slug, week, receptionPoints);
+    return side?.team && side.opponent ? [side] : [];
+  }).sort((left, right) =>
+    right.projection.median - left.projection.median ||
+    right.projection.ceiling - left.projection.ceiling ||
+    left.name.localeCompare(right.name),
+  );
+  return sides.map((side, index) => ({ ...side, rank: index + 1 }));
+}
+
+export function getStartSitSide(slug: string, week: number, receptionPoints: 0 | 0.5 | 1): StartSitSide | null {
   const player = nflversePlayerRelease.players[slug];
   const page = getPlayerPage(slug);
   const position = player?.roster?.position;
@@ -138,6 +163,6 @@ function comparisonPosition(left: StartSitPlayerOption["position"], right: Start
   return null;
 }
 
-function toUrlPlayerSlug(slug: string) {
+export function startSitUrlPlayerSlug(slug: string) {
   return slug.replace(/-(qb|rb|wr|te)$/, "");
 }

@@ -1,6 +1,6 @@
 # SEO experiment and scale playbook
 
-Last updated: 2026-09-22
+Last updated: 2026-09-30
 Owner: Fantasy Trade Target
 
 ## The operating rule
@@ -23,8 +23,16 @@ Player comparisons are the control. They already earned page-one impressions and
 | E5: position schedule | “Best fantasy schedule for RB/WR/TE/QB” | 4 complete 32-team rankings | `position_schedule_viewed` | Initial cohort shipped |
 | E6: weekly usage | “Week N snaps, targets, and carries” | 4 position reports per complete week | `weekly_usage_report_viewed` | Armed; publishes only after full-week verification |
 | E7: weekly position matchups | “Best Week N matchups for QB/RB/WR/TE” | 4 positions × Weeks 3–4 = 8 | `position_week_schedule_viewed` | Initial cohort shipped after E2 and E5 cleared discovery and CTR thresholds |
-| E8: start/sit decisions | “Who should I start this week?” | 50 reviewed decisions plus an any-player comparison builder | `start_sit_comparison_viewed` | Stable pair URLs roll forward each week with a guarded first-party range model and automatic result grading |
+| E8: start/sit decisions | “Who should I start this week?” | 150 reviewed decisions plus an any-player comparison builder | `start_sit_comparison_viewed` | Proven in GSC; scaled from 50 after the first cohort reached page-one positions and strong CTR |
 | E9: injury availability | “Who is listed on the fantasy injury report?” | Current hub + complete weekly archives | `fantasy_injury_report_viewed` | Initial cohort shipped; stale report weeks are explicit and never adjust a newer projection |
+| E10: weekly player rankings | “Week N fantasy football rankings” | Current-week FLEX hub plus QB, RB, WR and TE pages | `weekly_rankings_viewed` | Initial five-page cohort shipped with PPR, Half PPR and Standard controls |
+
+## September 30 scale decision
+
+- Start/sit earned 307 clicks from 8,266 impressions across 53 pages from September 14–28: 3.71% CTR at an average position of 7.11. Individual decisions reached double-digit CTR, including 22.2% for “Metcalf or Diggs Week 3” and 28% for “Hurts or Mahomes Week 3.”
+- The reviewed start/sit cohort therefore scales from 50 to 150 stable pair URLs. New pairs are drawn from current redraft relevance and close current-week projections; the any-player builder remains available for the long tail without putting every possible pair in the sitemap.
+- Weekly rankings launches as a five-page experiment because the same data and interface answer the adjacent “Week N rankings” intent. Keyword research shows strong in-season demand, while a compact position cohort keeps the test easy to measure.
+- The rankings board defaults to PPR, supports Half PPR and Standard, shows player images and ranges, and sends each row into a preselected start/sit decision. Evaluate E10 separately from E8 after seven and fourteen days.
 
 ## nflverse experiment queue
 

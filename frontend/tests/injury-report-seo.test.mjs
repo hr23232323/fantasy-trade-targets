@@ -32,6 +32,9 @@ test("injury histories are bounded, newest-first weekly source records", () => {
 });
 
 test("the injury hub exposes freshness and preserves weekly archives", () => {
+  assert.match(page, /Week \$\{week \?\? "Latest"\} Fantasy Football Injuries/);
+  assert.match(page, /rows\.length/);
+  assert.match(archive, /Player Status & Practice Report/);
   assert.match(page, /Latest structured report/);
   assert.match(page, /have not reached the structured feed yet/);
   assert.match(page, /does not reduce Week/);

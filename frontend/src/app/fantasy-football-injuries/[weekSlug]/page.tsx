@@ -16,7 +16,9 @@ export function generateStaticParams() { return injuryReportWeeks.map((week) => 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const week = parseWeek((await params).weekSlug);
   if (!week || !injuryReportWeeks.includes(week)) return {};
-  return { title: `Week ${week} Fantasy Football Injury Report (2026)`, description: `Week ${week} fantasy football injury report: listed game designations, practice participation and injuries for fantasy-relevant players.`, alternates: { canonical: injuryWeekPath(week) } };
+  const rows = getFantasyInjuryRows(week);
+  const leaders = rows.slice(0, 4).map(({ name }) => name).join(", ");
+  return { title: `Week ${week} Fantasy Football Injuries: Player Status & Practice Report`, description: `${rows.length} fantasy-relevant Week ${week} injury listings${leaders ? `, including ${leaders}` : ""}. Review game status and practice participation from the final weekly report.`, alternates: { canonical: injuryWeekPath(week) } };
 }
 
 export default async function InjuryWeekPage({ params }: PageProps) {

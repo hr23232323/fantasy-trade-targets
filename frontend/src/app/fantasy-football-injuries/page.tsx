@@ -10,11 +10,16 @@ import { activeStartSitWeek } from "../lib/start-sit";
 const SITE_URL = "https://fantasytradetarget.com";
 const PATH = "/fantasy-football-injuries";
 
-export const metadata: Metadata = {
-  title: "Fantasy Football Injury Report: Latest Practice & Game Status",
-  description: "Current fantasy football injury report with official listed game status, practice participation, team, position and weekly availability history.",
-  alternates: { canonical: PATH },
-};
+export function generateMetadata(): Metadata {
+  const week = latestInjuryReportWeek;
+  const rows = week ? getFantasyInjuryRows(week) : [];
+  const leaders = rows.slice(0, 4).map(({ name }) => name).join(", ");
+  return {
+    title: `Week ${week ?? "Latest"} Fantasy Football Injuries: Player Status & Practice Report`,
+    description: `${rows.length} fantasy-relevant Week ${week ?? "latest"} injury listings${leaders ? `, including ${leaders}` : ""}. Check game status and practice participation before setting lineups.`,
+    alternates: { canonical: PATH },
+  };
+}
 
 export default function FantasyFootballInjuriesPage() {
   const week = latestInjuryReportWeek;
