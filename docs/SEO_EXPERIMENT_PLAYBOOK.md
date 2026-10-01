@@ -26,6 +26,17 @@ Player comparisons are the control. They already earned page-one impressions and
 | E8: start/sit decisions | “Who should I start this week?” | 150 reviewed decisions plus an any-player comparison builder | `start_sit_comparison_viewed` | Proven in GSC; scaled from 50 after the first cohort reached page-one positions and strong CTR |
 | E9: injury availability | “Who is listed on the fantasy injury report?” | Current hub + complete weekly archives | `fantasy_injury_report_viewed` | Initial cohort shipped; stale report weeks are explicit and never adjust a newer projection |
 | E10: weekly player rankings | “Week N fantasy football rankings” | Current-week FLEX hub plus QB, RB, WR and TE pages | `weekly_rankings_viewed` | Initial five-page cohort shipped with PPR, Half PPR and Standard controls |
+| E11: rest-of-season rankings | “Rest-of-season fantasy football rankings” | Overall hub plus QB, RB, WR and TE pages | `rest_of_season_rankings_viewed` | Initial five-page cohort shipped; stable URLs refresh from validated market, production, workload and remaining-schedule data |
+| E12: buy low / sell high | “Who should I buy low or sell high?” | One stable weekly PPR board | `buy_low_sell_high_viewed` | Initial page shipped; candidates require a measurable gap between redraft market rank and the bounded ROS model |
+
+## September 30 rest-of-season launch decision
+
+- DataForSEO reports 18,100 average monthly searches for the core rest-of-season rankings cluster, with 60,500–90,500 searches during the 2025 in-season peak and keyword difficulty of 2–9 across the principal variants.
+- Search Console exposed only four “rest of season” query/page rows in the latest final 28-day window, confirming that the site had no meaningful footprint for this intent before launch.
+- E11 starts with five stable URLs. The model keeps current redraft market value as 70% of the rating and limits the combined influence of current scoring, opportunity, snap share and remaining positional schedule to 30%.
+- E12 uses the same auditable PPR board to identify rank gaps. It publishes one continuously updated page rather than disposable weekly archives and links every candidate to an existing player file and calculator.
+- Do not add rest-of-season player-pair pages until the five-page cohort reaches the Day 7 and Day 14 measurement gates. If it qualifies, the first expansion is 20 curated, close-rank decisions with explicit “rest of season” intent.
+- Waiver-wire pages remain gated on a commercially permitted availability or add/drop data source. Search volume alone is not sufficient to publish advice that cannot establish whether a player is plausibly available.
 
 ## September 30 scale decision
 

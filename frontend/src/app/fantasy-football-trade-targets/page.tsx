@@ -265,6 +265,8 @@ export default async function FantasyFootballTradeTargetsPage() {
             <h2 className="section-title mt-6">Change the assumptions before the offer.</h2>
           </div>
           <div className="grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2">
+            <ContextLink href="/fantasy-football-buy-low-sell-high" title="Buy low, sell high" copy="Find current PPR market gaps using rest-of-season rank, recent workload, and remaining schedule." />
+            <ContextLink href="/fantasy-football-rest-of-season-rankings" title="Rest-of-season rankings" copy="Compare current redraft value with production, role, and every remaining matchup." />
             <ContextLink href="/scoring-impact" title="Scoring impact lab" copy="Model 4- or 6-point passing TDs, standard through full PPR, starters, FLEX spots, and league size." />
             <ContextLink href="/dynasty-superflex-trade-calculator" title="Superflex calculator" copy="Price complete packages when a second quarterback can start and replacement changes." />
             <ContextLink href="/scoring/standard-vs-ppr-player-values" title="Standard vs. PPR values" copy="See how reception scoring changes replacement-relative RB, WR, and TE value." />

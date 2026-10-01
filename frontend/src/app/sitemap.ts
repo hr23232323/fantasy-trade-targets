@@ -13,6 +13,7 @@ import { nflversePlayerRelease } from "./lib/nflverse";
 import { injuryReportWeeks, injuryWeekPath } from "./lib/injuries";
 import { startSitComparisons, startSitPath } from "./lib/start-sit";
 import { weeklyRankingPositions } from "./lib/weekly-rankings";
+import { restOfSeasonPositionConfigs } from "./lib/rest-of-season";
 
 const BASE_URL = "https://fantasytradetarget.com";
 
@@ -30,6 +31,8 @@ const staticRoutes = [
   "/fantasy-football-matchups",
   "/fantasy-football-injuries",
   "/fantasy-football-rankings",
+  "/fantasy-football-rest-of-season-rankings",
+  "/fantasy-football-buy-low-sell-high",
   "/fantasy-football-strength-of-schedule",
   "/fantasy-football-usage",
   "/fantasy-football-trade-targets",
@@ -77,13 +80,20 @@ const nflverseDrivenRoutes = new Set([
   "/who-should-i-start",
 ]);
 
+const restOfSeasonDrivenRoutes = new Set([
+  "/fantasy-football-rest-of-season-rankings",
+  "/fantasy-football-buy-low-sell-high",
+]);
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const marketUpdated = getMarketReleaseInfo().capturedAt;
   const playerUpdated = new Date(Math.max(Date.parse(marketUpdated), Date.parse(nflversePlayerRelease.capturedAt))).toISOString();
   return [
     ...staticRoutes.map((route) => ({
       url: `${BASE_URL}${route}`,
-      ...(marketDrivenRoutes.has(route)
+      ...(restOfSeasonDrivenRoutes.has(route)
+        ? { lastModified: playerUpdated }
+        : marketDrivenRoutes.has(route)
         ? { lastModified: marketUpdated }
         : nflverseDrivenRoutes.has(route)
           ? { lastModified: nflversePlayerRelease.capturedAt }
@@ -104,6 +114,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...weeklyRankingPositions.filter(({ position }) => position !== "FLEX").map(({ slug }) => ({
       url: `${BASE_URL}/fantasy-football-rankings/${slug}`,
       lastModified: nflversePlayerRelease.capturedAt,
+    })),
+    ...restOfSeasonPositionConfigs.map(({ slug }) => ({
+      url: `${BASE_URL}/fantasy-football-rest-of-season-rankings/${slug}`,
+      lastModified: playerUpdated,
     })),
     ...injuryReportWeeks.map((week) => ({
       url: `${BASE_URL}${injuryWeekPath(week)}`,
