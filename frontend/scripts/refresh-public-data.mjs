@@ -17,14 +17,19 @@ import {
   validateRookiePickHistory,
 } from "../src/app/lib/rookie-pick-history.mjs";
 import { buildPlayerSnapshotHistory } from "../src/app/lib/player-history.mjs";
+import {
+  MARKET_NFL_TEAMS,
+  MARKET_PLAYER_POSITIONS,
+  normalizePlayerMarketPayload,
+} from "../src/app/lib/market-publication.mjs";
 
 const API_BASE = "https://api.tradyr.app/v1";
 const formats = ["dynasty", "redraft"];
 const quarterbackSettings = [1, 2];
 const tepSettings = [false, true];
 const teamCounts = [8, 10, 12, 14, 16];
-const playerPositions = new Set(["QB", "RB", "WR", "TE"]);
-const nflTeams = new Set(["ARI", "ATL", "BAL", "BUF", "CAR", "CHI", "CIN", "CLE", "DAL", "DEN", "DET", "GB", "HOU", "IND", "JAX", "KC", "LAC", "LAR", "LV", "MIA", "MIN", "NE", "NO", "NYG", "NYJ", "PHI", "PIT", "SEA", "SF", "TB", "TEN", "WAS"]);
+const playerPositions = MARKET_PLAYER_POSITIONS;
+const nflTeams = MARKET_NFL_TEAMS;
 const MAX_MARKET_AGE_MS = 48 * 60 * 60 * 1_000;
 let capturedAt = new Date();
 const hasApiKey = Boolean(process.env.TRADYR_API_KEY);
@@ -597,28 +602,6 @@ function omitKeys(value, keys) {
 
 function delay(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
-}
-
-function normalizePlayerMarketPayload(payload) {
-  const positionCounts = new Map();
-  return {
-    ...payload,
-    data: payload.data.map((player, index) => {
-      const posRank = (positionCounts.get(player.position) ?? 0) + 1;
-      positionCounts.set(player.position, posRank);
-      return {
-        ...player,
-        // Public ranks are derived from the exact displayed order and values so
-        // source-side tie breaking can never contradict the published table.
-        rank: index + 1,
-        posRank,
-        // Tradyr can round the top normalized score to 1001. Keep the public contract at 0–1000.
-        composite: player.composite > 1000 && player.composite <= 1001
-          ? 1000
-          : player.composite,
-      };
-    }),
-  };
 }
 
 async function waitForRequestSlot() {
