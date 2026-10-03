@@ -23,12 +23,13 @@ Player comparisons are the control. They already earned page-one impressions and
 | E5: position schedule | “Best fantasy schedule for RB/WR/TE/QB” | 4 complete 32-team rankings | `position_schedule_viewed` | Initial cohort shipped |
 | E6: weekly usage | “Week N snaps, targets, and carries” | 4 position reports per complete week | `weekly_usage_report_viewed` | Armed; publishes only after full-week verification |
 | E7: weekly position matchups | “Best Week N matchups for QB/RB/WR/TE” | 4 positions × Weeks 3–5 = 12 | `position_week_schedule_viewed` | Ranking strongly but low CTR; answer-first summaries and exact strength-of-schedule titles shipped with Week 5 |
-| E8: start/sit decisions | “Who should I start this week?” | 200 reviewed decisions plus an any-player comparison builder | `start_sit_comparison_viewed` | Proven in GSC and PostHog; scaled from 150 after breakout pages sustained page-one CTR and useful reading time |
+| E8: start/sit decisions | “Who should I start this week?” | 250 reviewed decisions plus an any-player comparison builder | `start_sit_comparison_viewed` | Proven in GSC and PostHog; scaled in 50-page batches after breakout pages sustained page-one CTR and useful reading time |
 | E9: injury availability | “Who is listed on the fantasy injury report?” | Current hub + complete weekly archives | `fantasy_injury_report_viewed` | Initial cohort shipped; stale report weeks are explicit and never adjust a newer projection |
 | E10: weekly player rankings | “Week N fantasy football rankings” | Current-week FLEX hub plus QB, RB, WR and TE pages | `weekly_rankings_viewed` | Initial five-page cohort shipped with PPR, Half PPR and Standard controls |
 | E11: rest-of-season rankings | “Rest-of-season fantasy football rankings” | Overall hub plus QB, RB, WR and TE pages | `rest_of_season_rankings_viewed` | Initial five-page cohort shipped; stable URLs refresh from validated market, production, workload and remaining-schedule data |
 | E12: buy low / sell high | “Who should I buy low or sell high?” | One stable weekly PPR board | `buy_low_sell_high_viewed` | Initial page shipped; candidates require a measurable gap between redraft market rank and the bounded ROS model |
 | E13: weekly sleepers | “Fantasy football sleepers Week N” | Current-week hub plus QB, RB, WR and TE pages | `weekly_sleepers_viewed` | Initial five-page cohort shipped; candidates must rise above market position with two recorded games and viable recent snaps |
+| E14: player trade answers | “What is Player X worth?” / “Should I trade Player X?” | Shared answer-first upgrade across 220 existing player files | `player_research_viewed` plus `research_cta_clicked` | Depth experiment shipped on URLs already averaging page-one visibility; no duplicate player-outlook URLs added |
 
 ## October 3 weekly decision release
 
@@ -37,6 +38,9 @@ Player comparisons are the control. They already earned page-one impressions and
 - Weekly position strength-of-schedule pages ranked at average position 4.86 across 6,045 impressions but earned only 0.93% CTR. Their titles, H1s, answer blocks and structured answers now lead with “strength of schedule,” best matchups and toughest matchups. Week 5 adds one complete four-position cohort.
 - DataForSEO reports 260 average monthly searches for “fantasy football sleepers week 5,” with 2,400 searches in October 2025, keyword difficulty 3, an AI Overview and People Also Ask. E13 launches five stable URLs using current projections, positional market rank, two-game history, snap participation, matchup and same-week availability.
 - The homepage now promotes the weekly decision layer before the trade calculator. Motion is CSS-only, pauses on hover, respects reduced-motion preferences, and does not delay page content or interaction.
+- The next start/sit batch expands from 200 to 250 reviewed pairs because the family remains the strongest non-comparison search cohort. Pairs continue to require compatible positions, usable current-week projections and close enough ranges to form a real lineup decision.
+- GSC shows 180 player files with 18,162 impressions, 139 clicks, 0.77% CTR and average position 8.21. E14 improves the existing URLs instead of splitting authority: each page now answers trade-or-hold intent, publishes current value anchors, shows the latest verified workload, links into a preselected weekly decision, and exposes matching structured answers.
+- DataForSEO reports 590 average monthly searches for “should I trade fantasy football,” rising to 2,400 in October 2025. The broad term has an estimated 12.6 referring-domain average across ranking pages, making player-specific answer depth a lower-cost test than a new calculator head term.
 
 ## September 30 rest-of-season launch decision
 

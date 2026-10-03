@@ -137,6 +137,9 @@ test("the complete chart surface supports pointer, touch, click, and keyboard in
   assert.match(chartSource, /ArrowLeft/);
   assert.match(chartSource, /ArrowRight/);
   assert.match(chartSource, /aria-live="polite"/);
+  assert.match(chartSource, /aria-label=\{`\$\{name\} dynasty value history from/);
+  assert.doesNotMatch(chartSource, /<title[\s>]/, "SVG metadata must not trigger React title hydration");
+  assert.doesNotMatch(chartSource, /aria-labelledby=/);
   assert.doesNotMatch(chartSource, /Last known value carried forward/);
   assert.doesNotMatch(chartSource, /missing daily positions are shown as carried forward/);
   assert.match(chartSource, /Historical market value on a 0–\{scale\.max\.toLocaleString\(\)\} scale/);

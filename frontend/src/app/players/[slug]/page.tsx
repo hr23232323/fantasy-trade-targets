@@ -17,6 +17,8 @@ import {
 } from "../../lib/player-pages";
 import { getComparisonForPlayer } from "../../lib/player-comparisons";
 import { getTeamByAbbr } from "../../lib/team-data";
+import { getRecentPlayerContext } from "../../lib/nflverse";
+import { activeStartSitWeek, startSitUrlPlayerSlug } from "../../lib/start-sit";
 import {
   calculateMovement,
   formatMetric,
@@ -41,11 +43,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const page = getPlayerPage(slug);
   if (!page) return {};
 
-  const { data: player } = await getPlayerProfile(slug);
-  const description = `${player.name} dynasty value, Superflex and 1QB rank, recorded market observations, production profile, comparable players, and rookie-pick equivalents.`;
+  const { data: player, meta } = await getPlayerProfile(slug);
+  const year = new Date(meta.generatedAt).getFullYear();
+  const description = `${player.name} is worth ${Math.round(player.value)} in the current dynasty market and ranks No. ${player.rank ?? "—"} overall. See whether to trade or hold, recent usage, format values, history, and pick equivalents.`;
 
   return {
-    title: `${player.name} Dynasty Trade Value, Rank & History`,
+    title: `${player.name} Dynasty Value (${year}): Trade or Hold?`,
     description,
     alternates: { canonical: `/players/${slug}` },
     openGraph: {
@@ -97,6 +100,7 @@ export default async function PlayerPage({ params }: PageProps) {
     .slice(0, 3);
   const production = getProductionCards(profile);
   const usage = getUsageCards(profile);
+  const recent = getRecentPlayerContext(profile.slug);
   const updated = new Date(meta.generatedAt);
   const playerTeam = getTeamByAbbr(profile.team);
   const playerComparison = getComparisonForPlayer(profile.slug);
@@ -107,7 +111,22 @@ export default async function PlayerPage({ params }: PageProps) {
           : playerComparison.leftSlug,
       )
     : undefined;
-  const schema = buildSchema(profile, page.image, meta.generatedAt);
+  const tradeDecision = getTradeDecision(profile.name, player, movement30);
+  const worthAnswer = getWorthAnswer(profile.name, player, pickEquivalents[0], profile.similar[0]);
+  const recentUsageAnswer = getRecentUsageAnswer(profile.name, recent);
+  const schema = buildSchema(profile, page.image, meta.generatedAt, [
+    {
+      question: `What is ${profile.name} worth in dynasty fantasy football?`,
+      answer: worthAnswer,
+    },
+    {
+      question: `Should I trade ${profile.name} in fantasy football?`,
+      answer: tradeDecision.answer,
+    },
+    ...(recentUsageAnswer
+      ? [{ question: `What was ${profile.name}'s latest fantasy football usage?`, answer: recentUsageAnswer }]
+      : []),
+  ]);
 
   return (
     <>
@@ -203,6 +222,64 @@ export default async function PlayerPage({ params }: PageProps) {
             </a>
           </figcaption>
         </figure>
+      </section>
+
+      <section className="page-wrap py-8" aria-labelledby="trade-decision-title">
+        <div className="grid gap-px border border-[#171c19] bg-[#171c19] lg:grid-cols-[1.15fr_0.85fr_0.85fr]">
+          <article className="bg-[#ffb29a] p-6 sm:p-8">
+            <span className="mono-label">Trade or hold // answer first</span>
+            <h2 id="trade-decision-title" className="mt-4 text-3xl font-black tracking-[-0.045em] sm:text-4xl">
+              Should you trade {profile.name}?
+            </h2>
+            <p className="mt-5 text-lg font-bold leading-8">{tradeDecision.verdict}.</p>
+            <p className="mt-3 text-sm leading-7 text-[#4f3d35]">{tradeDecision.answer}</p>
+            <TrackedLink
+              href={`/dynasty-trade-calculator?format=dynasty&qbs=2&send=${profile.slug}`}
+              className="mt-6 inline-block border border-[#171c19] bg-[#171c19] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] text-white"
+              analyticsEvent="research_cta_clicked"
+              analyticsProperties={{ source: "player_trade_answer", destination: "calculator", player_slug: profile.slug }}
+            >
+              Price a return →
+            </TrackedLink>
+          </article>
+
+          <article className="bg-[#dfff4f] p-6 sm:p-8">
+            <span className="mono-label">Latest recorded role</span>
+            <h2 className="mt-4 text-2xl font-black tracking-[-0.04em]">
+              {recent ? `Week ${recent.week} workload` : "Weekly usage"}
+            </h2>
+            {recent ? (
+              <dl className="mt-6 space-y-4 text-sm">
+                <AnswerMetric label={recent.opportunityLabel} value={recent.opportunity === null ? "—" : String(recent.opportunity)} />
+                <AnswerMetric label="Offensive snap share" value={recent.snapPct === null ? "—" : `${Math.round(recent.snapPct * 100)}%`} />
+                <AnswerMetric label="PPR points" value={recent.fantasyPointsPpr === null ? "—" : recent.fantasyPointsPpr.toFixed(1)} />
+                <AnswerMetric label="Availability" value={recent.availability} />
+              </dl>
+            ) : (
+              <p className="mt-5 text-sm leading-7 text-[#4d544f]">No current-season game log is available yet. The market values and historical profile remain published below.</p>
+            )}
+            <TrackedLink
+              href={`/who-should-i-start?player1=${startSitUrlPlayerSlug(profile.slug)}&scoring=PPR`}
+              className="mt-6 inline-block border border-[#171c19] bg-white/70 px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]"
+              analyticsEvent="research_cta_clicked"
+              analyticsProperties={{ source: "player_usage_answer", destination: "start_sit", player_slug: profile.slug }}
+            >
+              Set Week {activeStartSitWeek} lineup →
+            </TrackedLink>
+          </article>
+
+          <article className="bg-[#8bcfff] p-6 sm:p-8">
+            <span className="mono-label">What is {firstName(profile.name)} worth?</span>
+            <h2 className="mt-4 text-2xl font-black tracking-[-0.04em]">Price anchors</h2>
+            <dl className="mt-6 space-y-4 text-sm">
+              <AnswerMetric label="Dynasty Superflex" value={`${Math.round(player.value)} · No. ${player.rank ?? "—"}`} />
+              <AnswerMetric label="Dynasty 1QB" value={contexts.oneQb ? `${Math.round(contexts.oneQb.value)} · No. ${contexts.oneQb.rank ?? "—"}` : "Not ranked"} />
+              <AnswerMetric label="Closest rookie pick" value={pickEquivalents[0]?.name ?? "No close pick listed"} />
+              <AnswerMetric label="Nearby player" value={profile.similar[0]?.name ?? "No close player listed"} />
+            </dl>
+            <p className="mt-6 text-xs leading-5 text-[#3d515e]">One-for-one references on the same published scale. Complete offers still depend on format and roster depth.</p>
+          </article>
+        </div>
       </section>
 
       <section id="market-context" className="page-wrap scroll-mt-8 py-8" aria-labelledby="market-context-title">
@@ -455,10 +532,70 @@ function firstName(name: string) {
   return name.split(" ")[0];
 }
 
+function AnswerMetric({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-start justify-between gap-4 border-b border-[#171c19]/20 pb-3 last:border-0 last:pb-0">
+      <dt className="font-mono text-[9px] font-bold uppercase tracking-[0.06em] text-[#4d544f]">{label}</dt>
+      <dd className="max-w-[58%] text-right font-bold">{value}</dd>
+    </div>
+  );
+}
+
+function getTradeDecision(
+  name: string,
+  player: MarketAsset,
+  movement: ReturnType<typeof calculateMovement>,
+) {
+  const marketLine = `${name} is currently No. ${player.rank ?? "—"} overall and ${player.position}${player.posRank ?? "—"}, with a dynasty Superflex value of ${Math.round(player.value)}.`;
+  if (!movement || Math.abs(movement.percentChange) < 2) {
+    return {
+      verdict: "Hold at the current market price",
+      answer: `${marketLine} There is no strong 30-day price move, so compare offers against the current tier instead of forcing a deal.`,
+    };
+  }
+  if (movement.percentChange > 0) {
+    return {
+      verdict: "Hold unless the return beats the current tier",
+      answer: `${marketLine} The published market is up ${movement.percentChange.toFixed(1)}% over the last month, so a trade should capture that stronger price.`,
+    };
+  }
+  return {
+    verdict: "Avoid selling only because the price dipped",
+    answer: `${marketLine} The published market is down ${Math.abs(movement.percentChange).toFixed(1)}% over the last month; require a return that still matches the current tier.`,
+  };
+}
+
+function getWorthAnswer(
+  name: string,
+  player: MarketAsset,
+  pick?: MarketAsset,
+  peer?: { name: string; value: number },
+) {
+  const references = [
+    pick ? `${pick.name} is the closest rookie-pick value` : null,
+    peer ? `${peer.name} is a nearby player at ${Math.round(peer.value)}` : null,
+  ].filter(Boolean).join(", and ");
+  return `${name} is worth ${Math.round(player.value)} on the current dynasty Superflex scale, No. ${player.rank ?? "—"} overall and ${player.position}${player.posRank ?? "—"}. ${references ? `${references}.` : ""}`.trim();
+}
+
+function getRecentUsageAnswer(
+  name: string,
+  recent: ReturnType<typeof getRecentPlayerContext>,
+) {
+  if (!recent) return null;
+  const details = [
+    recent.opportunity === null ? null : `${recent.opportunity} ${recent.opportunityLabel.toLowerCase()}`,
+    recent.snapPct === null ? null : `${Math.round(recent.snapPct * 100)}% offensive snap share`,
+    recent.fantasyPointsPpr === null ? null : `${recent.fantasyPointsPpr.toFixed(1)} PPR points`,
+  ].filter(Boolean).join(", ");
+  return `${name}'s latest recorded result is Week ${recent.week}${recent.opponent ? ` against ${recent.opponent}` : ""}: ${details || "a completed game log"}. Availability: ${recent.availability}.`;
+}
+
 function buildSchema(
   player: Awaited<ReturnType<typeof getPlayerProfile>>["data"],
   image: { src: string; width: number; height: number; alt: string },
   dateModified: string,
+  faq: Array<{ question: string; answer: string }>,
 ) {
   const url = `https://fantasytradetarget.com/players/${player.slug}`;
   const imageUrl = new URL(image.src, "https://fantasytradetarget.com").toString();
@@ -544,6 +681,14 @@ function buildSchema(
           { "@type": "ListItem", position: 2, name: "Players", item: "https://fantasytradetarget.com/players" },
           { "@type": "ListItem", position: 3, name: player.name, item: url },
         ],
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: faq.map(({ question, answer }) => ({
+          "@type": "Question",
+          name: question,
+          acceptedAnswer: { "@type": "Answer", text: answer },
+        })),
       },
     ],
   };

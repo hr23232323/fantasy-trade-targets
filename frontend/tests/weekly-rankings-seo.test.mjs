@@ -45,7 +45,7 @@ test("the rankings board is useful, interactive, and connected to start/sit", ()
 });
 
 test("comparison expansion stays bounded, evidence-selected, and additive", () => {
-  assert.match(generator, /TARGET_COUNT = 200/);
+  assert.match(generator, /TARGET_COUNT = 250/);
   assert.match(generator, /redraft:1:0/);
   assert.match(generator, /projectPlayerWeek/);
   assert.match(generator, /normalizedExisting/);

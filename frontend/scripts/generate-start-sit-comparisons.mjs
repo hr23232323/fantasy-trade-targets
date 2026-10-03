@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { projectPlayerWeek } from "../src/app/lib/start-sit-model.mjs";
 
-const TARGET_COUNT = 200;
+const TARGET_COUNT = 250;
 const fantasyPositions = new Set(["QB", "RB", "WR", "TE"]);
 const [existing, nflverse, teams, playerPages, publicRelease] = await Promise.all([
   readJson("../data/start-sit-comparisons.json"),

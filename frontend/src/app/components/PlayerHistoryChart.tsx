@@ -88,12 +88,9 @@ export default function PlayerHistoryChart({
         viewBox={`0 0 ${width} ${height}`}
         className="h-auto w-full overflow-visible"
         role="img"
-        aria-labelledby={`${id}-chart-title ${id}-chart-description`}
+        data-chart-id={id}
+        aria-label={`${name} dynasty value history from ${formatDate(first.parsedDate, series.source)} through ${formatDate(last.parsedDate, series.source)}`}
       >
-        <title id={`${id}-chart-title`}>{name} dynasty value history</title>
-        <desc id={`${id}-chart-description`}>
-          {name} market value from {formatDate(first.parsedDate, series.source)} through {formatDate(last.parsedDate, series.source)}.
-        </desc>
         {[1, 0.5, 0].map((ratio) => {
           const y = paddingTop + (1 - ratio) * plotHeight;
           const value = Math.round(scale.min + ratio * range);
