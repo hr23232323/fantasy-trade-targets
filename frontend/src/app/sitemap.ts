@@ -15,6 +15,7 @@ import { startSitComparisons, startSitPath } from "./lib/start-sit";
 import { weeklyRankingPositions } from "./lib/weekly-rankings";
 import { restOfSeasonPositionConfigs } from "./lib/rest-of-season";
 import { weeklySleeperPositions } from "./lib/weekly-sleepers";
+import { playoffPositionConfigs, playoffSchedulePath } from "./lib/playoff-schedule";
 
 const BASE_URL = "https://fantasytradetarget.com";
 
@@ -33,6 +34,7 @@ const staticRoutes = [
   "/fantasy-football-injuries",
   "/fantasy-football-rankings",
   "/fantasy-football-sleepers",
+  "/fantasy-football-playoff-strength-of-schedule",
   "/fantasy-football-rest-of-season-rankings",
   "/fantasy-football-buy-low-sell-high",
   "/fantasy-football-strength-of-schedule",
@@ -79,6 +81,7 @@ const nflverseDrivenRoutes = new Set([
   "/fantasy-football-injuries",
   "/fantasy-football-rankings",
   "/fantasy-football-sleepers",
+  "/fantasy-football-playoff-strength-of-schedule",
   "/fantasy-football-usage",
   "/who-should-i-start",
 ]);
@@ -120,6 +123,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...weeklySleeperPositions.map(({ slug }) => ({
       url: `${BASE_URL}/fantasy-football-sleepers/${slug}`,
+      lastModified: nflversePlayerRelease.capturedAt,
+    })),
+    ...playoffPositionConfigs.map(({ slug }) => ({
+      url: `${BASE_URL}${playoffSchedulePath(slug)}`,
       lastModified: nflversePlayerRelease.capturedAt,
     })),
     ...restOfSeasonPositionConfigs.map(({ slug }) => ({

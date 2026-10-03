@@ -5,6 +5,7 @@ const tools = [
   ["Dynasty calculator", "/dynasty-trade-calculator"],
   ["Who should I start?", "/who-should-i-start"],
   ["Weekly sleepers", "/fantasy-football-sleepers"],
+  ["Fantasy playoff schedules", "/fantasy-football-playoff-strength-of-schedule"],
   ["Rest-of-season rankings", "/fantasy-football-rest-of-season-rankings"],
   ["Buy low, sell high", "/fantasy-football-buy-low-sell-high"],
   ["Fantasy football injuries", "/fantasy-football-injuries"],

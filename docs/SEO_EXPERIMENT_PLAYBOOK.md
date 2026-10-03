@@ -30,6 +30,7 @@ Player comparisons are the control. They already earned page-one impressions and
 | E12: buy low / sell high | “Who should I buy low or sell high?” | One stable weekly PPR board | `buy_low_sell_high_viewed` | Initial page shipped; candidates require a measurable gap between redraft market rank and the bounded ROS model |
 | E13: weekly sleepers | “Fantasy football sleepers Week N” | Current-week hub plus QB, RB, WR and TE pages | `weekly_sleepers_viewed` | Initial five-page cohort shipped; candidates must rise above market position with two recorded games and viable recent snaps |
 | E14: player trade answers | “What is Player X worth?” / “Should I trade Player X?” | Shared answer-first upgrade across 220 existing player files | `player_research_viewed` plus `research_cta_clicked` | Depth experiment shipped on URLs already averaging page-one visibility; no duplicate player-outlook URLs added |
+| E15: fantasy playoff schedules | “Who has the best fantasy playoff schedule?” | Overall planner plus QB, RB, WR and TE boards | `playoff_schedule_viewed` plus `playoff_schedule_filter_changed` | Initial five-page cohort shipped with Weeks 15–17 and 14–16 controls across all reception settings |
 
 ## October 3 weekly decision release
 
@@ -41,6 +42,7 @@ Player comparisons are the control. They already earned page-one impressions and
 - The next start/sit batch expands from 200 to 250 reviewed pairs because the family remains the strongest non-comparison search cohort. Pairs continue to require compatible positions, usable current-week projections and close enough ranges to form a real lineup decision.
 - GSC shows 180 player files with 18,162 impressions, 139 clicks, 0.77% CTR and average position 8.21. E14 improves the existing URLs instead of splitting authority: each page now answers trade-or-hold intent, publishes current value anchors, shows the latest verified workload, links into a preselected weekly decision, and exposes matching structured answers.
 - DataForSEO reports 590 average monthly searches for “should I trade fantasy football,” rising to 2,400 in October 2025. The broad term has an estimated 12.6 referring-domain average across ranking pages, making player-specific answer depth a lower-cost test than a new calculator head term.
+- E15 adds one complete playoff-planning cohort before seasonal demand peaks. DataForSEO shows 480 October and 880–1,300 November searches across “fantasy football playoff schedule” and “best fantasy playoff schedule,” with fewer than three average referring domains on the easier SERPs. The pages reuse the validated schedule and position-defense releases, support the two common three-week windows, and link every team to relevant player research.
 
 ## September 30 rest-of-season launch decision
 

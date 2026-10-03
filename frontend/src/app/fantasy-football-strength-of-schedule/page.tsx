@@ -26,6 +26,12 @@ export default function StrengthOfScheduleHub() {
         </div>
       </section>
       <section className="page-wrap pt-14">
+        <Link href="/fantasy-football-playoff-strength-of-schedule" className="group grid gap-7 border border-[#171c19] bg-[#d7b6ff] p-7 shadow-[7px_7px_0_#171c19] hover:bg-white lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
+          <div><span className="eyebrow bg-white">Weeks 15–17 · playoff planner</span><h2 className="section-title mt-6 max-w-4xl">Plan the fantasy playoffs by position.</h2><p className="mt-5 max-w-3xl text-sm leading-7 text-[#514759]">Rank every team&apos;s QB, RB, WR and TE schedule, switch between Weeks 15–17 and 14–16, and compare PPR, Half PPR and Standard.</p></div>
+          <span className="font-mono text-xs font-black uppercase tracking-[0.08em] lg:text-right group-hover:underline">Open the playoff planner →</span>
+        </Link>
+      </section>
+      <section className="page-wrap pt-14">
         <span className="eyebrow bg-[#ffb29a]">By position</span>
         <h2 className="section-title mt-6 max-w-4xl">Find the defenses that give up points where you need them.</h2>
         <div className="mt-8 grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2 lg:grid-cols-4">
