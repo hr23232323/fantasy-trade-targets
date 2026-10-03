@@ -21,7 +21,7 @@ export const positionScheduleConfigs = [
 
 export const positionScheduleSlugs = positionScheduleConfigs.map(({ slug }) => slug);
 
-const positionWeekScheduleWeeks = [3, 4] as const;
+export const positionWeekScheduleWeeks = [3, 4, 5] as const;
 
 export const positionWeekScheduleConfigs = positionWeekScheduleWeeks.flatMap((week) =>
   positionScheduleConfigs.map((config) => ({

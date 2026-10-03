@@ -6,6 +6,7 @@ import { getMarket } from "../../lib/market";
 import { hasPlayerPage } from "../../lib/player-pages";
 import {
   getPositionWeekScheduleRatings,
+  positionWeekScheduleConfigs,
   type PositionWeekScheduleConfig,
 } from "../../lib/schedule-ratings";
 import { formatGameDate, formatGameTime, getTeamAssets, teamRelease } from "../../lib/team-data";
@@ -19,6 +20,8 @@ export default async function PositionWeekSchedulePage({ config }: { config: Pos
     getMarket({ format: "redraft", numQbs: 1, receptionPoints: 1 }),
   ]);
   const leader = ratings[0];
+  const best = ratings.slice(0, 3);
+  const toughest = ratings.slice(-3).toReversed();
   const path = `/fantasy-football-strength-of-schedule/${config.slug}`;
 
   return (
@@ -29,11 +32,12 @@ export default async function PositionWeekSchedulePage({ config }: { config: Pos
       <section className="border-y border-[#171c19] bg-[#dfff4f]">
         <div className="page-wrap py-14 sm:py-20">
           <span className="eyebrow bg-white">{teamRelease.season} · Week {config.week} · all 32 teams</span>
-          <h1 className="mt-7 max-w-6xl text-[clamp(3rem,7vw,6.8rem)] font-black uppercase leading-[0.84] tracking-[-0.075em]">Week {config.week} fantasy football <span className="text-[#a23616]">{config.label.toLowerCase()} matchups.</span></h1>
+          <h1 className="mt-7 max-w-6xl text-[clamp(3rem,7vw,6.8rem)] font-black uppercase leading-[0.84] tracking-[-0.075em]">Week {config.week} {config.label.toLowerCase()} <span className="text-[#a23616]">strength of schedule.</span></h1>
           {leader ? <p className="mt-8 max-w-4xl border-l-4 border-[#171c19] pl-5 text-lg font-bold leading-8">{leader.team.name} has the most favorable Week {config.week} matchup for {config.singular}s, facing a defense that allowed {leader.pointsAllowed.ppr.toFixed(1)} PPR points per game to the position last season.</p> : null}
           <p className="mt-6 max-w-3xl text-sm leading-7 text-[#414742]">The table ranks every team by the upcoming opponent&apos;s fantasy points allowed to {config.singular}s. Use it with current workload and availability, not as a standalone projection.</p>
         </div>
       </section>
+      <section className="page-wrap py-12"><div className="grid gap-4 lg:grid-cols-2"><MatchupSummary title={`Best Week ${config.week} ${config.label} matchups`} rows={best} tone="bg-[#dfff4f]" /><MatchupSummary title={`Toughest Week ${config.week} ${config.label} matchups`} rows={toughest} tone="bg-[#ffb29a]" /></div></section>
       <section className="page-wrap py-14">
         <div className="overflow-x-auto border border-[#171c19] bg-white/55">
           <table className="w-full min-w-[980px] text-left text-sm">
@@ -61,15 +65,20 @@ export default async function PositionWeekSchedulePage({ config }: { config: Pos
         <p className="mt-4 text-xs leading-6 text-[#69706c]">Position scoring uses {nflversePlayerRelease.positionDefense.season} per-game defense results. Schedule and venue use the current {teamRelease.season} release.</p>
       </section>
       <section className="border-y border-[#171c19] bg-[#8bcfff]"><div className="page-wrap grid gap-8 py-12 lg:grid-cols-2"><div><span className="eyebrow bg-white">What the rank means</span><h2 className="section-title mt-6">A better matchup can help. Role still comes first.</h2></div><div className="text-sm leading-7"><p>The opponent rank describes what the defense allowed to the position. It does not assign touches or targets to an individual player.</p><p className="mt-4">Check the linked player files for recent usage and listed availability before making a lineup or trade decision.</p></div></div></section>
-      <section className="page-wrap flex flex-wrap gap-3 py-12">{[3, 4].flatMap((week) => ["quarterbacks", "running-backs", "wide-receivers", "tight-ends"].map((slug) => ({ week, slug }))).filter((item) => item.week !== config.week || item.slug !== config.slug.replace(`week-${config.week}-`, "")).map((item) => <Link key={`${item.week}-${item.slug}`} href={`/fantasy-football-strength-of-schedule/week-${item.week}-${item.slug}`} className="border border-[#171c19] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.08em] hover:bg-[#dfff4f]">Week {item.week} {item.slug.replaceAll("-", " ")} →</Link>)}</section>
+      <section className="page-wrap flex flex-wrap gap-3 py-12">{positionWeekScheduleConfigs.filter((item) => item.slug !== config.slug).map((item) => <Link key={item.slug} href={`/fantasy-football-strength-of-schedule/${item.slug}`} className="border border-[#171c19] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.08em] hover:bg-[#dfff4f]">Week {item.week} {item.slug.replace(`week-${item.week}-`, "").replaceAll("-", " ")} →</Link>)}</section>
     </>
   );
+}
+
+function MatchupSummary({ title, rows, tone }: { title: string; rows: ReturnType<typeof getPositionWeekScheduleRatings>; tone: string }) {
+  return <div className={`border border-[#171c19] p-6 shadow-[4px_4px_0_#171c19] ${tone}`}><h2 className="text-2xl font-black tracking-[-0.045em]">{title}</h2><ol className="mt-5 divide-y divide-[#171c19]/30">{rows.map((row) => <li key={row.team.abbr} className="flex items-center justify-between gap-4 py-3"><span className="flex items-center gap-3"><TeamLogo team={row.team.abbr} size={34} decorative /><span><strong className="block">{row.team.name}</strong><small className="font-mono text-[9px] font-bold uppercase">{row.game.site === "away" ? "at" : "vs."} {row.opponent.abbr}</small></span></span><strong className="font-mono text-xl">{row.pointsAllowed.ppr.toFixed(1)}</strong></li>)}</ol><p className="mt-4 font-mono text-[9px] font-bold uppercase text-[#565d58]">Opponent PPR points allowed per game</p></div>;
 }
 
 function buildSchema(path: string, config: PositionWeekScheduleConfig, ratings: ReturnType<typeof getPositionWeekScheduleRatings>) {
   const url = `${SITE_URL}${path}`;
   return [
-    { "@context": "https://schema.org", "@type": "Dataset", name: `Week ${config.week} fantasy football ${config.label.toLowerCase()} matchups`, url, dateModified: nflversePlayerRelease.capturedAt, creator: { "@type": "Organization", name: "Fantasy Trade Target", url: SITE_URL }, variableMeasured: ["Standard fantasy points allowed", "Half PPR fantasy points allowed", "PPR fantasy points allowed"] },
+    { "@context": "https://schema.org", "@type": "Dataset", name: `Week ${config.week} ${config.label.toLowerCase()} fantasy football strength of schedule`, url, dateModified: nflversePlayerRelease.capturedAt, creator: { "@type": "Organization", name: "Fantasy Trade Target", url: SITE_URL }, variableMeasured: ["Standard fantasy points allowed", "Half PPR fantasy points allowed", "PPR fantasy points allowed"] },
     { "@context": "https://schema.org", "@type": "ItemList", numberOfItems: ratings.length, itemListElement: ratings.map((row) => ({ "@type": "ListItem", position: row.rank, name: `${row.team.name} ${config.label}: ${row.pointsAllowed.ppr.toFixed(1)} PPR points allowed by ${row.opponent.name}` })) },
+    { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [{ "@type": "Question", name: `Who has the best Week ${config.week} matchup for ${config.singular}s?`, acceptedAnswer: { "@type": "Answer", text: ratings[0] ? `${ratings[0].team.name} ranks first because ${ratings[0].opponent.name} allowed ${ratings[0].pointsAllowed.ppr.toFixed(1)} PPR points per game to ${config.singular}s.` : "The ranking is updating." } }, { "@type": "Question", name: `How is Week ${config.week} ${config.label.toLowerCase()} strength of schedule ranked?`, acceptedAnswer: { "@type": "Answer", text: `All 32 teams are ordered by the upcoming opponent's fantasy points allowed to ${config.singular}s in Standard, Half PPR and PPR scoring.` } }] },
   ];
 }

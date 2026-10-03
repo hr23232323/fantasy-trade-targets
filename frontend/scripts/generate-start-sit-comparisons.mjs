@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { projectPlayerWeek } from "../src/app/lib/start-sit-model.mjs";
 
-const TARGET_COUNT = 150;
+const TARGET_COUNT = 200;
 const fantasyPositions = new Set(["QB", "RB", "WR", "TE"]);
 const [existing, nflverse, teams, playerPages, publicRelease] = await Promise.all([
   readJson("../data/start-sit-comparisons.json"),
@@ -11,18 +11,19 @@ const [existing, nflverse, teams, playerPages, publicRelease] = await Promise.al
   readJson("../data/public-release.json"),
 ]);
 
-if (existing.length >= TARGET_COUNT) {
-  console.log(`Start/sit manifest already has ${existing.length} comparisons.`);
-  process.exit(0);
-}
-
 const activeWeek = Array.from({ length: 18 }, (_, index) => index + 1).find((week) =>
   Object.values(teams.teams).some((team) => team.schedule.some((game) => game.week === week && game.result === null)),
 ) ?? 18;
 const pageBySlug = new Map(playerPages.map((player) => [player.slug, player]));
 const redraft = publicRelease.playerMarkets["redraft:1:0"].data;
 const marketBySlug = new Map(redraft.map((player) => [player.slug, player]));
-const pairKeys = new Set(existing.map((comparison) => pairKey(comparison.leftSlug, comparison.rightSlug)));
+const normalizedExisting = existing.map((comparison) => ({
+  ...comparison,
+  selectionReason: /Week \d+/i.test(comparison.selectionReason)
+    ? reasonFor(comparison.position)
+    : comparison.selectionReason,
+}));
+const pairKeys = new Set(normalizedExisting.map((comparison) => pairKey(comparison.leftSlug, comparison.rightSlug)));
 
 const players = Object.values(nflverse.players).flatMap((player) => {
   const position = player.roster?.position;
@@ -70,9 +71,9 @@ for (let leftIndex = 0; leftIndex < flexPool.length; leftIndex += 1) {
 }
 
 candidates.sort((left, right) => left.priority - right.priority || left.slug.localeCompare(right.slug));
-const additions = candidates.slice(0, TARGET_COUNT - existing.length).map(({ priority: _, ...comparison }) => comparison);
-if (additions.length < TARGET_COUNT - existing.length) throw new Error(`Only ${additions.length} valid additions were available.`);
-const output = [...existing, ...additions];
+const additions = candidates.slice(0, Math.max(0, TARGET_COUNT - normalizedExisting.length)).map(({ priority: _, ...comparison }) => comparison);
+if (additions.length < TARGET_COUNT - normalizedExisting.length) throw new Error(`Only ${additions.length} valid additions were available.`);
+const output = [...normalizedExisting, ...additions];
 await writeFile(new URL("../data/start-sit-comparisons.json", import.meta.url), `${JSON.stringify(output, null, 2)}\n`);
 console.log(`Added ${additions.length} evidence-selected Week ${activeWeek} comparisons (${output.length} total).`);
 

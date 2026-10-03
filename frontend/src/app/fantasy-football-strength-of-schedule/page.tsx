@@ -33,7 +33,7 @@ export default function StrengthOfScheduleHub() {
         </div>
       </section>
       <section className="page-wrap pt-14">
-        <span className="eyebrow bg-[#8bcfff]">Weeks 3–4 · by position</span>
+        <span className="eyebrow bg-[#8bcfff]">Weeks 3–5 · by position</span>
         <h2 className="section-title mt-6 max-w-4xl">See the next matchup for every quarterback, running back, receiver, and tight end room.</h2>
         <div className="mt-8 grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2 lg:grid-cols-4">
           {positionWeekScheduleConfigs.map((config, index) => <Link key={config.slug} href={`/fantasy-football-strength-of-schedule/${config.slug}`} className={`group p-6 hover:bg-white ${index % 3 === 0 ? "bg-[#ffb29a]" : index % 2 ? "bg-[#8bcfff]" : "bg-[#f3f0e7]"}`}><span className="mono-label">Week {config.week} · {config.position}</span><h2 className="mt-5 text-2xl font-black tracking-[-0.04em]">{config.label} matchups</h2><span className="mt-6 block font-mono text-[10px] font-black uppercase tracking-[0.08em] group-hover:underline">Rank all 32 teams →</span></Link>)}

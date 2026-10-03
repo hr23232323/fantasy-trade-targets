@@ -10,12 +10,13 @@ import { buildPageMetadata } from "./lib/metadata";
 import { playerComparisons } from "./lib/player-comparisons";
 import { playerPages, type PlayerPageConfig } from "./lib/player-pages";
 import { teams } from "./lib/team-data";
+import { activeStartSitWeek, startSitComparisons } from "./lib/start-sit";
 import type { MarketAsset } from "./types/MarketAsset";
 
 export const metadata = buildPageMetadata({
   title: "Fantasy Football Trade Tools, Calculator & Rankings",
   description:
-    "Compare complete fantasy football offers, research players, and browse current dynasty rankings. Free, no login, with Superflex, TE premium, and rookie picks.",
+    "Set your weekly fantasy lineup, compare start/sit decisions, find sleepers, analyze trades, and browse current dynasty rankings. Free, no login.",
   path: "",
 });
 
@@ -75,6 +76,12 @@ export default async function Home() {
             </div>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
+                href="/who-should-i-start"
+                className="border border-[#171c19] bg-[#ff6b3d] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em] text-white shadow-[4px_4px_0_#171c19]"
+              >
+                Set Week {activeStartSitWeek} lineup
+              </Link>
+              <Link
                 href="#trade-calculator"
                 className="border border-[#171c19] bg-[#171c19] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.08em] text-white shadow-[4px_4px_0_#dfff4f]"
               >
@@ -113,6 +120,8 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      <WeeklyDecisionCenter />
 
       <div className="page-wrap">
         <TradeCalculator />
@@ -232,6 +241,24 @@ export default async function Home() {
       <FaqBlock items={homeFaqs} />
     </>
   );
+}
+
+function WeeklyDecisionCenter() {
+  const cards = [
+    { href: "/who-should-i-start", label: "Start / sit", title: "Compare any two players", detail: `${startSitComparisons.length} popular decisions plus any-player search`, color: "bg-[#8bcfff]" },
+    { href: "/fantasy-football-rankings", label: "Weekly rankings", title: `Week ${activeStartSitWeek} PPR rankings`, detail: "QB, RB, WR, TE and FLEX with floor-to-ceiling ranges", color: "bg-[#dfff4f]" },
+    { href: "/fantasy-football-sleepers", label: "Deeper starts", title: `Week ${activeStartSitWeek} sleepers`, detail: "Players whose weekly outlook is stronger than their market slot", color: "bg-[#ffb29a]" },
+    { href: `/fantasy-football-injuries/week-${activeStartSitWeek}`, label: "Availability", title: `Week ${activeStartSitWeek} injury report`, detail: "Current practice and game designations for relevant players", color: "bg-white" },
+    { href: `/fantasy-football-strength-of-schedule/week-${activeStartSitWeek}-wide-receivers`, label: "Matchups", title: `Week ${activeStartSitWeek} strength of schedule`, detail: "Best and toughest opponent draws by fantasy position", color: "bg-[#ff6b3d] text-white" },
+  ];
+  const ticker = ["Start / sit", `Week ${activeStartSitWeek} rankings`, "Sleepers", "Injuries", "Matchups"];
+
+  return <section className="border-y border-[#171c19] bg-[#171c19] py-10 text-white sm:py-14">
+    <div className="weekly-signal overflow-hidden border-y border-white/20 py-3" aria-hidden="true"><div className="weekly-signal__track">{[...ticker, ...ticker].map((item, index) => <span key={`${item}-${index}`}>{item}<b>↗</b></span>)}</div></div>
+    <div className="page-wrap mt-10"><div className="grid gap-6 lg:grid-cols-[0.72fr_1.28fr] lg:items-end"><div><span className="eyebrow text-[#171c19]">This week // lineup desk</span><h2 className="mt-6 text-[clamp(3rem,6vw,5.8rem)] font-black uppercase leading-[0.84] tracking-[-0.07em]">Make the call <span className="text-[#ff6b3d]">before kickoff.</span></h2></div><p className="max-w-2xl text-sm leading-7 text-white/70">Weekly rankings, head-to-head lineup calls, sleepers, listed availability and position matchups—connected in one place and refreshed from recorded games.</p></div>
+      <div className="mt-9 grid gap-px border border-white/40 bg-white/40 sm:grid-cols-2 lg:grid-cols-5">{cards.map((card) => <Link key={card.href} href={card.href} className={`weekly-decision-card group min-h-56 p-5 text-[#171c19] ${card.color}`}><span className="mono-label">{card.label}</span><h3 className="mt-12 text-2xl font-black leading-[0.95] tracking-[-0.045em]">{card.title}</h3><p className={`mt-3 text-xs leading-5 ${card.color.includes("text-white") ? "text-white/75" : "text-[#505752]"}`}>{card.detail}</p><span className="mt-6 inline-block font-mono text-[10px] font-black uppercase transition-transform group-hover:translate-x-1">Open →</span></Link>)}</div>
+    </div>
+  </section>;
 }
 
 function HeroPlayerCard({

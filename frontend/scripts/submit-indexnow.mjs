@@ -87,7 +87,7 @@ const scheduleRatingPaths = Array.from(
 );
 const positionSchedulePaths = ["quarterbacks", "running-backs", "wide-receivers", "tight-ends"]
   .map((position) => `/fantasy-football-strength-of-schedule/${position}`);
-const positionWeekSchedulePaths = [3, 4].flatMap((week) =>
+const positionWeekSchedulePaths = [3, 4, 5].flatMap((week) =>
   ["quarterbacks", "running-backs", "wide-receivers", "tight-ends"]
     .map((position) => `/fantasy-football-strength-of-schedule/week-${week}-${position}`),
 );
@@ -153,6 +153,11 @@ const changedPaths = [
   "/fantasy-football-rankings/running-backs",
   "/fantasy-football-rankings/wide-receivers",
   "/fantasy-football-rankings/tight-ends",
+  "/fantasy-football-sleepers",
+  "/fantasy-football-sleepers/quarterbacks",
+  "/fantasy-football-sleepers/running-backs",
+  "/fantasy-football-sleepers/wide-receivers",
+  "/fantasy-football-sleepers/tight-ends",
   "/fantasy-football-rest-of-season-rankings",
   "/fantasy-football-rest-of-season-rankings/quarterbacks",
   "/fantasy-football-rest-of-season-rankings/running-backs",

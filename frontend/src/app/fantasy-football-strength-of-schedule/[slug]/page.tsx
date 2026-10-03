@@ -22,8 +22,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const positionWeek = getPositionWeekScheduleConfig(slug);
   if (positionWeek) return buildPageMetadata({
-    title: `Week ${positionWeek.week} ${positionWeek.label} Fantasy Football Matchups (2026)`,
-    description: `Rank all 32 Week ${positionWeek.week} ${positionWeek.singular} matchups by Standard, Half PPR, and PPR fantasy points allowed, with current player links.`,
+    title: `Week ${positionWeek.week} ${positionWeek.label} Strength of Schedule: Best & Worst Matchups`,
+    description: `See the best and toughest Week ${positionWeek.week} ${positionWeek.singular} matchups, ranked across all 32 teams by Standard, Half PPR and PPR points allowed.`,
     path: `/fantasy-football-strength-of-schedule/${slug}`,
   });
   const position = getPositionScheduleConfig(slug);
