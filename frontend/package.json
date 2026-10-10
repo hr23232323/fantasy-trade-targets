@@ -10,6 +10,7 @@
     "data:teams": "node scripts/refresh-team-data.mjs",
     "data:nflverse": "node scripts/refresh-nflverse-data.mjs",
     "data:start-sit": "node scripts/generate-start-sit-comparisons.mjs",
+    "data:ros-comparisons": "node scripts/generate-rest-of-season-comparisons.mjs",
     "data:players": "node scripts/refresh-player-pages.mjs",
     "data:player-images": "node scripts/cache-player-images.mjs",
     "data:pick-history": "node scripts/backfill-rookie-pick-history.mjs",

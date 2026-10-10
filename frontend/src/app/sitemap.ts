@@ -14,6 +14,7 @@ import { injuryReportWeeks, injuryWeekPath } from "./lib/injuries";
 import { startSitComparisons, startSitPath } from "./lib/start-sit";
 import { weeklyRankingPositions } from "./lib/weekly-rankings";
 import { restOfSeasonPositionConfigs } from "./lib/rest-of-season";
+import { restOfSeasonComparisons, restOfSeasonComparisonPath } from "./lib/rest-of-season-comparisons";
 import { weeklySleeperPositions } from "./lib/weekly-sleepers";
 import { playoffPositionConfigs, playoffSchedulePath } from "./lib/playoff-schedule";
 
@@ -36,6 +37,7 @@ const staticRoutes = [
   "/fantasy-football-sleepers",
   "/fantasy-football-playoff-strength-of-schedule",
   "/fantasy-football-rest-of-season-rankings",
+  "/fantasy-football-rest-of-season-comparisons",
   "/fantasy-football-buy-low-sell-high",
   "/fantasy-football-strength-of-schedule",
   "/fantasy-football-usage",
@@ -88,6 +90,7 @@ const nflverseDrivenRoutes = new Set([
 
 const restOfSeasonDrivenRoutes = new Set([
   "/fantasy-football-rest-of-season-rankings",
+  "/fantasy-football-rest-of-season-comparisons",
   "/fantasy-football-buy-low-sell-high",
 ]);
 
@@ -131,6 +134,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...restOfSeasonPositionConfigs.map(({ slug }) => ({
       url: `${BASE_URL}/fantasy-football-rest-of-season-rankings/${slug}`,
+      lastModified: playerUpdated,
+    })),
+    ...restOfSeasonComparisons.map(({ slug }) => ({
+      url: `${BASE_URL}${restOfSeasonComparisonPath(slug)}`,
       lastModified: playerUpdated,
     })),
     ...injuryReportWeeks.map((week) => ({

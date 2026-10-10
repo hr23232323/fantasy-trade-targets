@@ -1,6 +1,6 @@
 # SEO experiment and scale playbook
 
-Last updated: 2026-10-03
+Last updated: 2026-10-10
 Owner: Fantasy Trade Target
 
 ## The operating rule
@@ -31,6 +31,7 @@ Player comparisons are the control. They already earned page-one impressions and
 | E13: weekly sleepers | “Fantasy football sleepers Week N” | Current-week hub plus QB, RB, WR and TE pages | `weekly_sleepers_viewed` | Initial five-page cohort shipped; candidates must rise above market position with two recorded games and viable recent snaps |
 | E14: player trade answers | “What is Player X worth?” / “Should I trade Player X?” | Shared answer-first upgrade across 220 existing player files | `player_research_viewed` plus `research_cta_clicked` | Depth experiment shipped on URLs already averaging page-one visibility; no duplicate player-outlook URLs added |
 | E15: fantasy playoff schedules | “Who has the best fantasy playoff schedule?” | Overall planner plus QB, RB, WR and TE boards | `playoff_schedule_viewed` plus `playoff_schedule_filter_changed` | Initial five-page cohort shipped with Weeks 15–17 and 14–16 controls across all reception settings |
+| E16: ROS player comparisons | “Player A or Player B rest of season?” | One hub plus 30 curated same-position decisions | `rest_of_season_comparisons_viewed` plus `rest_of_season_comparison_viewed` | Initial cohort selected from exact GSC demand and close current ROS ranks; each page answers PPR, Half PPR and Standard |
 
 ## October 3 weekly decision release
 
@@ -50,7 +51,15 @@ Player comparisons are the control. They already earned page-one impressions and
 - Search Console exposed only four “rest of season” query/page rows in the latest final 28-day window, confirming that the site had no meaningful footprint for this intent before launch.
 - E11 starts with five stable URLs. The model keeps current redraft market value as 70% of the rating and limits the combined influence of current scoring, opportunity, snap share and remaining positional schedule to 30%.
 - E12 uses the same auditable PPR board to identify rank gaps. It publishes one continuously updated page rather than disposable weekly archives and links every candidate to an existing player file and calculator.
-- Do not add rest-of-season player-pair pages until the five-page cohort reaches the Day 7 and Day 14 measurement gates. If it qualifies, the first expansion is 20 curated, close-rank decisions with explicit “rest of season” intent.
+- The five-page cohort cleared the first expansion gate. On October 10, E16 added 30 curated, close-rank decisions with explicit “rest of season” intent.
+
+## October 10 rest-of-season comparison expansion
+
+- The five-page rest-of-season cohort earned 505 impressions at average position 7.15 in the latest final 28-day Search Console window, creating a page-one base for a deeper intent layer.
+- Search Console surfaced exact pair demand including Sam Darnold or Kyler Murray, Kyren Williams or Ashton Jeanty, and Zay Flowers or Nico Collins for the rest of the season.
+- DataForSEO confirms the parent cluster is both seasonal and attainable: “fantasy football rest of season rankings” averaged 12,100 monthly searches, while running-back and tight-end variants showed keyword difficulty as low as 3.
+- E16 launches one hub and 30 same-position comparisons. Pages are selected from exact observed demand and close current model ranks, answer the question immediately, compare PPR, Half PPR and Standard, and connect to weekly start/sit, player research and the trade calculator.
+- Measure the hub and detail pages separately after 7 and 14 days. Expand only the positions and pair patterns that earn impressions, top-20 visibility or qualified clicks; refresh the manifest as player roles change.
 - Waiver-wire pages remain gated on a commercially permitted availability or add/drop data source. Search volume alone is not sufficient to publish advice that cannot establish whether a player is plausibly available.
 
 ## September 30 scale decision

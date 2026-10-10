@@ -1,0 +1,212 @@
+[
+  {
+    "slug": "kyler-murray-vs-sam-darnold",
+    "leftSlug": "kyler-murray-qb",
+    "rightSlug": "sam-darnold-qb",
+    "position": "QB",
+    "selectionReason": "Search Console shows direct rest-of-season demand for this decision."
+  },
+  {
+    "slug": "ashton-jeanty-vs-kyren-williams",
+    "leftSlug": "ashton-jeanty-rb",
+    "rightSlug": "kyren-williams-rb",
+    "position": "RB",
+    "selectionReason": "Search Console shows direct rest-of-season demand for this decision."
+  },
+  {
+    "slug": "nico-collins-vs-zay-flowers",
+    "leftSlug": "nico-collins-wr",
+    "rightSlug": "zay-flowers-wr",
+    "position": "WR",
+    "selectionReason": "Search Console shows direct rest-of-season demand for this decision."
+  },
+  {
+    "slug": "dak-prescott-vs-joe-burrow",
+    "leftSlug": "dak-prescott-qb",
+    "rightSlug": "joe-burrow-qb",
+    "position": "QB",
+    "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "brock-purdy-vs-jared-goff",
+    "leftSlug": "brock-purdy-qb",
+    "rightSlug": "jared-goff-qb",
+    "position": "QB",
+    "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "brock-purdy-vs-dak-prescott",
+    "leftSlug": "brock-purdy-qb",
+    "rightSlug": "dak-prescott-qb",
+    "position": "QB",
+    "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "jared-goff-vs-lamar-jackson",
+    "leftSlug": "jared-goff-qb",
+    "rightSlug": "lamar-jackson-qb",
+    "position": "QB",
+    "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "lamar-jackson-vs-patrick-mahomes",
+    "leftSlug": "lamar-jackson-qb",
+    "rightSlug": "patrick-mahomes-qb",
+    "position": "QB",
+    "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "patrick-mahomes-vs-tyler-shough",
+    "leftSlug": "patrick-mahomes-qb",
+    "rightSlug": "tyler-shough-qb",
+    "position": "QB",
+    "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "bijan-robinson-vs-jahmyr-gibbs",
+    "leftSlug": "bijan-robinson-rb",
+    "rightSlug": "jahmyr-gibbs-rb",
+    "position": "RB",
+    "selectionReason": "Two high-interest running backs close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "christian-mccaffrey-vs-james-cook",
+    "leftSlug": "christian-mccaffrey-rb",
+    "rightSlug": "james-cook-rb",
+    "position": "RB",
+    "selectionReason": "Two high-interest running backs close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "derrick-henry-vs-james-cook",
+    "leftSlug": "derrick-henry-rb",
+    "rightSlug": "james-cook-rb",
+    "position": "RB",
+    "selectionReason": "Two high-interest running backs close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "javonte-williams-vs-kyren-williams",
+    "leftSlug": "javonte-williams-rb",
+    "rightSlug": "kyren-williams-rb",
+    "position": "RB",
+    "selectionReason": "Two high-interest running backs close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "bijan-robinson-vs-kenneth-walker",
+    "leftSlug": "bijan-robinson-rb",
+    "rightSlug": "kenneth-walker-rb",
+    "position": "RB",
+    "selectionReason": "Two high-interest running backs close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "ashton-jeanty-vs-chase-brown",
+    "leftSlug": "ashton-jeanty-rb",
+    "rightSlug": "chase-brown-rb",
+    "position": "RB",
+    "selectionReason": "Two high-interest running backs close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "christian-mccaffrey-vs-derrick-henry",
+    "leftSlug": "christian-mccaffrey-rb",
+    "rightSlug": "derrick-henry-rb",
+    "position": "RB",
+    "selectionReason": "Two high-interest running backs close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "amon-ra-st-brown-vs-ceedee-lamb",
+    "leftSlug": "amon-ra-st-brown-wr",
+    "rightSlug": "ceedee-lamb-wr",
+    "position": "WR",
+    "selectionReason": "Two high-interest wide receivers close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "amon-ra-st-brown-vs-puka-nacua",
+    "leftSlug": "amon-ra-st-brown-wr",
+    "rightSlug": "puka-nacua-wr",
+    "position": "WR",
+    "selectionReason": "Two high-interest wide receivers close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "ceedee-lamb-vs-puka-nacua",
+    "leftSlug": "ceedee-lamb-wr",
+    "rightSlug": "puka-nacua-wr",
+    "position": "WR",
+    "selectionReason": "Two high-interest wide receivers close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "jamarr-chase-vs-puka-nacua",
+    "leftSlug": "jamarr-chase-wr",
+    "rightSlug": "puka-nacua-wr",
+    "position": "WR",
+    "selectionReason": "Two high-interest wide receivers close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "chris-olave-vs-nico-collins",
+    "leftSlug": "chris-olave-wr",
+    "rightSlug": "nico-collins-wr",
+    "position": "WR",
+    "selectionReason": "Two high-interest wide receivers close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "justin-jefferson-vs-nico-collins",
+    "leftSlug": "justin-jefferson-wr",
+    "rightSlug": "nico-collins-wr",
+    "position": "WR",
+    "selectionReason": "Two high-interest wide receivers close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "ceedee-lamb-vs-jaxon-smith-njigba",
+    "leftSlug": "ceedee-lamb-wr",
+    "rightSlug": "jaxon-smith-njigba-wr",
+    "position": "WR",
+    "selectionReason": "Two high-interest wide receivers close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "drake-london-vs-justin-jefferson",
+    "leftSlug": "drake-london-wr",
+    "rightSlug": "justin-jefferson-wr",
+    "position": "WR",
+    "selectionReason": "Two high-interest wide receivers close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "brock-bowers-vs-trey-mcbride",
+    "leftSlug": "brock-bowers-te",
+    "rightSlug": "trey-mcbride-te",
+    "position": "TE",
+    "selectionReason": "Two high-interest tight ends close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "george-kittle-vs-sam-laporta",
+    "leftSlug": "george-kittle-te",
+    "rightSlug": "sam-laporta-te",
+    "position": "TE",
+    "selectionReason": "Two high-interest tight ends close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "sam-laporta-vs-tyler-warren",
+    "leftSlug": "sam-laporta-te",
+    "rightSlug": "tyler-warren-te",
+    "position": "TE",
+    "selectionReason": "Two high-interest tight ends close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "harold-fannin-vs-juwan-johnson",
+    "leftSlug": "harold-fannin-te",
+    "rightSlug": "juwan-johnson-te",
+    "position": "TE",
+    "selectionReason": "Two high-interest tight ends close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "harold-fannin-vs-travis-kelce",
+    "leftSlug": "harold-fannin-te",
+    "rightSlug": "travis-kelce-te",
+    "position": "TE",
+    "selectionReason": "Two high-interest tight ends close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "george-kittle-vs-tyler-warren",
+    "leftSlug": "george-kittle-te",
+    "rightSlug": "tyler-warren-te",
+    "position": "TE",
+    "selectionReason": "Two high-interest tight ends close enough in the current rest-of-season model to create a real roster or trade decision."
+  }
+]
