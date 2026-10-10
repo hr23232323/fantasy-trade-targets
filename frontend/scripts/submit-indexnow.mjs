@@ -87,7 +87,7 @@ const scheduleRatingPaths = Array.from(
 );
 const positionSchedulePaths = ["quarterbacks", "running-backs", "wide-receivers", "tight-ends"]
   .map((position) => `/fantasy-football-strength-of-schedule/${position}`);
-const positionWeekSchedulePaths = [3, 4, 5].flatMap((week) =>
+const positionWeekSchedulePaths = [3, 4, 5, 6, 7].flatMap((week) =>
   ["quarterbacks", "running-backs", "wide-receivers", "tight-ends"]
     .map((position) => `/fantasy-football-strength-of-schedule/week-${week}-${position}`),
 );

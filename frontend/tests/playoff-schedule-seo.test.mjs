@@ -60,6 +60,8 @@ test("the five-page playoff planner is useful, interactive, and answer-first", (
   assert.match(detail, /Who has the toughest fantasy playoff schedule/);
   assert.match(detail, /playersByTeam/);
   assert.match(detail, /"@type": "Dataset"/);
+  assert.match(detail, /description:/);
+  assert.match(detail, /license:/);
   assert.match(detail, /"@type": "FAQPage"/);
   assert.match(detail, /Weeks 15–17/);
   assert.match(detail, /Weeks 14–16/);

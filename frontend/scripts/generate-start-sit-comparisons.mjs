@@ -1,7 +1,9 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { projectPlayerWeek } from "../src/app/lib/start-sit-model.mjs";
 
-const TARGET_COUNT = 250;
+const BASELINE_WEEK = 5;
+const BASE_TARGET_COUNT = 350;
+const WEEKLY_ADDITION_COUNT = 25;
 const fantasyPositions = new Set(["QB", "RB", "WR", "TE"]);
 const [existing, nflverse, teams, playerPages, publicRelease] = await Promise.all([
   readJson("../data/start-sit-comparisons.json"),
@@ -14,6 +16,7 @@ const [existing, nflverse, teams, playerPages, publicRelease] = await Promise.al
 const activeWeek = Array.from({ length: 18 }, (_, index) => index + 1).find((week) =>
   Object.values(teams.teams).some((team) => team.schedule.some((game) => game.week === week && game.result === null)),
 ) ?? 18;
+const targetCount = BASE_TARGET_COUNT + Math.max(0, activeWeek - BASELINE_WEEK) * WEEKLY_ADDITION_COUNT;
 const pageBySlug = new Map(playerPages.map((player) => [player.slug, player]));
 const redraft = publicRelease.playerMarkets["redraft:1:0"].data;
 const marketBySlug = new Map(redraft.map((player) => [player.slug, player]));
@@ -71,11 +74,11 @@ for (let leftIndex = 0; leftIndex < flexPool.length; leftIndex += 1) {
 }
 
 candidates.sort((left, right) => left.priority - right.priority || left.slug.localeCompare(right.slug));
-const additions = candidates.slice(0, Math.max(0, TARGET_COUNT - normalizedExisting.length)).map(({ priority: _, ...comparison }) => comparison);
-if (additions.length < TARGET_COUNT - normalizedExisting.length) throw new Error(`Only ${additions.length} valid additions were available.`);
+const additions = candidates.slice(0, Math.max(0, targetCount - normalizedExisting.length)).map(({ priority: _, ...comparison }) => comparison);
+if (additions.length < targetCount - normalizedExisting.length) throw new Error(`Only ${additions.length} valid additions were available.`);
 const output = [...normalizedExisting, ...additions];
 await writeFile(new URL("../data/start-sit-comparisons.json", import.meta.url), `${JSON.stringify(output, null, 2)}\n`);
-console.log(`Added ${additions.length} evidence-selected Week ${activeWeek} comparisons (${output.length} total).`);
+console.log(`Added ${additions.length} evidence-selected Week ${activeWeek} comparisons (${output.length}/${targetCount} total).`);
 
 function addCandidate(left, right, position) {
   const key = pairKey(left.slug, right.slug);

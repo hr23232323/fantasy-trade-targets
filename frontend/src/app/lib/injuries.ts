@@ -14,6 +14,14 @@ export type FantasyInjuryRow = {
   severity: number;
 };
 
+export type InjuryReportSummary = {
+  out: number;
+  doubtful: number;
+  questionable: number;
+  didNotPractice: number;
+  limited: number;
+};
+
 export const injuryReportWeeks = [...new Set(Object.values(nflversePlayerRelease.players)
   .flatMap((player) => player.injuryHistory.map(({ week }) => week))
   .filter((week): week is number => Number.isInteger(week)))]
@@ -30,6 +38,24 @@ export function getFantasyInjuryRows(week: number): FantasyInjuryRow[] {
     const injury = report.reportPrimaryInjury ?? report.practicePrimaryInjury ?? report.reportSecondaryInjury ?? report.practiceSecondaryInjury ?? "Not specified";
     return [{ slug: player.slug, name: page.name, team: player.roster?.team ?? null, position: player.roster?.position ?? null, report, status, injury, practice: practiceLabel(report.practiceStatus) ?? "Not listed", severity: severity(report) }];
   }).sort((left, right) => right.severity - left.severity || (left.team ?? "").localeCompare(right.team ?? "") || left.name.localeCompare(right.name));
+}
+
+export function summarizeInjuryRows(rows: FantasyInjuryRow[]): InjuryReportSummary {
+  return rows.reduce<InjuryReportSummary>((summary, row) => {
+    const status = row.status.toLowerCase();
+    const practice = row.practice.toLowerCase();
+    if (status.includes("out")) summary.out += 1;
+    if (status.includes("doubtful")) summary.doubtful += 1;
+    if (status.includes("questionable")) summary.questionable += 1;
+    if (practice.includes("did not participate")) summary.didNotPractice += 1;
+    if (practice.includes("limited")) summary.limited += 1;
+    return summary;
+  }, { out: 0, doubtful: 0, questionable: 0, didNotPractice: 0, limited: 0 });
+}
+
+export function injuryReportAnswer(rows: FantasyInjuryRow[], limit = 3) {
+  const updates = rows.slice(0, limit).map((row) => `${row.name} is ${row.status.toLowerCase()} with ${row.injury.toLowerCase()}`);
+  return updates.length ? `${updates.join("; ")}.` : "No fantasy-relevant injury designations are listed.";
 }
 
 export function injuryWeekPath(week: number) {

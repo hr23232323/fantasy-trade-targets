@@ -22,6 +22,7 @@ jobs:
       market_outcome: ${{ steps.market_refresh.outcome }}
       team_outcome: ${{ steps.team_refresh.outcome }}
       nflverse_outcome: ${{ steps.nflverse_refresh.outcome }}
+      start_sit_outcome: ${{ steps.start_sit_refresh.outcome }}
 
     steps:
     - name: Checkout current main
@@ -58,6 +59,16 @@ jobs:
       continue-on-error: true
       run: npm run data:nflverse
 
+    - id: start_sit_refresh
+      name: Refresh current-week start/sit comparison cohort
+      if: >-
+        steps.market_refresh.outcome == 'success' &&
+        steps.team_refresh.outcome == 'success' &&
+        steps.nflverse_refresh.outcome == 'success'
+      working-directory: frontend
+      continue-on-error: true
+      run: npm run data:start-sit
+
     - id: publish
       name: Commit validated data changes
       if: always()
@@ -65,7 +76,7 @@ jobs:
       run: |
         git config user.name "Fantasy Trade Target Data"
         git config user.email "data@fantasytradetarget.com"
-        git add frontend/data/public-release.json frontend/data/rookie-pick-history.json frontend/data/team-release.json frontend/data/nflverse-player-release.json data/player-snapshot-history.json data/snapshots
+        git add frontend/data/public-release.json frontend/data/rookie-pick-history.json frontend/data/team-release.json frontend/data/nflverse-player-release.json frontend/data/start-sit-comparisons.json data/player-snapshot-history.json data/snapshots
 
         if git diff --cached --quiet; then
           echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -88,14 +99,11 @@ jobs:
     secrets: inherit
 
   report:
-    name: Report refresh or deployment failures
+    name: Report publication failures
     needs: [refresh, deploy]
     if: >-
       always() &&
       (needs.refresh.result == 'failure' ||
-       needs.refresh.outputs.market_outcome != 'success' ||
-       needs.refresh.outputs.team_outcome != 'success' ||
-       needs.refresh.outputs.nflverse_outcome != 'success' ||
        (needs.refresh.outputs.changed == 'true' && needs.deploy.result != 'success'))
     runs-on: ubuntu-latest
     steps:
@@ -103,3 +111,17 @@ jobs:
       run: |
         echo "One or more data refresh or deployment steps failed; validated prior releases remain available."
         exit 1
+
+  degraded:
+    name: Report preserved upstream feeds
+    needs: refresh
+    if: >-
+      always() && needs.refresh.result == 'success' &&
+      (needs.refresh.outputs.market_outcome != 'success' ||
+       needs.refresh.outputs.team_outcome != 'success' ||
+       needs.refresh.outputs.nflverse_outcome != 'success' ||
+       needs.refresh.outputs.start_sit_outcome != 'success')
+    runs-on: ubuntu-latest
+    steps:
+    - name: Record a non-blocking data warning
+      run: echo "::warning::One or more upstream feeds were unavailable. The validated prior release was preserved where required."

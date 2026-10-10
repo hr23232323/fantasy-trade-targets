@@ -18,7 +18,7 @@ const [manifest, release, teams, hub, detail, builder, library, sitemap, indexNo
 ]);
 
 test("start/sit publishes a substantial reviewed cohort with current weekly evidence", () => {
-  assert.ok(manifest.length >= 200);
+  assert.ok(manifest.length >= 350);
   assert.equal(new Set(manifest.map(({ slug }) => slug)).size, manifest.length);
   assert.equal(new Set(manifest.map(({ leftSlug, rightSlug }) => [leftSlug, rightSlug].sort().join("|"))).size, manifest.length);
   for (const comparison of manifest) {

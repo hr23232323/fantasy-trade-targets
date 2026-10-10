@@ -23,8 +23,15 @@ test("scheduled data publication owns refreshes and deploys changed releases", (
   assert.match(dataWorkflow, /npm run data:refresh/);
   assert.match(dataWorkflow, /npm run data:teams/);
   assert.match(dataWorkflow, /npm run data:nflverse/);
+  assert.match(dataWorkflow, /npm run data:start-sit/);
+  assert.match(dataWorkflow, /steps\.market_refresh\.outcome == 'success'/);
+  assert.match(dataWorkflow, /steps\.team_refresh\.outcome == 'success'/);
+  assert.match(dataWorkflow, /steps\.nflverse_refresh\.outcome == 'success'/);
+  assert.match(dataWorkflow, /frontend\/data\/start-sit-comparisons\.json/);
   assert.match(dataWorkflow, /needs\.refresh\.outputs\.changed == 'true'/);
   assert.match(dataWorkflow, /uses: \.\/\.github\/workflows\/_deploy\.yml/);
+  assert.match(dataWorkflow, /Report preserved upstream feeds/);
+  assert.match(dataWorkflow, /::warning::One or more upstream feeds were unavailable/);
 });
 
 test("production builds use remote layers and a bounded Docker context", () => {

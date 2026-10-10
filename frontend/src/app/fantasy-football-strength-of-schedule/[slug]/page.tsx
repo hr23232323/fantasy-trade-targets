@@ -7,7 +7,7 @@ import TeamLogo from "../../components/TeamLogo";
 import { buildPageMetadata } from "../../lib/metadata";
 import { getMarket } from "../../lib/market";
 import { hasPlayerPage } from "../../lib/player-pages";
-import { getPositionScheduleConfig, getPositionWeekScheduleConfig, getScheduleRatingWeek, getWeeklyScheduleRatings, positionScheduleSlugs, positionWeekScheduleSlugs, scheduleRatingSlugs } from "../../lib/schedule-ratings";
+import { getPositionScheduleConfig, getPositionWeekScheduleConfig, getPositionWeekScheduleRatings, getScheduleRatingWeek, getWeeklyScheduleRatings, positionScheduleSlugs, positionWeekScheduleSlugs, scheduleRatingSlugs } from "../../lib/schedule-ratings";
 import { environmentClass, formatGameDate, formatGameTime, getTeamAssets, teamRelease } from "../../lib/team-data";
 import PositionSchedulePage from "./PositionSchedulePage";
 import PositionWeekSchedulePage from "./PositionWeekSchedulePage";
@@ -21,11 +21,16 @@ export function generateStaticParams() { return [...scheduleRatingSlugs, ...posi
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const positionWeek = getPositionWeekScheduleConfig(slug);
-  if (positionWeek) return buildPageMetadata({
-    title: `Week ${positionWeek.week} ${positionWeek.label} Strength of Schedule: Best & Worst Matchups`,
-    description: `See the best and toughest Week ${positionWeek.week} ${positionWeek.singular} matchups, ranked across all 32 teams by Standard, Half PPR and PPR points allowed.`,
-    path: `/fantasy-football-strength-of-schedule/${slug}`,
-  });
+  if (positionWeek) {
+    const ratings = getPositionWeekScheduleRatings(positionWeek);
+    const best = ratings[0];
+    const toughest = ratings.at(-1);
+    return buildPageMetadata({
+      title: `Week ${positionWeek.week} ${positionWeek.label} Matchups: Best & Worst Strength of Schedule`,
+      description: `${best?.team.name ?? "See who"} has the best Week ${positionWeek.week} matchup for ${positionWeek.label.toLowerCase()}s; ${toughest?.team.name ?? "see who"} has the toughest. Compare all 32 teams in PPR, Half PPR and Standard.`,
+      path: `/fantasy-football-strength-of-schedule/${slug}`,
+    });
+  }
   const position = getPositionScheduleConfig(slug);
   if (position) return buildPageMetadata({
     title: `${position.label} Fantasy Football Strength of Schedule (2026)`,
@@ -102,7 +107,7 @@ export default async function WeeklyScheduleRatingPage({ params }: PageProps) {
 
 function buildSchema(pageUrl: string, week: number, ratings: ReturnType<typeof getWeeklyScheduleRatings>) {
   return [
-    { "@context": "https://schema.org", "@type": "Dataset", name: `Week ${week} fantasy football schedule ratings`, url: pageUrl, dateModified: teamRelease.capturedAt, creator: { "@type": "Organization", name: "Fantasy Trade Target", url: SITE_URL }, variableMeasured: ["matchup environment score", "opponent points allowed per game", "scoring defense rank", "site", "rest differential"], measurementTechnique: teamRelease.modelVersion },
+    { "@context": "https://schema.org", "@type": "Dataset", name: `Week ${week} fantasy football schedule ratings`, description: `All 32 NFL teams ranked for Week ${week} by opponent scoring defense, game site and rest.`, url: pageUrl, dateModified: teamRelease.capturedAt, license: "https://creativecommons.org/licenses/by/4.0/", creator: { "@type": "Organization", name: "Fantasy Trade Target", url: SITE_URL }, variableMeasured: ["matchup environment score", "opponent points allowed per game", "scoring defense rank", "site", "rest differential"], measurementTechnique: teamRelease.modelVersion },
     { "@context": "https://schema.org", "@type": "ItemList", numberOfItems: ratings.length, itemListElement: ratings.map((row) => ({ "@type": "ListItem", position: row.rank, name: `${row.team.name} vs. ${row.opponent.name}: ${row.game.environmentScore}` })) },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: SITE_URL }, { "@type": "ListItem", position: 2, name: "Strength of schedule", item: `${SITE_URL}/fantasy-football-strength-of-schedule` }, { "@type": "ListItem", position: 3, name: `Week ${week}`, item: pageUrl }] },
   ];

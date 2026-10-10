@@ -32,18 +32,22 @@ test("injury histories are bounded, newest-first weekly source records", () => {
 });
 
 test("the injury hub exposes freshness and preserves weekly archives", () => {
-  assert.match(page, /Week \$\{week \?\? "Latest"\} Fantasy Football Injuries/);
+  assert.match(page, /Week \$\{week \?\? "Latest"\} Fantasy Football Injury Report/);
   assert.match(page, /rows\.length/);
-  assert.match(archive, /Player Status & Practice Report/);
-  assert.match(page, /Latest structured report/);
-  assert.match(page, /have not reached the structured feed yet/);
-  assert.match(page, /does not reduce Week/);
+  assert.match(archive, /Out & Questionable/);
+  assert.match(page, /injuryReportAnswer/);
+  assert.match(page, /practice designations are not available yet/);
+  assert.match(page, /latest complete snapshot/);
   assert.match(page, /official inactive lists/i);
   assert.match(archive, /weekly availability archive/i);
   assert.match(table, /Practice/);
   assert.match(table, /Game status/);
   assert.match(playerPerformance, /Availability week/);
   assert.match(injuries, /meaningful/);
+  assert.match(injuries, /summarizeInjuryRows/);
+  assert.match(page, /creativecommons\.org\/licenses\/by\/4\.0/);
+  assert.match(archive, /description:/);
+  assert.match(archive, /license:/);
   assert.match(sitemap, /injuryReportWeeks/);
   assert.match(indexNow, /injuryWeeks/);
 });

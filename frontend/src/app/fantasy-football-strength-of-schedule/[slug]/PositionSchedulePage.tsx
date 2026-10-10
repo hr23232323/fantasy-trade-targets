@@ -57,7 +57,7 @@ export default function PositionSchedulePage({ config }: { config: PositionSched
 function buildSchema(path: string, config: PositionScheduleConfig, ratings: ReturnType<typeof getPositionScheduleRatings>) {
   const url = `${SITE_URL}${path}`;
   return [
-    { "@context": "https://schema.org", "@type": "Dataset", name: `${config.label} fantasy football strength of schedule`, url, dateModified: nflversePlayerRelease.capturedAt, creator: { "@type": "Organization", name: "Fantasy Trade Target", url: SITE_URL }, variableMeasured: ["Standard fantasy points allowed", "Half PPR fantasy points allowed", "PPR fantasy points allowed"] },
+    { "@context": "https://schema.org", "@type": "Dataset", name: `${config.label} fantasy football strength of schedule`, description: `Every NFL team's remaining ${config.singular} schedule ranked by opponent fantasy points allowed in Standard, Half PPR and PPR scoring.`, url, dateModified: nflversePlayerRelease.capturedAt, license: "https://creativecommons.org/licenses/by/4.0/", creator: { "@type": "Organization", name: "Fantasy Trade Target", url: SITE_URL }, variableMeasured: ["Standard fantasy points allowed", "Half PPR fantasy points allowed", "PPR fantasy points allowed"] },
     { "@context": "https://schema.org", "@type": "ItemList", numberOfItems: ratings.length, itemListElement: ratings.map((row) => ({ "@type": "ListItem", position: row.rank, name: `${row.team.name}: ${row.nextFourAverage.toFixed(1)} PPR points allowed by next four opponents` })) },
   ];
 }
