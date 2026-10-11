@@ -186,10 +186,12 @@ export default function MethodologyPage() {
             KELLY FRACTION = (NET ODDS × WIN PROBABILITY − LOSS PROBABILITY) ÷ NET ODDS<br />
             HEDGE STAKE = ORIGINAL STAKE × ORIGINAL DECIMAL ODDS ÷ HEDGE DECIMAL ODDS<br />
             ROUND ROBIN BETS = COMBINATIONS(LEGS, PARLAY SIZE)<br />
+            SETTLED ROUND ROBIN PAYOUT = SUM(SURVIVING COMBINATION RETURNS)<br />
             ARBITRAGE TOTAL = SUM(IMPLIED PROBABILITY OF EVERY OUTCOME)<br />
             TEASER LINE = ORIGINAL LINE ± SELECTED TEASER POINTS
           </div>
-          <p>Invalid American prices, negative stakes and out-of-range probabilities are rejected. Kelly is clamped at zero when the supplied estimate has no positive expected return; half and quarter Kelly scale the full result. A hedge or dutching allocation can equalize a loss as well as a profit, so the net result remains visible. Round-robin maximums assume every leg wins, and teaser payouts use the complete-card price entered by the user.</p>
+          <p>American, decimal and fractional prices convert through one decimal-odds representation. Invalid prices, negative stakes and out-of-range probabilities are rejected. Kelly is clamped at zero when the supplied estimate has no positive expected return; half and quarter Kelly scale the full result. A hedge or dutching allocation can equalize a loss as well as a profit, so the net result remains visible.</p>
+          <p>Round-robin maximums assume every leg wins. Settlement grades every generated combination from the entered win, loss and push results; pushed legs contribute a 1.0 decimal multiplier. Arbitrage allocation can solve from either a fixed total stake or a desired equal return. Teaser payouts use the complete-card price entered by the user.</p>
           <a href="/betting-calculators" className="inline-block border border-[#171c19] bg-[#dfff4f] px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#171c19]">Open betting calculators →</a>
         </div>
       </section>

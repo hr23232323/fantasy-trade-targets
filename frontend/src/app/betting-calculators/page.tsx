@@ -7,12 +7,12 @@ import JsonLd from "../components/JsonLd";
 const SITE_URL = "https://fantasytradetarget.com";
 const calculators = [
   { href: "/parlay-calculator", label: "Parlay calculator", answer: "Combine 2–8 legs and calculate odds, probability, profit and payout.", color: "#dfff4f" },
-  { href: "/odds-calculator", label: "Odds calculator", answer: "Convert American odds into implied probability, decimal odds and payout.", color: "#8bcfff" },
+  { href: "/odds-calculator", label: "Odds converter", answer: "Convert American, decimal and fractional odds into implied probability and payout.", color: "#8bcfff" },
   { href: "/no-vig-calculator", label: "No vig calculator", answer: "Remove the margin from both sides and see fair market probabilities.", color: "#ffb29a" },
   { href: "/hedge-bet-calculator", label: "Hedge bet calculator", answer: "Find the opposite-side stake that equalizes the return across two outcomes.", color: "#e7d7ff" },
   { href: "/kelly-criterion-calculator", label: "Kelly criterion calculator", answer: "Turn your probability estimate into a full, half or quarter Kelly stake.", color: "#f3f0e7" },
-  { href: "/round-robin-calculator", label: "Round robin calculator", answer: "Split 3–8 picks into every smaller parlay and calculate total cost and maximum payout.", color: "#dfff4f" },
-  { href: "/arbitrage-betting-calculator", label: "Arbitrage calculator", answer: "Check the implied-probability total and balance stakes for the same return on every outcome.", color: "#8bcfff" },
+  { href: "/round-robin-calculator", label: "Round robin calculator", answer: "Build every smaller parlay, then settle wins, losses and pushes for the final return.", color: "#dfff4f" },
+  { href: "/arbitrage-betting-calculator", label: "Arbitrage calculator", answer: "Split a total stake or target an equal return across every mutually exclusive outcome.", color: "#8bcfff" },
   { href: "/teaser-calculator", label: "Teaser calculator", answer: "Move football spreads and totals, then price the adjusted card with the odds entered.", color: "#e7d7ff" },
 ];
 export const metadata: Metadata = { title: "Free Betting Calculators — Odds, Parlays, Vig & More", description: "Free calculators for odds, parlays, round robins, arbitrage, teasers, no-vig probabilities, hedge stakes and Kelly bet sizing. No signup required.", alternates: { canonical: "/betting-calculators" } };

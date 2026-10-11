@@ -37,6 +37,49 @@ export function americanFromDecimal(value) {
   return value >= 2 ? Math.round((value - 1) * 100) : Math.round(-100 / (value - 1));
 }
 
+export function fractionalFromDecimal(value, maxDenominator = 100) {
+  if (!Number.isFinite(value) || value <= 1 || !Number.isInteger(maxDenominator) || maxDenominator < 1) return null;
+  const target = value - 1;
+  let numerator = 1;
+  let denominator = 1;
+  let smallestError = Infinity;
+  for (let candidateDenominator = 1; candidateDenominator <= maxDenominator; candidateDenominator += 1) {
+    const candidateNumerator = Math.max(1, Math.round(target * candidateDenominator));
+    const error = Math.abs(candidateNumerator / candidateDenominator - target);
+    if (error < smallestError) {
+      numerator = candidateNumerator;
+      denominator = candidateDenominator;
+      smallestError = error;
+    }
+  }
+  const divisor = greatestCommonDivisor(numerator, denominator);
+  return { numerator: numerator / divisor, denominator: denominator / divisor, label: `${numerator / divisor}/${denominator / divisor}` };
+}
+
+export function convertOddsInput(input, format) {
+  let decimal = null;
+  if (format === "american") decimal = decimalOdds(Number(input));
+  if (format === "decimal") {
+    const value = Number(input);
+    if (Number.isFinite(value) && value > 1) decimal = value;
+  }
+  if (format === "fractional") {
+    const match = String(input).trim().match(/^(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)$/);
+    if (match) {
+      const numerator = Number(match[1]);
+      const denominator = Number(match[2]);
+      if (numerator > 0 && denominator > 0) decimal = 1 + numerator / denominator;
+    }
+  }
+  if (decimal === null) return null;
+  return {
+    decimal,
+    american: americanFromDecimal(decimal),
+    fractional: fractionalFromDecimal(decimal),
+    impliedProbability: 1 / decimal,
+  };
+}
+
 export function parlayCalculation(odds, stake) {
   if (!Array.isArray(odds) || odds.length < 2 || !Number.isFinite(stake) || stake < 0) return null;
   const decimals = odds.map(decimalOdds);
@@ -121,21 +164,66 @@ export function roundRobinCalculation(odds, combinationSize, stakePerBet) {
   };
 }
 
-export function arbitrageCalculation(odds, totalStake) {
-  if (!Array.isArray(odds) || odds.length < 2 || odds.length > 6 || !Number.isFinite(totalStake) || totalStake < 0) return null;
+export function settleRoundRobin(odds, statuses, combinationSize, stakePerBet) {
+  const summary = roundRobinCalculation(odds, combinationSize, stakePerBet);
+  if (!summary || !Array.isArray(statuses) || statuses.length !== odds.length || statuses.some((status) => !["pending", "win", "loss", "push"].includes(status))) return null;
+  const indexedLegs = odds.map((price, index) => ({ index, decimal: decimalOdds(price) }));
+  const bets = combinations(indexedLegs, combinationSize);
+  let winningBets = 0;
+  let pushBets = 0;
+  let lostBets = 0;
+  let pendingBets = 0;
+  let settledPayout = 0;
+  for (const bet of bets) {
+    const betStatuses = bet.map(({ index }) => statuses[index]);
+    if (betStatuses.includes("loss")) {
+      lostBets += 1;
+      continue;
+    }
+    if (betStatuses.includes("pending")) {
+      pendingBets += 1;
+      continue;
+    }
+    const payout = stakePerBet * bet.reduce((product, { decimal, index }) => product * (statuses[index] === "push" ? 1 : Number(decimal)), 1);
+    settledPayout += payout;
+    if (betStatuses.every((status) => status === "push")) pushBets += 1;
+    else winningBets += 1;
+  }
+  return {
+    ...summary,
+    winningBets,
+    pushBets,
+    lostBets,
+    pendingBets,
+    settledPayout,
+    netResult: pendingBets === 0 ? settledPayout - summary.totalStake : null,
+  };
+}
+
+export function arbitrageCalculation(odds, amount, mode = "stake") {
+  if (!Array.isArray(odds) || odds.length < 2 || odds.length > 6 || !Number.isFinite(amount) || amount < 0 || !["stake", "return"].includes(mode)) return null;
   const probabilities = odds.map(impliedProbability);
   if (probabilities.some((value) => value === null)) return null;
   const validProbabilities = probabilities.map(Number);
   const impliedTotal = validProbabilities.reduce((sum, value) => sum + value, 0);
-  const lockedReturn = totalStake / impliedTotal;
+  const lockedReturn = mode === "return" ? amount : amount / impliedTotal;
+  const totalStake = mode === "return" ? amount * impliedTotal : amount;
   return {
     impliedTotal,
-    stakes: validProbabilities.map((probability) => totalStake * probability / impliedTotal),
+    totalStake,
+    stakes: validProbabilities.map((probability) => lockedReturn * probability),
     lockedReturn,
     lockedProfit: lockedReturn - totalStake,
     roi: 1 / impliedTotal - 1,
     isArbitrage: impliedTotal < 1,
   };
+}
+
+function greatestCommonDivisor(left, right) {
+  let a = Math.abs(left);
+  let b = Math.abs(right);
+  while (b) [a, b] = [b, a % b];
+  return a || 1;
 }
 
 export function teaserCalculation(legs, teaserPoints, odds, stake) {

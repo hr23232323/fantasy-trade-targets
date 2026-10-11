@@ -10,6 +10,13 @@ export function twoWayMarket(oddsA: number, oddsB: number): {
   hold: number;
 } | null;
 export function americanFromDecimal(value: number): number | null;
+export function fractionalFromDecimal(value: number, maxDenominator?: number): { numerator: number; denominator: number; label: string } | null;
+export function convertOddsInput(input: string | number, format: "american" | "decimal" | "fractional"): {
+  decimal: number;
+  american: number | null;
+  fractional: { numerator: number; denominator: number; label: string } | null;
+  impliedProbability: number;
+} | null;
 export function parlayCalculation(odds: number[], stake: number): {
   combinedDecimal: number;
   combinedAmerican: number | null;
@@ -41,8 +48,22 @@ export function roundRobinCalculation(odds: number[], combinationSize: number, s
   maxProfit: number;
   minimumWinningLegs: number;
 } | null;
-export function arbitrageCalculation(odds: number[], totalStake: number): {
+export function settleRoundRobin(odds: number[], statuses: Array<"pending" | "win" | "loss" | "push">, combinationSize: number, stakePerBet: number): {
+  betCount: number;
+  totalStake: number;
+  maxPayout: number;
+  maxProfit: number;
+  minimumWinningLegs: number;
+  winningBets: number;
+  pushBets: number;
+  lostBets: number;
+  pendingBets: number;
+  settledPayout: number;
+  netResult: number | null;
+} | null;
+export function arbitrageCalculation(odds: number[], amount: number, mode?: "stake" | "return"): {
   impliedTotal: number;
+  totalStake: number;
   stakes: number[];
   lockedReturn: number;
   lockedProfit: number;

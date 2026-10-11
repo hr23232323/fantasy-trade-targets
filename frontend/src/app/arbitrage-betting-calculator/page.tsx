@@ -4,7 +4,7 @@ import { ArbitrageCalculator } from "../components/BettingCalculators";
 
 export const metadata: Metadata = {
   title: "Arbitrage Betting Calculator — Stakes, Profit & ROI",
-  description: "Check two-way or multi-outcome American odds for a mathematical arbitrage and calculate equal-return stakes, locked return, profit and ROI.",
+  description: "Check two-way or multi-outcome American odds for a mathematical arbitrage. Split a total stake or target an equal return and calculate every outcome stake, profit and ROI.",
   alternates: { canonical: "/arbitrage-betting-calculator" },
 };
 
@@ -14,5 +14,5 @@ export default function ArbitrageBettingCalculatorPage() {
     { q: "How are arbitrage stakes divided?", a: "Each stake is proportional to that outcome's implied probability. This dutching allocation produces the same gross return whichever entered outcome wins." },
     { q: "Why might a calculated arbitrage fail?", a: "Prices can move, bets can be limited or rejected, and sportsbooks can apply different void and settlement rules. Confirm every price and rule before relying on the result." },
   ];
-  return <BettingCalculatorPageFrame path="/arbitrage-betting-calculator" eventName="arbitrage_calculator_viewed" eyebrow="2–6 outcomes · equal return" heading="Arbitrage betting calculator" accent="and dutching stakes." answer="Enter every mutually exclusive outcome and a total stake. The calculator checks whether the prices add to less than 100% and allocates stakes for the same gross return." explainerTitle="Below 100% is the mathematical opening." explainer={<><p>American odds first become implied probabilities. Their sum is the key number: below 100% produces a positive equal-return result; above 100% produces a loss even after the stakes are balanced.</p><p>The allocation is often called dutching. It equalizes gross return across the outcomes, but it cannot account for price movement, account limits, commissions or inconsistent settlement rules.</p></>} faqs={faqs}><ArbitrageCalculator /></BettingCalculatorPageFrame>;
+  return <BettingCalculatorPageFrame path="/arbitrage-betting-calculator" eventName="arbitrage_calculator_viewed" eyebrow="2–6 outcomes · equal return" heading="Arbitrage betting calculator" accent="and dutching stakes." answer="Enter every mutually exclusive outcome, then split a total stake or target an exact equal return. The calculator checks whether the prices add to less than 100% and sizes every outcome." explainerTitle="Below 100% is the mathematical opening." explainer={<><p>American odds first become implied probabilities. Their sum is the key number: below 100% produces a positive equal-return result; above 100% produces a loss even after the stakes are balanced.</p><p>The allocation is often called dutching. Choose whether to divide a fixed bankroll or work backward from a desired gross return. Neither mode can account for price movement, limits, commissions or inconsistent settlement rules.</p></>} faqs={faqs}><ArbitrageCalculator /></BettingCalculatorPageFrame>;
 }

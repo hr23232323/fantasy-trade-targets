@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { decimalOdds, impliedProbability, profitForStake, twoWayMarket } from "../src/app/lib/odds-math.mjs";
+import { convertOddsInput, decimalOdds, impliedProbability, profitForStake, twoWayMarket } from "../src/app/lib/odds-math.mjs";
 
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
 const [release, refresh, trendsHub, teamPage, oddsPage, oddsUi, scorePage, scoreUi, sitemap, indexNow, footer, hub, playbook] = await Promise.all([
@@ -40,6 +40,8 @@ test("American odds conversion, payout and no-vig math remain exact", () => {
   assert.equal(decimalOdds(150), 2.5);
   assert.equal(profitForStake(-110, 100)?.toFixed(2), "90.91");
   assert.equal(profitForStake(150, 100), 150);
+  assert.equal(convertOddsInput("2.5", "decimal")?.american, 150);
+  assert.equal(convertOddsInput("3/2", "fractional")?.american, 150);
   assert.equal(impliedProbability(99), null);
   assert.equal(profitForStake(-110, -1), null);
   const even = twoWayMarket(-110, -110);
@@ -83,6 +85,9 @@ test("the 35-page E19 cohort is answer-first, interactive and machine-readable",
   assert.match(oddsPage, /odds_calculator_viewed/);
   assert.match(oddsPage, /"@type": "WebApplication"/);
   assert.match(oddsUi, /odds_calculator_changed/);
+  assert.match(oddsUi, /American.*decimal.*fractional/s);
+  assert.match(oddsUi, /Negative hold/);
+  assert.match(oddsUi, /Math\.abs\(market\.hold\)/);
   assert.match(scorePage, /NFL Score Predictor/);
   assert.match(scorePage, /nfl_score_predictor_viewed/);
   assert.match(scoreUi, /nfl_score_predictor_matchup_changed/);

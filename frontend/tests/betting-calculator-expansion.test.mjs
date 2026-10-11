@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { arbitrageCalculation, roundRobinCalculation, teaserCalculation } from "../src/app/lib/odds-math.mjs";
+import { arbitrageCalculation, convertOddsInput, fractionalFromDecimal, roundRobinCalculation, settleRoundRobin, teaserCalculation } from "../src/app/lib/odds-math.mjs";
 
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
 const [ui, frame, hub, roundRobinPage, arbitragePage, teaserPage, oddsPage, sitemap, indexNow, footer, methodology, playbook] = await Promise.all([
@@ -31,6 +31,38 @@ test("round-robin math creates every combination without treating the entry as o
   assert.equal(roundRobinCalculation([-110, 99, -105], 2, 5), null, "invalid American odds fail closed");
 });
 
+test("round-robin settlement grades losses, wins and pushes across every generated ticket", () => {
+  const settled = settleRoundRobin([-110, 120, -105, 150], ["win", "loss", "push", "win"], 2, 5);
+  assert.equal(settled?.winningBets, 3);
+  assert.equal(settled?.lostBets, 3);
+  assert.equal(settled?.pushBets, 0);
+  assert.equal(settled?.pendingBets, 0);
+  assert.equal(settled?.settledPayout.toFixed(2), "45.91");
+  assert.equal(settled?.netResult?.toFixed(2), "15.91");
+  const pending = settleRoundRobin([-110, 120, -105, 150], ["win", "pending", "push", "win"], 2, 5);
+  assert.equal(pending?.pendingBets, 3);
+  assert.equal(pending?.netResult, null);
+  const pushed = settleRoundRobin([-110, 120, -105, 150], ["push", "push", "push", "push"], 2, 5);
+  assert.equal(pushed?.pushBets, 6);
+  assert.equal(pushed?.settledPayout, 30);
+  assert.equal(pushed?.netResult, 0);
+});
+
+test("odds conversion preserves equivalent American, decimal and fractional prices", () => {
+  const american = convertOddsInput("-110", "american");
+  assert.equal(american?.decimal.toFixed(6), "1.909091");
+  assert.equal(american?.fractional?.label, "10/11");
+  const decimal = convertOddsInput("2.5", "decimal");
+  assert.equal(decimal?.american, 150);
+  assert.equal(decimal?.fractional?.label, "3/2");
+  const fractional = convertOddsInput("5/2", "fractional");
+  assert.equal(fractional?.decimal, 3.5);
+  assert.equal(fractional?.american, 250);
+  assert.equal(fractional?.impliedProbability.toFixed(6), "0.285714");
+  assert.equal(fractionalFromDecimal(1.9090909)?.label, "10/11");
+  assert.equal(convertOddsInput("10/0", "fractional"), null);
+});
+
 test("arbitrage allocation equalizes return and labels positive and negative books correctly", () => {
   const positive = arbitrageCalculation([110, 110], 100);
   assert.equal(positive?.impliedTotal.toFixed(6), "0.952381");
@@ -39,6 +71,13 @@ test("arbitrage allocation equalizes return and labels positive and negative boo
   assert.equal(positive?.lockedProfit.toFixed(2), "5.00");
   assert.equal(positive?.roi.toFixed(4), "0.0500");
   assert.equal(positive?.isArbitrage, true);
+  assert.equal(positive?.totalStake, 100);
+
+  const targetReturn = arbitrageCalculation([110, 110], 210, "return");
+  assert.deepEqual(targetReturn?.stakes, [100, 100]);
+  assert.equal(targetReturn?.totalStake, 200);
+  assert.equal(targetReturn?.lockedReturn, 210);
+  assert.equal(targetReturn?.lockedProfit, 10);
 
   const negative = arbitrageCalculation([-110, -110], 100);
   assert.equal(negative?.lockedProfit.toFixed(2), "-4.55");
@@ -72,7 +111,10 @@ test("E21 publishes three distinct answer-first tools and deepens the canonical 
   assert.match(hub, /arbitrage-betting-calculator/);
   assert.match(hub, /teaser-calculator/);
   assert.match(oddsPage, /American odds and implied probability chart/);
+  assert.match(oddsPage, /American, decimal and fractional/);
   assert.doesNotMatch(oddsPage, /implied-probability-calculator/);
+  assert.match(ui, /Settle the card/);
+  assert.match(ui, /Target an equal return/);
 });
 
 test("E21 is crawlable, internally linked, documented and privacy-safe", () => {
