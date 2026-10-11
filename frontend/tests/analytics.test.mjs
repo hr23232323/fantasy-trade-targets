@@ -23,6 +23,7 @@ const files = [
   "../src/app/fantasy-football-rest-of-season-comparisons/[slug]/page.tsx",
   "../src/app/nfl-picks-predictions/page.tsx",
   "../src/app/components/NflPredictionWeekPage.tsx",
+  "../src/app/components/NflPoolWeekPage.tsx",
   "../src/app/nfl-picks-predictions/[weekSlug]/[gameSlug]/page.tsx",
   "../src/app/components/ScoringResearchPage.tsx",
 ];
@@ -102,6 +103,10 @@ test("high-value product events remain instrumented", () => {
     "nfl_ats_picks_viewed",
     "nfl_totals_picks_viewed",
     "nfl_game_prediction_viewed",
+    "nfl_straight_up_picks_viewed",
+    "nfl_score_predictions_viewed",
+    "nfl_survivor_picks_viewed",
+    "nfl_confidence_pool_picks_viewed",
     "memes_generated",
     "meme_generation_failed",
     "meme_download_opened",

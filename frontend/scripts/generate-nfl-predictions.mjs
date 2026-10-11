@@ -5,7 +5,8 @@ const outputUrl = new URL("../data/nfl-prediction-snapshots.json", import.meta.u
 const teamRelease = JSON.parse(await readFile(new URL("../data/team-release.json", import.meta.url), "utf8"));
 const previous = await readExisting();
 const activeWeek = findActiveWeek(teamRelease.teams, teamRelease.capturedAt);
-const publishedWeeks = [...new Set([...(previous?.publishedWeeks ?? []), activeWeek])].sort((left, right) => left - right);
+const previewWeek = Math.min(activeWeek + 1, 18);
+const publishedWeeks = [...new Set([...(previous?.publishedWeeks ?? []), activeWeek, previewWeek])].sort((left, right) => left - right);
 const games = { ...(previous?.games ?? {}) };
 
 for (const week of publishedWeeks) {
@@ -37,13 +38,14 @@ const release = {
   releaseId: `ftt-nfl-predictions-${teamRelease.capturedAt.replace(/[-:]/g, "").replace(/\.\d{3}/, "")}`,
   capturedAt: teamRelease.capturedAt,
   sourceReleaseId: teamRelease.releaseId,
+  activeWeek,
   publishedWeeks,
   games,
 };
 
 validate(release, teamRelease.teams);
 await writeFile(outputUrl, `${JSON.stringify(release, null, 2)}\n`);
-console.log(`Published ${release.releaseId}: ${publishedWeeks.length} week(s), ${Object.keys(games).length} game pages, active Week ${activeWeek}.`);
+console.log(`Published ${release.releaseId}: ${publishedWeeks.length} week(s), ${Object.keys(games).length} game pages, active Week ${activeWeek} plus Week ${previewWeek} preview.`);
 
 function findActiveWeek(teams, capturedAt) {
   const capturedDate = easternParts(capturedAt).date;
@@ -71,6 +73,7 @@ async function readExisting() {
 
 function validate(release, teams) {
   if (!release.publishedWeeks.length) throw new Error("No prediction week was published");
+  if (!release.publishedWeeks.includes(release.activeWeek)) throw new Error("Active prediction week was not published");
   for (const snapshot of Object.values(release.games)) {
     if (!teams[snapshot.homeAbbr] || !teams[snapshot.awayAbbr]) throw new Error(`${snapshot.gameId} has an unknown team`);
     if (!release.publishedWeeks.includes(snapshot.week)) throw new Error(`${snapshot.gameId} has an unpublished week`);

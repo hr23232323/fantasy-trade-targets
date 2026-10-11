@@ -28,6 +28,7 @@ export type PredictionRelease = {
   releaseId: string;
   capturedAt: string;
   sourceReleaseId: string;
+  activeWeek: number;
   publishedWeeks: number[];
   games: Record<string, PredictionSnapshot>;
 };
@@ -44,12 +45,17 @@ export type PredictionGame = {
 export const predictionRelease = predictionReleaseJson as PredictionRelease;
 export const predictionValidation = teamRelease.predictionModel.validation;
 export const publishedPredictionWeeks = predictionRelease.publishedWeeks;
-export const currentPredictionWeek = Math.max(...publishedPredictionWeeks);
+export const currentPredictionWeek = predictionRelease.activeWeek;
+export const nextPredictionWeek = publishedPredictionWeeks.find((week) => week > currentPredictionWeek) ?? null;
 
 export function predictionHubPath() { return "/nfl-picks-predictions"; }
 export function predictionWeekPath(week: number) { return `${predictionHubPath()}/week-${week}`; }
 export function atsWeekPath(week: number) { return `/nfl-picks-against-the-spread/week-${week}`; }
 export function totalsWeekPath(week: number) { return `/nfl-over-under-picks/week-${week}`; }
+export function straightUpWeekPath(week: number) { return `/nfl-straight-up-picks/week-${week}`; }
+export function scorePredictionsWeekPath(week: number) { return `/nfl-score-predictions/week-${week}`; }
+export function survivorWeekPath(week: number) { return `/nfl-survivor-picks/week-${week}`; }
+export function confidenceWeekPath(week: number) { return `/nfl-confidence-pool-picks/week-${week}`; }
 export function predictionGamePath(week: number, slug: string) { return `${predictionWeekPath(week)}/${slug}`; }
 
 export function getPredictionGamesForWeek(week: number): PredictionGame[] {
@@ -87,9 +93,15 @@ export function winner(game: PredictionGame) {
 
 export function projectedScore(game: PredictionGame) {
   if (game.snapshot.status !== "pregame" || game.snapshot.projectedHomeScore === undefined || game.snapshot.projectedAwayScore === undefined) return null;
+  let home = Math.round(game.snapshot.projectedHomeScore);
+  let away = Math.round(game.snapshot.projectedAwayScore);
+  if (home === away) {
+    if ((game.snapshot.modelHomeMargin ?? 0) >= 0) home += 1;
+    else away += 1;
+  }
   return {
-    home: Math.round(game.snapshot.projectedHomeScore),
-    away: Math.round(game.snapshot.projectedAwayScore),
+    home,
+    away,
   };
 }
 

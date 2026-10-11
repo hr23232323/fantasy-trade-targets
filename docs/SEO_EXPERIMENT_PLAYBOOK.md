@@ -33,6 +33,16 @@ Player comparisons are the control. They already earned page-one impressions and
 | E15: fantasy playoff schedules | “Who has the best fantasy playoff schedule?” | Overall planner plus QB, RB, WR and TE boards | `playoff_schedule_viewed` plus `playoff_schedule_filter_changed` | Initial five-page cohort shipped with Weeks 15–17 and 14–16 controls across all reception settings |
 | E16: ROS player comparisons | “Player A or Player B rest of season?” | One hub plus 30 curated same-position decisions | `rest_of_season_comparisons_viewed` plus `rest_of_season_comparison_viewed` | Initial cohort selected from exact GSC demand and close current ROS ranks; each page answers PPR, Half PPR and Standard |
 | E17: NFL picks and predictions | “NFL Week N picks / predictions / ATS / over-under” | One hub, three weekly boards and one file per game | `nfl_prediction_hub_viewed`, `nfl_prediction_week_viewed`, `nfl_ats_picks_viewed`, `nfl_totals_picks_viewed`, `nfl_game_prediction_viewed` | First 19-page cohort uses licensed nflverse lines plus a frozen-at-kickoff FTT model; new weeks append automatically |
+| E18: NFL pool and score decisions | “NFL score predictions / straight-up / survivor / confidence pool picks” | Four distinct weekly boards plus an early next-week preview | `nfl_score_predictions_viewed`, `nfl_straight_up_picks_viewed`, `nfl_survivor_picks_viewed`, `nfl_confidence_pool_picks_viewed` | Adds 25 URLs by publishing Week 6 early and separating four decision intents; do not scale into props or parlays without a proven data layer |
+
+## October 11 NFL decision-board expansion
+
+- GSC still had no meaningful betting-query footprint because E17 had just launched, so this remains a bounded acquisition test rather than a claimed winner.
+- One focused DataForSEO check found “NFL score predictions” at 4,400 average monthly searches, “NFL picks straight up” at 1,300, “NFL survivor picks” at 1,600 and “NFL confidence pool picks” at 720. October seasonality reached 9,900, 3,600, 5,400 and 1,900 respectively in the prior season.
+- Survivor and confidence pool were the best near-term wedges: keyword difficulty was 23 and 4, and both can use the model’s validated straight-up probability rather than the unproven ATS and totals outputs.
+- The release adds Week 6 before Week 5 ends, then refreshes those early projections as completed games enter the model. Each Week 6 game still freezes only at its own kickoff.
+- The new boards have distinct jobs: score projection, straight-up probability order, survivor elimination-pool shortlist and descending confidence-pool points. They link to the same permanent game evidence instead of creating duplicate matchup files.
+- Measure each family separately after 7 and 14 days. Expand the winning intent across future weeks automatically; revise or stop a family that fails to earn impressions.
 
 ## October 10 NFL prediction launch
 

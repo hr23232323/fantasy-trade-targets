@@ -17,7 +17,7 @@ import { restOfSeasonPositionConfigs } from "./lib/rest-of-season";
 import { restOfSeasonComparisons, restOfSeasonComparisonPath } from "./lib/rest-of-season-comparisons";
 import { weeklySleeperPositions } from "./lib/weekly-sleepers";
 import { playoffPositionConfigs, playoffSchedulePath } from "./lib/playoff-schedule";
-import { allPredictionGameParams, atsWeekPath, predictionGamePath, predictionHubPath, predictionUpdatedAt, predictionWeekPath, publishedPredictionWeeks, totalsWeekPath } from "./lib/nfl-predictions";
+import { allPredictionGameParams, atsWeekPath, confidenceWeekPath, predictionGamePath, predictionHubPath, predictionUpdatedAt, predictionWeekPath, publishedPredictionWeeks, scorePredictionsWeekPath, straightUpWeekPath, survivorWeekPath, totalsWeekPath } from "./lib/nfl-predictions";
 
 const BASE_URL = "https://fantasytradetarget.com";
 
@@ -128,7 +128,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE_URL}${startSitPath(comparison.slug)}`,
       lastModified: nflversePlayerRelease.capturedAt,
     })),
-    ...publishedPredictionWeeks.flatMap((week) => [predictionWeekPath(week), atsWeekPath(week), totalsWeekPath(week)].map((path) => ({
+    ...publishedPredictionWeeks.flatMap((week) => [predictionWeekPath(week), atsWeekPath(week), totalsWeekPath(week), straightUpWeekPath(week), scorePredictionsWeekPath(week), survivorWeekPath(week), confidenceWeekPath(week)].map((path) => ({
       url: `${BASE_URL}${path}`,
       lastModified: predictionUpdatedAt(),
     }))),
