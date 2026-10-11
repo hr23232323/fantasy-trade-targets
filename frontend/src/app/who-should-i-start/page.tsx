@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import AnalyticsPageView from "../components/AnalyticsPageView";
 import JsonLd from "../components/JsonLd";
 import StartSitBuilder from "../components/StartSitBuilder";
+import StartSitShortlist from "../components/StartSitShortlist";
 import PlayerThumbnail from "../components/PlayerThumbnail";
 import TeamLogo from "../components/TeamLogo";
 import { nflversePlayerRelease } from "../lib/nflverse";
@@ -24,7 +25,11 @@ export default function WhoShouldIStartPage() {
   const cards = startSitComparisons.flatMap((comparison) => {
     const decision = getStartSitDecisions(comparison).find(({ scoring }) => scoring.key === "half-ppr");
     return decision ? [{ comparison, decision }] : [];
-  }).sort((left, right) => right.decision.winner.gap - left.decision.winner.gap);
+  }).sort((left, right) => {
+    const leftUnavailable = Math.min(left.decision.left.projection.median, left.decision.right.projection.median) <= 0 ? 1 : 0;
+    const rightUnavailable = Math.min(right.decision.left.projection.median, right.decision.right.projection.median) <= 0 ? 1 : 0;
+    return leftUnavailable - rightUnavailable || left.decision.winner.gap - right.decision.winner.gap;
+  });
   const reviewedPaths = Object.fromEntries(startSitComparisons.map((comparison) => [
     [comparison.leftSlug, comparison.rightSlug].sort().join("|"),
     startSitPath(comparison.slug),
@@ -47,6 +52,8 @@ export default function WhoShouldIStartPage() {
       <section className="border-b border-[#171c19] bg-[#8bcfff]"><div className="page-wrap py-16 sm:py-24"><span className="eyebrow bg-white">2026 fantasy football · Week {activeStartSitWeek}</span><h1 className="mt-8 max-w-6xl text-[clamp(3.4rem,8vw,8rem)] font-black uppercase leading-[0.82] tracking-[-0.08em]">Who should I <span className="text-[#174f35]">start?</span></h1><p className="mt-8 max-w-4xl border-l-4 border-[#171c19] pl-5 text-xl font-black leading-9">Compare any eligible players, or open one of {startSitComparisons.length} close Week {activeStartSitWeek} lineup calls backed by production, workload, matchup and availability.</p><div className="mt-8 flex flex-wrap gap-3 font-mono text-[10px] font-black uppercase"><span className="border border-[#171c19] bg-white px-4 py-3">Updated {updated}</span><span className="border border-[#171c19] bg-[#dfff4f] px-4 py-3">Standard · Half PPR · PPR</span><Link href="/fantasy-football-injuries" className="border border-[#171c19] bg-[#ffb29a] px-4 py-3 hover:bg-white">Injury report →</Link></div></div></section>
 
       <section className="page-wrap py-12"><div className="mb-6 max-w-3xl"><span className="eyebrow">Build your matchup</span><h2 className="section-title mt-5">Put any two lineup options head to head.</h2></div><Suspense fallback={<div className="min-h-52 border border-[#171c19] bg-white" />}><StartSitBuilder players={builderPlayers} reviewedPaths={reviewedPaths} /></Suspense></section>
+
+      <section className="page-wrap pb-16"><div className="mb-6 max-w-3xl"><span className="eyebrow">More than two choices?</span><h2 className="section-title mt-5">Rank your whole lineup shortlist.</h2><p className="mt-4 text-sm leading-7 text-[#59605c]">Add up to four quarterbacks or FLEX options and see the current order for PPR, Half PPR or Standard scoring.</p></div><StartSitShortlist players={builderPlayers} reviewedPaths={reviewedPaths} /></section>
 
       <section className="page-wrap pb-14"><div className="mb-8 max-w-3xl"><span className="eyebrow">Week {activeStartSitWeek} decision board</span><h2 className="section-title mt-6">Start the stronger profile. Inspect every input.</h2><p className="mt-5 text-sm leading-7 text-[#59605c]">The number shown is the Half PPR median estimate. Open a decision for floor and ceiling ranges, all three reception formats, usage, snap share and availability.</p></div><div className="grid gap-5 lg:grid-cols-2">{featuredCards.map(({ comparison, decision }) => {
         const winner = decision.winner.side === "left" ? decision.left : decision.right;

@@ -32,6 +32,24 @@ export const startSitComparisons = (manifest as StartSitConfig[]).filter((compar
 
 export const startSitSlugs = startSitComparisons.map(({ slug }) => slug);
 
+export const startSitAnswerTitleSlugs = new Set([
+  "ceedee-lamb-vs-jamarr-chase",
+  "bijan-robinson-vs-kenneth-walker",
+  "ashton-jeanty-vs-chris-olave",
+  "jamarr-chase-vs-kenneth-walker",
+  "ashton-jeanty-vs-javonte-williams",
+  "chase-brown-vs-drake-london",
+  "chris-olave-vs-puka-nacua",
+  "amon-ra-st-brown-vs-derrick-henry",
+  "ceedee-lamb-vs-kenneth-walker",
+  "amon-ra-st-brown-vs-chris-olave",
+  "kenneth-walker-vs-puka-nacua",
+  "ceedee-lamb-vs-chris-olave",
+  "amon-ra-st-brown-vs-puka-nacua",
+  "ashton-jeanty-vs-kyren-williams",
+  "justin-jefferson-vs-saquon-barkley",
+]);
+
 export const startSitPlayerOptions = Object.values(nflversePlayerRelease.players)
   .flatMap((player): StartSitPlayerOption[] => {
     const page = getPlayerPage(player.slug);
@@ -103,6 +121,19 @@ export function startSitPathForPlayers(leftSlug: string, rightSlug: string) {
   if (reviewed) return startSitPath(reviewed.slug);
   const [left, right] = [leftSlug, rightSlug].sort();
   return startSitPath(`${startSitUrlPlayerSlug(left)}-vs-${startSitUrlPlayerSlug(right)}`);
+}
+
+export function getRelatedStartSitComparisons(comparison: StartSitConfig, limit = 6) {
+  const playerSlugs = new Set([comparison.leftSlug, comparison.rightSlug]);
+  return startSitComparisons
+    .filter((candidate) => candidate.slug !== comparison.slug &&
+      (playerSlugs.has(candidate.leftSlug) || playerSlugs.has(candidate.rightSlug)))
+    .toSorted((left, right) => {
+      const leftSamePosition = left.position === comparison.position ? 0 : 1;
+      const rightSamePosition = right.position === comparison.position ? 0 : 1;
+      return leftSamePosition - rightSamePosition || left.slug.localeCompare(right.slug);
+    })
+    .slice(0, limit);
 }
 
 export function getStartSitRankings({

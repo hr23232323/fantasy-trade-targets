@@ -4,13 +4,14 @@ import test from "node:test";
 import { fantasyPoints, projectPlayerWeek } from "../src/app/lib/start-sit-model.mjs";
 
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
-const [manifest, release, teams, hub, detail, builder, library, sitemap, indexNow, playbook] = await Promise.all([
+const [manifest, release, teams, hub, detail, builder, shortlist, library, sitemap, indexNow, playbook] = await Promise.all([
   read("../data/start-sit-comparisons.json").then(JSON.parse),
   read("../data/nflverse-player-release.json").then(JSON.parse),
   read("../data/team-release.json").then(JSON.parse),
   read("../src/app/who-should-i-start/page.tsx"),
   read("../src/app/who-should-i-start/[slug]/page.tsx"),
   read("../src/app/components/StartSitBuilder.tsx"),
+  read("../src/app/components/StartSitShortlist.tsx"),
   read("../src/app/lib/start-sit.ts"),
   read("../src/app/sitemap.ts"),
   read("../scripts/submit-indexnow.mjs"),
@@ -91,6 +92,7 @@ test("the guarded model beats recent-points and prior-season baselines on the We
 test("start/sit pages answer the query, grade results, and stay connected", () => {
   assert.match(hub, /Who should I/);
   assert.match(hub, /Standard · Half PPR · PPR/);
+  assert.match(hub, /leftUnavailable - rightUnavailable \|\| left\.decision\.winner\.gap - right\.decision\.winner\.gap/);
   assert.match(detail, /Start lean/);
   assert.match(detail, /ProjectionCard/);
   assert.match(detail, /Floor/);
@@ -106,10 +108,30 @@ test("start/sit pages answer the query, grade results, and stay connected", () =
   assert.match(builder, /scoringFormats/);
   assert.match(builder, /imageSrc/);
   assert.match(builder, /Choose any two quarterbacks/);
+  assert.match(hub, /StartSitShortlist/);
+  assert.match(shortlist, /Build your lineup shortlist/);
+  assert.match(shortlist, /selectedSlugs\.length >= 4/);
+  assert.match(shortlist, /start_sit_shortlist_player_selected/);
+  assert.match(shortlist, /start_sit_shortlist_comparison_opened/);
+  assert.match(shortlist, /Best current projection/);
   assert.match(library, /activeStartSitWeek/);
   assert.match(library, /startSitPlayerOptions/);
   assert.match(library, /comparisonPosition/);
+  assert.match(library, /getRelatedStartSitComparisons/);
+  assert.match(detail, /More Week \{activeStartSitWeek\} decisions/);
+  assert.match(detail, /Math\.min\(decision\.left\.projection\.median, decision\.right\.projection\.median\) > 0/);
   assert.match(sitemap, /startSitComparisons/);
   assert.match(indexNow, /startSitComparisons/);
   assert.match(playbook, /start\/sit/i);
+});
+
+test("the answer-first title experiment is bounded and backed by published pages", () => {
+  const source = library.match(/startSitAnswerTitleSlugs = new Set\(\[([\s\S]*?)\]\);/)?.[1] ?? "";
+  const slugs = [...source.matchAll(/"([a-z0-9-]+)"/g)].map((match) => match[1]);
+  assert.equal(slugs.length, 15);
+  assert.equal(new Set(slugs).size, slugs.length);
+  for (const slug of slugs) assert.ok(manifest.some((comparison) => comparison.slug === slug), `${slug} must be a published start/sit page`);
+  assert.match(detail, /startSitAnswerTitleSlugs\.has\(slug\)/);
+  assert.match(detail, /Start \$\{leader\.name\} over \$\{trailer\.name\}/);
+  assert.match(detail, /projects for \$\{leader\.projection\.median/);
 });

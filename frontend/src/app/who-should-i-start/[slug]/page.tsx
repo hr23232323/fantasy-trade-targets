@@ -8,7 +8,7 @@ import PlayerThumbnail from "../../components/PlayerThumbnail";
 import TeamLogo from "../../components/TeamLogo";
 import { nflversePlayerRelease } from "../../lib/nflverse";
 import { getPlayerPage } from "../../lib/player-pages";
-import { activeStartSitWeek, getStartSitComparison, getStartSitDecisions, startSitPathForPlayers, startSitSlugs, type StartSitDecision } from "../../lib/start-sit";
+import { activeStartSitWeek, getRelatedStartSitComparisons, getStartSitComparison, getStartSitDecisions, startSitAnswerTitleSlugs, startSitPath, startSitPathForPlayers, startSitSlugs, type StartSitDecision } from "../../lib/start-sit";
 
 const SITE_URL = "https://fantasytradetarget.com";
 type PageProps = { params: Promise<{ slug: string }> };
@@ -28,8 +28,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!left || !right || !decision) return {};
   const canonicalPath = startSitPathForPlayers(comparison.leftSlug, comparison.rightSlug);
   const leader = decision.winner.side === "left" ? decision.left : decision.right;
-  const title = `${left.name} or ${right.name}: Who Should I Start Week ${activeStartSitWeek}?`;
-  const description = `Start ${leader.name} in Week ${activeStartSitWeek}. Compare Half PPR, PPR and Standard projections using recent usage, matchup strength and current-week availability.`;
+  const trailer = decision.winner.side === "left" ? decision.right : decision.left;
+  const answerFirst = startSitAnswerTitleSlugs.has(slug);
+  const title = answerFirst
+    ? `Start ${leader.name} over ${trailer.name} — Week ${activeStartSitWeek} Start/Sit`
+    : `${left.name} or ${right.name}: Who Should I Start Week ${activeStartSitWeek}?`;
+  const description = answerFirst
+    ? `${leader.name} projects for ${leader.projection.median.toFixed(1)} Half PPR points vs. ${trailer.projection.median.toFixed(1)} for ${trailer.name}. Compare PPR, Half PPR and Standard.`
+    : `Start ${leader.name} in Week ${activeStartSitWeek}. Compare Half PPR, PPR and Standard projections using recent usage, matchup strength and current-week availability.`;
   return {
     title,
     description,
@@ -67,6 +73,12 @@ export default async function StartSitComparisonPage({ params }: PageProps) {
       ? previousDecision
       : null;
   const gradedWeek = completedCurrent ? activeStartSitWeek : activeStartSitWeek - 1;
+  const relatedDecisions = getRelatedStartSitComparisons(comparison).flatMap((related) => {
+    const decision = getStartSitDecisions(related).find(({ scoring }) => scoring.key === "half-ppr");
+    return decision && Math.min(decision.left.projection.median, decision.right.projection.median) > 0
+      ? [{ comparison: related, decision }]
+      : [];
+  });
 
   return (
     <>
@@ -101,6 +113,12 @@ export default async function StartSitComparisonPage({ params }: PageProps) {
       <section className="border-y border-[#171c19] bg-[#8bcfff]"><div className="page-wrap grid gap-8 py-12 lg:grid-cols-2"><div><span className="eyebrow bg-white">Why the model leans this way</span><h2 className="section-title mt-6">Role first. Matchup second. Availability always visible.</h2></div><div className="space-y-4 text-sm leading-7"><p>{comparison.selectionReason}</p><p>{factorSentence(primary.left)} {factorSentence(primary.right)}</p><p>Availability adjustments apply only when the source contains a Week {activeStartSitWeek} report. Older designations remain visible in the injury archive but do not reduce this projection.</p></div></div></section>
 
       {gradedDecision ? <ResultSection decision={gradedDecision} week={gradedWeek} /> : null}
+
+      {relatedDecisions.length ? <section className="page-wrap py-12"><div className="mb-7 max-w-3xl"><span className="eyebrow">More Week {activeStartSitWeek} decisions</span><h2 className="section-title mt-5">Keep working through the close calls.</h2></div><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">{relatedDecisions.map(({ comparison: related, decision }) => {
+        const relatedLeader = decision.winner.side === "left" ? decision.left : decision.right;
+        const relatedTrailer = decision.winner.side === "left" ? decision.right : decision.left;
+        return <Link key={related.slug} href={startSitPath(related.slug)} className="border border-[#171c19] bg-white p-5 shadow-[3px_3px_0_#171c19] hover:-translate-y-1 hover:bg-[#eefbc1]"><span className="font-mono text-[9px] font-black uppercase text-[#69706c]">{related.position} · {decision.winner.close ? "Close call" : `${decision.winner.gap.toFixed(1)}-point lean`}</span><strong className="mt-3 block text-lg leading-tight">{relatedLeader.name} over {relatedTrailer.name}</strong><span className="mt-3 block text-xs text-[#59605c]">{relatedLeader.projection.median.toFixed(1)}–{relatedTrailer.projection.median.toFixed(1)} Half PPR →</span></Link>;
+      })}</div></section> : null}
 
       <section className="page-wrap grid gap-6 py-12 md:grid-cols-3">
         <Link href={usagePosition ? `/fantasy-football-usage/week-${Math.max(1, activeStartSitWeek - 1)}/${usagePosition}` : "/fantasy-football-usage"} className="border border-[#171c19] bg-white p-6 shadow-[4px_4px_0_#171c19] hover:-translate-y-1"><span className="eyebrow">Recent usage</span><strong className="mt-5 block text-xl">Check snaps and opportunities →</strong></Link>

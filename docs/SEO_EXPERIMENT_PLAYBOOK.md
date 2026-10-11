@@ -80,6 +80,7 @@ Player comparisons are the control. They already earned page-one impressions and
 - Round-robin maximum return is explicitly conditional on every leg winning. Arbitrage status uses only the prices entered and warns about movement, limits, commissions and settlement differences. The teaser tool never invents a standard price; the complete-card odds must be entered.
 - Measure the three new URLs and the updated odds calculator separately after 7 and 14 days. Expand only if they earn relevant impressions or qualified calculator interaction.
 - The first depth pass adds three competitor-parity features without new URLs: American/decimal/fractional conversion on the canonical odds page, full round-robin settlement for wins/losses/pushes, and arbitrage allocation from either total stake or desired return. These changes increase task completion while preserving one URL per intent.
+- E22 deepens the proven start/sit family without expanding its URL cohort: test answer-first titles on 15 high-impression, low-CTR pages, add a two-to-four-player lineup shortlist on the hub, and connect every decision to related current-week calls. Compare the title cohort with unchanged start/sit pages after enough complete-week impressions accrue.
 
 ## October 3 weekly decision release
 

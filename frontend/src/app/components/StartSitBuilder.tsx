@@ -5,7 +5,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { captureAnalytics } from "../lib/analytics";
 
-type PlayerOption = {
+export type StartSitBuilderPlayer = {
   slug: string;
   urlSlug: string;
   name: string;
@@ -29,7 +29,7 @@ export default function StartSitBuilder({
   players,
   reviewedPaths,
 }: {
-  players: PlayerOption[];
+  players: StartSitBuilderPlayer[];
   reviewedPaths: Record<string, string>;
 }) {
   const router = useRouter();
@@ -77,7 +77,7 @@ export default function StartSitBuilder({
     router.push(path);
   }
 
-  function choosePlayer(player: PlayerOption) {
+  function choosePlayer(player: StartSitBuilderPlayer) {
     const other = left?.slug === player.slug ? right : left;
     if (other && (other.position === "QB") !== (player.position === "QB")) {
       setError("Compare quarterbacks with quarterbacks. RB, WR and TE can be compared as FLEX options.");
@@ -114,7 +114,7 @@ export default function StartSitBuilder({
   );
 }
 
-function SelectedPlayer({ player, label, scoring }: { player: PlayerOption; label: string; scoring: ScoringKey }) {
+function SelectedPlayer({ player, label, scoring }: { player: StartSitBuilderPlayer; label: string; scoring: ScoringKey }) {
   return <div className="flex items-center gap-3 border border-[#171c19] bg-[#f3f0e7] p-3"><span className="relative h-14 w-14 shrink-0 overflow-hidden border border-[#171c19] bg-white"><Image src={player.imageSrc} alt="" fill sizes="56px" className="object-cover object-top" /></span><span className="min-w-0 flex-1"><span className="font-mono text-[8px] font-black uppercase text-[#69706c]">{label}</span><strong className="block truncate">{player.name}</strong><span className="text-xs text-[#69706c]">{player.position} · {player.team ?? "FA"}</span></span><strong className="font-mono text-xl text-[#174f35]">{player.projections[scoring].toFixed(1)}</strong></div>;
 }
 
@@ -130,7 +130,7 @@ function PlayerInput({
   label: string;
   value: string;
   onChange: (value: string) => void;
-  players: PlayerOption[];
+  players: StartSitBuilderPlayer[];
   listId: string;
 }) {
   return <label className="block"><span className="mb-2 block font-mono text-[10px] font-black uppercase tracking-[0.08em]">{label}</span><input required list={listId} value={value} onChange={(event) => onChange(event.target.value)} placeholder="Type a player name" className="min-h-12 w-full border border-[#171c19] bg-[#f8f6ef] px-4 text-base font-bold outline-none focus:bg-[#dfff4f]" /><datalist id={listId}>{players.map((player) => <option key={player.slug} value={player.name}>{player.position} · {player.team ?? "FA"}</option>)}</datalist></label>;
