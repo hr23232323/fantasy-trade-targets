@@ -113,6 +113,7 @@ const teams = Object.fromEntries(
         .filter(Boolean),
     );
     const teamBaseline = baseline.get(abbr);
+    const bettingTrendGames = buildBettingTrendGames([...baselineSchedule, ...currentSchedule], abbr);
 
     return [
       abbr,
@@ -142,6 +143,12 @@ const teams = Object.fromEntries(
         baseline: {
           ...teamBaseline,
           scoringDefenseRank: scoringDefenseRanks.get(abbr),
+        },
+        bettingTrends: {
+          games: bettingTrendGames,
+          currentSeason: summarizeBettingTrends(bettingTrendGames.filter((game) => game.season === season)),
+          previousSeason: summarizeBettingTrends(bettingTrendGames.filter((game) => game.season === baselineSeason)),
+          last10: summarizeBettingTrends(bettingTrendGames.slice(-10)),
         },
         schedule,
       },
@@ -329,6 +336,69 @@ function buildTeamGame(game, teamAbbr, baseline, defenseRanks) {
   };
 }
 
+function buildBettingTrendGames(games, teamAbbr) {
+  return games
+    .filter((game) => canonicalAbbr(game.home_team) === teamAbbr || canonicalAbbr(game.away_team) === teamAbbr)
+    .flatMap((game) => {
+      const homeAbbr = canonicalAbbr(game.home_team);
+      const awayAbbr = canonicalAbbr(game.away_team);
+      const isHome = homeAbbr === teamAbbr;
+      const teamScore = numberOrNull(isHome ? game.home_score : game.away_score);
+      const opponentScore = numberOrNull(isHome ? game.away_score : game.home_score);
+      const spreadLine = numberOrNull(game.spread_line);
+      const totalLine = numberOrNull(game.total_line);
+      if (teamScore === null || opponentScore === null || spreadLine === null || totalLine === null) return [];
+      const teamSpread = isHome ? -spreadLine : spreadLine;
+      const coverMargin = round(teamScore - opponentScore + teamSpread, 1);
+      const totalMargin = round(teamScore + opponentScore - totalLine, 1);
+      return [{
+        gameId: game.game_id,
+        season: Number(game.season),
+        week: Number(game.week),
+        date: game.gameday,
+        site: game.location === "Neutral" ? "neutral" : isHome ? "home" : "away",
+        opponentAbbr: isHome ? awayAbbr : homeAbbr,
+        teamScore,
+        opponentScore,
+        result: teamScore > opponentScore ? "W" : teamScore < opponentScore ? "L" : "T",
+        teamSpread,
+        totalLine,
+        atsResult: coverMargin > 0 ? "W" : coverMargin < 0 ? "L" : "P",
+        totalResult: totalMargin > 0 ? "O" : totalMargin < 0 ? "U" : "P",
+      }];
+    })
+    .sort((left, right) => left.date.localeCompare(right.date));
+}
+
+function summarizeBettingTrends(games) {
+  const atsWins = games.filter(({ atsResult }) => atsResult === "W").length;
+  const atsLosses = games.filter(({ atsResult }) => atsResult === "L").length;
+  const atsPushes = games.filter(({ atsResult }) => atsResult === "P").length;
+  const overs = games.filter(({ totalResult }) => totalResult === "O").length;
+  const unders = games.filter(({ totalResult }) => totalResult === "U").length;
+  const totalPushes = games.filter(({ totalResult }) => totalResult === "P").length;
+  return {
+    games: games.length,
+    straightUp: {
+      wins: games.filter(({ result }) => result === "W").length,
+      losses: games.filter(({ result }) => result === "L").length,
+      ties: games.filter(({ result }) => result === "T").length,
+    },
+    againstSpread: {
+      wins: atsWins,
+      losses: atsLosses,
+      pushes: atsPushes,
+      coverRate: atsWins + atsLosses ? round(atsWins / (atsWins + atsLosses), 3) : null,
+    },
+    totals: {
+      overs,
+      unders,
+      pushes: totalPushes,
+      overRate: overs + unders ? round(overs / (overs + unders), 3) : null,
+    },
+  };
+}
+
 function calculateEnvironmentScore({
   opponentDefenseRank,
   site,
@@ -483,6 +553,9 @@ function validate({
     }
     if (!team.logo.src || !team.colors[0] || !team.homeVenue) {
       throw new Error(`${abbr} has incomplete identity metadata`);
+    }
+    if (team.bettingTrends.previousSeason.games < 17 || team.bettingTrends.last10.games !== 10) {
+      throw new Error(`${abbr} has incomplete betting trend history`);
     }
     for (const game of team.schedule) validateBetting(game, abbr);
   }

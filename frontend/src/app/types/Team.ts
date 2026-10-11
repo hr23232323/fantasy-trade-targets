@@ -73,7 +73,36 @@ export type TeamProfile = {
     pointDifferentialPerGame: number;
     scoringDefenseRank: number;
   };
+  bettingTrends: {
+    games: TeamBettingTrendGame[];
+    currentSeason: TeamBettingTrendSummary;
+    previousSeason: TeamBettingTrendSummary;
+    last10: TeamBettingTrendSummary;
+  };
   schedule: TeamGame[];
+};
+
+export type TeamBettingTrendGame = {
+  gameId: string;
+  season: number;
+  week: number;
+  date: string;
+  site: TeamSite;
+  opponentAbbr: string;
+  teamScore: number;
+  opponentScore: number;
+  result: "W" | "L" | "T";
+  teamSpread: number;
+  totalLine: number;
+  atsResult: "W" | "L" | "P";
+  totalResult: "O" | "U" | "P";
+};
+
+export type TeamBettingTrendSummary = {
+  games: number;
+  straightUp: { wins: number; losses: number; ties: number };
+  againstSpread: { wins: number; losses: number; pushes: number; coverRate: number | null };
+  totals: { overs: number; unders: number; pushes: number; overRate: number | null };
 };
 
 export type TeamRelease = {

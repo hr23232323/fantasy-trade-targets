@@ -146,6 +146,9 @@ const changedPaths = [
   "/rookie-pick-values",
   "/market",
   "/nfl-picks-predictions",
+  "/nfl-score-predictor",
+  "/odds-calculator",
+  "/nfl-ats-records",
   "/teams",
   "/dynasty-rankings",
   "/dynasty-trade-value-chart",
@@ -201,6 +204,7 @@ const changedPaths = [
   ...injuryWeeks.map((week) => `/fantasy-football-injuries/week-${week}`),
   ...startSitComparisons.map((comparison) => `/who-should-i-start/${comparison.slug}`),
   ...predictionRelease.publishedWeeks.flatMap((week) => [`/nfl-picks-predictions/week-${week}`, `/nfl-picks-against-the-spread/week-${week}`, `/nfl-over-under-picks/week-${week}`, `/nfl-straight-up-picks/week-${week}`, `/nfl-score-predictions/week-${week}`, `/nfl-survivor-picks/week-${week}`, `/nfl-confidence-pool-picks/week-${week}`]),
+  ...Object.values(teamRelease.teams).map((team) => `/nfl-ats-records/${team.slug}`),
   ...Object.values(predictionRelease.games).map((game) => {
     const away = teamRelease.teams[game.awayAbbr];
     const home = teamRelease.teams[game.homeAbbr];

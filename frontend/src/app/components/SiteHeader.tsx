@@ -66,7 +66,7 @@ export default function SiteHeader() {
                 (link.href === "/player-comparisons" && pathname.startsWith("/player-comparisons/")) ||
                 (link.href === "/who-should-i-start" && pathname.startsWith("/who-should-i-start/")) ||
                 (link.href === "/fantasy-football-rankings" && pathname.startsWith("/fantasy-football-rankings/")) ||
-                (link.href === "/nfl-picks-predictions" && (pathname.startsWith("/nfl-picks-predictions") || pathname.startsWith("/nfl-picks-against-the-spread") || pathname.startsWith("/nfl-over-under-picks"))) ||
+                (link.href === "/nfl-picks-predictions" && (pathname.startsWith("/nfl-picks-predictions") || pathname.startsWith("/nfl-picks-against-the-spread") || pathname.startsWith("/nfl-over-under-picks") || pathname.startsWith("/nfl-score") || pathname.startsWith("/nfl-ats-records") || pathname.startsWith("/nfl-straight-up-picks") || pathname.startsWith("/nfl-survivor-picks") || pathname.startsWith("/nfl-confidence-pool-picks") || pathname.startsWith("/odds-calculator"))) ||
                 (link.href === "/rookie-pick-values" && pathname.startsWith("/rookie-pick-values/")) ||
                 (link.href === "/fantasy-football-trade-targets" && pathname.startsWith("/fantasy-football-trade-targets/")) ||
                 (link.href === "/market" && pathname.startsWith("/market/")) ||

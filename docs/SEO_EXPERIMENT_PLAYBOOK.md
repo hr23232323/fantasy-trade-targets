@@ -34,6 +34,7 @@ Player comparisons are the control. They already earned page-one impressions and
 | E16: ROS player comparisons | “Player A or Player B rest of season?” | One hub plus 30 curated same-position decisions | `rest_of_season_comparisons_viewed` plus `rest_of_season_comparison_viewed` | Initial cohort selected from exact GSC demand and close current ROS ranks; each page answers PPR, Half PPR and Standard |
 | E17: NFL picks and predictions | “NFL Week N picks / predictions / ATS / over-under” | One hub, three weekly boards and one file per game | `nfl_prediction_hub_viewed`, `nfl_prediction_week_viewed`, `nfl_ats_picks_viewed`, `nfl_totals_picks_viewed`, `nfl_game_prediction_viewed` | First 19-page cohort uses licensed nflverse lines plus a frozen-at-kickoff FTT model; new weeks append automatically |
 | E18: NFL pool and score decisions | “NFL score predictions / straight-up / survivor / confidence pool picks” | Four distinct weekly boards plus an early next-week preview | `nfl_score_predictions_viewed`, `nfl_straight_up_picks_viewed`, `nfl_survivor_picks_viewed`, `nfl_confidence_pool_picks_viewed` | Adds 25 URLs by publishing Week 6 early and separating four decision intents; do not scale into props or parlays without a proven data layer |
+| E19: NFL betting utilities and team trends | “odds calculator / NFL score predictor / NFL ATS records” | Two evergreen tools, one ATS hub and 32 team trend files | `odds_calculator_viewed`, `nfl_score_predictor_viewed`, `nfl_ats_records_viewed`, `nfl_team_betting_trends_viewed` | 35-page cohort uses deterministic odds math and completed-game nflverse records; team pages refresh after results publish |
 
 ## October 11 NFL decision-board expansion
 
@@ -53,6 +54,14 @@ Player comparisons are the control. They already earned page-one impressions and
 - Pregame predictions freeze at kickoff. Finished games then grade the archived snapshot; games completed before the experiment began remain result-only rather than receiving retroactive picks.
 - The 2025 Weeks 5–18 walk-forward covered 208 games: 125–83 straight up, 81–82 ATS, 81–80 on totals and 7.63 points of per-team score error. The product discloses that ATS and totals were effectively coin flips and makes no edge claim.
 - Measure impressions, page-one visibility and detail-page engagement after 7 and 14 days. Only expand into player props or prediction-market contracts after a separately licensed, durable source and a useful model are in place.
+
+## October 10 betting utility and ATS-record launch
+
+- One bounded DataForSEO request found 49,500 average monthly searches for “odds calculator” (difficulty 25), 4,400 for “NFL score predictor” (difficulty 16), 1,000 for “NFL ATS records” (difficulty 4), and 1,000 for “NFL betting trends.” Prior-season October demand rose to 74,000, 9,900, 2,900 and 2,400 respectively.
+- E19 adds an interactive American-odds calculator with payout, implied probability, no-vig probability and market hold; an evergreen score-predictor interface over the existing frozen-at-kickoff model; and a 33-page ATS-record family covering all teams.
+- Team ATS pages use only completed games with a recorded nflverse spread and total. The publication gate requires at least 17 graded prior-season games for every team and exactly 10 games in the rolling sample; record summaries are tested against their underlying game rows.
+- Historical ATS and totals records are explicitly descriptive. The cohort does not claim that a prior cover rate predicts the next game, and it does not add props, parlays, affiliate offers or scraped sportsbook content.
+- Measure the calculator, predictor, ATS hub and 32 team files as separate slices at Days 7 and 14. Scale into additional deterministic utility pages or team splits only when the cohort earns relevant impressions and engagement.
 
 ## October 3 weekly decision release
 
@@ -213,7 +222,7 @@ Also retain:
 - Schedule-derived claims must display the schedule/model release and its limits.
 - Do not expose internal implementation notes, testing language, or planning conversation on consumer pages.
 - Do not call team environment a player matchup, player projection, start/sit recommendation, injury report, news report, or betting advice.
-- Do not publish sports-betting pages without live permitted odds, freshness enforcement, disclosures, and legal review.
+- Do not publish sports-betting pages without permitted data, explicit timestamps or historical labels, freshness enforcement, consumer disclosures, and a review of the intended jurisdiction and use case.
 - Do not publish start/sit pages until all required inputs below pass freshness and backtest gates.
 
 ## Start/sit launch gate — V1 lineup lean
