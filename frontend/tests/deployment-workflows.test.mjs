@@ -28,6 +28,11 @@ test("scheduled data publication owns refreshes and deploys changed releases", (
   assert.match(dataWorkflow, /steps\.team_refresh\.outcome == 'success'/);
   assert.match(dataWorkflow, /steps\.nflverse_refresh\.outcome == 'success'/);
   assert.match(dataWorkflow, /frontend\/data\/start-sit-comparisons\.json/);
+  assert.match(dataWorkflow, /git diff --name-only --diff-filter=U/);
+  assert.match(dataWorkflow, /git checkout --ours/);
+  assert.match(dataWorkflow, /git rebase --skip/);
+  assert.match(dataWorkflow, /Unexpected publication conflict/);
+  assert.match(dataWorkflow, /concurrent product release changed a generated artifact/);
   assert.match(dataWorkflow, /needs\.refresh\.outputs\.changed == 'true'/);
   assert.match(dataWorkflow, /uses: \.\/\.github\/workflows\/_deploy\.yml/);
   assert.match(dataWorkflow, /Report preserved upstream feeds/);

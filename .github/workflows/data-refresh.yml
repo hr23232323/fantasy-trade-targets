@@ -93,7 +93,37 @@ jobs:
 
         git commit -m "data: publish ${GITHUB_RUN_ID} [skip ci]"
         git fetch origin main
-        git rebase origin/main
+        if ! git rebase origin/main; then
+          conflicts="$(git diff --name-only --diff-filter=U)"
+          if [ -z "$conflicts" ]; then
+            git rebase --abort
+            exit 1
+          fi
+
+          while IFS= read -r file; do
+            case "$file" in
+              frontend/data/*.json|data/player-snapshot-history.json|data/snapshots/*)
+                # During a rebase, --ours is the newer origin/main copy. Keep it
+                # when a concurrent product release changed the same artifact;
+                # the next scheduled run will regenerate it with the new code.
+                git checkout --ours -- "$file"
+                git add "$file"
+                ;;
+              *)
+                echo "Unexpected publication conflict: $file"
+                git rebase --abort
+                exit 1
+                ;;
+            esac
+          done <<< "$conflicts"
+
+          if git diff --cached --quiet; then
+            git rebase --skip
+          else
+            GIT_EDITOR=true git rebase --continue
+          fi
+          echo "::warning::A concurrent product release changed a generated artifact; its newer main copy was preserved."
+        fi
         git push origin HEAD:main
         echo "changed=true" >> "$GITHUB_OUTPUT"
 
