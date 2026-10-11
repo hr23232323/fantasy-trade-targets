@@ -6,6 +6,8 @@ const tools = [
   ["NFL score predictor", "/nfl-score-predictor"],
   ["NFL ATS records", "/nfl-ats-records"],
   ["Odds calculator", "/odds-calculator"],
+  ["Betting calculators", "/betting-calculators"],
+  ["Parlay calculator", "/parlay-calculator"],
   ["Dynasty calculator", "/dynasty-trade-calculator"],
   ["Who should I start?", "/who-should-i-start"],
   ["Weekly sleepers", "/fantasy-football-sleepers"],

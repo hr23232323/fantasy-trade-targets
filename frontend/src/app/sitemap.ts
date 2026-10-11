@@ -25,6 +25,7 @@ const BASE_URL = "https://fantasytradetarget.com";
 const staticRoutes = [
   "",
   "/about",
+  "/betting-calculators",
   "/create-meme",
   "/data-sources",
   "/dynasty-rankings",
@@ -52,6 +53,10 @@ const staticRoutes = [
   "/market",
   "/nfl-picks-predictions",
   "/nfl-score-predictor",
+  "/parlay-calculator",
+  "/no-vig-calculator",
+  "/kelly-criterion-calculator",
+  "/hedge-bet-calculator",
   "/odds-calculator",
   "/nfl-ats-records",
   "/players",

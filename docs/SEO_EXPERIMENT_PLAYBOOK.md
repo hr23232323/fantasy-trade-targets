@@ -35,6 +35,7 @@ Player comparisons are the control. They already earned page-one impressions and
 | E17: NFL picks and predictions | “NFL Week N picks / predictions / ATS / over-under” | One hub, three weekly boards and one file per game | `nfl_prediction_hub_viewed`, `nfl_prediction_week_viewed`, `nfl_ats_picks_viewed`, `nfl_totals_picks_viewed`, `nfl_game_prediction_viewed` | First 19-page cohort uses licensed nflverse lines plus a frozen-at-kickoff FTT model; new weeks append automatically |
 | E18: NFL pool and score decisions | “NFL score predictions / straight-up / survivor / confidence pool picks” | Four distinct weekly boards plus an early next-week preview | `nfl_score_predictions_viewed`, `nfl_straight_up_picks_viewed`, `nfl_survivor_picks_viewed`, `nfl_confidence_pool_picks_viewed` | Adds 25 URLs by publishing Week 6 early and separating four decision intents; do not scale into props or parlays without a proven data layer |
 | E19: NFL betting utilities and team trends | “odds calculator / NFL score predictor / NFL ATS records” | Two evergreen tools, one ATS hub and 32 team trend files | `odds_calculator_viewed`, `nfl_score_predictor_viewed`, `nfl_ats_records_viewed`, `nfl_team_betting_trends_viewed` | 35-page cohort uses deterministic odds math and completed-game nflverse records; team pages refresh after results publish |
+| E20: betting calculator suite | “parlay / no-vig / hedge / Kelly calculator” | One collection hub plus four distinct interactive tools | `betting_calculators_viewed`, `parlay_calculator_viewed`, `no_vig_calculator_viewed`, `hedge_calculator_viewed`, `kelly_calculator_viewed` | Five-page utility cohort uses only deterministic user-entered math; no live odds, accounts, wagers or affiliate flow |
 
 ## October 11 NFL decision-board expansion
 
@@ -62,6 +63,13 @@ Player comparisons are the control. They already earned page-one impressions and
 - Team ATS pages use only completed games with a recorded nflverse spread and total. The publication gate requires at least 17 graded prior-season games for every team and exactly 10 games in the rolling sample; record summaries are tested against their underlying game rows.
 - Historical ATS and totals records are explicitly descriptive. The cohort does not claim that a prior cover rate predicts the next game, and it does not add props, parlays, affiliate offers or scraped sportsbook content.
 - Measure the calculator, predictor, ATS hub and 32 team files as separate slices at Days 7 and 14. Scale into additional deterministic utility pages or team splits only when the cohort earns relevant impressions and engagement.
+
+## October 10 betting calculator expansion
+
+- One bounded DataForSEO request found 74,000 average monthly searches for “parlay calculator” at difficulty 19, 6,600 for “no vig calculator,” 2,900 for “hedge bet calculator,” and 1,600 for “Kelly criterion calculator” at difficulty 8. Prior-season September–October demand rose to 90,500 for the parlay term.
+- E20 adds one calculator collection and four intent-specific tools. The existing odds calculator remains the single-odds destination; each new page performs materially different arithmetic and has its own inputs, answer, explanations and structured application data.
+- Calculator events record only the control changed and leg count where relevant. Entered odds, stake, bankroll and probability values are not sent as custom analytics properties.
+- The tools never submit wagers, fetch account data, identify a sportsbook, advertise a bonus or turn the weekly FTT model into a user probability. Measure each tool independently at Days 7 and 14 before adding more calculator variants.
 
 ## October 3 weekly decision release
 

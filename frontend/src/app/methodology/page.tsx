@@ -172,8 +172,22 @@ export default function MethodologyPage() {
           <p>Moneylines, spreads, spread prices, totals and total prices come from the timestamped nflverse schedule release. They never create the team rating. FTT compares its independent margin and total with the market snapshot, calls differences under one point a pass, and freezes the complete record at kickoff.</p>
           <p>The {teamRelease.predictionModel.validation.season} Weeks {teamRelease.predictionModel.validation.weeks} walk-forward covered {teamRelease.predictionModel.validation.games} games. It finished {teamRelease.predictionModel.validation.straightUp.correct}–{teamRelease.predictionModel.validation.straightUp.graded - teamRelease.predictionModel.validation.straightUp.correct} straight up, {teamRelease.predictionModel.validation.againstSpread.wins}–{teamRelease.predictionModel.validation.againstSpread.losses} ATS and {teamRelease.predictionModel.validation.totals.wins}–{teamRelease.predictionModel.validation.totals.losses} on totals, with {teamRelease.predictionModel.validation.scoreMae.toFixed(2)} points of per-team score error. ATS and totals were effectively coin flips.</p>
           <p>Straight-up probability also powers the survivor and confidence-pool boards. Survivor ranks the available winners but cannot know which teams an entrant already used. Confidence pools assign the maximum points to the highest win probability and descend one point at a time; close probabilities should be treated as close decisions.</p>
-          <p>The public release is analysis, not proof of an edge. FTT does not publish parlays, player props, unit sizes, locks or guaranteed-return claims. Final scores grade archived pregame calls without rewriting them.</p>
+          <p>The public release is analysis, not proof of an edge. The NFL model does not manufacture parlays, player props, unit sizes, locks or guaranteed-return claims. Separate calculators perform transparent arithmetic only from numbers the user enters. Final scores grade archived pregame calls without rewriting them.</p>
           <a href="/nfl-picks-predictions" className="inline-block border border-[#171c19] bg-[#ffb29a] px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#171c19]">Open NFL predictions →</a>
+        </div>
+      </section>
+      <section id="betting-calculators" className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
+        <div><span className="eyebrow">11 // Betting calculators</span><h2 className="section-title mt-6">Deterministic arithmetic, visible inputs.</h2></div>
+        <div className="space-y-5 text-sm leading-7 text-[#59605c]">
+          <p>The odds, parlay, no-vig, hedge and Kelly tools run locally from the values entered. They do not fetch a sportsbook account, transmit a wager, supply live odds or treat an FTT model output as the user&apos;s probability estimate.</p>
+          <div className="border border-[#171c19] bg-[#171c19] p-6 font-mono text-xs font-bold leading-6 text-[#dfff4f] sm:text-sm">
+            PARLAY DECIMAL ODDS = PRODUCT(DECIMAL PRICE OF EACH LEG)<br />
+            FAIR PROBABILITY = SIDE IMPLIED PROBABILITY ÷ SUM(ALL SIDES)<br />
+            KELLY FRACTION = (NET ODDS × WIN PROBABILITY − LOSS PROBABILITY) ÷ NET ODDS<br />
+            HEDGE STAKE = ORIGINAL STAKE × ORIGINAL DECIMAL ODDS ÷ HEDGE DECIMAL ODDS
+          </div>
+          <p>Invalid American prices, negative stakes and out-of-range probabilities are rejected. Kelly is clamped at zero when the supplied estimate has no positive expected return; half and quarter Kelly scale the full result. A hedge can equalize a loss as well as a profit, so the net result remains visible.</p>
+          <a href="/betting-calculators" className="inline-block border border-[#171c19] bg-[#dfff4f] px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#171c19]">Open betting calculators →</a>
         </div>
       </section>
       <section className="page-wrap border-t border-[#171c19] py-14">

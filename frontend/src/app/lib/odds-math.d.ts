@@ -9,3 +9,28 @@ export function twoWayMarket(oddsA: number, oddsB: number): {
   noVigB: number;
   hold: number;
 } | null;
+export function americanFromDecimal(value: number): number | null;
+export function parlayCalculation(odds: number[], stake: number): {
+  combinedDecimal: number;
+  combinedAmerican: number | null;
+  impliedProbability: number;
+  profit: number;
+  payout: number;
+} | null;
+export function noVigMarket(odds: number[]): {
+  impliedProbabilities: number[];
+  fairProbabilities: number[];
+  hold: number;
+} | null;
+export function kellyCalculation(odds: number, winProbability: number, bankroll: number, fraction?: number): {
+  fullKelly: number;
+  selectedKelly: number;
+  stake: number;
+  expectedReturn: number;
+} | null;
+export function hedgeCalculation(initialOdds: number, initialStake: number, hedgeOdds: number): {
+  hedgeStake: number;
+  equalizedProfit: number;
+  totalStaked: number;
+  lockedReturn: number;
+} | null;
