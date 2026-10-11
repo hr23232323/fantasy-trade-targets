@@ -34,3 +34,23 @@ export function hedgeCalculation(initialOdds: number, initialStake: number, hedg
   totalStaked: number;
   lockedReturn: number;
 } | null;
+export function roundRobinCalculation(odds: number[], combinationSize: number, stakePerBet: number): {
+  betCount: number;
+  totalStake: number;
+  maxPayout: number;
+  maxProfit: number;
+  minimumWinningLegs: number;
+} | null;
+export function arbitrageCalculation(odds: number[], totalStake: number): {
+  impliedTotal: number;
+  stakes: number[];
+  lockedReturn: number;
+  lockedProfit: number;
+  roi: number;
+  isArbitrage: boolean;
+} | null;
+export function teaserCalculation(legs: Array<{ type: "spread" | "over" | "under"; line: number }>, teaserPoints: number, odds: number, stake: number): {
+  adjustedLines: number[];
+  profit: number;
+  payout: number;
+} | null;

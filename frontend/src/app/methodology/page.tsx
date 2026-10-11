@@ -179,14 +179,17 @@ export default function MethodologyPage() {
       <section id="betting-calculators" className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
         <div><span className="eyebrow">11 // Betting calculators</span><h2 className="section-title mt-6">Deterministic arithmetic, visible inputs.</h2></div>
         <div className="space-y-5 text-sm leading-7 text-[#59605c]">
-          <p>The odds, parlay, no-vig, hedge and Kelly tools run locally from the values entered. They do not fetch a sportsbook account, transmit a wager, supply live odds or treat an FTT model output as the user&apos;s probability estimate.</p>
+          <p>The odds, parlay, round-robin, no-vig, arbitrage, teaser, hedge and Kelly tools run locally from the values entered. They do not fetch a sportsbook account, transmit a wager, supply live odds or treat an FTT model output as the user&apos;s probability estimate.</p>
           <div className="border border-[#171c19] bg-[#171c19] p-6 font-mono text-xs font-bold leading-6 text-[#dfff4f] sm:text-sm">
             PARLAY DECIMAL ODDS = PRODUCT(DECIMAL PRICE OF EACH LEG)<br />
             FAIR PROBABILITY = SIDE IMPLIED PROBABILITY ÷ SUM(ALL SIDES)<br />
             KELLY FRACTION = (NET ODDS × WIN PROBABILITY − LOSS PROBABILITY) ÷ NET ODDS<br />
-            HEDGE STAKE = ORIGINAL STAKE × ORIGINAL DECIMAL ODDS ÷ HEDGE DECIMAL ODDS
+            HEDGE STAKE = ORIGINAL STAKE × ORIGINAL DECIMAL ODDS ÷ HEDGE DECIMAL ODDS<br />
+            ROUND ROBIN BETS = COMBINATIONS(LEGS, PARLAY SIZE)<br />
+            ARBITRAGE TOTAL = SUM(IMPLIED PROBABILITY OF EVERY OUTCOME)<br />
+            TEASER LINE = ORIGINAL LINE ± SELECTED TEASER POINTS
           </div>
-          <p>Invalid American prices, negative stakes and out-of-range probabilities are rejected. Kelly is clamped at zero when the supplied estimate has no positive expected return; half and quarter Kelly scale the full result. A hedge can equalize a loss as well as a profit, so the net result remains visible.</p>
+          <p>Invalid American prices, negative stakes and out-of-range probabilities are rejected. Kelly is clamped at zero when the supplied estimate has no positive expected return; half and quarter Kelly scale the full result. A hedge or dutching allocation can equalize a loss as well as a profit, so the net result remains visible. Round-robin maximums assume every leg wins, and teaser payouts use the complete-card price entered by the user.</p>
           <a href="/betting-calculators" className="inline-block border border-[#171c19] bg-[#dfff4f] px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#171c19]">Open betting calculators →</a>
         </div>
       </section>

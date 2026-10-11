@@ -8,6 +8,8 @@ const tools = [
   ["Odds calculator", "/odds-calculator"],
   ["Betting calculators", "/betting-calculators"],
   ["Parlay calculator", "/parlay-calculator"],
+  ["Round robin calculator", "/round-robin-calculator"],
+  ["Arbitrage calculator", "/arbitrage-betting-calculator"],
   ["Dynasty calculator", "/dynasty-trade-calculator"],
   ["Who should I start?", "/who-should-i-start"],
   ["Weekly sleepers", "/fantasy-football-sleepers"],

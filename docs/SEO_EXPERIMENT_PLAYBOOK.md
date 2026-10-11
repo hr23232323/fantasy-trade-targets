@@ -36,6 +36,7 @@ Player comparisons are the control. They already earned page-one impressions and
 | E18: NFL pool and score decisions | “NFL score predictions / straight-up / survivor / confidence pool picks” | Four distinct weekly boards plus an early next-week preview | `nfl_score_predictions_viewed`, `nfl_straight_up_picks_viewed`, `nfl_survivor_picks_viewed`, `nfl_confidence_pool_picks_viewed` | Adds 25 URLs by publishing Week 6 early and separating four decision intents; do not scale into props or parlays without a proven data layer |
 | E19: NFL betting utilities and team trends | “odds calculator / NFL score predictor / NFL ATS records” | Two evergreen tools, one ATS hub and 32 team trend files | `odds_calculator_viewed`, `nfl_score_predictor_viewed`, `nfl_ats_records_viewed`, `nfl_team_betting_trends_viewed` | 35-page cohort uses deterministic odds math and completed-game nflverse records; team pages refresh after results publish |
 | E20: betting calculator suite | “parlay / no-vig / hedge / Kelly calculator” | One collection hub plus four distinct interactive tools | `betting_calculators_viewed`, `parlay_calculator_viewed`, `no_vig_calculator_viewed`, `hedge_calculator_viewed`, `kelly_calculator_viewed` | Five-page utility cohort uses only deterministic user-entered math; no live odds, accounts, wagers or affiliate flow |
+| E21: combination and line calculators | “round robin / arbitrage / teaser calculator” | Three distinct interactive tools plus implied-probability depth on the existing odds URL | `round_robin_calculator_viewed`, `arbitrage_calculator_viewed`, `teaser_calculator_viewed` | Three-page expansion uses user-entered prices only; implied-probability demand strengthens the canonical odds calculator instead of creating a duplicate URL |
 
 ## October 11 NFL decision-board expansion
 
@@ -70,6 +71,14 @@ Player comparisons are the control. They already earned page-one impressions and
 - E20 adds one calculator collection and four intent-specific tools. The existing odds calculator remains the single-odds destination; each new page performs materially different arithmetic and has its own inputs, answer, explanations and structured application data.
 - Calculator events record only the control changed and leg count where relevant. Entered odds, stake, bankroll and probability values are not sent as custom analytics properties.
 - The tools never submit wagers, fetch account data, identify a sportsbook, advertise a bonus or turn the weekly FTT model into a user probability. Measure each tool independently at Days 7 and 14 before adding more calculator variants.
+
+## October 11 combination and line calculator expansion
+
+- One bounded DataForSEO request found 2,400 average monthly searches for “round robin calculator,” 1,900 for “implied probability calculator,” 1,600 for “arbitrage betting calculator” at difficulty 11, and 210 for “teaser calculator.” Round-robin demand reached 4,400 searches in September 2025.
+- E21 adds round-robin, arbitrage/dutching and teaser tools. Each performs different arithmetic: combination count and aggregate payout, equal-return allocation across exclusive outcomes, or football line movement plus entered-price payout.
+- The existing odds calculator now includes a crawlable American-odds probability chart and links into the new tools. A separate implied-probability page would duplicate the same interface and divide authority, so that intent remains on the canonical odds URL.
+- Round-robin maximum return is explicitly conditional on every leg winning. Arbitrage status uses only the prices entered and warns about movement, limits, commissions and settlement differences. The teaser tool never invents a standard price; the complete-card odds must be entered.
+- Measure the three new URLs and the updated odds calculator separately after 7 and 14 days. Expand only if they earn relevant impressions or qualified calculator interaction.
 
 ## October 3 weekly decision release
 

@@ -90,3 +90,61 @@ export function hedgeCalculation(initialOdds, initialStake, hedgeOdds) {
     lockedReturn: initialStake * initialDecimal,
   };
 }
+
+function combinations(values, size, start = 0, chosen = [], output = []) {
+  if (chosen.length === size) {
+    output.push([...chosen]);
+    return output;
+  }
+  for (let index = start; index <= values.length - (size - chosen.length); index += 1) {
+    chosen.push(values[index]);
+    combinations(values, size, index + 1, chosen, output);
+    chosen.pop();
+  }
+  return output;
+}
+
+export function roundRobinCalculation(odds, combinationSize, stakePerBet) {
+  if (!Array.isArray(odds) || odds.length < 3 || odds.length > 8 || !Number.isInteger(combinationSize) || combinationSize < 2 || combinationSize >= odds.length || !Number.isFinite(stakePerBet) || stakePerBet < 0) return null;
+  const decimalPrices = odds.map(decimalOdds);
+  if (decimalPrices.some((value) => value === null)) return null;
+  const bets = combinations(decimalPrices, combinationSize);
+  const payouts = bets.map((bet) => stakePerBet * bet.reduce((product, price) => product * price, 1));
+  const totalStake = bets.length * stakePerBet;
+  const maxPayout = payouts.reduce((sum, payout) => sum + payout, 0);
+  return {
+    betCount: bets.length,
+    totalStake,
+    maxPayout,
+    maxProfit: maxPayout - totalStake,
+    minimumWinningLegs: combinationSize,
+  };
+}
+
+export function arbitrageCalculation(odds, totalStake) {
+  if (!Array.isArray(odds) || odds.length < 2 || odds.length > 6 || !Number.isFinite(totalStake) || totalStake < 0) return null;
+  const probabilities = odds.map(impliedProbability);
+  if (probabilities.some((value) => value === null)) return null;
+  const validProbabilities = probabilities.map(Number);
+  const impliedTotal = validProbabilities.reduce((sum, value) => sum + value, 0);
+  const lockedReturn = totalStake / impliedTotal;
+  return {
+    impliedTotal,
+    stakes: validProbabilities.map((probability) => totalStake * probability / impliedTotal),
+    lockedReturn,
+    lockedProfit: lockedReturn - totalStake,
+    roi: 1 / impliedTotal - 1,
+    isArbitrage: impliedTotal < 1,
+  };
+}
+
+export function teaserCalculation(legs, teaserPoints, odds, stake) {
+  if (!Array.isArray(legs) || legs.length < 2 || legs.length > 6 || !Number.isFinite(teaserPoints) || teaserPoints <= 0 || !Number.isFinite(stake) || stake < 0) return null;
+  const profit = profitForStake(odds, stake);
+  if (profit === null || legs.some(({ line, type }) => !Number.isFinite(line) || !["spread", "over", "under"].includes(type))) return null;
+  return {
+    adjustedLines: legs.map(({ line, type }) => line + (type === "over" ? -teaserPoints : teaserPoints)),
+    profit,
+    payout: stake + profit,
+  };
+}
