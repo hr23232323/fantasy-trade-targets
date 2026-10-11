@@ -32,6 +32,17 @@ Player comparisons are the control. They already earned page-one impressions and
 | E14: player trade answers | “What is Player X worth?” / “Should I trade Player X?” | Shared answer-first upgrade across 220 existing player files | `player_research_viewed` plus `research_cta_clicked` | Depth experiment shipped on URLs already averaging page-one visibility; no duplicate player-outlook URLs added |
 | E15: fantasy playoff schedules | “Who has the best fantasy playoff schedule?” | Overall planner plus QB, RB, WR and TE boards | `playoff_schedule_viewed` plus `playoff_schedule_filter_changed` | Initial five-page cohort shipped with Weeks 15–17 and 14–16 controls across all reception settings |
 | E16: ROS player comparisons | “Player A or Player B rest of season?” | One hub plus 30 curated same-position decisions | `rest_of_season_comparisons_viewed` plus `rest_of_season_comparison_viewed` | Initial cohort selected from exact GSC demand and close current ROS ranks; each page answers PPR, Half PPR and Standard |
+| E17: NFL picks and predictions | “NFL Week N picks / predictions / ATS / over-under” | One hub, three weekly boards and one file per game | `nfl_prediction_hub_viewed`, `nfl_prediction_week_viewed`, `nfl_ats_picks_viewed`, `nfl_totals_picks_viewed`, `nfl_game_prediction_viewed` | First 19-page cohort uses licensed nflverse lines plus a frozen-at-kickoff FTT model; new weeks append automatically |
+
+## October 10 NFL prediction launch
+
+- Existing GSC data showed no meaningful betting-query footprint, so E17 is a true acquisition experiment rather than an expansion of an existing winner.
+- One bounded DataForSEO demand check found 49,500 average monthly searches for “nfl predictions,” 74,000 for “nfl picks,” and sharply seasonal Week 6 variants at 5,400–8,100 searches with keyword difficulty of 5–13.
+- The first cohort contains one evergreen hub, separate weekly prediction, ATS and totals boards, and 15 Week 5 game files. It deliberately avoids player props, parlays, “locks,” affiliate offers and scraped sportsbook branding.
+- Odds, spreads and totals come from FTT’s existing nflverse schedule release under CC BY 4.0. The source feed updates every five minutes in season; FTT captures it during the validated scheduled publication and shows the exact snapshot time.
+- Pregame predictions freeze at kickoff. Finished games then grade the archived snapshot; games completed before the experiment began remain result-only rather than receiving retroactive picks.
+- The 2025 Weeks 5–18 walk-forward covered 208 games: 125–83 straight up, 81–82 ATS, 81–80 on totals and 7.63 points of per-team score error. The product discloses that ATS and totals were effectively coin flips and makes no edge claim.
+- Measure impressions, page-one visibility and detail-page engagement after 7 and 14 days. Only expand into player props or prediction-market contracts after a separately licensed, durable source and a useful model are in place.
 
 ## October 3 weekly decision release
 

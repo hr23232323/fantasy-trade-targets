@@ -2,6 +2,7 @@ import BrandMark from "./BrandMark";
 import { TrackedLink } from "./TrackedLink";
 
 const tools = [
+  ["NFL picks & predictions", "/nfl-picks-predictions"],
   ["Dynasty calculator", "/dynasty-trade-calculator"],
   ["Who should I start?", "/who-should-i-start"],
   ["Weekly sleepers", "/fantasy-football-sleepers"],

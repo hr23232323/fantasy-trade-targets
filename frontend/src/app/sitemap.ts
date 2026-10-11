@@ -17,6 +17,7 @@ import { restOfSeasonPositionConfigs } from "./lib/rest-of-season";
 import { restOfSeasonComparisons, restOfSeasonComparisonPath } from "./lib/rest-of-season-comparisons";
 import { weeklySleeperPositions } from "./lib/weekly-sleepers";
 import { playoffPositionConfigs, playoffSchedulePath } from "./lib/playoff-schedule";
+import { allPredictionGameParams, atsWeekPath, predictionGamePath, predictionHubPath, predictionUpdatedAt, predictionWeekPath, publishedPredictionWeeks, totalsWeekPath } from "./lib/nfl-predictions";
 
 const BASE_URL = "https://fantasytradetarget.com";
 
@@ -48,6 +49,7 @@ const staticRoutes = [
   "/faq",
   "/methodology",
   "/market",
+  "/nfl-picks-predictions",
   "/players",
   "/player-comparisons",
   "/player-vs-rookie-pick",
@@ -88,6 +90,10 @@ const nflverseDrivenRoutes = new Set([
   "/who-should-i-start",
 ]);
 
+const predictionDrivenRoutes = new Set([
+  predictionHubPath(),
+]);
+
 const restOfSeasonDrivenRoutes = new Set([
   "/fantasy-football-rest-of-season-rankings",
   "/fantasy-football-rest-of-season-comparisons",
@@ -102,6 +108,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE_URL}${route}`,
       ...(restOfSeasonDrivenRoutes.has(route)
         ? { lastModified: playerUpdated }
+        : predictionDrivenRoutes.has(route)
+          ? { lastModified: predictionUpdatedAt() }
         : marketDrivenRoutes.has(route)
         ? { lastModified: marketUpdated }
         : nflverseDrivenRoutes.has(route)
@@ -119,6 +127,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...startSitComparisons.map((comparison) => ({
       url: `${BASE_URL}${startSitPath(comparison.slug)}`,
       lastModified: nflversePlayerRelease.capturedAt,
+    })),
+    ...publishedPredictionWeeks.flatMap((week) => [predictionWeekPath(week), atsWeekPath(week), totalsWeekPath(week)].map((path) => ({
+      url: `${BASE_URL}${path}`,
+      lastModified: predictionUpdatedAt(),
+    }))),
+    ...allPredictionGameParams().map(({ weekSlug, gameSlug }) => ({
+      url: `${BASE_URL}${predictionGamePath(Number(weekSlug.replace("week-", "")), gameSlug)}`,
+      lastModified: predictionUpdatedAt(),
     })),
     ...weeklyRankingPositions.filter(({ position }) => position !== "FLEX").map(({ slug }) => ({
       url: `${BASE_URL}/fantasy-football-rankings/${slug}`,

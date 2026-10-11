@@ -18,6 +18,9 @@ const configuredPlayerComparisons = JSON.parse(
 const startSitComparisons = JSON.parse(
   await readFile(new URL("../data/start-sit-comparisons.json", import.meta.url), "utf8"),
 );
+const predictionRelease = JSON.parse(
+  await readFile(new URL("../data/nfl-prediction-snapshots.json", import.meta.url), "utf8"),
+);
 const restOfSeasonComparisons = JSON.parse(
   await readFile(new URL("../data/rest-of-season-comparisons.json", import.meta.url), "utf8"),
 );
@@ -142,6 +145,7 @@ const changedPaths = [
   "/player-comparisons",
   "/rookie-pick-values",
   "/market",
+  "/nfl-picks-predictions",
   "/teams",
   "/dynasty-rankings",
   "/dynasty-trade-value-chart",
@@ -196,6 +200,12 @@ const changedPaths = [
   ...usagePositionPaths,
   ...injuryWeeks.map((week) => `/fantasy-football-injuries/week-${week}`),
   ...startSitComparisons.map((comparison) => `/who-should-i-start/${comparison.slug}`),
+  ...predictionRelease.publishedWeeks.flatMap((week) => [`/nfl-picks-predictions/week-${week}`, `/nfl-picks-against-the-spread/week-${week}`, `/nfl-over-under-picks/week-${week}`]),
+  ...Object.values(predictionRelease.games).map((game) => {
+    const away = teamRelease.teams[game.awayAbbr];
+    const home = teamRelease.teams[game.homeAbbr];
+    return `/nfl-picks-predictions/week-${game.week}/${away.slug}-vs-${home.slug}`;
+  }),
   ...restOfSeasonComparisons.map((comparison) => `/fantasy-football-rest-of-season-comparisons/${comparison.slug}`),
   ...playerPages.map((player) => `/players/${player.slug}`),
   ...playerComparisons.map((comparison) => `/player-comparisons/${comparison.slug}`),

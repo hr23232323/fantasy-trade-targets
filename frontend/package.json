@@ -8,6 +8,7 @@
     "start": "next start",
     "data:refresh": "node scripts/refresh-public-data.mjs",
     "data:teams": "node scripts/refresh-team-data.mjs",
+    "data:predictions": "node scripts/generate-nfl-predictions.mjs",
     "data:nflverse": "node scripts/refresh-nflverse-data.mjs",
     "data:start-sit": "node scripts/generate-start-sit-comparisons.mjs",
     "data:ros-comparisons": "node scripts/generate-rest-of-season-comparisons.mjs",

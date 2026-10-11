@@ -21,6 +21,9 @@ const files = [
   "../src/app/fantasy-football-trade-targets/page.tsx",
   "../src/app/fantasy-football-rest-of-season-comparisons/page.tsx",
   "../src/app/fantasy-football-rest-of-season-comparisons/[slug]/page.tsx",
+  "../src/app/nfl-picks-predictions/page.tsx",
+  "../src/app/components/NflPredictionWeekPage.tsx",
+  "../src/app/nfl-picks-predictions/[weekSlug]/[gameSlug]/page.tsx",
   "../src/app/components/ScoringResearchPage.tsx",
 ];
 
@@ -94,6 +97,11 @@ test("high-value product events remain instrumented", () => {
     "trade_target_opened",
     "rest_of_season_comparisons_viewed",
     "rest_of_season_comparison_viewed",
+    "nfl_prediction_hub_viewed",
+    "nfl_prediction_week_viewed",
+    "nfl_ats_picks_viewed",
+    "nfl_totals_picks_viewed",
+    "nfl_game_prediction_viewed",
     "memes_generated",
     "meme_generation_failed",
     "meme_download_opened",

@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { mkdir, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { buildWeekPredictions, MODEL_VERSION as PREDICTION_MODEL_VERSION } from "../src/app/lib/nfl-prediction-model.mjs";
 
 const SCHEDULE_URL =
   "https://github.com/nflverse/nflverse-data/releases/download/schedules/games.csv";
@@ -149,6 +150,7 @@ const teams = Object.fromEntries(
 );
 
 validate({ teams, season, baselineSeason, currentSchedule, baselineSchedule });
+const predictionValidation = buildPredictionValidation(scheduleRows, baselineSeason);
 
 const release = {
   schemaVersion: 1,
@@ -175,6 +177,10 @@ const release = {
       sha256: sha256(teamText),
       rowCount: teamRows.length,
     },
+  },
+  predictionModel: {
+    modelVersion: PREDICTION_MODEL_VERSION,
+    validation: predictionValidation,
   },
   teams,
 };
@@ -291,6 +297,8 @@ function buildTeamGame(game, teamAbbr, baseline, defenseRanks) {
     divisionGame: game.div_game === "1",
     teamScore,
     opponentScore,
+    teamQuarterback: (isHome ? game.home_qb_name : game.away_qb_name) || null,
+    opponentQuarterback: (isHome ? game.away_qb_name : game.home_qb_name) || null,
     result:
       teamScore === null || opponentScore === null
         ? null
@@ -299,6 +307,16 @@ function buildTeamGame(game, teamAbbr, baseline, defenseRanks) {
           : teamScore < opponentScore
             ? "L"
             : "T",
+    betting: {
+      awayMoneyline: numberOrNull(game.away_moneyline),
+      homeMoneyline: numberOrNull(game.home_moneyline),
+      spreadLine: numberOrNull(game.spread_line),
+      awaySpreadOdds: numberOrNull(game.away_spread_odds),
+      homeSpreadOdds: numberOrNull(game.home_spread_odds),
+      totalLine: numberOrNull(game.total_line),
+      underOdds: numberOrNull(game.under_odds),
+      overOdds: numberOrNull(game.over_odds),
+    },
     environmentScore,
     environmentLabel: environmentLabel(environmentScore),
     opponentBaseline: {
@@ -466,5 +484,70 @@ function validate({
     if (!team.logo.src || !team.colors[0] || !team.homeVenue) {
       throw new Error(`${abbr} has incomplete identity metadata`);
     }
+    for (const game of team.schedule) validateBetting(game, abbr);
   }
+}
+
+function validateBetting(game, abbr) {
+  const { betting } = game;
+  if (!betting) throw new Error(`${abbr} ${game.gameId} is missing betting fields`);
+  if (betting.spreadLine !== null && Math.abs(betting.spreadLine) > 30) {
+    throw new Error(`${abbr} ${game.gameId} has an invalid spread`);
+  }
+  if (betting.totalLine !== null && (betting.totalLine < 20 || betting.totalLine > 80)) {
+    throw new Error(`${abbr} ${game.gameId} has an invalid total`);
+  }
+  for (const key of ["awayMoneyline", "homeMoneyline", "awaySpreadOdds", "homeSpreadOdds", "underOdds", "overOdds"]) {
+    const value = betting[key];
+    if (value !== null && Math.abs(value) < 100) throw new Error(`${abbr} ${game.gameId} has invalid ${key}`);
+  }
+}
+
+function buildPredictionValidation(scheduleRows, validationSeason) {
+  const priorSeason = validationSeason - 1;
+  const validationGames = scheduleRows.filter((row) => Number(row.season) === validationSeason && row.game_type === "REG");
+  const priorGames = scheduleRows.filter((row) => Number(row.season) === priorSeason && row.game_type === "REG");
+  if (validationGames.length !== 272 || priorGames.length !== 272) throw new Error("Prediction validation seasons are incomplete");
+  const priorBaseline = buildBaseline(priorGames);
+  const priorRanks = new Map([...priorBaseline.values()].sort((left, right) => left.pointsAllowedPerGame - right.pointsAllowedPerGame).map((team, index) => [team.abbr, index + 1]));
+  const validationTeams = Object.fromEntries(ACTIVE_TEAMS.map((abbr) => [abbr, {
+    abbr,
+    baseline: { ...priorBaseline.get(abbr), scoringDefenseRank: priorRanks.get(abbr) },
+    schedule: validationGames.filter((game) => canonicalAbbr(game.home_team) === abbr || canonicalAbbr(game.away_team) === abbr).map((game) => buildTeamGame(game, abbr, priorBaseline, priorRanks)).sort((left, right) => left.week - right.week),
+  }]));
+  const predictions = Array.from({ length: 14 }, (_, index) => index + 5).flatMap((week) => buildWeekPredictions({ teams: validationTeams, week, capturedAt: `${validationSeason}-09-01T00:00:00.000Z` }));
+  const outcomes = { straightUpCorrect: 0, straightUpGraded: 0, atsWins: 0, atsLosses: 0, atsPushes: 0, atsPasses: 0, totalsWins: 0, totalsLosses: 0, totalsPushes: 0, totalsPasses: 0, scoreError: 0, scoreCount: 0 };
+  for (const prediction of predictions) {
+    const game = validationTeams[prediction.homeAbbr].schedule.find(({ gameId }) => gameId === prediction.gameId);
+    const awayGame = validationTeams[prediction.awayAbbr].schedule.find(({ gameId }) => gameId === prediction.gameId);
+    if (!game || !awayGame || game.teamScore === null || awayGame.teamScore === null) continue;
+    const actualHomeMargin = game.teamScore - awayGame.teamScore;
+    outcomes.straightUpGraded += 1;
+    if ((prediction.modelHomeMargin >= 0 && actualHomeMargin > 0) || (prediction.modelHomeMargin < 0 && actualHomeMargin < 0)) outcomes.straightUpCorrect += 1;
+    outcomes.scoreError += Math.abs(prediction.projectedHomeScore - game.teamScore) + Math.abs(prediction.projectedAwayScore - awayGame.teamScore);
+    outcomes.scoreCount += 2;
+    if (prediction.spreadEdge === null || prediction.market.spreadLine === null || Math.abs(prediction.spreadEdge) < 1) outcomes.atsPasses += 1;
+    else {
+      const actualCover = actualHomeMargin - prediction.market.spreadLine;
+      if (actualCover === 0) outcomes.atsPushes += 1;
+      else if ((prediction.spreadEdge > 0 && actualCover > 0) || (prediction.spreadEdge < 0 && actualCover < 0)) outcomes.atsWins += 1;
+      else outcomes.atsLosses += 1;
+    }
+    if (prediction.totalEdge === null || prediction.market.totalLine === null || Math.abs(prediction.totalEdge) < 1) outcomes.totalsPasses += 1;
+    else {
+      const actualTotalEdge = game.teamScore + awayGame.teamScore - prediction.market.totalLine;
+      if (actualTotalEdge === 0) outcomes.totalsPushes += 1;
+      else if ((prediction.totalEdge > 0 && actualTotalEdge > 0) || (prediction.totalEdge < 0 && actualTotalEdge < 0)) outcomes.totalsWins += 1;
+      else outcomes.totalsLosses += 1;
+    }
+  }
+  return {
+    season: validationSeason,
+    weeks: "5-18",
+    games: outcomes.straightUpGraded,
+    straightUp: { correct: outcomes.straightUpCorrect, graded: outcomes.straightUpGraded, accuracy: round(outcomes.straightUpCorrect / outcomes.straightUpGraded, 3) },
+    againstSpread: { wins: outcomes.atsWins, losses: outcomes.atsLosses, pushes: outcomes.atsPushes, passes: outcomes.atsPasses, winRate: round(outcomes.atsWins / (outcomes.atsWins + outcomes.atsLosses), 3) },
+    totals: { wins: outcomes.totalsWins, losses: outcomes.totalsLosses, pushes: outcomes.totalsPushes, passes: outcomes.totalsPasses, winRate: round(outcomes.totalsWins / (outcomes.totalsWins + outcomes.totalsLosses), 3) },
+    scoreMae: round(outcomes.scoreError / outcomes.scoreCount, 2),
+  };
 }

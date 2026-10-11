@@ -11,6 +11,7 @@ const links = [
   { href: "/dynasty-trade-calculator", label: "Calculator" },
   { href: "/who-should-i-start", label: "Start/Sit" },
   { href: "/fantasy-football-rankings", label: "Rankings" },
+  { href: "/nfl-picks-predictions", label: "NFL Picks" },
   { href: "/fantasy-football-trade-targets", label: "Targets" },
   { href: "/player-comparisons", label: "Compare" },
   { href: "/rookie-pick-values", label: "Picks" },
@@ -65,6 +66,7 @@ export default function SiteHeader() {
                 (link.href === "/player-comparisons" && pathname.startsWith("/player-comparisons/")) ||
                 (link.href === "/who-should-i-start" && pathname.startsWith("/who-should-i-start/")) ||
                 (link.href === "/fantasy-football-rankings" && pathname.startsWith("/fantasy-football-rankings/")) ||
+                (link.href === "/nfl-picks-predictions" && (pathname.startsWith("/nfl-picks-predictions") || pathname.startsWith("/nfl-picks-against-the-spread") || pathname.startsWith("/nfl-over-under-picks"))) ||
                 (link.href === "/rookie-pick-values" && pathname.startsWith("/rookie-pick-values/")) ||
                 (link.href === "/fantasy-football-trade-targets" && pathname.startsWith("/fantasy-football-trade-targets/")) ||
                 (link.href === "/market" && pathname.startsWith("/market/")) ||

@@ -37,6 +37,18 @@ export default function DataSourcesPage() {
           </div>
         </div>
       </section>
+      <section id="nfl-market-lines" className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
+        <div>
+          <span className="eyebrow">NFL market lines // timestamped</span>
+          <h2 className="section-title mt-6">One licensed schedule feed. No sportsbook scraping.</h2>
+        </div>
+        <div className="space-y-5 text-sm leading-7 text-[#59605c]">
+          <p>Moneylines, spreads, spread prices, game totals and over/under prices come from nflverse&apos;s game and schedule release under CC BY 4.0. The upstream schedule dataset refreshes every five minutes during the season; FTT captures and validates it with the scheduled publication pipeline.</p>
+          <p>Every prediction page shows its capture time. Pregame model outputs and the attached market snapshot freeze at kickoff so later results or line movement cannot rewrite the original call. A game that ended before FTT had a snapshot is labeled result-only.</p>
+          <p>The listed market fields are not a live quote from an identified sportsbook. Users should confirm current availability, price and legality independently.</p>
+          <div className="flex flex-wrap gap-3"><a href="https://nflreadr.nflverse.com/reference/load_schedules.html" target="_blank" rel="license noopener noreferrer" className="border border-[#171c19] bg-[#d7b6ff] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">Inspect schedule fields ↗</a><a href="/methodology#nfl-predictions" className="border border-[#171c19] bg-white px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">Read prediction math →</a><a href="/nfl-picks-predictions" className="border border-[#171c19] bg-[#ffb29a] px-4 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em]">Open NFL predictions →</a></div>
+        </div>
+      </section>
       <section className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
           <span className="eyebrow">Comparison evidence // reviewed matchups</span>

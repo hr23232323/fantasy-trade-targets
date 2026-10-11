@@ -1,5 +1,6 @@
 import PageHero from "../components/PageHero";
 import { buildPageMetadata } from "../lib/metadata";
+import { teamRelease } from "../lib/team-data";
 
 export const metadata = buildPageMetadata({
   title: "Fantasy Trade Value & Matchup Methodology",
@@ -155,6 +156,23 @@ export default function MethodologyPage() {
           <p>Availability changes the estimate only when the injury-report week equals the target week. Older designations remain in the availability archive but never silently reduce a current projection. Once both players finish, the page displays their actual points and whether the original deterministic lean was correct.</p>
           <p>The Week 2 holdout included 160 player observations. Half PPR mean absolute error was 5.60 points, compared with 7.29 for using the previous game and 5.64 for prior-season PPG alone. Because that edge over the stronger baseline is small, the initial public cohort remains limited to 20 reviewed decisions.</p>
           <a href="/who-should-i-start" className="inline-block border border-[#171c19] bg-[#dfff4f] px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#171c19]">Open Week 3 start / sit →</a>
+        </div>
+      </section>
+      <section id="nfl-predictions" className="page-wrap grid gap-10 border-t border-[#171c19] py-14 lg:grid-cols-[0.7fr_1.3fr]">
+        <div><span className="eyebrow">10 // NFL predictions</span><h2 className="section-title mt-6">A pregame number with a permanent timestamp.</h2></div>
+        <div className="space-y-5 text-sm leading-7 text-[#59605c]">
+          <p>The NFL model is separate from the fantasy-value models. It creates one team rating from completed games before the target week, blending capped opponent-adjusted scoring margin with the prior season as an early-season anchor.</p>
+          <div className="border border-[#171c19] bg-[#171c19] p-6 font-mono text-xs font-bold leading-6 text-[#dfff4f] sm:text-sm">
+            TEAM RATING = BLEND(PRIOR POINT DIFFERENTIAL, CURRENT OPPONENT-ADJUSTED MARGIN)<br />
+            HOME MARGIN = HOME RATING − AWAY RATING + 1.5 HOME FIELD + CAPPED REST EDGE<br />
+            PROJECTED TOTAL = BLEND(CURRENT + PRIOR POINTS FOR / ALLOWED)<br />
+            PROJECTED SCORE = TOTAL SPLIT BY PROJECTED MARGIN
+          </div>
+          <p>Current games gain weight gradually and no single result contributes more than a 28-point margin. The scoring projection regresses points scored and allowed toward the previous season, then clamps the game total to a plausible 30–65 range and the margin to ±21.</p>
+          <p>Moneylines, spreads, spread prices, totals and total prices come from the timestamped nflverse schedule release. They never create the team rating. FTT compares its independent margin and total with the market snapshot, calls differences under one point a pass, and freezes the complete record at kickoff.</p>
+          <p>The {teamRelease.predictionModel.validation.season} Weeks {teamRelease.predictionModel.validation.weeks} walk-forward covered {teamRelease.predictionModel.validation.games} games. It finished {teamRelease.predictionModel.validation.straightUp.correct}–{teamRelease.predictionModel.validation.straightUp.graded - teamRelease.predictionModel.validation.straightUp.correct} straight up, {teamRelease.predictionModel.validation.againstSpread.wins}–{teamRelease.predictionModel.validation.againstSpread.losses} ATS and {teamRelease.predictionModel.validation.totals.wins}–{teamRelease.predictionModel.validation.totals.losses} on totals, with {teamRelease.predictionModel.validation.scoreMae.toFixed(2)} points of per-team score error. ATS and totals were effectively coin flips.</p>
+          <p>The first public release is analysis, not proof of an edge. FTT does not publish parlays, player props, unit sizes, locks or guaranteed-return claims. Final scores grade archived pregame calls without rewriting them.</p>
+          <a href="/nfl-picks-predictions" className="inline-block border border-[#171c19] bg-[#ffb29a] px-5 py-3 font-mono text-[10px] font-black uppercase tracking-[0.07em] text-[#171c19] shadow-[4px_4px_0_#171c19]">Open NFL predictions →</a>
         </div>
       </section>
       <section className="page-wrap border-t border-[#171c19] py-14">

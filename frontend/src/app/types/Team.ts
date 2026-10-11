@@ -20,7 +20,19 @@ export type TeamGame = {
   divisionGame: boolean;
   teamScore: number | null;
   opponentScore: number | null;
+  teamQuarterback: string | null;
+  opponentQuarterback: string | null;
   result: "W" | "L" | "T" | null;
+  betting: {
+    awayMoneyline: number | null;
+    homeMoneyline: number | null;
+    spreadLine: number | null;
+    awaySpreadOdds: number | null;
+    homeSpreadOdds: number | null;
+    totalLine: number | null;
+    underOdds: number | null;
+    overOdds: number | null;
+  };
   environmentScore: number;
   environmentLabel: MatchupEnvironment;
   opponentBaseline: {
@@ -81,5 +93,17 @@ export type TeamRelease = {
       rowCount: number;
     }
   >;
+  predictionModel: {
+    modelVersion: string;
+    validation: {
+      season: number;
+      weeks: string;
+      games: number;
+      straightUp: { correct: number; graded: number; accuracy: number };
+      againstSpread: { wins: number; losses: number; pushes: number; passes: number; winRate: number };
+      totals: { wins: number; losses: number; pushes: number; passes: number; winRate: number };
+      scoreMae: number;
+    };
+  };
   teams: Record<string, TeamProfile>;
 };
