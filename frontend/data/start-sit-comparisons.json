@@ -2448,5 +2448,180 @@
     "rightSlug": "davante-adams-wr",
     "position": "FLEX",
     "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
+  },
+  {
+    "slug": "bijan-robinson-vs-puka-nacua",
+    "leftSlug": "bijan-robinson-rb",
+    "rightSlug": "puka-nacua-wr",
+    "position": "FLEX",
+    "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
+  },
+  {
+    "slug": "jaxon-smith-njigba-vs-kenneth-walker",
+    "leftSlug": "jaxon-smith-njigba-wr",
+    "rightSlug": "kenneth-walker-rb",
+    "position": "FLEX",
+    "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
+  },
+  {
+    "slug": "christian-mccaffrey-vs-jaxon-smith-njigba",
+    "leftSlug": "christian-mccaffrey-rb",
+    "rightSlug": "jaxon-smith-njigba-wr",
+    "position": "FLEX",
+    "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
+  },
+  {
+    "slug": "jaxon-smith-njigba-vs-kyren-williams",
+    "leftSlug": "jaxon-smith-njigba-wr",
+    "rightSlug": "kyren-williams-rb",
+    "position": "FLEX",
+    "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
+  },
+  {
+    "slug": "james-cook-vs-jaxon-smith-njigba",
+    "leftSlug": "james-cook-rb",
+    "rightSlug": "jaxon-smith-njigba-wr",
+    "position": "FLEX",
+    "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
+  },
+  {
+    "slug": "chuba-hubbard-vs-zay-flowers",
+    "leftSlug": "chuba-hubbard-rb",
+    "rightSlug": "zay-flowers-wr",
+    "position": "FLEX",
+    "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
+  },
+  {
+    "slug": "chuba-hubbard-vs-javonte-williams",
+    "leftSlug": "chuba-hubbard-rb",
+    "rightSlug": "javonte-williams-rb",
+    "position": "RB",
+    "selectionReason": "Two relevant running-back options in a similar weekly range, compared through touches, receiving work, matchup and current availability."
+  },
+  {
+    "slug": "chuba-hubbard-vs-drake-london",
+    "leftSlug": "chuba-hubbard-rb",
+    "rightSlug": "drake-london-wr",
+    "position": "FLEX",
+    "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
+  },
+  {
+    "slug": "chuba-hubbard-vs-nico-collins",
+    "leftSlug": "chuba-hubbard-rb",
+    "rightSlug": "nico-collins-wr",
+    "position": "FLEX",
+    "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
+  },
+  {
+    "slug": "malik-nabers-vs-trey-mcbride",
+    "leftSlug": "malik-nabers-wr",
+    "rightSlug": "trey-mcbride-te",
+    "position": "FLEX",
+    "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
+  },
+  {
+    "slug": "derrick-henry-vs-drake-london",
+    "leftSlug": "derrick-henry-rb",
+    "rightSlug": "drake-london-wr",
+    "position": "FLEX",
+    "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
+  },
+  {
+    "slug": "garrett-wilson-vs-tetairoa-mcmillan",
+    "leftSlug": "garrett-wilson-wr",
+    "rightSlug": "tetairoa-mcmillan-wr",
+    "position": "WR",
+    "selectionReason": "Two relevant wide-receiver options in a similar weekly range, compared through targets, snap share, matchup and current availability."
+  },
+  {
+    "slug": "tetairoa-mcmillan-vs-trey-mcbride",
+    "leftSlug": "tetairoa-mcmillan-wr",
+    "rightSlug": "trey-mcbride-te",
+    "position": "FLEX",
+    "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
+  },
+  {
+    "slug": "chris-olave-vs-christian-watson",
+    "leftSlug": "chris-olave-wr",
+    "rightSlug": "christian-watson-wr",
+    "position": "WR",
+    "selectionReason": "Two relevant wide-receiver options in a similar weekly range, compared through targets, snap share, matchup and current availability."
+  },
+  {
+    "slug": "chris-olave-vs-malik-nabers",
+    "leftSlug": "chris-olave-wr",
+    "rightSlug": "malik-nabers-wr",
+    "position": "WR",
+    "selectionReason": "Two relevant wide-receiver options in a similar weekly range, compared through targets, snap share, matchup and current availability."
+  },
+  {
+    "slug": "drake-london-vs-jonathan-taylor",
+    "leftSlug": "drake-london-wr",
+    "rightSlug": "jonathan-taylor-rb",
+    "position": "FLEX",
+    "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
+  },
+  {
+    "slug": "chris-olave-vs-tetairoa-mcmillan",
+    "leftSlug": "chris-olave-wr",
+    "rightSlug": "tetairoa-mcmillan-wr",
+    "position": "WR",
+    "selectionReason": "Two relevant wide-receiver options in a similar weekly range, compared through targets, snap share, matchup and current availability."
+  },
+  {
+    "slug": "brock-bowers-vs-chuba-hubbard",
+    "leftSlug": "brock-bowers-te",
+    "rightSlug": "chuba-hubbard-rb",
+    "position": "FLEX",
+    "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
+  },
+  {
+    "slug": "malik-nabers-vs-tetairoa-mcmillan",
+    "leftSlug": "malik-nabers-wr",
+    "rightSlug": "tetairoa-mcmillan-wr",
+    "position": "WR",
+    "selectionReason": "Two relevant wide-receiver options in a similar weekly range, compared through targets, snap share, matchup and current availability."
+  },
+  {
+    "slug": "christian-watson-vs-tetairoa-mcmillan",
+    "leftSlug": "christian-watson-wr",
+    "rightSlug": "tetairoa-mcmillan-wr",
+    "position": "WR",
+    "selectionReason": "Two relevant wide-receiver options in a similar weekly range, compared through targets, snap share, matchup and current availability."
+  },
+  {
+    "slug": "christian-watson-vs-chuba-hubbard",
+    "leftSlug": "christian-watson-wr",
+    "rightSlug": "chuba-hubbard-rb",
+    "position": "FLEX",
+    "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
+  },
+  {
+    "slug": "brock-bowers-vs-malik-nabers",
+    "leftSlug": "brock-bowers-te",
+    "rightSlug": "malik-nabers-wr",
+    "position": "FLEX",
+    "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
+  },
+  {
+    "slug": "chris-olave-vs-chuba-hubbard",
+    "leftSlug": "chris-olave-wr",
+    "rightSlug": "chuba-hubbard-rb",
+    "position": "FLEX",
+    "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
+  },
+  {
+    "slug": "malik-nabers-vs-nico-collins",
+    "leftSlug": "malik-nabers-wr",
+    "rightSlug": "nico-collins-wr",
+    "position": "WR",
+    "selectionReason": "Two relevant wide-receiver options in a similar weekly range, compared through targets, snap share, matchup and current availability."
+  },
+  {
+    "slug": "dandre-swift-vs-parker-washington",
+    "leftSlug": "dandre-swift-rb",
+    "rightSlug": "parker-washington-wr",
+    "position": "FLEX",
+    "selectionReason": "Two viable FLEX options with similar weekly projections, compared through recent opportunity, scoring format, matchup and current availability."
   }
 ]
