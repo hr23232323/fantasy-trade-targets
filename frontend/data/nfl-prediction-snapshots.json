@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "modelVersion": "ftt-nfl-prediction-2026.10.1",
-  "releaseId": "ftt-nfl-predictions-20261014T101729Z",
-  "capturedAt": "2026-10-14T10:17:29.748Z",
-  "sourceReleaseId": "ftt-teams-20261014T101729Z",
+  "releaseId": "ftt-nfl-predictions-20261014T180630Z",
+  "capturedAt": "2026-10-14T18:06:30.003Z",
+  "sourceReleaseId": "ftt-teams-20261014T180630Z",
   "activeWeek": 6,
   "publishedWeeks": [
     5,
@@ -424,7 +424,7 @@
     "2026_06_SEA_DEN": {
       "gameId": "2026_06_SEA_DEN",
       "week": 6,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "DEN",
       "awayAbbr": "SEA",
@@ -442,8 +442,8 @@
         "awayMoneyline": -142,
         "homeMoneyline": 120,
         "spreadLine": -2.5,
-        "awaySpreadOdds": -115,
-        "homeSpreadOdds": -105,
+        "awaySpreadOdds": -112,
+        "homeSpreadOdds": -108,
         "totalLine": 40.5,
         "underOdds": -108,
         "overOdds": -112
@@ -452,7 +452,7 @@
     "2026_06_HOU_JAX": {
       "gameId": "2026_06_HOU_JAX",
       "week": 6,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "JAX",
       "awayAbbr": "HOU",
@@ -461,26 +461,26 @@
       "projectedHomeScore": 25.2,
       "projectedAwayScore": 17.5,
       "homeWinProbability": 0.7185,
-      "marketHomeProbability": 0.5721,
-      "spreadEdge": 4.8,
+      "marketHomeProbability": 0.5635,
+      "spreadEdge": 5.3,
       "totalEdge": 0.2,
       "homeRating": 10,
       "awayRating": 2.2,
       "market": {
-        "awayMoneyline": 124,
-        "homeMoneyline": -148,
-        "spreadLine": 3,
-        "awaySpreadOdds": -120,
-        "homeSpreadOdds": 100,
+        "awayMoneyline": 120,
+        "homeMoneyline": -142,
+        "spreadLine": 2.5,
+        "awaySpreadOdds": -105,
+        "homeSpreadOdds": -115,
         "totalLine": 42.5,
-        "underOdds": -102,
-        "overOdds": -118
+        "underOdds": -108,
+        "overOdds": -112
       }
     },
     "2026_06_CHI_ATL": {
       "gameId": "2026_06_CHI_ATL",
       "week": 6,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "ATL",
       "awayAbbr": "CHI",
@@ -489,26 +489,26 @@
       "projectedHomeScore": 22.8,
       "projectedAwayScore": 23.5,
       "homeWinProbability": 0.4822,
-      "marketHomeProbability": 0.4066,
-      "spreadEdge": 2.4,
-      "totalEdge": -3.2,
+      "marketHomeProbability": 0.417,
+      "spreadEdge": 1.9,
+      "totalEdge": -4.2,
       "homeRating": 0.5,
       "awayRating": 2.6,
       "market": {
-        "awayMoneyline": -162,
-        "homeMoneyline": 136,
-        "spreadLine": -3,
-        "awaySpreadOdds": -105,
-        "homeSpreadOdds": -115,
-        "totalLine": 49.5,
-        "underOdds": -108,
-        "overOdds": -112
+        "awayMoneyline": -155,
+        "homeMoneyline": 130,
+        "spreadLine": -2.5,
+        "awaySpreadOdds": -115,
+        "homeSpreadOdds": -105,
+        "totalLine": 50.5,
+        "underOdds": -105,
+        "overOdds": -115
       }
     },
     "2026_06_BAL_CLE": {
       "gameId": "2026_06_BAL_CLE",
       "week": 6,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "CLE",
       "awayAbbr": "BAL",
@@ -517,26 +517,26 @@
       "projectedHomeScore": 21.9,
       "projectedAwayScore": 23.7,
       "homeWinProbability": 0.4447,
-      "marketHomeProbability": 0.325,
-      "spreadEdge": 2.6,
-      "totalEdge": 4.1,
+      "marketHomeProbability": 0.3092,
+      "spreadEdge": 3.6,
+      "totalEdge": 3.1,
       "homeRating": -2,
       "awayRating": 1.3,
       "market": {
-        "awayMoneyline": -238,
-        "homeMoneyline": 195,
-        "spreadLine": -4.5,
-        "awaySpreadOdds": -112,
-        "homeSpreadOdds": -108,
-        "totalLine": 41.5,
-        "underOdds": -112,
-        "overOdds": -108
+        "awayMoneyline": -258,
+        "homeMoneyline": 210,
+        "spreadLine": -5.5,
+        "awaySpreadOdds": -110,
+        "homeSpreadOdds": -110,
+        "totalLine": 42.5,
+        "underOdds": -102,
+        "overOdds": -118
       }
     },
     "2026_06_CAR_PHI": {
       "gameId": "2026_06_CAR_PHI",
       "week": 6,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "PHI",
       "awayAbbr": "CAR",
@@ -545,17 +545,17 @@
       "projectedHomeScore": 22.4,
       "projectedAwayScore": 22.5,
       "homeWinProbability": 0.4979,
-      "marketHomeProbability": 0.5108,
-      "spreadEdge": -1.6,
+      "marketHomeProbability": 0.5,
+      "spreadEdge": 1.4,
       "totalEdge": 4.4,
       "homeRating": -0.8,
       "awayRating": 0.2,
       "market": {
-        "awayMoneyline": -105,
-        "homeMoneyline": -115,
-        "spreadLine": 1.5,
-        "awaySpreadOdds": -120,
-        "homeSpreadOdds": 100,
+        "awayMoneyline": -110,
+        "homeMoneyline": -110,
+        "spreadLine": -1.5,
+        "awaySpreadOdds": 102,
+        "homeSpreadOdds": -122,
         "totalLine": 40.5,
         "underOdds": -110,
         "overOdds": -110
@@ -564,7 +564,7 @@
     "2026_06_TEN_IND": {
       "gameId": "2026_06_TEN_IND",
       "week": 6,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "IND",
       "awayAbbr": "TEN",
@@ -592,7 +592,7 @@
     "2026_06_NYJ_NE": {
       "gameId": "2026_06_NYJ_NE",
       "week": 6,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "NE",
       "awayAbbr": "NYJ",
@@ -613,14 +613,14 @@
         "awaySpreadOdds": -115,
         "homeSpreadOdds": -105,
         "totalLine": 43.5,
-        "underOdds": -105,
-        "overOdds": -115
+        "underOdds": -108,
+        "overOdds": -112
       }
     },
     "2026_06_NO_NYG": {
       "gameId": "2026_06_NO_NYG",
       "week": 6,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "NYG",
       "awayAbbr": "NO",
@@ -648,7 +648,7 @@
     "2026_06_PIT_TB": {
       "gameId": "2026_06_PIT_TB",
       "week": 6,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "TB",
       "awayAbbr": "PIT",
@@ -666,17 +666,17 @@
         "awayMoneyline": -142,
         "homeMoneyline": 120,
         "spreadLine": -2.5,
-        "awaySpreadOdds": -110,
-        "homeSpreadOdds": -110,
+        "awaySpreadOdds": -112,
+        "homeSpreadOdds": -108,
         "totalLine": 39.5,
-        "underOdds": -112,
-        "overOdds": -108
+        "underOdds": -105,
+        "overOdds": -115
       }
     },
     "2026_06_ARI_LA": {
       "gameId": "2026_06_ARI_LA",
       "week": 6,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "LAR",
       "awayAbbr": "ARI",
@@ -704,7 +704,7 @@
     "2026_06_BUF_LV": {
       "gameId": "2026_06_BUF_LV",
       "week": 6,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "LV",
       "awayAbbr": "BUF",
@@ -725,14 +725,14 @@
         "awaySpreadOdds": -105,
         "homeSpreadOdds": -115,
         "totalLine": 53.5,
-        "underOdds": -112,
-        "overOdds": -108
+        "underOdds": -110,
+        "overOdds": -110
       }
     },
     "2026_06_LAC_KC": {
       "gameId": "2026_06_LAC_KC",
       "week": 6,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "KC",
       "awayAbbr": "LAC",
@@ -760,7 +760,7 @@
     "2026_06_DAL_GB": {
       "gameId": "2026_06_DAL_GB",
       "week": 6,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "GB",
       "awayAbbr": "DAL",
@@ -771,7 +771,7 @@
       "homeWinProbability": 0.6999,
       "marketHomeProbability": 0.5261,
       "spreadEdge": 5.6,
-      "totalEdge": -2.7,
+      "totalEdge": -3.7,
       "homeRating": 3.4,
       "awayRating": -2.6,
       "market": {
@@ -780,15 +780,15 @@
         "spreadLine": 1.5,
         "awaySpreadOdds": -115,
         "homeSpreadOdds": -105,
-        "totalLine": 52.5,
-        "underOdds": -105,
-        "overOdds": -115
+        "totalLine": 53.5,
+        "underOdds": -115,
+        "overOdds": -105
       }
     },
     "2026_06_WAS_SF": {
       "gameId": "2026_06_WAS_SF",
       "week": 6,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "SF",
       "awayAbbr": "WAS",
@@ -816,7 +816,7 @@
     "2026_07_NE_CHI": {
       "gameId": "2026_07_NE_CHI",
       "week": 7,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "CHI",
       "awayAbbr": "NE",
@@ -844,7 +844,7 @@
     "2026_07_PIT_NO": {
       "gameId": "2026_07_PIT_NO",
       "week": 7,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "PIT",
       "awayAbbr": "NO",
@@ -872,7 +872,7 @@
     "2026_07_SF_ATL": {
       "gameId": "2026_07_SF_ATL",
       "week": 7,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "ATL",
       "awayAbbr": "SF",
@@ -900,7 +900,7 @@
     "2026_07_CIN_BAL": {
       "gameId": "2026_07_CIN_BAL",
       "week": 7,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "BAL",
       "awayAbbr": "CIN",
@@ -928,7 +928,7 @@
     "2026_07_TB_CAR": {
       "gameId": "2026_07_TB_CAR",
       "week": 7,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "CAR",
       "awayAbbr": "TB",
@@ -956,7 +956,7 @@
     "2026_07_CLE_TEN": {
       "gameId": "2026_07_CLE_TEN",
       "week": 7,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "TEN",
       "awayAbbr": "CLE",
@@ -984,7 +984,7 @@
     "2026_07_NYG_HOU": {
       "gameId": "2026_07_NYG_HOU",
       "week": 7,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "HOU",
       "awayAbbr": "NYG",
@@ -1012,7 +1012,7 @@
     "2026_07_IND_MIN": {
       "gameId": "2026_07_IND_MIN",
       "week": 7,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "MIN",
       "awayAbbr": "IND",
@@ -1040,7 +1040,7 @@
     "2026_07_MIA_NYJ": {
       "gameId": "2026_07_MIA_NYJ",
       "week": 7,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "NYJ",
       "awayAbbr": "MIA",
@@ -1068,7 +1068,7 @@
     "2026_07_DEN_ARI": {
       "gameId": "2026_07_DEN_ARI",
       "week": 7,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "ARI",
       "awayAbbr": "DEN",
@@ -1096,7 +1096,7 @@
     "2026_07_GB_DET": {
       "gameId": "2026_07_GB_DET",
       "week": 7,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "DET",
       "awayAbbr": "GB",
@@ -1124,7 +1124,7 @@
     "2026_07_LA_LV": {
       "gameId": "2026_07_LA_LV",
       "week": 7,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "LV",
       "awayAbbr": "LAR",
@@ -1152,7 +1152,7 @@
     "2026_07_KC_SEA": {
       "gameId": "2026_07_KC_SEA",
       "week": 7,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "SEA",
       "awayAbbr": "KC",
@@ -1180,7 +1180,7 @@
     "2026_07_DAL_PHI": {
       "gameId": "2026_07_DAL_PHI",
       "week": 7,
-      "capturedAt": "2026-10-14T10:17:29.748Z",
+      "capturedAt": "2026-10-14T18:06:30.003Z",
       "status": "pregame",
       "homeAbbr": "PHI",
       "awayAbbr": "DAL",
