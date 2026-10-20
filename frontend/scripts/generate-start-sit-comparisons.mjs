@@ -5,17 +5,18 @@ const BASELINE_WEEK = 5;
 const BASE_TARGET_COUNT = 350;
 const WEEKLY_ADDITION_COUNT = 25;
 const fantasyPositions = new Set(["QB", "RB", "WR", "TE"]);
-const [existing, nflverse, teams, playerPages, publicRelease] = await Promise.all([
+const [existing, nflverse, teams, playerPages, publicRelease, injuryNews] = await Promise.all([
   readJson("../data/start-sit-comparisons.json"),
   readJson("../data/nflverse-player-release.json"),
   readJson("../data/team-release.json"),
   readJson("../data/player-pages.json"),
   readJson("../data/public-release.json"),
+  readJson("../data/injury-news.json"),
 ]);
-
 const activeWeek = Array.from({ length: 18 }, (_, index) => index + 1).find((week) =>
   Object.values(teams.teams).some((team) => team.schedule.some((game) => game.week === week && game.result === null)),
 ) ?? 18;
+const injuryNewsBySlug = new Map(injuryNews.week === activeWeek ? injuryNews.updates.map((update) => [update.slug, update]) : []);
 const targetCount = BASE_TARGET_COUNT + Math.max(0, activeWeek - BASELINE_WEEK) * WEEKLY_ADDITION_COUNT;
 const pageBySlug = new Map(playerPages.map((player) => [player.slug, player]));
 const redraft = publicRelease.playerMarkets["redraft:1:0"].data;
@@ -42,7 +43,8 @@ const players = Object.values(nflverse.players).flatMap((player) => {
     .filter(Number.isFinite)
     .sort((left, right) => left - right);
   const leagueMedian = median(leagueValues);
-  const projection = projectPlayerWeek({ player, week: activeWeek, season: nflverse.season, opponentAllowed: allowed, leagueMedianAllowed: leagueMedian, receptionPoints: 0.5, passingTdPoints: 4 });
+  const availability = injuryNewsBySlug.get(player.slug);
+  const projection = projectPlayerWeek({ player, week: activeWeek, season: nflverse.season, opponentAllowed: allowed, leagueMedianAllowed: leagueMedian, receptionPoints: 0.5, passingTdPoints: 4, availabilityOverride: availability ? { week: activeWeek, factor: availability.projectionFactor, label: availability.status } : null });
   if (!projection || projection.median <= 0) return [];
   return [{ slug: player.slug, name: pageBySlug.get(player.slug).name, position, marketRank: market.rank, projection: projection.median }];
 });

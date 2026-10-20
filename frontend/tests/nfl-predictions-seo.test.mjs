@@ -29,13 +29,14 @@ const [teams, release, generator, hub, weekPage, gamePage, sharedPage, poolPage,
   read("../../docs/SEO_EXPERIMENT_PLAYBOOK.md"),
 ]);
 
-test("the second betting wave is a bounded 44-page decision family", () => {
-  assert.equal(release.activeWeek, 5);
-  assert.deepEqual(release.publishedWeeks, [5, 6]);
-  assert.equal(Object.keys(release.games).length, 29);
-  assert.equal(Object.values(release.games).filter(({ status }) => status === "pregame").length, 28);
-  assert.equal(Object.values(release.games).filter(({ status }) => status === "result_only").length, 1);
-  assert.equal(1 + release.publishedWeeks.length * 7 + Object.keys(release.games).length, 44);
+test("the betting decision family retains archives and advances through the current preview week", () => {
+  assert.ok(release.activeWeek >= 5 && release.activeWeek <= 18);
+  assert.ok(release.publishedWeeks.includes(release.activeWeek));
+  assert.ok(release.publishedWeeks.includes(Math.min(release.activeWeek + 1, 18)));
+  assert.deepEqual([...release.publishedWeeks].sort((left, right) => left - right), release.publishedWeeks);
+  assert.equal(new Set(Object.keys(release.games)).size, Object.keys(release.games).length);
+  assert.ok(Object.keys(release.games).length >= 29);
+  assert.ok(1 + release.publishedWeeks.length * 7 + Object.keys(release.games).length <= 399);
   assert.equal(release.modelVersion, MODEL_VERSION);
   assert.equal(teams.predictionModel.modelVersion, MODEL_VERSION);
   assert.deepEqual(teams.predictionModel.validation, { season: 2025, weeks: "5-18", games: 208, straightUp: { correct: 125, graded: 208, accuracy: 0.601 }, againstSpread: { wins: 81, losses: 82, pushes: 1, passes: 44, winRate: 0.497 }, totals: { wins: 81, losses: 80, pushes: 0, passes: 47, winRate: 0.503 }, scoreMae: 7.63 });
@@ -48,21 +49,22 @@ test("every prediction uses validated market fields and bounded model outputs", 
   for (const snapshot of Object.values(release.games)) {
     assert.ok(teams.teams[snapshot.homeAbbr]);
     assert.ok(teams.teams[snapshot.awayAbbr]);
-    assert.ok(Number.isFinite(snapshot.market.spreadLine));
-    assert.ok(Number.isFinite(snapshot.market.totalLine));
-    assert.ok(Number.isFinite(snapshot.market.homeMoneyline));
-    assert.ok(Number.isFinite(snapshot.market.awayMoneyline));
+    for (const value of [snapshot.market.spreadLine, snapshot.market.totalLine, snapshot.market.homeMoneyline, snapshot.market.awayMoneyline]) {
+      assert.ok(value === null || Number.isFinite(value));
+    }
     if (snapshot.status !== "pregame") continue;
     assert.ok(snapshot.modelHomeMargin >= -21 && snapshot.modelHomeMargin <= 21);
     assert.ok(snapshot.modelTotal >= 30 && snapshot.modelTotal <= 65);
     assert.ok(snapshot.projectedHomeScore >= 0 && snapshot.projectedAwayScore >= 0);
     assert.ok(snapshot.homeWinProbability > 0 && snapshot.homeWinProbability < 1);
     assert.ok(Math.abs(snapshot.projectedHomeScore + snapshot.projectedAwayScore - snapshot.modelTotal) <= 0.11);
+    if (snapshot.market.spreadLine === null) assert.equal(snapshot.spreadEdge, null);
+    if (snapshot.market.totalLine === null) assert.equal(snapshot.totalEdge, null);
   }
 });
 
 test("current and preview projections cannot leak their target-week results", () => {
-  for (const week of [5, 6]) {
+  for (const week of [release.activeWeek, Math.min(release.activeWeek + 1, 18)]) {
     const before = buildWeekPredictions({ teams: teams.teams, week, capturedAt: teams.capturedAt });
     const modified = structuredClone(teams.teams);
     for (const team of Object.values(modified)) {

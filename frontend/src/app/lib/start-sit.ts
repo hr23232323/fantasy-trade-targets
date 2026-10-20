@@ -2,6 +2,7 @@ import manifest from "../../../data/start-sit-comparisons.json";
 import { getTeamByAbbr } from "./team-data";
 import { nflversePlayerRelease } from "./nflverse";
 import { getPlayerPage } from "./player-pages";
+import { getInjuryNewsUpdate } from "./injury-news";
 import { projectPlayerWeek, projectionWinner, startSitScoringFormats, type StartSitProjection } from "./start-sit-model.mjs";
 import { getWeeklyMatchups, matchupIsComplete, regularSeasonWeeks } from "./weekly-matchups";
 
@@ -179,7 +180,8 @@ export function getStartSitSide(slug: string, week: number, receptionPoints: 0 |
       : (leagueValues[leagueValues.length / 2 - 1] + leagueValues[leagueValues.length / 2]) / 2
     : null;
   if (!player || !page) return null;
-  const projection = projectPlayerWeek({ player, week, season: nflversePlayerRelease.season, opponentAllowed: allowed, leagueMedianAllowed: leagueMedian, receptionPoints, passingTdPoints: 4 });
+  const injuryNews = getInjuryNewsUpdate(slug, week);
+  const projection = projectPlayerWeek({ player, week, season: nflversePlayerRelease.season, opponentAllowed: allowed, leagueMedianAllowed: leagueMedian, receptionPoints, passingTdPoints: 4, availabilityOverride: injuryNews ? { week, factor: injuryNews.projectionFactor, label: injuryNews.status } : null });
   if (!projection) return null;
   return { slug, name: page.name, position, team: team?.abbr ?? null, opponent: opponent?.abbr ?? null, projection };
 }

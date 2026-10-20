@@ -14,6 +14,7 @@ export function projectPlayerWeek({
   leagueMedianAllowed,
   receptionPoints = 0.5,
   passingTdPoints = 4,
+  availabilityOverride = null,
 }) {
   const position = player?.roster?.position;
   if (!player || !SUPPORTED_POSITIONS.has(position) || !Number.isInteger(week)) return null;
@@ -42,7 +43,7 @@ export function projectPlayerWeek({
   const matchupFactor = Number.isFinite(opponentAllowed) && Number.isFinite(leagueMedianAllowed) && leagueMedianAllowed > 0
     ? clamp(1 + ((opponentAllowed / leagueMedianAllowed) - 1) * 0.18, 0.94, 1.06)
     : 1;
-  const availability = availabilityAdjustment(player.injury, week);
+  const availability = availabilityAdjustment(player.injury, player.roster, week, availabilityOverride);
   const adjustment = usageFactor * matchupFactor * availability.factor;
   const samples = eligible.slice(0, 16).map((game) => fantasyPoints(game, receptionPoints, passingTdPoints)).filter(Number.isFinite);
   const median = round(Math.max(0, baseline * adjustment));
@@ -83,7 +84,23 @@ export function projectionWinner(left, right) {
   return { side: left.median >= right.median ? "left" : "right", gap, close: gap < 1 };
 }
 
-function availabilityAdjustment(injury, week) {
+function availabilityAdjustment(injury, roster, week, override) {
+  if (override?.week === week && Number.isFinite(override.factor)) {
+    return { factor: clamp(override.factor, 0, 1), label: override.label ?? "Availability update", applied: true };
+  }
+  const rosterStatus = roster?.status?.toUpperCase();
+  const rosterStatusIsCurrent = roster?.week === week;
+  if (rosterStatusIsCurrent && rosterStatus && rosterStatus !== "ACT") {
+    const labels = {
+      RES: "Reserve list",
+      INA: "Inactive",
+      EXE: "Exempt list",
+      DEV: "Practice squad",
+      CUT: "Free agent",
+      RET: "Retired",
+    };
+    return { factor: 0, label: labels[rosterStatus] ?? "Not active", applied: true };
+  }
   if (!injury || injury.week !== week) return { factor: 1, label: "No current-week designation", applied: false };
   const status = (injury.reportStatus ?? injury.practiceStatus ?? "Listed").toLowerCase();
   if (status.includes("out")) return { factor: 0, label: injury.reportStatus ?? "Out", applied: true };

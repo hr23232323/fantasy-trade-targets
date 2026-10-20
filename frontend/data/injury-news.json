@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-20T19:00:00-04:00",
+  "week": 7,
+  "source": {
+    "name": "NBC Sports Fantasy injury report",
+    "url": "https://www.nbcsports.com/fantasy/football/news/nfl-week-7-injury-report-mike-evans-achilles-significant-injuries-to-terry-mclaurin-davante-adams",
+    "publishedAt": "2026-10-20T14:51:00-04:00"
+  },
+  "updates": [
+    {
+      "slug": "devon-achane-rb",
+      "status": "Out for season",
+      "injury": "Knee",
+      "detail": "Torn ACL; season-ending absence.",
+      "projectionFactor": 0
+    },
+    {
+      "slug": "jalen-hurts-qb",
+      "status": "Injured reserve",
+      "injury": "Blood clots",
+      "detail": "Placed on injured reserve and sidelined indefinitely.",
+      "projectionFactor": 0
+    },
+    {
+      "slug": "jaxson-dart-qb",
+      "status": "Out for regular season",
+      "injury": "Knee",
+      "detail": "Expected to miss the rest of the regular season after knee surgery.",
+      "projectionFactor": 0
+    },
+    {
+      "slug": "romeo-doubs-wr",
+      "status": "Injured reserve",
+      "injury": "Shoulder",
+      "detail": "Will miss at least four games after moving to injured reserve.",
+      "projectionFactor": 0
+    },
+    {
+      "slug": "davante-adams-wr",
+      "status": "Injured reserve",
+      "injury": "Hamstring",
+      "detail": "Ruptured tendon; expected to miss six to ten weeks.",
+      "projectionFactor": 0
+    },
+    {
+      "slug": "mike-evans-wr",
+      "status": "Expected out",
+      "injury": "Achilles",
+      "detail": "Expected to miss time after aggravating the injury.",
+      "projectionFactor": 0
+    },
+    {
+      "slug": "terry-mclaurin-wr",
+      "status": "Awaiting timetable",
+      "injury": "Knee",
+      "detail": "Suffered a serious knee injury; the team has not issued a timetable.",
+      "projectionFactor": 0.35
+    },
+    {
+      "slug": "ladd-mcconkey-wr",
+      "status": "Concussion protocol",
+      "injury": "Concussion",
+      "detail": "Left Week 6 after eight snaps; the Chargers are on bye in Week 7.",
+      "projectionFactor": 0.5
+    }
+  ]
+}

@@ -14,6 +14,7 @@ function fantasyPosition(position: string | null) {
 function statusClass(status: string) {
   const value = status.toLowerCase();
   if (value.includes("out") || value.includes("doubtful")) return "bg-[#ff6b3d]";
+  if (value.includes("reserve") || value.includes("inactive") || value.includes("exempt")) return "bg-[#ff6b3d]";
   if (value.includes("questionable") || value.includes("did not")) return "bg-[#ffb29a]";
   if (value.includes("limited")) return "bg-[#d7b6ff]";
   return "bg-[#dfff4f]";

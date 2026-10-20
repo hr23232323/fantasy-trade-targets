@@ -31,6 +31,7 @@ export function projectPlayerWeek(args: {
   leagueMedianAllowed: number | null;
   receptionPoints?: 0 | 0.5 | 1;
   passingTdPoints?: 4 | 6;
+  availabilityOverride?: { week: number; factor: number; label: string } | null;
 }): StartSitProjection | null;
 
 export function fantasyPoints(game: NflversePlayerContext["games"][number], receptionPoints?: number, passingTdPoints?: number): number | null;

@@ -44,6 +44,8 @@ test("start/sit publishes a substantial reviewed cohort with current weekly evid
 
 test("projection ranges are finite, ordered, and ignore stale injury rows", () => {
   const player = structuredClone(release.players[manifest[0].leftSlug]);
+  player.roster.week = 3;
+  player.roster.status = "ACT";
   const base = projectPlayerWeek({ player, week: 3, season: release.season, opponentAllowed: 18, leagueMedianAllowed: 18, receptionPoints: 0.5 });
   assert.ok(base);
   assert.ok(base.floor <= base.median && base.median <= base.ceiling);
@@ -56,35 +58,59 @@ test("projection ranges are finite, ordered, and ignore stale injury rows", () =
   const current = projectPlayerWeek({ player, week: 3, season: release.season, opponentAllowed: 18, leagueMedianAllowed: 18, receptionPoints: 0.5 });
   assert.equal(current.median, 0);
   assert.equal(current.availabilityApplied, true);
+  player.injury = null;
+  player.roster.status = "RES";
+  const reserve = projectPlayerWeek({ player, week: 3, season: release.season, opponentAllowed: 18, leagueMedianAllowed: 18, receptionPoints: 0.5 });
+  assert.equal(reserve.median, 0);
+  assert.equal(reserve.availability, "Reserve list");
+  player.roster.week = 4;
+  const staleRosterStatus = projectPlayerWeek({ player, week: 3, season: release.season, opponentAllowed: 18, leagueMedianAllowed: 18, receptionPoints: 0.5 });
+  assert.ok(staleRosterStatus.median > 0);
+  assert.equal(staleRosterStatus.availabilityApplied, false);
+  const breakingUpdate = projectPlayerWeek({ player, week: 3, season: release.season, opponentAllowed: 18, leagueMedianAllowed: 18, receptionPoints: 0.5, availabilityOverride: { week: 3, factor: 0, label: "Injured reserve" } });
+  assert.equal(breakingUpdate.median, 0);
+  assert.equal(breakingUpdate.availability, "Injured reserve");
 });
 
-test("the guarded model beats recent-points and prior-season baselines on the Week 2 holdout", () => {
+test("the guarded model beats recent-points and prior-season baselines across completed holdouts", () => {
   let observations = 0;
   let modelError = 0;
   let recentError = 0;
   let priorError = 0;
-  for (const player of Object.values(release.players)) {
-    const position = player.roster?.position;
-    if (!["QB", "RB", "WR", "TE"].includes(position)) continue;
-    const actual = player.games.find((game) => game.season === release.season && game.week === 2);
-    const recent = player.games.find((game) => game.season === release.season && game.week === 1);
-    const prior = player.seasons.find((season) => season.season === release.season - 1);
-    const team = teams.teams[player.roster.team];
-    const game = team?.schedule.find((candidate) => candidate.week === 2);
-    const opponent = teams.teams[game?.opponentAbbr];
-    if (!actual || !recent || !prior || !opponent) continue;
-    const allowed = release.positionDefense.teams[opponent.abbr][position].pointsPerGame.halfPpr;
-    const league = Object.values(release.positionDefense.teams).map((positions) => positions[position].pointsPerGame.halfPpr).sort((left, right) => left - right);
-    const projection = projectPlayerWeek({ player, week: 2, season: release.season, opponentAllowed: allowed, leagueMedianAllowed: (league[15] + league[16]) / 2, receptionPoints: 0.5 });
-    const actualPoints = fantasyPoints(actual, 0.5, 4);
-    const recentPoints = fantasyPoints(recent, 0.5, 4);
-    if (!projection || actualPoints === null || recentPoints === null) continue;
-    observations += 1;
-    modelError += Math.abs(projection.median - actualPoints);
-    recentError += Math.abs(recentPoints - actualPoints);
-    priorError += Math.abs(prior.halfPprPointsPerGame - actualPoints);
+  const completedWeeks = [...new Set(Object.values(release.players).flatMap((player) =>
+    player.games.filter((game) => game.season === release.season && game.week >= 2).map((game) => game.week),
+  ))].sort((left, right) => left - right);
+  for (const week of completedWeeks) {
+    for (const player of Object.values(release.players)) {
+      const position = player.roster?.position;
+      if (!["QB", "RB", "WR", "TE"].includes(position)) continue;
+      const actual = player.games.find((game) => game.season === release.season && game.week === week);
+      const recent = player.games
+        .filter((game) => game.season === release.season && game.week < week)
+        .sort((left, right) => right.week - left.week)[0];
+      const prior = player.seasons.find((season) => season.season === release.season - 1);
+      const team = teams.teams[player.roster.team];
+      const game = team?.schedule.find((candidate) => candidate.week === week);
+      const opponent = teams.teams[game?.opponentAbbr];
+      if (!actual || !recent || !prior || !opponent) continue;
+      const allowed = release.positionDefense.teams[opponent.abbr][position].pointsPerGame.halfPpr;
+      const league = Object.values(release.positionDefense.teams).map((positions) => positions[position].pointsPerGame.halfPpr).sort((left, right) => left - right);
+      const projectionPlayer = structuredClone(player);
+      projectionPlayer.roster.status = "ACT";
+      projectionPlayer.roster.week = week;
+      projectionPlayer.injury = null;
+      const projection = projectPlayerWeek({ player: projectionPlayer, week, season: release.season, opponentAllowed: allowed, leagueMedianAllowed: (league[15] + league[16]) / 2, receptionPoints: 0.5 });
+      const actualPoints = fantasyPoints(actual, 0.5, 4);
+      const recentPoints = fantasyPoints(recent, 0.5, 4);
+      if (!projection || actualPoints === null || recentPoints === null) continue;
+      observations += 1;
+      modelError += Math.abs(projection.median - actualPoints);
+      recentError += Math.abs(recentPoints - actualPoints);
+      priorError += Math.abs(prior.halfPprPointsPerGame - actualPoints);
+    }
   }
-  assert.ok(observations >= 150);
+  assert.ok(completedWeeks.length >= 5);
+  assert.ok(observations >= 700);
   assert.ok(modelError / observations < recentError / observations);
   assert.ok(modelError / observations < priorError / observations);
 });

@@ -1,5 +1,6 @@
 import { nflversePlayerRelease } from "./nflverse";
 import { getPlayerPage } from "./player-pages";
+import publicReleaseJson from "../../../data/public-release.json";
 import type { NflverseInjuryReport } from "../types/NflversePlayer";
 
 export type FantasyInjuryRow = {
@@ -28,6 +29,46 @@ export const injuryReportWeeks = [...new Set(Object.values(nflversePlayerRelease
   .sort((left, right) => left - right);
 
 export const latestInjuryReportWeek = injuryReportWeeks.at(-1) ?? null;
+
+const marketRankBySlug = new Map<string, number>();
+for (const market of Object.values(publicReleaseJson.playerMarkets)) {
+  for (const player of market.data) {
+    marketRankBySlug.set(player.slug, Math.min(marketRankBySlug.get(player.slug) ?? Number.MAX_SAFE_INTEGER, player.rank ?? Number.MAX_SAFE_INTEGER));
+  }
+}
+
+export function getCurrentRosterAvailabilityRows(week: number): FantasyInjuryRow[] {
+  return Object.values(nflversePlayerRelease.players).flatMap((player) => {
+    const page = getPlayerPage(player.slug);
+    const roster = player.roster;
+    if (!page || !roster?.status || roster.status === "ACT" || roster.week !== week) return [];
+    const status = ({ RES: "Reserve", INA: "Inactive", EXE: "Exempt", DEV: "Practice squad", CUT: "Free agent", RET: "Retired" } as Record<string, string>)[roster.status] ?? roster.status;
+    const report = player.injury ?? emptyReport(week);
+    const sameWeekReport = report.week === week;
+    return [{
+      slug: player.slug,
+      name: page.name,
+      team: roster.team,
+      position: roster.position,
+      report,
+      status,
+      injury: sameWeekReport
+        ? report.reportPrimaryInjury ?? report.practicePrimaryInjury ?? "Roster status update"
+        : "Roster status update",
+      practice: sameWeekReport ? practiceLabel(report.practiceStatus) ?? "Not listed" : "Not listed",
+      severity: 7,
+    }];
+  }).sort((left, right) =>
+    (marketRankBySlug.get(left.slug) ?? Number.MAX_SAFE_INTEGER) - (marketRankBySlug.get(right.slug) ?? Number.MAX_SAFE_INTEGER) ||
+    left.name.localeCompare(right.name),
+  );
+}
+
+export function rosterAvailabilityAnswer(rows: FantasyInjuryRow[], limit = 4) {
+  if (!rows.length) return "No fantasy-relevant players are listed outside active roster status in the current release.";
+  const names = rows.slice(0, limit).map((row) => `${row.name} (${row.status.toLowerCase()})`);
+  return `${names.join(", ")}${rows.length > limit ? ` and ${rows.length - limit} more` : ""} are on the current availability watch.`;
+}
 
 export function getFantasyInjuryRows(week: number): FantasyInjuryRow[] {
   return Object.values(nflversePlayerRelease.players).flatMap((player) => {
@@ -82,4 +123,8 @@ function severity(report: NflverseInjuryReport) {
 
 function practiceLabel(value: string | null) {
   return value?.replace(" Participation in Practice", " practice") ?? null;
+}
+
+function emptyReport(week: number): NflverseInjuryReport {
+  return { week, reportPrimaryInjury: null, reportSecondaryInjury: null, reportStatus: null, practicePrimaryInjury: null, practiceSecondaryInjury: null, practiceStatus: null };
 }
