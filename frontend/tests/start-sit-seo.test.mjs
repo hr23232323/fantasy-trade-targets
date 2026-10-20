@@ -151,13 +151,9 @@ test("start/sit pages answer the query, grade results, and stay connected", () =
   assert.match(playbook, /start\/sit/i);
 });
 
-test("the answer-first title experiment is bounded and backed by published pages", () => {
-  const source = library.match(/startSitAnswerTitleSlugs = new Set\(\[([\s\S]*?)\]\);/)?.[1] ?? "";
-  const slugs = [...source.matchAll(/"([a-z0-9-]+)"/g)].map((match) => match[1]);
-  assert.equal(slugs.length, 15);
-  assert.equal(new Set(slugs).size, slugs.length);
-  for (const slug of slugs) assert.ok(manifest.some((comparison) => comparison.slug === slug), `${slug} must be a published start/sit page`);
-  assert.match(detail, /startSitAnswerTitleSlugs\.has\(slug\)/);
-  assert.match(detail, /Start \$\{leader\.name\} over \$\{trailer\.name\}/);
+test("start/sit metadata preserves the winning question title and answers in the description", () => {
+  assert.doesNotMatch(library, /startSitAnswerTitleSlugs/);
+  assert.doesNotMatch(detail, /startSitAnswerTitleSlugs/);
+  assert.match(detail, /Who Should I Start Week \$\{activeStartSitWeek\}/);
   assert.match(detail, /projects for \$\{leader\.projection\.median/);
 });

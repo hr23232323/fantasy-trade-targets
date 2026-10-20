@@ -32,13 +32,14 @@ test("position schedule publishes four distinct, complete rankings", () => {
   assert.match(indexNow, /positionSchedulePaths/);
 });
 
-test("the schedule winner expands into complete Week 3 through Week 7 position cohorts", () => {
-  assert.match(scheduleLib, /positionWeekScheduleWeeks = \[3, 4, 5, 6, 7\]/);
+test("the schedule winner keeps prior cohorts and publishes the next week early", () => {
+  assert.match(scheduleLib, /currentScheduleWeek \+ 1/);
+  assert.match(scheduleLib, /week >= 3/);
   assert.match(scheduleLib, /getPositionWeekScheduleRatings/);
   assert.match(scheduleLib, /pointsAllowed\.ppr/);
   assert.match(scheduleRoute, /PositionWeekSchedulePage/);
   assert.match(scheduleRoute, /positionWeekScheduleSlugs/);
-  assert.match(scheduleHub, /Weeks 3–7 · by position/);
+  assert.match(scheduleHub, /Weeks 3–\{positionWeekScheduleWeeks\.at\(-1\)\} · by position/);
   assert.match(positionWeekPage, /position_week_schedule_viewed/);
   assert.match(positionWeekPage, /all 32 teams/i);
   assert.match(positionWeekPage, /A better matchup can help\. Role still comes first/);

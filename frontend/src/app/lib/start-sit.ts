@@ -33,24 +33,6 @@ export const startSitComparisons = (manifest as StartSitConfig[]).filter((compar
 
 export const startSitSlugs = startSitComparisons.map(({ slug }) => slug);
 
-export const startSitAnswerTitleSlugs = new Set([
-  "ceedee-lamb-vs-jamarr-chase",
-  "bijan-robinson-vs-kenneth-walker",
-  "ashton-jeanty-vs-chris-olave",
-  "jamarr-chase-vs-kenneth-walker",
-  "ashton-jeanty-vs-javonte-williams",
-  "chase-brown-vs-drake-london",
-  "chris-olave-vs-puka-nacua",
-  "amon-ra-st-brown-vs-derrick-henry",
-  "ceedee-lamb-vs-kenneth-walker",
-  "amon-ra-st-brown-vs-chris-olave",
-  "kenneth-walker-vs-puka-nacua",
-  "ceedee-lamb-vs-chris-olave",
-  "amon-ra-st-brown-vs-puka-nacua",
-  "ashton-jeanty-vs-kyren-williams",
-  "justin-jefferson-vs-saquon-barkley",
-]);
-
 export const startSitPlayerOptions = Object.values(nflversePlayerRelease.players)
   .flatMap((player): StartSitPlayerOption[] => {
     const page = getPlayerPage(player.slug);

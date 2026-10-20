@@ -1,19 +1,20 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { buildRestOfSeasonRankings } from "../src/app/lib/rest-of-season-model.mjs";
 
-const TARGET_COUNT = 30;
-const quotas = { QB: 7, RB: 8, WR: 9, TE: 6 };
+const TARGET_COUNT = 50;
+const quotas = { QB: 12, RB: 14, WR: 15, TE: 9 };
 const seeds = [
   ["sam-darnold-qb", "kyler-murray-qb"],
   ["kyren-williams-rb", "ashton-jeanty-rb"],
   ["zay-flowers-wr", "nico-collins-wr"],
 ];
 
-const [publicRelease, nflverse, teamRelease, playerPages] = await Promise.all([
+const [publicRelease, nflverse, teamRelease, playerPages, existingComparisons] = await Promise.all([
   readJson("../data/public-release.json"),
   readJson("../data/nflverse-player-release.json"),
   readJson("../data/team-release.json"),
   readJson("../data/player-pages.json"),
+  readJson("../data/rest-of-season-comparisons.json"),
 ]);
 
 const activeWeek = Array.from({ length: 18 }, (_, index) => index + 1).find((week) =>
@@ -40,6 +41,9 @@ const selected = [];
 const selectedKeys = new Set();
 const positionCounts = { QB: 0, RB: 0, WR: 0, TE: 0 };
 
+for (const comparison of existingComparisons) {
+  addPair(comparison.leftSlug, comparison.rightSlug, comparison.selectionReason);
+}
 for (const [leftSlug, rightSlug] of seeds) addPair(leftSlug, rightSlug, "Search Console shows direct rest-of-season demand for this decision.");
 
 for (const position of Object.keys(quotas)) {

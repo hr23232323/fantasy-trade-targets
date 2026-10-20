@@ -8,7 +8,7 @@ import PlayerThumbnail from "../../components/PlayerThumbnail";
 import TeamLogo from "../../components/TeamLogo";
 import { nflversePlayerRelease } from "../../lib/nflverse";
 import { getPlayerPage } from "../../lib/player-pages";
-import { activeStartSitWeek, getRelatedStartSitComparisons, getStartSitComparison, getStartSitDecisions, startSitAnswerTitleSlugs, startSitPath, startSitPathForPlayers, startSitSlugs, type StartSitDecision } from "../../lib/start-sit";
+import { activeStartSitWeek, getRelatedStartSitComparisons, getStartSitComparison, getStartSitDecisions, startSitPath, startSitPathForPlayers, startSitSlugs, type StartSitDecision } from "../../lib/start-sit";
 
 const SITE_URL = "https://fantasytradetarget.com";
 type PageProps = { params: Promise<{ slug: string }> };
@@ -29,13 +29,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const canonicalPath = startSitPathForPlayers(comparison.leftSlug, comparison.rightSlug);
   const leader = decision.winner.side === "left" ? decision.left : decision.right;
   const trailer = decision.winner.side === "left" ? decision.right : decision.left;
-  const answerFirst = startSitAnswerTitleSlugs.has(slug);
-  const title = answerFirst
-    ? `Start ${leader.name} over ${trailer.name} — Week ${activeStartSitWeek} Start/Sit`
-    : `${left.name} or ${right.name}: Who Should I Start Week ${activeStartSitWeek}?`;
-  const description = answerFirst
-    ? `${leader.name} projects for ${leader.projection.median.toFixed(1)} Half PPR points vs. ${trailer.projection.median.toFixed(1)} for ${trailer.name}. Compare PPR, Half PPR and Standard.`
-    : `Start ${leader.name} in Week ${activeStartSitWeek}. Compare Half PPR, PPR and Standard projections using recent usage, matchup strength and current-week availability.`;
+  const title = `${left.name} or ${right.name}: Who Should I Start Week ${activeStartSitWeek}?`;
+  const description = `Start ${leader.name} in Week ${activeStartSitWeek}. ${leader.name} projects for ${leader.projection.median.toFixed(1)} Half PPR points vs. ${trailer.projection.median.toFixed(1)} for ${trailer.name}. Compare PPR, Half PPR and Standard.`;
   return {
     title,
     description,

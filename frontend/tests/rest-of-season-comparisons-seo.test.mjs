@@ -22,11 +22,11 @@ const publishedPlayers = new Set(playerPages.map(({ slug }) => slug));
 const redraftPlayers = new Map(publicRelease.playerMarkets["redraft:1:0"].data.map((player) => [player.slug, player]));
 
 test("the first ROS comparison cohort is bounded, balanced, and current-release backed", () => {
-  assert.equal(manifest.length, 30);
-  assert.equal(new Set(manifest.map(({ slug }) => slug)).size, 30);
+  assert.equal(manifest.length, 50);
+  assert.equal(new Set(manifest.map(({ slug }) => slug)).size, 50);
   assert.deepEqual(
     Object.fromEntries(["QB", "RB", "WR", "TE"].map((position) => [position, manifest.filter((comparison) => comparison.position === position).length])),
-    { QB: 7, RB: 8, WR: 9, TE: 6 },
+    { QB: 12, RB: 14, WR: 15, TE: 9 },
   );
 
   const pairKeys = new Set();
@@ -56,10 +56,11 @@ test("observed GSC pair demand is represented exactly once", () => {
 });
 
 test("the generator is deterministic and selects close, evidence-led decisions", () => {
-  assert.match(generator, /TARGET_COUNT = 30/);
-  assert.match(generator, /quotas = \{ QB: 7, RB: 8, WR: 9, TE: 6 \}/);
+  assert.match(generator, /TARGET_COUNT = 50/);
+  assert.match(generator, /quotas = \{ QB: 12, RB: 14, WR: 15, TE: 9 \}/);
   assert.match(generator, /buildRestOfSeasonRankings/);
   assert.match(generator, /currentSeasonGames > 0/);
+  assert.match(generator, /for \(const comparison of existingComparisons\)/);
   assert.match(generator, /Search Console shows direct rest-of-season demand/);
   assert.doesNotMatch(generator, /Math\.random/);
 });

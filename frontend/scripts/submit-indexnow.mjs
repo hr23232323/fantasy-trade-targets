@@ -93,7 +93,13 @@ const scheduleRatingPaths = Array.from(
 );
 const positionSchedulePaths = ["quarterbacks", "running-backs", "wide-receivers", "tight-ends"]
   .map((position) => `/fantasy-football-strength-of-schedule/${position}`);
-const positionWeekSchedulePaths = [3, 4, 5, 6, 7].flatMap((week) =>
+const currentScheduleWeek = Array.from({ length: 18 }, (_, index) => index + 1).find((week) =>
+  Object.values(teamRelease.teams).some((team) => team.schedule.some((game) => game.week === week && game.result === null)),
+) ?? 18;
+const positionWeekSchedulePaths = Array.from(
+  { length: Math.max(0, Math.min(18, currentScheduleWeek + 1) - 2) },
+  (_, index) => index + 3,
+).flatMap((week) =>
   ["quarterbacks", "running-backs", "wide-receivers", "tight-ends"]
     .map((position) => `/fantasy-football-strength-of-schedule/week-${week}-${position}`),
 );

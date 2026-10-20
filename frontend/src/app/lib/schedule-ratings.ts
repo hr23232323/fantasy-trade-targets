@@ -21,7 +21,13 @@ export const positionScheduleConfigs = [
 
 export const positionScheduleSlugs = positionScheduleConfigs.map(({ slug }) => slug);
 
-export const positionWeekScheduleWeeks = [3, 4, 5, 6, 7] as const;
+const currentScheduleWeek = regularSeasonWeeks.find((week) =>
+  teams.some((team) => team.schedule.some((game) => game.week === week && game.result === null)),
+) ?? 18;
+
+export const positionWeekScheduleWeeks = regularSeasonWeeks.filter((week) =>
+  week >= 3 && week <= Math.min(18, currentScheduleWeek + 1),
+);
 
 export const positionWeekScheduleConfigs = positionWeekScheduleWeeks.flatMap((week) =>
   positionScheduleConfigs.map((config) => ({

@@ -1,6 +1,6 @@
 # SEO experiment and scale playbook
 
-Last updated: 2026-10-10
+Last updated: 2026-10-20
 Owner: Fantasy Trade Target
 
 ## The operating rule
@@ -22,7 +22,7 @@ Player comparisons are the control. They already earned page-one impressions and
 | E4: league-size rankings | “N-team Superflex/1QB dynasty rankings” | 5 league sizes × 2 QB formats = 10 | `scoring_research_viewed` with `scoring_page` | Initial cohort shipped |
 | E5: position schedule | “Best fantasy schedule for RB/WR/TE/QB” | 4 complete 32-team rankings | `position_schedule_viewed` | Initial cohort shipped |
 | E6: weekly usage | “Week N snaps, targets, and carries” | 4 position reports per complete week | `weekly_usage_report_viewed` | Armed; publishes only after full-week verification |
-| E7: weekly position matchups | “Best Week N matchups for QB/RB/WR/TE” | 4 positions × Weeks 3–7 = 20 | `position_week_schedule_viewed` | Ranking strongly but low CTR; direct-answer metadata and advance publication now give upcoming weeks time to index |
+| E7: weekly position matchups | “Best Week N matchups for QB/RB/WR/TE” | 4 positions for every published week, through next week | `position_week_schedule_viewed` | Proven; Week 7 quarterbacks earned 338 impressions, 23 clicks and 6.8% CTR, so each refresh now preserves prior pages and publishes the next week early |
 | E8: start/sit decisions | “Who should I start this week?” | 350 reviewed decisions plus 25 evidence-selected additions as each new week begins, and an any-player comparison builder | `start_sit_comparison_viewed` | Proven in GSC and PostHog; the additive weekly cohort preserves indexed URLs while refreshing the inventory around current projections and matchups |
 | E9: injury availability | “Who is listed on the fantasy injury report?” | Current hub + complete weekly archives | `fantasy_injury_report_viewed` | Initial cohort shipped; stale report weeks are explicit and never adjust a newer projection |
 | E10: weekly player rankings | “Week N fantasy football rankings” | Current-week FLEX hub plus QB, RB, WR and TE pages | `weekly_rankings_viewed` | Initial five-page cohort shipped with PPR, Half PPR and Standard controls |
@@ -31,12 +31,20 @@ Player comparisons are the control. They already earned page-one impressions and
 | E13: weekly sleepers | “Fantasy football sleepers Week N” | Current-week hub plus QB, RB, WR and TE pages | `weekly_sleepers_viewed` | Initial five-page cohort shipped; candidates must rise above market position with two recorded games and viable recent snaps |
 | E14: player trade answers | “What is Player X worth?” / “Should I trade Player X?” | Shared answer-first upgrade across 220 existing player files | `player_research_viewed` plus `research_cta_clicked` | Depth experiment shipped on URLs already averaging page-one visibility; no duplicate player-outlook URLs added |
 | E15: fantasy playoff schedules | “Who has the best fantasy playoff schedule?” | Overall planner plus QB, RB, WR and TE boards | `playoff_schedule_viewed` plus `playoff_schedule_filter_changed` | Initial five-page cohort shipped with Weeks 15–17 and 14–16 controls across all reception settings |
-| E16: ROS player comparisons | “Player A or Player B rest of season?” | One hub plus 30 curated same-position decisions | `rest_of_season_comparisons_viewed` plus `rest_of_season_comparison_viewed` | Initial cohort selected from exact GSC demand and close current ROS ranks; each page answers PPR, Half PPR and Standard |
+| E16: ROS player comparisons | “Player A or Player B rest of season?” | One hub plus 50 curated same-position decisions | `rest_of_season_comparisons_viewed` plus `rest_of_season_comparison_viewed` | Proven and expanded after the first cohort earned 56 clicks, 1,338 impressions and 4.19% CTR in its first complete week |
 | E17: NFL picks and predictions | “NFL Week N picks / predictions / ATS / over-under” | One hub, three weekly boards and one file per game | `nfl_prediction_hub_viewed`, `nfl_prediction_week_viewed`, `nfl_ats_picks_viewed`, `nfl_totals_picks_viewed`, `nfl_game_prediction_viewed` | First 19-page cohort uses licensed nflverse lines plus a frozen-at-kickoff FTT model; new weeks append automatically |
 | E18: NFL pool and score decisions | “NFL score predictions / straight-up / survivor / confidence pool picks” | Four distinct weekly boards plus an early next-week preview | `nfl_score_predictions_viewed`, `nfl_straight_up_picks_viewed`, `nfl_survivor_picks_viewed`, `nfl_confidence_pool_picks_viewed` | Adds 25 URLs by publishing Week 6 early and separating four decision intents; do not scale into props or parlays without a proven data layer |
 | E19: NFL betting utilities and team trends | “odds calculator / NFL score predictor / NFL ATS records” | Two evergreen tools, one ATS hub and 32 team trend files | `odds_calculator_viewed`, `nfl_score_predictor_viewed`, `nfl_ats_records_viewed`, `nfl_team_betting_trends_viewed` | 35-page cohort uses deterministic odds math and completed-game nflverse records; team pages refresh after results publish |
 | E20: betting calculator suite | “parlay / no-vig / hedge / Kelly calculator” | One collection hub plus four distinct interactive tools | `betting_calculators_viewed`, `parlay_calculator_viewed`, `no_vig_calculator_viewed`, `hedge_calculator_viewed`, `kelly_calculator_viewed` | Five-page utility cohort uses only deterministic user-entered math; no live odds, accounts, wagers or affiliate flow |
 | E21: combination and line calculators | “round robin / arbitrage / teaser calculator” | Three distinct interactive tools plus implied-probability depth on the existing odds URL | `round_robin_calculator_viewed`, `arbitrage_calculator_viewed`, `teaser_calculator_viewed` | Three-page expansion uses user-entered prices only; implied-probability demand strengthens the canonical odds calculator instead of creating a duplicate URL |
+
+## October 20 scale and iteration decision
+
+- In the final October 12–18 window, the new rest-of-season comparison family earned 56 clicks from 1,338 impressions at 4.19% CTR and average position 6.14. The initial 30-page cohort therefore expands to 50 deterministic, same-position decisions while keeping every original URL.
+- Weekly position matchups also cleared the scale gate: Week 7 quarterback strength of schedule earned 23 clicks from 338 impressions at 6.8% CTR and average position 5.8. The family now publishes every completed cohort from Week 3 through the upcoming week, adding four pages per week instead of relying on a hard-coded range.
+- A single DataForSEO request confirmed the seasonal runway without driving page selection: “fantasy football rest of season rankings” averaged 9,900 monthly searches and reached 60,500 in October 2025; “week 8 fantasy football rankings” averaged 2,400 and reached 27,100 in October 2025; “week 8 qb rankings” averaged 2,900 and reached 33,100 in October 2025.
+- The 15-page answer-first start/sit title test failed its first complete-week read. From October 12–18 it earned 1 click from 659 impressions (0.15% CTR, position 9.34), while unchanged start/sit pages earned 114 clicks from 19,979 impressions (0.57% CTR, position 8.63). The question-led title returns across the family; the answer remains at the front of the description and page body.
+- NFL confidence-pool pages remain a promising secondary test: Week 6 earned 26 clicks from 267 impressions at 9.74% CTR despite average position 14.1. Existing Week 8 pages already publish ahead of kickoff, so no duplicate pool URLs are added in this release.
 
 ## October 11 NFL decision-board expansion
 
@@ -80,7 +88,7 @@ Player comparisons are the control. They already earned page-one impressions and
 - Round-robin maximum return is explicitly conditional on every leg winning. Arbitrage status uses only the prices entered and warns about movement, limits, commissions and settlement differences. The teaser tool never invents a standard price; the complete-card odds must be entered.
 - Measure the three new URLs and the updated odds calculator separately after 7 and 14 days. Expand only if they earn relevant impressions or qualified calculator interaction.
 - The first depth pass adds three competitor-parity features without new URLs: American/decimal/fractional conversion on the canonical odds page, full round-robin settlement for wins/losses/pushes, and arbitrage allocation from either total stake or desired return. These changes increase task completion while preserving one URL per intent.
-- E22 deepens the proven start/sit family without expanding its URL cohort: test answer-first titles on 15 high-impression, low-CTR pages, add a two-to-four-player lineup shortlist on the hub, and connect every decision to related current-week calls. Compare the title cohort with unchanged start/sit pages after enough complete-week impressions accrue.
+- E22 deepened the proven start/sit family without expanding its URL cohort: a two-to-four-player lineup shortlist and related current-week calls remain live. The 15-page answer-first title test underperformed its unchanged control and was reverted on October 20; question-led titles remain the standard.
 
 ## October 3 weekly decision release
 
