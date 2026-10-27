@@ -24,6 +24,9 @@ const predictionRelease = JSON.parse(
 const restOfSeasonComparisons = JSON.parse(
   await readFile(new URL("../data/rest-of-season-comparisons.json", import.meta.url), "utf8"),
 );
+const tradeDecisionComparisons = JSON.parse(
+  await readFile(new URL("../data/trade-decision-comparisons.json", import.meta.url), "utf8"),
+);
 const publicRelease = JSON.parse(
   await readFile(new URL("../data/public-release.json", import.meta.url), "utf8"),
 );
@@ -190,6 +193,7 @@ const changedPaths = [
   "/fantasy-football-playoff-strength-of-schedule/tight-ends",
   "/fantasy-football-rest-of-season-rankings",
   "/fantasy-football-rest-of-season-comparisons",
+  "/fantasy-football-trade-finder",
   "/fantasy-football-rest-of-season-rankings/quarterbacks",
   "/fantasy-football-rest-of-season-rankings/running-backs",
   "/fantasy-football-rest-of-season-rankings/wide-receivers",
@@ -226,6 +230,7 @@ const changedPaths = [
     return `/nfl-picks-predictions/week-${game.week}/${away.slug}-vs-${home.slug}`;
   }),
   ...restOfSeasonComparisons.map((comparison) => `/fantasy-football-rest-of-season-comparisons/${comparison.slug}`),
+  ...tradeDecisionComparisons.map((comparison) => `/should-i-trade/${comparison.slug}`),
   ...playerPages.map((player) => `/players/${player.slug}`),
   ...playerComparisons.map((comparison) => `/player-comparisons/${comparison.slug}`),
   ...playerPickComparisons.map((comparison) => `/player-vs-rookie-pick/${comparison.slug}`),

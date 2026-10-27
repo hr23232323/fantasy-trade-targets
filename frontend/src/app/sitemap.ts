@@ -15,6 +15,7 @@ import { startSitComparisons, startSitPath } from "./lib/start-sit";
 import { weeklyRankingPositions } from "./lib/weekly-rankings";
 import { restOfSeasonPositionConfigs } from "./lib/rest-of-season";
 import { restOfSeasonComparisons, restOfSeasonComparisonPath } from "./lib/rest-of-season-comparisons";
+import { tradeDecisionComparisons, tradeFinderPath } from "./lib/trade-decisions";
 import { weeklySleeperPositions } from "./lib/weekly-sleepers";
 import { playoffPositionConfigs, playoffSchedulePath } from "./lib/playoff-schedule";
 import { allPredictionGameParams, atsWeekPath, confidenceHubPath, confidenceWeekPath, predictionGamePath, predictionHubPath, predictionUpdatedAt, predictionWeekPath, publishedPredictionWeeks, scorePredictionsWeekPath, straightUpWeekPath, survivorWeekPath, totalsWeekPath } from "./lib/nfl-predictions";
@@ -46,6 +47,7 @@ const staticRoutes = [
   "/fantasy-football-strength-of-schedule",
   "/fantasy-football-usage",
   "/fantasy-football-trade-targets",
+  "/fantasy-football-trade-finder",
   "/fantasy-football-trade-value-chart",
   "/fantasy-trade-calculator",
   "/who-should-i-start",
@@ -115,6 +117,7 @@ const restOfSeasonDrivenRoutes = new Set([
   "/fantasy-football-rest-of-season-rankings",
   "/fantasy-football-rest-of-season-comparisons",
   "/fantasy-football-buy-low-sell-high",
+  "/fantasy-football-trade-finder",
 ]);
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -177,6 +180,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...restOfSeasonComparisons.map(({ slug }) => ({
       url: `${BASE_URL}${restOfSeasonComparisonPath(slug)}`,
+      lastModified: playerUpdated,
+    })),
+    ...tradeDecisionComparisons.map(({ slug }) => ({
+      url: `${BASE_URL}${tradeFinderPath(slug)}`,
       lastModified: playerUpdated,
     })),
     ...injuryReportWeeks.map((week) => ({

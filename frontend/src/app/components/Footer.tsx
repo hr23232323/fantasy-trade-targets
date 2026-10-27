@@ -16,6 +16,7 @@ const tools = [
   ["Fantasy playoff schedules", "/fantasy-football-playoff-strength-of-schedule"],
   ["Rest-of-season rankings", "/fantasy-football-rest-of-season-rankings"],
   ["ROS player comparisons", "/fantasy-football-rest-of-season-comparisons"],
+  ["Fantasy trade finder", "/fantasy-football-trade-finder"],
   ["Buy low, sell high", "/fantasy-football-buy-low-sell-high"],
   ["Fantasy football injuries", "/fantasy-football-injuries"],
   ["Fantasy football trade targets", "/fantasy-football-trade-targets"],
