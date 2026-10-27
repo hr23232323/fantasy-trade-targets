@@ -152,6 +152,7 @@ const changedPaths = [
   "/rookie-pick-values",
   "/market",
   "/nfl-picks-predictions",
+  "/nfl-confidence-pool-picks",
   "/nfl-score-predictor",
   "/betting-calculators",
   "/arbitrage-betting-calculator",

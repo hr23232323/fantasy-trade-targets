@@ -22,11 +22,11 @@ const publishedPlayers = new Set(playerPages.map(({ slug }) => slug));
 const redraftPlayers = new Map(publicRelease.playerMarkets["redraft:1:0"].data.map((player) => [player.slug, player]));
 
 test("the first ROS comparison cohort is bounded, balanced, and current-release backed", () => {
-  assert.equal(manifest.length, 50);
-  assert.equal(new Set(manifest.map(({ slug }) => slug)).size, 50);
+  assert.equal(manifest.length, 75);
+  assert.equal(new Set(manifest.map(({ slug }) => slug)).size, 75);
   assert.deepEqual(
     Object.fromEntries(["QB", "RB", "WR", "TE"].map((position) => [position, manifest.filter((comparison) => comparison.position === position).length])),
-    { QB: 12, RB: 14, WR: 15, TE: 9 },
+    { QB: 18, RB: 21, WR: 22, TE: 14 },
   );
 
   const pairKeys = new Set();
@@ -41,6 +41,7 @@ test("the first ROS comparison cohort is bounded, balanced, and current-release 
     assert.equal(right.position, comparison.position);
     assert.match(comparison.slug, /^[a-z0-9]+(?:-[a-z0-9]+)*-vs-[a-z0-9]+(?:-[a-z0-9]+)*$/);
     assert.ok(comparison.selectionReason.length >= 60);
+    assert.doesNotMatch(comparison.selectionReason, /Search Console|DataForSEO|experiment|hypothesis|cohort/i);
     pairKeys.add([comparison.leftSlug, comparison.rightSlug].sort().join("|"));
   }
   assert.equal(pairKeys.size, manifest.length);
@@ -52,16 +53,18 @@ test("observed GSC pair demand is represented exactly once", () => {
     ["sam-darnold-qb", "kyler-murray-qb"],
     ["kyren-williams-rb", "ashton-jeanty-rb"],
     ["zay-flowers-wr", "nico-collins-wr"],
+    ["chase-brown-rb", "javonte-williams-rb"],
+    ["chase-brown-rb", "james-cook-rb"],
   ]) assert.ok(pairs.has(pair.sort().join("|")), `${pair.join(" vs ")} should be published`);
 });
 
 test("the generator is deterministic and selects close, evidence-led decisions", () => {
-  assert.match(generator, /TARGET_COUNT = 50/);
-  assert.match(generator, /quotas = \{ QB: 12, RB: 14, WR: 15, TE: 9 \}/);
+  assert.match(generator, /TARGET_COUNT = 75/);
+  assert.match(generator, /quotas = \{ QB: 18, RB: 21, WR: 22, TE: 14 \}/);
   assert.match(generator, /buildRestOfSeasonRankings/);
   assert.match(generator, /currentSeasonGames > 0/);
   assert.match(generator, /for \(const comparison of existingComparisons\)/);
-  assert.match(generator, /Search Console shows direct rest-of-season demand/);
+  assert.match(generator, /meaningful roster or trade decision/);
   assert.doesNotMatch(generator, /Math\.random/);
 });
 

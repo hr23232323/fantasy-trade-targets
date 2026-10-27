@@ -56,6 +56,7 @@ export function straightUpWeekPath(week: number) { return `/nfl-straight-up-pick
 export function scorePredictionsWeekPath(week: number) { return `/nfl-score-predictions/week-${week}`; }
 export function survivorWeekPath(week: number) { return `/nfl-survivor-picks/week-${week}`; }
 export function confidenceWeekPath(week: number) { return `/nfl-confidence-pool-picks/week-${week}`; }
+export function confidenceHubPath() { return "/nfl-confidence-pool-picks"; }
 export function predictionGamePath(week: number, slug: string) { return `${predictionWeekPath(week)}/${slug}`; }
 
 export function getPredictionGamesForWeek(week: number): PredictionGame[] {

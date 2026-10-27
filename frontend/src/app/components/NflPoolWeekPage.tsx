@@ -16,23 +16,23 @@ const config = {
   confidence: { title: "NFL Week {week} Confidence Pool Picks", accent: "#e7d7ff", eyebrow: "Confidence points", event: "nfl_confidence_pool_picks_viewed" },
 } as const;
 
-export default function NflPoolWeekPage({ week, mode }: { week: number; mode: NflPoolMode }) {
+export default function NflPoolWeekPage({ week, mode, pathOverride }: { week: number; mode: NflPoolMode; pathOverride?: string }) {
   const games = getPredictionGamesForWeek(week);
   const eligible = games.filter((game) => game.snapshot.status === "pregame" && winner(game));
   const ordered = mode === "scores" ? games : [...eligible].sort((left, right) => pickProbability(right) - pickProbability(left));
   const page = config[mode];
   const title = page.title.replace("{week}", String(week));
-  const path = modePath(mode, week);
+  const path = pathOverride ?? modePath(mode, week);
   const top = mode === "scores" ? [...eligible].sort((left, right) => pickProbability(right) - pickProbability(left))[0] : ordered[0];
   const topPick = top ? winner(top) : null;
   const faqs = buildFaqs(week, mode);
 
   return <>
-    <AnalyticsPageView eventName={page.event} properties={{ week, game_count: games.length, ranked_count: eligible.length, release_id: predictionRelease.releaseId }} />
+    <AnalyticsPageView eventName={page.event} properties={{ week, game_count: games.length, ranked_count: eligible.length, release_id: predictionRelease.releaseId, page_type: pathOverride ? "evergreen" : "weekly" }} />
     <JsonLd data={buildSchema(path, title, week, ordered, faqs)} />
     <nav className="page-wrap flex flex-wrap gap-2 py-4 font-mono text-[10px] font-bold uppercase tracking-[0.08em] text-[#69706c]" aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href={predictionHubPath()}>NFL picks</Link><span>/</span><span className="text-[#171c19]">{page.eyebrow}</span></nav>
     <section className="border-y border-[#171c19]" style={{ backgroundColor: page.accent }}><div className="page-wrap py-14 sm:py-20"><span className="eyebrow bg-white">2026 NFL · Week {week} · {page.eyebrow}</span><h1 className="mt-7 max-w-6xl text-[clamp(3rem,7vw,6.8rem)] font-black uppercase leading-[0.84] tracking-[-0.075em]">{title}<span className="text-[#8c2f14]">.</span></h1><p className="mt-8 max-w-4xl border-l-4 border-[#171c19] pl-5 text-lg font-black leading-8">{heroAnswer(mode, top, topPick, eligible.length)}</p><p className="mt-5 max-w-3xl text-sm leading-7 text-[#4f5551]">Updated {formatUpdated(predictionUpdatedAt())}. Projections refresh before kickoff, then the archived call stays fixed.</p></div></section>
-    <section className="page-wrap py-12"><div className="mb-7 flex flex-wrap gap-3"><Link className={pill(mode === "straight")} href={straightUpWeekPath(week)}>Straight up</Link><Link className={pill(mode === "scores")} href={scorePredictionsWeekPath(week)}>Scores</Link><Link className={pill(mode === "survivor")} href={survivorWeekPath(week)}>Survivor</Link><Link className={pill(mode === "confidence")} href={confidenceWeekPath(week)}>Confidence pool</Link></div>{mode === "scores" ? <ScoreBoard games={ordered} /> : <PickBoard games={ordered} mode={mode} />}</section>
+    <section className="page-wrap py-12"><div className="mb-7 flex flex-wrap gap-3"><Link className={pill(mode === "straight")} href={straightUpWeekPath(week)}>Straight up</Link><Link className={pill(mode === "scores")} href={scorePredictionsWeekPath(week)}>Scores</Link><Link className={pill(mode === "survivor")} href={survivorWeekPath(week)}>Survivor</Link><Link className={pill(mode === "confidence")} href={pathOverride ?? confidenceWeekPath(week)}>Confidence pool</Link></div>{mode === "scores" ? <ScoreBoard games={ordered} /> : <PickBoard games={ordered} mode={mode} />}</section>
     <section className="border-y border-[#171c19] bg-[#171c19] text-white"><div className="page-wrap grid gap-8 py-12 lg:grid-cols-[0.8fr_1.2fr]"><div><span className="eyebrow bg-[#dfff4f] text-[#171c19]">How to use it</span><h2 className="section-title mt-6">{usageHeading(mode)}</h2></div><div className="space-y-4 text-sm leading-7 text-white/70">{usageCopy(mode)}<p>The model uses only information available before the target week: opponent-adjusted team strength, scoring form, prior-season strength, home field and rest. Market odds are shown for context and do not create the team rating.</p><Link href="/methodology#nfl-predictions" className="inline-block font-mono text-[10px] font-black uppercase text-[#dfff4f] underline">Read the methodology →</Link></div></div></section>
     <section className="page-wrap py-12"><span className="eyebrow">Questions, answered</span><div className="mt-7 grid gap-px border border-[#171c19] bg-[#171c19] lg:grid-cols-2">{faqs.map(({ question, answer }) => <article key={question} className="bg-[#f3f0e7] p-6"><h2 className="text-xl font-black tracking-[-0.03em]">{question}</h2><p className="mt-3 text-sm leading-7 text-[#69706c]">{answer}</p></article>)}</div></section>
     <BettingDisclosure />

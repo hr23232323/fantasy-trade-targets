@@ -1,12 +1,15 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { buildRestOfSeasonRankings } from "../src/app/lib/rest-of-season-model.mjs";
 
-const TARGET_COUNT = 50;
-const quotas = { QB: 12, RB: 14, WR: 15, TE: 9 };
+const TARGET_COUNT = 75;
+const quotas = { QB: 18, RB: 21, WR: 22, TE: 14 };
+const evidenceSelectedReason = "Two current rest-of-season options close enough in role, projection and remaining schedule to create a meaningful roster or trade decision.";
 const seeds = [
   ["sam-darnold-qb", "kyler-murray-qb"],
   ["kyren-williams-rb", "ashton-jeanty-rb"],
   ["zay-flowers-wr", "nico-collins-wr"],
+  ["chase-brown-rb", "javonte-williams-rb"],
+  ["chase-brown-rb", "james-cook-rb"],
 ];
 
 const [publicRelease, nflverse, teamRelease, playerPages, existingComparisons] = await Promise.all([
@@ -42,9 +45,12 @@ const selectedKeys = new Set();
 const positionCounts = { QB: 0, RB: 0, WR: 0, TE: 0 };
 
 for (const comparison of existingComparisons) {
-  addPair(comparison.leftSlug, comparison.rightSlug, comparison.selectionReason);
+  const selectionReason = /Search Console|DataForSEO|experiment|hypothesis|cohort/i.test(comparison.selectionReason)
+    ? evidenceSelectedReason
+    : comparison.selectionReason;
+  addPair(comparison.leftSlug, comparison.rightSlug, selectionReason);
 }
-for (const [leftSlug, rightSlug] of seeds) addPair(leftSlug, rightSlug, "Search Console shows direct rest-of-season demand for this decision.");
+for (const [leftSlug, rightSlug] of seeds) addPair(leftSlug, rightSlug, evidenceSelectedReason);
 
 for (const position of Object.keys(quotas)) {
   const pool = rankings

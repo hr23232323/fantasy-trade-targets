@@ -4,7 +4,7 @@ import test from "node:test";
 import { americanOddsProbability, buildWeekPredictions, fairMarketProbability, MODEL_VERSION } from "../src/app/lib/nfl-prediction-model.mjs";
 
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
-const [teams, release, generator, hub, weekPage, gamePage, sharedPage, poolPage, straightRoute, scoreRoute, survivorRoute, confidenceRoute, library, disclosure, sitemap, indexNow, header, footer, methodology, sources, workflow, playbook] = await Promise.all([
+const [teams, release, generator, hub, weekPage, gamePage, sharedPage, poolPage, straightRoute, scoreRoute, survivorRoute, confidenceRoute, confidenceHub, library, disclosure, sitemap, indexNow, header, footer, methodology, sources, workflow, playbook] = await Promise.all([
   read("../data/team-release.json").then(JSON.parse),
   read("../data/nfl-prediction-snapshots.json").then(JSON.parse),
   read("../scripts/generate-nfl-predictions.mjs"),
@@ -17,6 +17,7 @@ const [teams, release, generator, hub, weekPage, gamePage, sharedPage, poolPage,
   read("../src/app/nfl-score-predictions/[weekSlug]/page.tsx"),
   read("../src/app/nfl-survivor-picks/[weekSlug]/page.tsx"),
   read("../src/app/nfl-confidence-pool-picks/[weekSlug]/page.tsx"),
+  read("../src/app/nfl-confidence-pool-picks/page.tsx"),
   read("../src/app/lib/nfl-predictions.ts"),
   read("../src/app/components/BettingDisclosure.tsx"),
   read("../src/app/sitemap.ts"),
@@ -42,7 +43,7 @@ test("the betting decision family retains archives and advances through the curr
   assert.deepEqual(teams.predictionModel.validation, { season: 2025, weeks: "5-18", games: 208, straightUp: { correct: 125, graded: 208, accuracy: 0.601 }, againstSpread: { wins: 81, losses: 82, pushes: 1, passes: 44, winRate: 0.497 }, totals: { wins: 81, losses: 80, pushes: 0, passes: 47, winRate: 0.503 }, scoreMae: 7.63 });
   assert.match(playbook, /E17: NFL picks and predictions/);
   assert.match(playbook, /E18: NFL pool and score decisions/);
-  assert.match(playbook, /Adds 25 URLs/);
+  assert.match(playbook, /evergreen current-week confidence page/);
 });
 
 test("every prediction uses validated market fields and bounded model outputs", () => {
@@ -121,6 +122,10 @@ test("prediction pages answer every intent with AEO structure and consumer copy"
   assert.match(scoreRoute, /Score Predictions for Every Game/);
   assert.match(survivorRoute, /Survivor Picks & Win Probabilities/);
   assert.match(confidenceRoute, /Confidence Pool Picks & Rankings/);
+  assert.match(confidenceHub, /Confidence Pool Picks This Week/);
+  assert.match(confidenceHub, /currentPredictionWeek/);
+  assert.match(confidenceHub, /pathOverride=\{PATH\}/);
+  assert.match(poolPage, /page_type: pathOverride \? "evergreen" : "weekly"/);
   assert.match(sharedPage, /effectively coin flips/);
   assert.match(gamePage, /model-to-market|Model vs\. market/i);
   for (const page of [hub, sharedPage, poolPage, gamePage]) assert.doesNotMatch(page, /DataForSEO|Search Console|keyword difficulty|SEO experiment/i);
@@ -148,6 +153,8 @@ test("the new family is crawlable, linked, tracked and refreshed", () => {
   }
   assert.match(indexNow, /predictionRelease\.games/);
   for (const family of ["nfl-straight-up-picks", "nfl-score-predictions", "nfl-survivor-picks", "nfl-confidence-pool-picks"]) assert.ok(indexNow.includes(family));
+  assert.ok(sitemap.includes('"/nfl-confidence-pool-picks"'));
+  assert.match(hub, /confidenceHubPath/);
   assert.match(library, /allPredictionGameParams/);
   assert.match(workflow, /npm run data:predictions/);
   assert.match(workflow, /nfl-prediction-snapshots\.json/);

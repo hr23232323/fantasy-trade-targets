@@ -17,7 +17,7 @@ import { restOfSeasonPositionConfigs } from "./lib/rest-of-season";
 import { restOfSeasonComparisons, restOfSeasonComparisonPath } from "./lib/rest-of-season-comparisons";
 import { weeklySleeperPositions } from "./lib/weekly-sleepers";
 import { playoffPositionConfigs, playoffSchedulePath } from "./lib/playoff-schedule";
-import { allPredictionGameParams, atsWeekPath, confidenceWeekPath, predictionGamePath, predictionHubPath, predictionUpdatedAt, predictionWeekPath, publishedPredictionWeeks, scorePredictionsWeekPath, straightUpWeekPath, survivorWeekPath, totalsWeekPath } from "./lib/nfl-predictions";
+import { allPredictionGameParams, atsWeekPath, confidenceHubPath, confidenceWeekPath, predictionGamePath, predictionHubPath, predictionUpdatedAt, predictionWeekPath, publishedPredictionWeeks, scorePredictionsWeekPath, straightUpWeekPath, survivorWeekPath, totalsWeekPath } from "./lib/nfl-predictions";
 import { bettingTrendsHubPath, teamBettingTrendsPath } from "./lib/nfl-betting-trends";
 
 const BASE_URL = "https://fantasytradetarget.com";
@@ -53,6 +53,7 @@ const staticRoutes = [
   "/methodology",
   "/market",
   "/nfl-picks-predictions",
+  "/nfl-confidence-pool-picks",
   "/nfl-score-predictor",
   "/parlay-calculator",
   "/round-robin-calculator",
@@ -104,6 +105,7 @@ const nflverseDrivenRoutes = new Set([
 
 const predictionDrivenRoutes = new Set([
   predictionHubPath(),
+  confidenceHubPath(),
   "/nfl-score-predictor",
 ]);
 
