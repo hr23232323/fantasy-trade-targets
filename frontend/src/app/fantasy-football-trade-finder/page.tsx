@@ -4,7 +4,7 @@ import AnalyticsPageView from "../components/AnalyticsPageView";
 import JsonLd from "../components/JsonLd";
 import PlayerThumbnail from "../components/PlayerThumbnail";
 import TradeFinderBuilder from "../components/TradeFinderBuilder";
-import { restOfSeasonUpdatedAt, restOfSeasonWeek } from "../lib/rest-of-season";
+import { getRestOfSeasonRankingRows, restOfSeasonUpdatedAt, restOfSeasonWeek } from "../lib/rest-of-season";
 import { getTradeDecisionCards, tradeDecisionComparisons, tradeDecisionLeader, tradeFinderPath } from "../lib/trade-decisions";
 
 const SITE_URL = "https://fantasytradetarget.com";
@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 };
 
 export default async function FantasyFootballTradeFinderPage() {
-  const cards = await getTradeDecisionCards();
-  const players = [...new Map(cards.flatMap(({ left, right }) => [left, right]).map((player) => [player.slug, player])).values()].sort((a, b) => a.name.localeCompare(b.name));
+  const [cards, currentPlayers] = await Promise.all([getTradeDecisionCards(), getRestOfSeasonRankingRows("ALL")]);
+  const players = currentPlayers.toSorted((a, b) => a.name.localeCompare(b.name));
   const updated = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "America/New_York" }).format(new Date(restOfSeasonUpdatedAt));
   return <>
     <AnalyticsPageView eventName="trade_finder_viewed" properties={{ comparison_count: cards.length, current_week: restOfSeasonWeek }} />

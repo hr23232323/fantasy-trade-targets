@@ -24,10 +24,17 @@ test("scheduled data publication owns refreshes and deploys changed releases", (
   assert.match(dataWorkflow, /npm run data:teams/);
   assert.match(dataWorkflow, /npm run data:nflverse/);
   assert.match(dataWorkflow, /npm run data:start-sit/);
+  assert.match(dataWorkflow, /npm run data:ros-comparisons/);
+  assert.match(dataWorkflow, /npm run data:trade-decisions/);
+  assert.match(dataWorkflow, /Validate the complete generated release/);
+  assert.match(dataWorkflow, /run: npm test/);
+  assert.doesNotMatch(dataWorkflow, /name: Commit validated data changes\n\s+if: always\(\)/);
   assert.match(dataWorkflow, /steps\.market_refresh\.outcome == 'success'/);
   assert.match(dataWorkflow, /steps\.team_refresh\.outcome == 'success'/);
   assert.match(dataWorkflow, /steps\.nflverse_refresh\.outcome == 'success'/);
   assert.match(dataWorkflow, /frontend\/data\/start-sit-comparisons\.json/);
+  assert.match(dataWorkflow, /frontend\/data\/rest-of-season-comparisons\.json/);
+  assert.match(dataWorkflow, /frontend\/data\/trade-decision-comparisons\.json/);
   assert.match(dataWorkflow, /git diff --name-only --diff-filter=U/);
   assert.match(dataWorkflow, /git checkout --ours/);
   assert.match(dataWorkflow, /git rebase --skip/);

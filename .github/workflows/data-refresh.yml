@@ -24,6 +24,8 @@ jobs:
       nflverse_outcome: ${{ steps.nflverse_refresh.outcome }}
       prediction_outcome: ${{ steps.prediction_refresh.outcome }}
       start_sit_outcome: ${{ steps.start_sit_refresh.outcome }}
+      ros_comparisons_outcome: ${{ steps.ros_comparisons_refresh.outcome }}
+      trade_decisions_outcome: ${{ steps.trade_decisions_refresh.outcome }}
 
     steps:
     - name: Checkout current main
@@ -77,14 +79,37 @@ jobs:
       continue-on-error: true
       run: npm run data:start-sit
 
+    - id: ros_comparisons_refresh
+      name: Refresh rest-of-season comparison cohort
+      if: >-
+        steps.market_refresh.outcome == 'success' &&
+        steps.team_refresh.outcome == 'success' &&
+        steps.nflverse_refresh.outcome == 'success'
+      working-directory: frontend
+      continue-on-error: true
+      run: npm run data:ros-comparisons
+
+    - id: trade_decisions_refresh
+      name: Refresh one-for-one trade decision cohort
+      if: >-
+        steps.market_refresh.outcome == 'success' &&
+        steps.team_refresh.outcome == 'success' &&
+        steps.nflverse_refresh.outcome == 'success'
+      working-directory: frontend
+      continue-on-error: true
+      run: npm run data:trade-decisions
+
+    - name: Validate the complete generated release
+      working-directory: frontend
+      run: npm test
+
     - id: publish
       name: Commit validated data changes
-      if: always()
       shell: bash
       run: |
         git config user.name "Fantasy Trade Target Data"
         git config user.email "data@fantasytradetarget.com"
-        git add frontend/data/public-release.json frontend/data/rookie-pick-history.json frontend/data/team-release.json frontend/data/nflverse-player-release.json frontend/data/start-sit-comparisons.json frontend/data/nfl-prediction-snapshots.json data/player-snapshot-history.json data/snapshots
+        git add frontend/data/public-release.json frontend/data/rookie-pick-history.json frontend/data/team-release.json frontend/data/nflverse-player-release.json frontend/data/start-sit-comparisons.json frontend/data/rest-of-season-comparisons.json frontend/data/trade-decision-comparisons.json frontend/data/nfl-prediction-snapshots.json data/player-snapshot-history.json data/snapshots
 
         if git diff --cached --quiet; then
           echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -159,7 +184,9 @@ jobs:
        needs.refresh.outputs.team_outcome != 'success' ||
        needs.refresh.outputs.nflverse_outcome != 'success' ||
        needs.refresh.outputs.prediction_outcome != 'success' ||
-       needs.refresh.outputs.start_sit_outcome != 'success')
+       needs.refresh.outputs.start_sit_outcome != 'success' ||
+       needs.refresh.outputs.ros_comparisons_outcome != 'success' ||
+       needs.refresh.outputs.trade_decisions_outcome != 'success')
     runs-on: ubuntu-latest
     steps:
     - name: Record a non-blocking data warning

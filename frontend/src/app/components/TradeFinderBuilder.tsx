@@ -9,8 +9,8 @@ type PublishedPair = { slug: string; leftSlug: string; rightSlug: string };
 
 export default function TradeFinderBuilder({ players, pairs }: { players: PlayerOption[]; pairs: PublishedPair[] }) {
   const router = useRouter();
-  const [send, setSend] = useState(players[0]?.slug ?? "");
-  const [receive, setReceive] = useState(players[1]?.slug ?? "");
+  const [send, setSend] = useState("");
+  const [receive, setReceive] = useState("");
   const pairByPlayers = useMemo(() => new Map(pairs.map((pair) => [[pair.leftSlug, pair.rightSlug].sort().join("|"), pair.slug])), [pairs]);
 
   function submit(event: React.FormEvent<HTMLFormElement>) {

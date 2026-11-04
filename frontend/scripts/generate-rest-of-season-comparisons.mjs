@@ -85,9 +85,12 @@ console.log(`Generated ${selected.length} evidence-selected rest-of-season compa
 function addPair(leftSlug, rightSlug, selectionReason) {
   const left = bySlug.get(leftSlug);
   const right = bySlug.get(rightSlug);
-  if (!left || !right || left.position !== right.position) throw new Error(`Invalid comparison seed: ${leftSlug} vs ${rightSlug}`);
+  // The upstream redraft market can temporarily or permanently drop a player.
+  // Retire that pair and let the deterministic candidate pool replace it instead
+  // of blocking the entire weekly publication.
+  if (!left || !right || left.position !== right.position) return false;
   const key = pairKey(leftSlug, rightSlug);
-  if (selectedKeys.has(key) || positionCounts[left.position] >= quotas[left.position]) return;
+  if (selectedKeys.has(key) || positionCounts[left.position] >= quotas[left.position]) return false;
   selectedKeys.add(key);
   positionCounts[left.position] += 1;
   const ordered = [left, right].sort((a, b) => a.name.localeCompare(b.name));
@@ -98,6 +101,7 @@ function addPair(leftSlug, rightSlug, selectionReason) {
     position: left.position,
     selectionReason,
   });
+  return true;
 }
 
 function reasonFor(position) {

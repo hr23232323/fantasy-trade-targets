@@ -3,10 +3,11 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
-const [manifest, playerPages, publicRelease, hub, detail, builder, library, sitemap, indexNow, footer, rosHub, playbook] = await Promise.all([
+const [manifest, playerPages, publicRelease, generator, hub, detail, builder, library, sitemap, indexNow, footer, rosHub, playbook] = await Promise.all([
   read("../data/trade-decision-comparisons.json").then(JSON.parse),
   read("../data/player-pages.json").then(JSON.parse),
   read("../data/public-release.json").then(JSON.parse),
+  read("../scripts/generate-trade-decisions.mjs"),
   read("../src/app/fantasy-football-trade-finder/page.tsx"),
   read("../src/app/should-i-trade/[slug]/page.tsx"),
   read("../src/app/components/TradeFinderBuilder.tsx"),
@@ -43,16 +44,31 @@ test("observed trade-query pairs have exact, non-weekly destinations", () => {
     ["devonta-smith-wr", "breece-hall-rb"],
     ["parker-washington-wr", "chase-brown-rb"],
     ["aj-brown-wr", "malik-nabers-wr"],
-  ]) assert.ok(pairs.has(pair.sort().join("|")), `${pair.join(" for ")} should be published`);
+  ]) {
+    const bothCurrent = pair.every((slug) => redraftPlayers.has(slug));
+    if (bothCurrent) assert.ok(pairs.has(pair.sort().join("|")), `${pair.join(" for ")} should be published`);
+  }
+});
+
+test("weekly regeneration preserves valid URLs and replaces unsupported players", () => {
+  assert.match(generator, /TARGET_COUNT = 24/);
+  assert.match(generator, /for \(const comparison of existingComparisons\)/);
+  assert.match(generator, /if \(!left \|\| !right \|\| left\.slug === right\.slug\) return false/);
+  assert.match(generator, /currentSeasonGames > 0/);
+  assert.match(generator, /overallRank <= 96/);
+  assert.doesNotMatch(generator, /Math\.random/);
 });
 
 test("finder and detail pages answer trade intent with useful next actions", () => {
   assert.match(hub, /Fantasy Football Trade Finder/);
   assert.match(hub, /trade_finder_viewed/);
   assert.match(hub, /TradeFinderBuilder/);
+  assert.match(hub, /getRestOfSeasonRankingRows\("ALL"\)/);
+  assert.doesNotMatch(hub, /cards\.flatMap/);
   assert.match(hub, /"@type": "CollectionPage"/);
   assert.match(builder, /trade_finder_submitted/);
   assert.match(builder, /fantasy-trade-calculator\?send=/);
+  assert.match(builder, /useState\(""\)/);
   assert.match(detail, /dynamicParams = false/);
   assert.match(detail, /Should I Trade/);
   assert.match(detail, /trade_decision_viewed/);

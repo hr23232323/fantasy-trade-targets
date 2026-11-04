@@ -55,7 +55,10 @@ test("observed GSC pair demand is represented exactly once", () => {
     ["zay-flowers-wr", "nico-collins-wr"],
     ["chase-brown-rb", "javonte-williams-rb"],
     ["chase-brown-rb", "james-cook-rb"],
-  ]) assert.ok(pairs.has(pair.sort().join("|")), `${pair.join(" vs ")} should be published`);
+  ]) {
+    const bothCurrent = pair.every((slug) => redraftPlayers.has(slug));
+    if (bothCurrent) assert.ok(pairs.has(pair.sort().join("|")), `${pair.join(" vs ")} should be published`);
+  }
 });
 
 test("the generator is deterministic and selects close, evidence-led decisions", () => {
@@ -64,6 +67,7 @@ test("the generator is deterministic and selects close, evidence-led decisions",
   assert.match(generator, /buildRestOfSeasonRankings/);
   assert.match(generator, /currentSeasonGames > 0/);
   assert.match(generator, /for \(const comparison of existingComparisons\)/);
+  assert.match(generator, /if \(!left \|\| !right \|\| left\.position !== right\.position\) return false/);
   assert.match(generator, /meaningful roster or trade decision/);
   assert.doesNotMatch(generator, /Math\.random/);
 });

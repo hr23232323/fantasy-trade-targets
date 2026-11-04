@@ -42,20 +42,6 @@
     "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
   },
   {
-    "slug": "jared-goff-vs-lamar-jackson",
-    "leftSlug": "jared-goff-qb",
-    "rightSlug": "lamar-jackson-qb",
-    "position": "QB",
-    "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
-  },
-  {
-    "slug": "lamar-jackson-vs-patrick-mahomes",
-    "leftSlug": "lamar-jackson-qb",
-    "rightSlug": "patrick-mahomes-qb",
-    "position": "QB",
-    "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
-  },
-  {
     "slug": "patrick-mahomes-vs-tyler-shough",
     "leftSlug": "patrick-mahomes-qb",
     "rightSlug": "tyler-shough-qb",
@@ -210,23 +196,9 @@
     "selectionReason": "Two high-interest tight ends close enough in the current rest-of-season model to create a real roster or trade decision."
   },
   {
-    "slug": "drake-maye-vs-lamar-jackson",
-    "leftSlug": "drake-maye-qb",
-    "rightSlug": "lamar-jackson-qb",
-    "position": "QB",
-    "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
-  },
-  {
     "slug": "brock-purdy-vs-drake-maye",
     "leftSlug": "brock-purdy-qb",
     "rightSlug": "drake-maye-qb",
-    "position": "QB",
-    "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
-  },
-  {
-    "slug": "lamar-jackson-vs-trevor-lawrence",
-    "leftSlug": "lamar-jackson-qb",
-    "rightSlug": "trevor-lawrence-qb",
     "position": "QB",
     "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
   },
@@ -385,13 +357,6 @@
     "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
   },
   {
-    "slug": "dak-prescott-vs-lamar-jackson",
-    "leftSlug": "dak-prescott-qb",
-    "rightSlug": "lamar-jackson-qb",
-    "position": "QB",
-    "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
-  },
-  {
     "slug": "jared-goff-vs-trevor-lawrence",
     "leftSlug": "jared-goff-qb",
     "rightSlug": "trevor-lawrence-qb",
@@ -523,5 +488,40 @@
     "rightSlug": "kyle-pitts-te",
     "position": "TE",
     "selectionReason": "Two high-interest tight ends close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "dak-prescott-vs-drake-maye",
+    "leftSlug": "dak-prescott-qb",
+    "rightSlug": "drake-maye-qb",
+    "position": "QB",
+    "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "jared-goff-vs-jordan-love",
+    "leftSlug": "jared-goff-qb",
+    "rightSlug": "jordan-love-qb",
+    "position": "QB",
+    "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "caleb-williams-vs-jared-goff",
+    "leftSlug": "caleb-williams-qb",
+    "rightSlug": "jared-goff-qb",
+    "position": "QB",
+    "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "dak-prescott-vs-trevor-lawrence",
+    "leftSlug": "dak-prescott-qb",
+    "rightSlug": "trevor-lawrence-qb",
+    "position": "QB",
+    "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
+  },
+  {
+    "slug": "jordan-love-vs-trevor-lawrence",
+    "leftSlug": "jordan-love-qb",
+    "rightSlug": "trevor-lawrence-qb",
+    "position": "QB",
+    "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
   }
 ]
