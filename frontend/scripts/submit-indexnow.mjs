@@ -27,6 +27,9 @@ const restOfSeasonComparisons = JSON.parse(
 const tradeDecisionComparisons = JSON.parse(
   await readFile(new URL("../data/trade-decision-comparisons.json", import.meta.url), "utf8"),
 );
+const playoffPlayerPages = JSON.parse(
+  await readFile(new URL("../data/playoff-player-pages.json", import.meta.url), "utf8"),
+);
 const publicRelease = JSON.parse(
   await readFile(new URL("../data/public-release.json", import.meta.url), "utf8"),
 );
@@ -231,6 +234,7 @@ const changedPaths = [
   }),
   ...restOfSeasonComparisons.map((comparison) => `/fantasy-football-rest-of-season-comparisons/${comparison.slug}`),
   ...tradeDecisionComparisons.map((comparison) => `/should-i-trade/${comparison.slug}`),
+  ...playoffPlayerPages.map(({ slug }) => `/fantasy-football-playoff-strength-of-schedule/players/${slug.replace(/-(qb|rb|wr|te)$/, "")}`),
   ...playerPages.map((player) => `/players/${player.slug}`),
   ...playerComparisons.map((comparison) => `/player-comparisons/${comparison.slug}`),
   ...playerPickComparisons.map((comparison) => `/player-vs-rookie-pick/${comparison.slug}`),

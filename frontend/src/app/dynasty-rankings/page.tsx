@@ -5,9 +5,9 @@ import { buildPageMetadata } from "../lib/metadata";
 import { getMarket } from "../lib/market";
 
 export const metadata = buildPageMetadata({
-  title: "Dynasty Rankings: Players & Rookie Picks",
+  title: "2026 Dynasty Fantasy Football Rankings — Superflex & 1QB",
   description:
-    "Free, updated dynasty rankings for quarterbacks, running backs, wide receivers, tight ends, and rookie picks with trade market scores.",
+    "Current 2026 dynasty rankings for Superflex and 1QB leagues. Compare every quarterback, running back, wide receiver, tight end and exact 2027 rookie pick.",
   path: "/dynasty-rankings",
 });
 
@@ -37,7 +37,7 @@ export default async function DynastyRankingsPage() {
     <>
       <PageHero
         eyebrow="Dynasty rankings"
-        title={`Dynasty rankings: ${playerCount} players`}
+        title={`2026 dynasty rankings: ${playerCount} players`}
         accent={`and ${pickCount} rookie picks.`}
         description="Complete Superflex and 1QB dynasty market rankings, positional tables, exact 2027 picks, and seven-day movers—with direct links into the trade calculator."
         primaryHref="#rankings"

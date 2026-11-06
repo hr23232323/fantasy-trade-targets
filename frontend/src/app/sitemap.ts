@@ -18,6 +18,7 @@ import { restOfSeasonComparisons, restOfSeasonComparisonPath } from "./lib/rest-
 import { tradeDecisionComparisons, tradeFinderPath } from "./lib/trade-decisions";
 import { weeklySleeperPositions } from "./lib/weekly-sleepers";
 import { playoffPositionConfigs, playoffSchedulePath } from "./lib/playoff-schedule";
+import { playoffPlayerPages, playoffPlayerPath } from "./lib/playoff-player-pages";
 import { allPredictionGameParams, atsWeekPath, confidenceHubPath, confidenceWeekPath, predictionGamePath, predictionHubPath, predictionUpdatedAt, predictionWeekPath, publishedPredictionWeeks, scorePredictionsWeekPath, straightUpWeekPath, survivorWeekPath, totalsWeekPath } from "./lib/nfl-predictions";
 import { bettingTrendsHubPath, teamBettingTrendsPath } from "./lib/nfl-betting-trends";
 
@@ -173,6 +174,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...playoffPositionConfigs.map(({ slug }) => ({
       url: `${BASE_URL}${playoffSchedulePath(slug)}`,
       lastModified: nflversePlayerRelease.capturedAt,
+    })),
+    ...playoffPlayerPages.map(({ slug }) => ({
+      url: `${BASE_URL}${playoffPlayerPath(slug)}`,
+      lastModified: playerUpdated,
     })),
     ...restOfSeasonPositionConfigs.map(({ slug }) => ({
       url: `${BASE_URL}/fantasy-football-rest-of-season-rankings/${slug}`,

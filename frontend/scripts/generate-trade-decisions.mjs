@@ -1,7 +1,33 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { buildRestOfSeasonRankings } from "../src/app/lib/rest-of-season-model.mjs";
 
-const TARGET_COUNT = 24;
+const TARGET_COUNT = 50;
+const observedDemandPairs = [
+  ["ashton-jeanty-rb", "chase-brown-rb"],
+  ["bijan-robinson-rb", "kenneth-walker-rb"],
+  ["derrick-henry-rb", "james-cook-rb"],
+  ["drake-london-wr", "justin-jefferson-wr"],
+  ["justin-jefferson-wr", "nico-collins-wr"],
+  ["garrett-wilson-wr", "nico-collins-wr"],
+  ["amon-ra-st-brown-wr", "puka-nacua-wr"],
+  ["amon-ra-st-brown-wr", "ceedee-lamb-wr"],
+  ["ceedee-lamb-wr", "puka-nacua-wr"],
+  ["christian-watson-wr", "zay-flowers-wr"],
+  ["sam-laporta-te", "tyler-warren-te"],
+  ["brock-purdy-qb", "drake-maye-qb"],
+  ["ashton-jeanty-rb", "kyren-williams-rb"],
+  ["derrick-henry-rb", "javonte-williams-rb"],
+  ["drake-london-wr", "nico-collins-wr"],
+  ["nico-collins-wr", "zay-flowers-wr"],
+  ["brock-bowers-te", "trey-mcbride-te"],
+  ["jamarr-chase-wr", "puka-nacua-wr"],
+  ["nico-collins-wr", "tetairoa-mcmillan-wr"],
+  ["dak-prescott-qb", "matthew-stafford-qb"],
+  ["brock-purdy-qb", "trevor-lawrence-qb"],
+  ["patrick-mahomes-qb", "tyler-shough-qb"],
+  ["colston-loveland-te", "tyler-warren-te"],
+  ["zay-flowers-wr", "tee-higgins-wr"],
+];
 const [publicRelease, nflverse, teamRelease, playerPages, existingComparisons] = await Promise.all([
   readJson("../data/public-release.json"),
   readJson("../data/nflverse-player-release.json"),
@@ -38,6 +64,7 @@ const selectedKeys = new Set();
 for (const comparison of existingComparisons) {
   addPair(comparison.leftSlug, comparison.rightSlug, comparison.slug);
 }
+for (const [leftSlug, rightSlug] of observedDemandPairs) addPair(leftSlug, rightSlug);
 
 const pool = rankings
   .filter((row) => row.overallRank <= 96)

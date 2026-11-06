@@ -23,7 +23,7 @@ const publishedPlayers = new Set(playerPages.map(({ slug }) => slug));
 const redraftPlayers = new Set(publicRelease.playerMarkets["redraft:1:0"].data.map(({ slug }) => slug));
 
 test("trade finder launches a bounded, current-data-backed cohort", () => {
-  assert.equal(manifest.length, 24);
+  assert.equal(manifest.length, 50);
   assert.equal(new Set(manifest.map(({ slug }) => slug)).size, manifest.length);
   assert.equal(new Set(manifest.map(({ leftSlug, rightSlug }) => [leftSlug, rightSlug].sort().join("|"))).size, manifest.length);
   for (const comparison of manifest) {
@@ -44,6 +44,12 @@ test("observed trade-query pairs have exact, non-weekly destinations", () => {
     ["devonta-smith-wr", "breece-hall-rb"],
     ["parker-washington-wr", "chase-brown-rb"],
     ["aj-brown-wr", "malik-nabers-wr"],
+    ["ashton-jeanty-rb", "chase-brown-rb"],
+    ["bijan-robinson-rb", "kenneth-walker-rb"],
+    ["derrick-henry-rb", "james-cook-rb"],
+    ["drake-london-wr", "justin-jefferson-wr"],
+    ["justin-jefferson-wr", "nico-collins-wr"],
+    ["garrett-wilson-wr", "nico-collins-wr"],
   ]) {
     const bothCurrent = pair.every((slug) => redraftPlayers.has(slug));
     if (bothCurrent) assert.ok(pairs.has(pair.sort().join("|")), `${pair.join(" for ")} should be published`);
@@ -51,7 +57,8 @@ test("observed trade-query pairs have exact, non-weekly destinations", () => {
 });
 
 test("weekly regeneration preserves valid URLs and replaces unsupported players", () => {
-  assert.match(generator, /TARGET_COUNT = 24/);
+  assert.match(generator, /TARGET_COUNT = 50/);
+  assert.match(generator, /observedDemandPairs/);
   assert.match(generator, /for \(const comparison of existingComparisons\)/);
   assert.match(generator, /if \(!left \|\| !right \|\| left\.slug === right\.slug\) return false/);
   assert.match(generator, /currentSeasonGames > 0/);

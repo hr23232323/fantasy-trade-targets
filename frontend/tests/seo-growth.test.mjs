@@ -3,10 +3,11 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
-const [home, calculators, rankingsPage, rankings, comparison, tePremium, refresh] = await Promise.all([
+const [home, calculators, rankingsPage, tradeValueChart, rankings, comparison, tePremium, refresh] = await Promise.all([
   read("../src/app/page.tsx"),
   Promise.all(["fantasy-trade-calculator", "dynasty-trade-calculator", "dynasty-superflex-trade-calculator", "fantasy-football-trade-analyzer"].map((slug) => read(`../src/app/${slug}/page.tsx`))).then((pages) => pages.join("\n")),
   read("../src/app/dynasty-rankings/page.tsx"),
+  read("../src/app/fantasy-football-trade-value-chart/page.tsx"),
   read("../src/app/components/ServerRankings.tsx"),
   read("../src/app/player-comparisons/[slug]/page.tsx"),
   read("../src/app/scoring/te-premium-rankings/page.tsx"),
@@ -17,8 +18,11 @@ test("money pages use descriptive keyword-first headings and visible release fre
   assert.match(home, /Fantasy football trade/);
   for (const phrase of ["Fantasy trade calculator", "Dynasty trade calculator", "Dynasty Superflex trade calculator", "Fantasy football trade analyzer"]) assert.match(calculators, new RegExp(phrase));
   assert.match(calculators, /showRelease/g);
-  assert.match(rankingsPage, /Dynasty rankings:/);
+  assert.match(rankingsPage, /2026 dynasty rankings:/);
+  assert.match(rankingsPage, /2026 Dynasty Fantasy Football Rankings/);
   assert.match(rankingsPage, /showRelease/);
+  assert.match(tradeValueChart, /Fantasy Football Trade Value Chart — Week/);
+  assert.match(tradeValueChart, /activeStartSitWeek/);
 });
 
 test("dynasty rankings publish the complete market with decision-useful columns", () => {

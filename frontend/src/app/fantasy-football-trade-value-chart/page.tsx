@@ -2,11 +2,12 @@ import FaqBlock from "../components/FaqBlock";
 import MarketBoard from "../components/ServerMarketBoard";
 import PageHero from "../components/PageHero";
 import { buildPageMetadata } from "../lib/metadata";
+import { activeStartSitWeek } from "../lib/start-sit";
 
 export const metadata = buildPageMetadata({
-  title: "Fantasy Football Trade Value Chart",
+  title: `Fantasy Football Trade Value Chart — Week ${activeStartSitWeek} (2026)`,
   description:
-    "Free fantasy football trade value chart with daily current-season player values, position filters, search, and direct trade analyzer links.",
+    `Week ${activeStartSitWeek} fantasy football trade values for PPR and Standard redraft leagues. Search current player values by position and open any player in the free trade analyzer.`,
   path: "/fantasy-football-trade-value-chart",
 });
 
@@ -33,7 +34,7 @@ export default function FantasyFootballTradeValueChartPage() {
     <>
       <PageHero
         eyebrow="Fantasy football trade value chart"
-        title="Fantasy football trade value chart"
+        title={`Week ${activeStartSitWeek} fantasy football trade value chart`}
         accent="for current-season trades."
         description="A searchable current-season market board for comparing trade targets before you send the offer."
         primaryHref="#value-chart"

@@ -118,5 +118,135 @@
     "slug": "nico-collins-for-tee-higgins",
     "leftSlug": "nico-collins-wr",
     "rightSlug": "tee-higgins-wr"
+  },
+  {
+    "slug": "ashton-jeanty-for-chase-brown",
+    "leftSlug": "ashton-jeanty-rb",
+    "rightSlug": "chase-brown-rb"
+  },
+  {
+    "slug": "bijan-robinson-for-kenneth-walker",
+    "leftSlug": "bijan-robinson-rb",
+    "rightSlug": "kenneth-walker-rb"
+  },
+  {
+    "slug": "derrick-henry-for-james-cook",
+    "leftSlug": "derrick-henry-rb",
+    "rightSlug": "james-cook-rb"
+  },
+  {
+    "slug": "drake-london-for-justin-jefferson",
+    "leftSlug": "drake-london-wr",
+    "rightSlug": "justin-jefferson-wr"
+  },
+  {
+    "slug": "justin-jefferson-for-nico-collins",
+    "leftSlug": "justin-jefferson-wr",
+    "rightSlug": "nico-collins-wr"
+  },
+  {
+    "slug": "garrett-wilson-for-nico-collins",
+    "leftSlug": "garrett-wilson-wr",
+    "rightSlug": "nico-collins-wr"
+  },
+  {
+    "slug": "amon-ra-st-brown-for-puka-nacua",
+    "leftSlug": "amon-ra-st-brown-wr",
+    "rightSlug": "puka-nacua-wr"
+  },
+  {
+    "slug": "amon-ra-st-brown-for-ceedee-lamb",
+    "leftSlug": "amon-ra-st-brown-wr",
+    "rightSlug": "ceedee-lamb-wr"
+  },
+  {
+    "slug": "ceedee-lamb-for-puka-nacua",
+    "leftSlug": "ceedee-lamb-wr",
+    "rightSlug": "puka-nacua-wr"
+  },
+  {
+    "slug": "christian-watson-for-zay-flowers",
+    "leftSlug": "christian-watson-wr",
+    "rightSlug": "zay-flowers-wr"
+  },
+  {
+    "slug": "sam-laporta-for-tyler-warren",
+    "leftSlug": "sam-laporta-te",
+    "rightSlug": "tyler-warren-te"
+  },
+  {
+    "slug": "brock-purdy-for-drake-maye",
+    "leftSlug": "brock-purdy-qb",
+    "rightSlug": "drake-maye-qb"
+  },
+  {
+    "slug": "ashton-jeanty-for-kyren-williams",
+    "leftSlug": "ashton-jeanty-rb",
+    "rightSlug": "kyren-williams-rb"
+  },
+  {
+    "slug": "derrick-henry-for-javonte-williams",
+    "leftSlug": "derrick-henry-rb",
+    "rightSlug": "javonte-williams-rb"
+  },
+  {
+    "slug": "drake-london-for-nico-collins",
+    "leftSlug": "drake-london-wr",
+    "rightSlug": "nico-collins-wr"
+  },
+  {
+    "slug": "nico-collins-for-zay-flowers",
+    "leftSlug": "nico-collins-wr",
+    "rightSlug": "zay-flowers-wr"
+  },
+  {
+    "slug": "brock-bowers-for-trey-mcbride",
+    "leftSlug": "brock-bowers-te",
+    "rightSlug": "trey-mcbride-te"
+  },
+  {
+    "slug": "jamarr-chase-for-puka-nacua",
+    "leftSlug": "jamarr-chase-wr",
+    "rightSlug": "puka-nacua-wr"
+  },
+  {
+    "slug": "nico-collins-for-tetairoa-mcmillan",
+    "leftSlug": "nico-collins-wr",
+    "rightSlug": "tetairoa-mcmillan-wr"
+  },
+  {
+    "slug": "dak-prescott-for-matthew-stafford",
+    "leftSlug": "dak-prescott-qb",
+    "rightSlug": "matthew-stafford-qb"
+  },
+  {
+    "slug": "brock-purdy-for-trevor-lawrence",
+    "leftSlug": "brock-purdy-qb",
+    "rightSlug": "trevor-lawrence-qb"
+  },
+  {
+    "slug": "patrick-mahomes-for-tyler-shough",
+    "leftSlug": "patrick-mahomes-qb",
+    "rightSlug": "tyler-shough-qb"
+  },
+  {
+    "slug": "colston-loveland-for-tyler-warren",
+    "leftSlug": "colston-loveland-te",
+    "rightSlug": "tyler-warren-te"
+  },
+  {
+    "slug": "tee-higgins-for-zay-flowers",
+    "leftSlug": "tee-higgins-wr",
+    "rightSlug": "zay-flowers-wr"
+  },
+  {
+    "slug": "kenneth-walker-for-puka-nacua",
+    "leftSlug": "kenneth-walker-rb",
+    "rightSlug": "puka-nacua-wr"
+  },
+  {
+    "slug": "jahmyr-gibbs-for-jaxon-smith-njigba",
+    "leftSlug": "jahmyr-gibbs-rb",
+    "rightSlug": "jaxon-smith-njigba-wr"
   }
 ]

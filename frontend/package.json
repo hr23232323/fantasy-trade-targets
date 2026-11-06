@@ -13,6 +13,7 @@
     "data:start-sit": "node scripts/generate-start-sit-comparisons.mjs",
     "data:ros-comparisons": "node scripts/generate-rest-of-season-comparisons.mjs",
     "data:trade-decisions": "node scripts/generate-trade-decisions.mjs",
+    "data:playoff-players": "node scripts/generate-playoff-player-pages.mjs",
     "data:players": "node scripts/refresh-player-pages.mjs",
     "data:player-images": "node scripts/cache-player-images.mjs",
     "data:pick-history": "node scripts/backfill-rookie-pick-history.mjs",

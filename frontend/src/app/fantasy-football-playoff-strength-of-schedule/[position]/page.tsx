@@ -7,6 +7,7 @@ import PlayoffScheduleTable, { type PlayoffScheduleTableRow } from "../../compon
 import TeamLogo from "../../components/TeamLogo";
 import { getMarket } from "../../lib/market";
 import { nflversePlayerRelease } from "../../lib/nflverse";
+import { getPlayoffPlayerOutlooks, playoffPlayerPath } from "../../lib/playoff-player-pages";
 import { alternatePlayoffWeeks, getPlayoffPositionConfig, getPlayoffScheduleRatings, playoffPositionConfigs, playoffSchedulePath, primaryPlayoffWeeks } from "../../lib/playoff-schedule";
 import { canonicalTeamAbbr, teamRelease } from "../../lib/team-data";
 
@@ -30,11 +31,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function PlayoffPositionPage({ params }: PageProps) {
   const config = getPlayoffPositionConfig((await params).position);
   if (!config) notFound();
-  const [primaryRows, alternateRows, market] = await Promise.all([
+  const [primaryRows, alternateRows, market, allPlayerOutlooks] = await Promise.all([
     Promise.resolve(getPlayoffScheduleRatings(config, primaryPlayoffWeeks)),
     Promise.resolve(getPlayoffScheduleRatings(config, alternatePlayoffWeeks)),
     getMarket({ format: "redraft", numQbs: 1, tep: false }),
+    getPlayoffPlayerOutlooks(),
   ]);
+  const playerOutlooks = allPlayerOutlooks.filter(({ player }) => player.position === config.position);
   const playersByTeam = new Map<string, Array<{ slug: string; name: string }>>();
   for (const player of market.assets) {
     if (player.kind !== "player" || player.position !== config.position) continue;
@@ -59,6 +62,7 @@ export default async function PlayoffPositionPage({ params }: PageProps) {
     <section className="border-y border-[#171c19] bg-[#d7b6ff]"><div className="page-wrap py-14 sm:py-20"><span className="eyebrow bg-white">2026 fantasy playoffs · updated {updated}</span><h1 className="mt-7 max-w-6xl text-[clamp(3rem,7vw,6.8rem)] font-black uppercase leading-[0.84] tracking-[-0.075em]">{config.label} fantasy football playoff <span className="text-[#5c2b7d]">strength of schedule.</span></h1>{leader && <p className="mt-8 max-w-4xl border-l-4 border-[#171c19] pl-5 text-lg font-black leading-8">{leader.team.name} ranks first for {config.singular}s in Weeks 15–17, facing {leader.games.map(({ opponent }) => opponent?.abbr ?? "BYE").join(", ")}.</p>}<p className="mt-6 max-w-3xl text-sm leading-7 text-[#514759]">Switch the playoff window and reception scoring below. Higher opponent points allowed means a friendlier path for the position—not a guaranteed player result. A bye counts as a zero-opportunity week.</p></div></section>
     <section className="page-wrap py-12"><div className="mb-8 grid gap-4 lg:grid-cols-2">{leader && <SummaryCard label="Best playoff path" row={leader} color="bg-[#dfff4f]" />}{toughest && <SummaryCard label="Toughest playoff path" row={toughest} color="bg-[#ffb29a]" />}</div><PlayoffScheduleTable windows={tableWindows} position={config.position} /><p className="mt-5 text-xs leading-6 text-[#69706c]">Opponent values use {nflversePlayerRelease.positionDefense.season} regular-season fantasy points allowed per game. The schedule is the current {teamRelease.season} release. Team personnel and defensive performance can change before the fantasy playoffs.</p></section>
     <section className="border-y border-[#171c19] bg-[#8bcfff]"><div className="page-wrap grid gap-8 py-12 lg:grid-cols-2"><div><span className="eyebrow bg-white">Make it actionable</span><h2 className="section-title mt-6">Use schedule as the final filter.</h2></div><div className="space-y-4 text-sm leading-7"><p>Compare playoff paths after checking current role, usage and health. The linked player files show market value, recent workload and weekly results for the leading options on each team.</p><div className="flex flex-wrap gap-3"><Link href="/fantasy-football-rest-of-season-rankings" className="border border-[#171c19] bg-[#171c19] px-4 py-3 font-mono text-[10px] font-black uppercase text-white">Rest-of-season rankings →</Link><Link href="/dynasty-trade-calculator" className="border border-[#171c19] bg-white px-4 py-3 font-mono text-[10px] font-black uppercase">Price a trade →</Link></div></div></div></section>
+    <section className="page-wrap py-12"><div className="mb-7 max-w-3xl"><span className="eyebrow">{config.label} playoff outlooks</span><h2 className="section-title mt-5">The schedule behind each player.</h2></div><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">{playerOutlooks.map(({ player, primary, ranks }) => <Link key={player.slug} href={playoffPlayerPath(player.slug)} className="border border-[#171c19] bg-white p-5 shadow-[3px_3px_0_#171c19] hover:-translate-y-1 hover:bg-[#eefbc1]"><span className="font-mono text-[9px] font-black uppercase text-[#69706c]">PPR schedule #{ranks.ppr}</span><strong className="mt-3 block text-xl">{player.name}</strong><span className="mt-3 block text-xs text-[#59605c]">{primary.games.map(({ opponent }) => opponent?.abbr ?? "BYE").join(" · ")} →</span></Link>)}</div></section>
     <section className="page-wrap py-12"><span className="eyebrow">Other playoff positions</span><div className="mt-6 flex flex-wrap gap-3">{playoffPositionConfigs.filter(({ slug }) => slug !== config.slug).map((item) => <Link key={item.slug} href={playoffSchedulePath(item.slug)} className="border border-[#171c19] bg-white px-4 py-3 font-mono text-[10px] font-black uppercase shadow-[2px_2px_0_#171c19] hover:bg-[#dfff4f]">{item.label}s →</Link>)}</div></section>
     <section className="page-wrap py-12"><span className="eyebrow">Questions, answered</span><div className="mt-7 grid gap-px border border-[#171c19] bg-[#171c19] lg:grid-cols-2">{faqs.map(({ question, answer }) => <article key={question} className="bg-[#f3f0e7] p-6"><h2 className="text-xl font-black tracking-[-0.03em]">{question}</h2><p className="mt-3 text-sm leading-7 text-[#69706c]">{answer}</p></article>)}</div></section>
   </>;

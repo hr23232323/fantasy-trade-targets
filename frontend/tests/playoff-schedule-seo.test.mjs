@@ -3,13 +3,19 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { buildPlayoffScheduleRatings, DEFAULT_PLAYOFF_WEEKS } from "../src/app/lib/playoff-schedule-model.mjs";
 
-const [teams, nflverse, hub, detail, table, lib, sitemap, indexNow, footer, strengthHub, rosPage, playbook] = await Promise.all([
+const [teams, nflverse, publicRelease, playerPages, playerManifest, playerGenerator, hub, detail, playerDetail, table, lib, playerLib, sitemap, indexNow, footer, strengthHub, rosPage, playbook] = await Promise.all([
   readFile(new URL("../data/team-release.json", import.meta.url), "utf8").then(JSON.parse),
   readFile(new URL("../data/nflverse-player-release.json", import.meta.url), "utf8").then(JSON.parse),
+  readFile(new URL("../data/public-release.json", import.meta.url), "utf8").then(JSON.parse),
+  readFile(new URL("../data/player-pages.json", import.meta.url), "utf8").then(JSON.parse),
+  readFile(new URL("../data/playoff-player-pages.json", import.meta.url), "utf8").then(JSON.parse),
+  readFile(new URL("../scripts/generate-playoff-player-pages.mjs", import.meta.url), "utf8"),
   readFile(new URL("../src/app/fantasy-football-playoff-strength-of-schedule/page.tsx", import.meta.url), "utf8"),
   readFile(new URL("../src/app/fantasy-football-playoff-strength-of-schedule/[position]/page.tsx", import.meta.url), "utf8"),
+  readFile(new URL("../src/app/fantasy-football-playoff-strength-of-schedule/players/[slug]/page.tsx", import.meta.url), "utf8"),
   readFile(new URL("../src/app/components/PlayoffScheduleTable.tsx", import.meta.url), "utf8"),
   readFile(new URL("../src/app/lib/playoff-schedule.ts", import.meta.url), "utf8"),
+  readFile(new URL("../src/app/lib/playoff-player-pages.ts", import.meta.url), "utf8"),
   readFile(new URL("../src/app/sitemap.ts", import.meta.url), "utf8"),
   readFile(new URL("../scripts/submit-indexnow.mjs", import.meta.url), "utf8"),
   readFile(new URL("../src/app/components/Footer.tsx", import.meta.url), "utf8"),
@@ -73,10 +79,48 @@ test("the five-page playoff planner is useful, interactive, and answer-first", (
   assert.doesNotMatch(`${hub}${detail}${table}`, /experiment|hypothesis|keyword volume|DataForSEO/i);
 });
 
+test("player playoff outlooks are bounded, current and position-balanced", () => {
+  assert.equal(playerManifest.length, 40);
+  assert.equal(new Set(playerManifest.map(({ slug }) => slug)).size, playerManifest.length);
+  assert.equal(new Set(playerManifest.map(({ slug }) => slug.replace(/-(qb|rb|wr|te)$/, ""))).size, playerManifest.length, "public player paths must stay unique after position suffixes are removed");
+  const market = new Map(publicRelease.playerMarkets["redraft:1:0"].data.map((player) => [player.slug, player]));
+  const published = new Set(playerPages.map(({ slug }) => slug));
+  const counts = { QB: 0, RB: 0, WR: 0, TE: 0 };
+  for (const { slug } of playerManifest) {
+    const player = market.get(slug);
+    assert.ok(player, `${slug} needs a current redraft value`);
+    assert.ok(published.has(slug), `${slug} needs a player file`);
+    assert.ok(teams.teams[player.team], `${slug} needs a current team`);
+    assert.ok(nflverse.players[slug]?.games?.some((game) => game.season === nflverse.season), `${slug} needs current-season results`);
+    counts[player.position] += 1;
+  }
+  assert.deepEqual(counts, { QB: 10, RB: 12, WR: 12, TE: 6 });
+  assert.match(playerGenerator, /POSITION_TARGETS = \{ QB: 10, RB: 12, WR: 12, TE: 6 \}/);
+  assert.match(playerGenerator, /for \(const page of existingPages\)/);
+  assert.doesNotMatch(playerGenerator, /Math\.random/);
+});
+
+test("player playoff pages answer a distinct schedule question", () => {
+  assert.match(playerLib, /getPlayoffPlayerOutlooks/);
+  assert.match(playerLib, /rankFor/);
+  assert.match(playerDetail, /Fantasy Playoff Schedule 2026/);
+  assert.match(playerDetail, /Weeks 15–17/);
+  assert.match(playerDetail, /Weeks 14–16/);
+  assert.match(playerDetail, /playoff_player_outlook_viewed/);
+  assert.match(playerDetail, /position-level tiebreaker/);
+  assert.match(playerDetail, /"@type": "FAQPage"/);
+  assert.match(playerDetail, /PlayerPortrait/);
+  assert.doesNotMatch(playerDetail, /Search Console|DataForSEO|experiment|cohort/i);
+});
+
 test("playoff planners are crawlable and connected to existing decision pages", () => {
   for (const source of [sitemap, indexNow, footer, strengthHub, rosPage]) {
     assert.match(source, /fantasy-football-playoff-strength-of-schedule/);
   }
   assert.match(sitemap, /playoffPositionConfigs\.map/);
+  assert.match(sitemap, /playoffPlayerPages\.map/);
+  assert.match(indexNow, /playoffPlayerPages\.map/);
+  assert.match(hub, /playoffPlayerPath/);
+  assert.match(detail, /playoffPlayerPath/);
   assert.match(playbook, /E15: fantasy playoff schedules/);
 });
