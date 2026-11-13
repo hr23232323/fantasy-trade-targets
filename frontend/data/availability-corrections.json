@@ -1,0 +1,16 @@
+[
+  {
+    "slug": "puka-nacua-wr",
+    "season": 2026,
+    "fromWeek": 10,
+    "throughWeek": 14,
+    "status": "Injured reserve",
+    "injury": "Knee and toe",
+    "projectionFactor": 0,
+    "effectiveDate": "2026-11-12",
+    "verifiedAt": "2026-11-13T13:28:42Z",
+    "sourceName": "Los Angeles Rams transactions",
+    "sourceUrl": "https://www.therams.com/team/transactions/",
+    "detail": "The Rams placed Puka Nacua on injured reserve on November 12. He must miss at least four games: Weeks 10, 12, 13 and 14, with a Week 11 bye. Availability after that requires a new report; this is not a predicted return date."
+  }
+]

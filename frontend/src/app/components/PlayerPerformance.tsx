@@ -2,11 +2,13 @@ import Link from "next/link";
 import { getNflversePlayer, nflversePlayerRelease, rosterStatusLabel } from "../lib/nflverse";
 import type { Position } from "../types/MarketAsset";
 import type { NflverseGameLog } from "../types/NflversePlayer";
+import { getReviewedAvailability } from "../lib/availability";
 
 export default function PlayerPerformance({ slug, name, position }: { slug: string; name: string; position: Position }) {
   const context = getNflversePlayer(slug);
   if (!context) return null;
   const injury = context.injury;
+  const correction = getReviewedAvailability(slug);
   const injuryName = injury?.reportPrimaryInjury ?? injury?.practicePrimaryInjury ?? injury?.practiceSecondaryInjury;
 
   return (
@@ -17,11 +19,13 @@ export default function PlayerPerformance({ slug, name, position }: { slug: stri
       </div>
 
       <div className="mt-8 grid gap-px border border-[#171c19] bg-[#171c19] sm:grid-cols-2 lg:grid-cols-4">
-        <ContextCard label="Roster status" value={rosterStatusLabel(context.roster?.status)} detail={context.roster?.team ? `${context.roster.team} · Week ${context.roster.week ?? "—"}` : "No current roster match"} accent="bg-[#dfff4f]" />
+        <ContextCard label="Roster status" value={correction?.status ?? rosterStatusLabel(context.roster?.status)} detail={correction ? `Team transaction · ${correction.effectiveDate}` : context.roster?.team ? `${context.roster.team} · Week ${context.roster.week ?? "—"}` : "No current roster match"} accent="bg-[#dfff4f]" />
         <ContextCard label="Listed role" value={context.roster?.depthChartPosition ?? context.roster?.position ?? position} detail={context.roster?.jerseyNumber ? `No. ${context.roster.jerseyNumber} · ${context.roster.yearsExperience ?? "—"} years experience` : `${context.roster?.yearsExperience ?? "—"} years experience`} accent="bg-[#8bcfff]" />
         <ContextCard label="Game designation" value={injury?.reportStatus ?? "No designation listed"} detail={injuryName ? `${injuryName} · Week ${injury?.week ?? "—"}` : `Week ${injury?.week ?? context.roster?.week ?? "—"} report`} accent="bg-[#ffb29a]" />
         <ContextCard label="Practice report" value={injury?.practiceStatus ?? "No limitation listed"} detail={injury?.practicePrimaryInjury ?? injury?.practiceSecondaryInjury ?? "No practice injury listed"} accent="bg-[#d7b6ff]" />
       </div>
+
+      {correction ? <p className="mt-5 border border-[#171c19] bg-[#ffb29a] p-5 text-sm leading-7"><strong>{correction.status}.</strong> {correction.detail} <a href={correction.sourceUrl} target="_blank" rel="noreferrer" className="font-bold underline">{correction.sourceName}</a>. Confirmed {correction.verifiedAt.slice(0, 10)}. The practice records below remain historical source observations.</p> : null}
 
       {context.injuryHistory.length > 0 ? (
         <div className="mt-8 overflow-x-auto border border-[#171c19] bg-white/55">

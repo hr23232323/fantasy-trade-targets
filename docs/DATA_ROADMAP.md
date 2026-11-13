@@ -114,6 +114,7 @@ data library. A failed refresh leaves the previous release intact.
 
 - **Product job:** availability status, practice participation, IR/PUP/NFI, suspensions, transactions, and depth-chart movement.
 - **Shipping now:** nflverse structured weekly injury and practice rows are displayed as factual current context on player, team, and matchup pages.
+- **Source lag corrections:** `frontend/data/availability-corrections.json` holds reviewed factual team transactions while the weekly source catches up. Each correction requires a source URL, verification timestamp, season, and inclusive week bounds. These corrections supersede practice/roster labels and weekly projections without rewriting the raw nflverse release or market values. Review at expiry; never infer medical clearance. Puka Nacua's November 12 IR transaction covers at least games in Weeks 10, 12, 13 and 14 because the Rams have a Week 11 bye. This is a manual bridge, not an automated transaction feed.
 - **Preferred expansion path:** license a faster feed that explicitly allows commercial display and derived alerts before adding real-time inactive status, transactions, alerts, or news. Candidates to evaluate include SportsDataIO, Sportradar, or another contracted provider.
 - **Fallback:** link to official reports rather than scraping and republishing protected editorial text.
 - **Refresh:** 5–15 minutes in-season; slower overnight/off-season.

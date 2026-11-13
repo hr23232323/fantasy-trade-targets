@@ -2,6 +2,7 @@ import { nflversePlayerRelease } from "./nflverse";
 import { getPlayerPage } from "./player-pages";
 import publicReleaseJson from "../../../data/public-release.json";
 import type { NflverseInjuryReport } from "../types/NflversePlayer";
+import { getReviewedAvailability } from "./availability";
 
 export type FantasyInjuryRow = {
   slug: string;
@@ -41,8 +42,9 @@ export function getCurrentRosterAvailabilityRows(week: number): FantasyInjuryRow
   return Object.values(nflversePlayerRelease.players).flatMap((player) => {
     const page = getPlayerPage(player.slug);
     const roster = player.roster;
-    if (!page || !roster?.status || roster.status === "ACT" || roster.week !== week) return [];
-    const status = ({ RES: "Reserve", INA: "Inactive", EXE: "Exempt", DEV: "Practice squad", CUT: "Free agent", RET: "Retired" } as Record<string, string>)[roster.status] ?? roster.status;
+    const correction = getReviewedAvailability(player.slug, week);
+    if (!page || !roster || (!correction && (!roster.status || roster.status === "ACT" || roster.week !== week))) return [];
+    const status = correction?.status ?? ({ RES: "Reserve", INA: "Inactive", EXE: "Exempt", DEV: "Practice squad", CUT: "Free agent", RET: "Retired" } as Record<string, string>)[roster.status ?? ""] ?? roster.status ?? "Not listed";
     const report = player.injury ?? emptyReport(week);
     const sameWeekReport = report.week === week;
     return [{
@@ -52,9 +54,9 @@ export function getCurrentRosterAvailabilityRows(week: number): FantasyInjuryRow
       position: roster.position,
       report,
       status,
-      injury: sameWeekReport
+      injury: correction?.injury ?? (sameWeekReport
         ? report.reportPrimaryInjury ?? report.practicePrimaryInjury ?? "Roster status update"
-        : "Roster status update",
+        : "Roster status update"),
       practice: sameWeekReport ? practiceLabel(report.practiceStatus) ?? "Not listed" : "Not listed",
       severity: 7,
     }];

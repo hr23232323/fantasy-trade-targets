@@ -1,4 +1,6 @@
 import releaseJson from "../../../data/nflverse-player-release.json";
+import { getReviewedAvailability } from "./availability";
+import { playerAvailabilityLabel, rosterAvailabilityLabel } from "./player-availability.mjs";
 import type {
   NflverseGameLog,
   NflversePlayerContext,
@@ -12,15 +14,12 @@ export function getNflversePlayer(slug: string) {
 }
 
 export function rosterStatusLabel(status?: string | null) {
-  return ({ ACT: "Active", DEV: "Practice squad", RES: "Reserve", RET: "Retired", CUT: "Free agent" } as Record<string, string>)[status ?? ""] ?? status ?? "Not listed";
+  return rosterAvailabilityLabel(status);
 }
 
 export function availabilityLabel(slug: string) {
   const player = getNflversePlayer(slug);
-  if (!player) return "Not listed";
-  if (player.injury?.reportStatus) return player.injury.reportStatus;
-  if (player.injury?.practiceStatus) return player.injury.practiceStatus.replace(" Participation in Practice", "");
-  return rosterStatusLabel(player.roster?.status);
+  return playerAvailabilityLabel(player, getReviewedAvailability(slug));
 }
 
 export type RecentPlayerContext = {
@@ -48,7 +47,11 @@ export function getRecentPlayerContext(slug: string): RecentPlayerContext | null
   const previousOpportunity = previous ? opportunity(player, previous) : null;
   const injury = player.injury;
   const injuryName = injury?.reportPrimaryInjury ?? injury?.practicePrimaryInjury ?? null;
-  const availability = injury?.reportStatus
+  const correction = getReviewedAvailability(slug);
+  const unavailableRoster = player.roster?.status && player.roster.status !== "ACT";
+  const availability = correction || unavailableRoster
+    ? availabilityLabel(slug)
+    : injury?.reportStatus
     ? `Week ${injury.week ?? latest.week}: ${injury.reportStatus}`
     : injury?.practiceStatus
       ? `Week ${injury.week ?? latest.week}: ${injury.practiceStatus.replace(" Participation in Practice", "")}`
@@ -66,7 +69,7 @@ export function getRecentPlayerContext(slug: string): RecentPlayerContext | null
         ? latestOpportunity - previousOpportunity
         : null,
     availability,
-    availabilityDetail: injuryName,
+    availabilityDetail: correction?.injury ?? injuryName,
   };
 }
 
