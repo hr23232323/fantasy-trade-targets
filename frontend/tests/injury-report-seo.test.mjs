@@ -49,6 +49,9 @@ test("breaking injury updates are sourced, bounded, and expire with the target w
 });
 
 test("the injury hub exposes freshness and preserves weekly archives", () => {
+  const metadata = page.slice(page.indexOf("export function generateMetadata"), page.indexOf("export default function"));
+  assert.match(metadata, /formatDate\(nflversePlayerRelease\.capturedAt\)/);
+  assert.doesNotMatch(metadata, /formatDate\(injuryNewsRelease\.updatedAt\)/);
   assert.match(page, /Week \$\{activeStartSitWeek\} Fantasy Football Injury Report/);
   assert.match(page, /rows\.length/);
   assert.match(archive, /Out & Questionable/);

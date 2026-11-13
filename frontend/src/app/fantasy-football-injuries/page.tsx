@@ -20,7 +20,7 @@ export function generateMetadata(): Metadata {
   const news = getCurrentInjuryNews(activeStartSitWeek);
   return {
     title: `Week ${activeStartSitWeek} Fantasy Football Injury Report & Availability`,
-    description: `${news.length} major Week ${activeStartSitWeek} injury updates and ${rosterRows.length} fantasy-relevant players outside active roster status. Updated ${formatDate(injuryNewsRelease.updatedAt)}.`,
+    description: `Week ${activeStartSitWeek} fantasy football availability: ${rows.length} listed players in the latest Week ${week ?? "—"} practice report, ${rosterRows.length} roster-status updates${news.length ? ` and ${news.length} major injury updates` : ""}. Refreshed ${formatDate(nflversePlayerRelease.capturedAt)}.`,
     alternates: { canonical: PATH },
   };
 }

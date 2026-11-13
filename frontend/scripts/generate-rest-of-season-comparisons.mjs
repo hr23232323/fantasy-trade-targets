@@ -44,13 +44,17 @@ const selected = [];
 const selectedKeys = new Set();
 const positionCounts = { QB: 0, RB: 0, WR: 0, TE: 0 };
 
+// Reserve the observed-demand pairs before filling positional quotas. A player
+// can return to the upstream market after their old pair was replaced; adding
+// seeds after a full existing cohort would silently prevent its restoration.
+for (const [leftSlug, rightSlug] of seeds) addPair(leftSlug, rightSlug, evidenceSelectedReason);
+
 for (const comparison of existingComparisons) {
   const selectionReason = /Search Console|DataForSEO|experiment|hypothesis|cohort/i.test(comparison.selectionReason)
     ? evidenceSelectedReason
     : comparison.selectionReason;
   addPair(comparison.leftSlug, comparison.rightSlug, selectionReason);
 }
-for (const [leftSlug, rightSlug] of seeds) addPair(leftSlug, rightSlug, evidenceSelectedReason);
 
 for (const position of Object.keys(quotas)) {
   const pool = rankings
