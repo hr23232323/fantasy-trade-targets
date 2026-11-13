@@ -1,5 +1,12 @@
 [
   {
+    "slug": "kyler-murray-vs-sam-darnold",
+    "leftSlug": "kyler-murray-qb",
+    "rightSlug": "sam-darnold-qb",
+    "position": "QB",
+    "selectionReason": "Two current rest-of-season options close enough in role, projection and remaining schedule to create a meaningful roster or trade decision."
+  },
+  {
     "slug": "ashton-jeanty-vs-kyren-williams",
     "leftSlug": "ashton-jeanty-rb",
     "rightSlug": "kyren-williams-rb",
@@ -11,6 +18,20 @@
     "leftSlug": "nico-collins-wr",
     "rightSlug": "zay-flowers-wr",
     "position": "WR",
+    "selectionReason": "Two current rest-of-season options close enough in role, projection and remaining schedule to create a meaningful roster or trade decision."
+  },
+  {
+    "slug": "chase-brown-vs-javonte-williams",
+    "leftSlug": "chase-brown-rb",
+    "rightSlug": "javonte-williams-rb",
+    "position": "RB",
+    "selectionReason": "Two current rest-of-season options close enough in role, projection and remaining schedule to create a meaningful roster or trade decision."
+  },
+  {
+    "slug": "chase-brown-vs-james-cook",
+    "leftSlug": "chase-brown-rb",
+    "rightSlug": "james-cook-rb",
+    "position": "RB",
     "selectionReason": "Two current rest-of-season options close enough in role, projection and remaining schedule to create a meaningful roster or trade decision."
   },
   {
@@ -315,20 +336,6 @@
     "selectionReason": "Two high-interest tight ends close enough in the current rest-of-season model to create a real roster or trade decision."
   },
   {
-    "slug": "chase-brown-vs-javonte-williams",
-    "leftSlug": "chase-brown-rb",
-    "rightSlug": "javonte-williams-rb",
-    "position": "RB",
-    "selectionReason": "Two current rest-of-season options close enough in role, projection and remaining schedule to create a meaningful roster or trade decision."
-  },
-  {
-    "slug": "chase-brown-vs-james-cook",
-    "leftSlug": "chase-brown-rb",
-    "rightSlug": "james-cook-rb",
-    "position": "RB",
-    "selectionReason": "Two current rest-of-season options close enough in role, projection and remaining schedule to create a meaningful roster or trade decision."
-  },
-  {
     "slug": "drake-maye-vs-joe-burrow",
     "leftSlug": "drake-maye-qb",
     "rightSlug": "joe-burrow-qb",
@@ -514,13 +521,6 @@
     "slug": "jordan-love-vs-trevor-lawrence",
     "leftSlug": "jordan-love-qb",
     "rightSlug": "trevor-lawrence-qb",
-    "position": "QB",
-    "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
-  },
-  {
-    "slug": "jayden-daniels-vs-jordan-love",
-    "leftSlug": "jayden-daniels-qb",
-    "rightSlug": "jordan-love-qb",
     "position": "QB",
     "selectionReason": "Two high-interest quarterbacks close enough in the current rest-of-season model to create a real roster or trade decision."
   }
