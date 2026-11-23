@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { normalizePlayerMarketPayload } from "../src/app/lib/market-publication.mjs";
+import {
+  canonicalizePlayerMarketSlugs,
+  normalizePlayerMarketPayload,
+} from "../src/app/lib/market-publication.mjs";
 
 test("market publication canonicalizes teams, quarantines isolated bad rows, and rebuilds ranks", () => {
   const payload = normalizePlayerMarketPayload({
@@ -32,6 +35,29 @@ test("market publication clamps the documented rounding edge but rejects broad c
   assert.throws(
     () => normalizePlayerMarketPayload({ data: [...valid, ...Array.from({ length: 7 }, (_, index) => ({ broken: index }))], meta: {} }),
     /rejected 7 malformed or duplicate records/,
+  );
+});
+
+test("market publication keeps stable FTT URLs when an upstream slug changes", () => {
+  const payload = canonicalizePlayerMarketSlugs(
+    normalizePlayerMarketPayload({
+      data: [
+        { ...player("james-cook-iii-rb", "RB", "BUF", 700), sleeperId: "8138" },
+        { ...player("other-rb", "RB", "DAL", 500), sleeperId: "9999" },
+      ],
+      meta: {},
+    }),
+    new Map([["8138", "james-cook-rb"]]),
+  );
+
+  assert.deepEqual(payload.data.map(({ slug }) => slug), ["james-cook-rb", "other-rb"]);
+  assert.equal(payload.meta.publication.canonicalizedSlugCount, 1);
+  assert.throws(
+    () => canonicalizePlayerMarketSlugs(
+      { data: [{ slug: "same", sleeperId: "1" }, { slug: "other", sleeperId: "1" }] },
+      new Map([["1", "stable"]]),
+    ),
+    /duplicate slug stable/,
   );
 });
 

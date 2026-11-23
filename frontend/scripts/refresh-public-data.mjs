@@ -18,11 +18,13 @@ import {
 } from "../src/app/lib/rookie-pick-history.mjs";
 import { buildPlayerSnapshotHistory } from "../src/app/lib/player-history.mjs";
 import {
+  canonicalizePlayerMarketSlugs,
   MARKET_NFL_TEAMS,
   MARKET_PLAYER_POSITIONS,
   normalizePlayerMarketPayload,
 } from "../src/app/lib/market-publication.mjs";
 import {
+  canonicalizePlayerProfilePayload,
   resolvePlayerProfileRefresh,
   validatePlayerProfileRefreshBatch,
 } from "../src/app/lib/player-profile-publication.mjs";
@@ -90,6 +92,12 @@ if (reuseValidatedMarkets) {
 const refreshReviewedPlayerProfiles =
   process.env.REFRESH_REVIEWED_PLAYER_PROFILES !== "false" ||
   Object.keys(priorRelease?.playerProfiles ?? {}).length !== playerSlugs.length;
+const stableSlugBySleeperId = new Map(
+  playerSlugs.flatMap((slug) => {
+    const sleeperId = priorRelease?.playerProfiles?.[slug]?.data?.sleeperId;
+    return sleeperId == null ? [] : [[String(sleeperId), slug]];
+  }),
+);
 
 const headers = {
   Accept: "application/json",
@@ -115,20 +123,6 @@ const pickRequests = quarterbackSettings.flatMap((numQbs) =>
     kind: "picks",
   })),
 );
-const refreshMissingPlayerProfilesOnly =
-  process.env.REFRESH_MISSING_PLAYER_PROFILES_ONLY === "true";
-const profileRequests = playerSlugs
-  .filter(
-    (slug) =>
-      !refreshMissingPlayerProfilesOnly ||
-      !priorRelease?.playerProfiles?.[slug],
-  )
-  .map((slug) => ({
-  key: slug,
-  url: `${API_BASE}/players/${encodeURIComponent(slug)}`,
-  kind: "profile",
-  }));
-
 const marketAndPickResponses = reuseValidatedMarkets
   ? []
   : await mapConcurrent(
@@ -140,13 +134,22 @@ const playerMarkets = reuseValidatedMarkets
   ? Object.fromEntries(
       Object.entries(priorRelease.playerMarkets).map(([key, payload]) => [
         key,
-        normalizePlayerMarketPayload(payload),
+        canonicalizePlayerMarketSlugs(
+          normalizePlayerMarketPayload(payload),
+          stableSlugBySleeperId,
+        ),
       ]),
     )
   : Object.fromEntries(
       marketAndPickResponses
         .filter((response) => response.kind === "players")
-        .map((response) => [response.key, normalizePlayerMarketPayload(response.payload)]),
+        .map((response) => [
+          response.key,
+          canonicalizePlayerMarketSlugs(
+            normalizePlayerMarketPayload(response.payload),
+            stableSlugBySleeperId,
+          ),
+        ]),
     );
 const pickMarkets = reuseValidatedMarkets
   ? priorRelease.pickMarkets
@@ -163,6 +166,43 @@ if (reuseValidatedMarkets) {
 const currentPlayersBySlug = new Map(
   playerMarkets["dynasty:2:0"].data.map((player) => [player.slug, player]),
 );
+const primarySourcePlayers = reuseValidatedMarkets
+  ? playerMarkets["dynasty:2:0"].data
+  : marketAndPickResponses.find(
+      (response) => response.key === "dynasty:2:0",
+    )?.payload?.data ?? [];
+const upstreamSlugByStableSlug = new Map(
+  primarySourcePlayers.map((player) => {
+    const sleeperId = player.sleeperId == null ? null : String(player.sleeperId);
+    const stableSlug = sleeperId
+      ? stableSlugBySleeperId.get(sleeperId) ?? player.slug
+      : player.slug;
+    return [stableSlug, player.slug];
+  }),
+);
+const stableSlugBySourceSlug = new Map(
+  [...upstreamSlugByStableSlug.entries()].map(([stableSlug, sourceSlug]) => [
+    sourceSlug,
+    stableSlug,
+  ]),
+);
+const refreshMissingPlayerProfilesOnly =
+  process.env.REFRESH_MISSING_PLAYER_PROFILES_ONLY === "true";
+const profileRequests = playerSlugs
+  .filter(
+    (slug) =>
+      !refreshMissingPlayerProfilesOnly ||
+      !priorRelease?.playerProfiles?.[slug],
+  )
+  .map((slug) => {
+    const upstreamSlug = upstreamSlugByStableSlug.get(slug) ?? slug;
+    return {
+      key: slug,
+      upstreamSlug,
+      url: `${API_BASE}/players/${encodeURIComponent(upstreamSlug)}`,
+      kind: "profile",
+    };
+  });
 const currentPlayers = [...currentPlayersBySlug.values()];
 const currentPlayerSlugs = currentPlayers.map((player) => player.slug);
 const carriedScoringProfiles = usableScoringProfiles(
@@ -191,7 +231,7 @@ const scoringHealthPlayer =
   currentPlayersBySlug.get("josh-allen-qb") ?? scoringCohort[0];
 const scoringHealthPayload = scoringHealthPlayer
   ? await fetchOptionalJson(
-      `${API_BASE}/players/${encodeURIComponent(scoringHealthPlayer.slug)}/stats`,
+      `${API_BASE}/players/${encodeURIComponent(upstreamSlugByStableSlug.get(scoringHealthPlayer.slug) ?? scoringHealthPlayer.slug)}/stats`,
       { attempts: 1 },
     )
   : null;
@@ -223,7 +263,7 @@ const remainingScoringStatsResponses = await mapConcurrent(
   scoringProfileConcurrency,
   async (player, index) => {
     const payload = await fetchOptionalJson(
-      `${API_BASE}/players/${encodeURIComponent(player.slug)}/stats`,
+      `${API_BASE}/players/${encodeURIComponent(upstreamSlugByStableSlug.get(player.slug) ?? player.slug)}/stats`,
       { attempts: 2 },
     );
     const completed = index + 1 + (scoringHealthWasRequested ? 1 : 0);
@@ -250,10 +290,14 @@ const profileResponses = refreshReviewedPlayerProfiles
       2,
       async (request, index) => {
         try {
-          const payload = await fetchPlayerProfile(
+          const upstreamPayload = await fetchPlayerProfile(
             request.url,
             scoringStatsBySlug.get(request.key),
           );
+          const payload = canonicalizePlayerProfilePayload(upstreamPayload, {
+            stableSlug: request.key,
+            stableSlugBySourceSlug,
+          });
           console.log(
             `Fetched player profile ${index + 1}/${profileRequests.length}: ${request.key}`,
           );

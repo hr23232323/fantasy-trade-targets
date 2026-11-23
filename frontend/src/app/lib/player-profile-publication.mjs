@@ -36,6 +36,24 @@ export function resolvePlayerProfileRefresh({
   };
 }
 
+export function canonicalizePlayerProfilePayload(
+  payload,
+  { stableSlug, stableSlugBySourceSlug },
+) {
+  if (!payload?.data) return payload;
+  return {
+    ...payload,
+    data: {
+      ...payload.data,
+      slug: stableSlug,
+      similar: (payload.data.similar ?? []).map((similar) => ({
+        ...similar,
+        slug: stableSlugBySourceSlug.get(similar.slug) ?? similar.slug,
+      })),
+    },
+  };
+}
+
 export function validatePlayerProfileRefreshBatch(responses, requestCount) {
   if (!Array.isArray(responses) || responses.length !== requestCount) {
     throw new Error(

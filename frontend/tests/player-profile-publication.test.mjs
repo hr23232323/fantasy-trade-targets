@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  canonicalizePlayerProfilePayload,
   playerProfileCarryLimit,
   resolvePlayerProfileRefresh,
   validatePlayerProfileRefreshBatch,
@@ -31,6 +32,28 @@ test("a successful profile refresh always replaces prior evidence", () => {
   assert.equal(response.status, "refreshed");
   assert.equal(response.payload, fresh);
   assert.equal(response.reason, null);
+});
+
+test("profile payloads use stable public slugs while preserving fresh upstream evidence", () => {
+  const payload = canonicalizePlayerProfilePayload(
+    {
+      data: {
+        slug: "james-cook-iii-rb",
+        sleeperId: "8138",
+        similar: [{ slug: "michael-penix-jr-qb" }],
+      },
+      meta: { generatedAt: "2026-11-23T00:00:00Z" },
+    },
+    {
+      stableSlug: "james-cook-rb",
+      stableSlugBySourceSlug: new Map([["michael-penix-jr-qb", "michael-penix-qb"]]),
+    },
+  );
+
+  assert.equal(payload.data.slug, "james-cook-rb");
+  assert.equal(payload.data.sleeperId, "8138");
+  assert.equal(payload.data.similar[0].slug, "michael-penix-qb");
+  assert.equal(payload.meta.generatedAt, "2026-11-23T00:00:00Z");
 });
 
 test("a missing profile without a validated fallback blocks publication", () => {

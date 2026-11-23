@@ -61,6 +61,40 @@ export function normalizePlayerMarketPayload(payload) {
   };
 }
 
+export function canonicalizePlayerMarketSlugs(payload, stableSlugBySleeperId) {
+  if (!Array.isArray(payload?.data)) {
+    throw new Error("Player market response is missing its data array");
+  }
+
+  const seenSlugs = new Set();
+  let canonicalizedSlugCount = 0;
+  const data = payload.data.map((player) => {
+    const sleeperId = player.sleeperId == null ? null : String(player.sleeperId);
+    const slug = sleeperId
+      ? stableSlugBySleeperId.get(sleeperId) ?? player.slug
+      : player.slug;
+    if (seenSlugs.has(slug)) {
+      throw new Error(`Player market canonicalization produced duplicate slug ${slug}`);
+    }
+    seenSlugs.add(slug);
+    if (slug === player.slug) return player;
+    canonicalizedSlugCount += 1;
+    return { ...player, slug };
+  });
+
+  return {
+    ...payload,
+    data,
+    meta: {
+      ...payload.meta,
+      publication: {
+        ...payload.meta?.publication,
+        canonicalizedSlugCount,
+      },
+    },
+  };
+}
+
 function isPublishableIdentity(player) {
   return Boolean(
     player &&
