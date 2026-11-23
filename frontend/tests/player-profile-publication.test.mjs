@@ -41,26 +41,26 @@ test("a missing profile without a validated fallback blocks publication", () => 
 });
 
 test("isolated carries are bounded so a broad profile outage cannot look healthy", () => {
-  assert.equal(playerProfileCarryLimit(220), 10);
+  assert.equal(playerProfileCarryLimit(220), 22);
   const healthy = Array.from({ length: 220 }, (_, index) => ({
     slug: `player-${index}`,
     payload: prior,
-    status: index < 3 ? "carried" : "refreshed",
+    status: index < 20 ? "carried" : "refreshed",
   }));
   assert.deepEqual(validatePlayerProfileRefreshBatch(healthy, 220), {
     requestedCount: 220,
-    refreshedCount: 217,
-    carriedCount: 3,
-    carriedSlugs: ["player-0", "player-1", "player-2"],
-    allowedCarryCount: 10,
+    refreshedCount: 200,
+    carriedCount: 20,
+    carriedSlugs: Array.from({ length: 20 }, (_, index) => `player-${index}`).sort(),
+    allowedCarryCount: 22,
   });
 
   const outage = healthy.map((response, index) => ({
     ...response,
-    status: index < 11 ? "carried" : "refreshed",
+    status: index < 23 ? "carried" : "refreshed",
   }));
   assert.throws(
     () => validatePlayerProfileRefreshBatch(outage, 220),
-    /carry 11 profiles; limit is 10/,
+    /carry 23 profiles; limit is 22/,
   );
 });

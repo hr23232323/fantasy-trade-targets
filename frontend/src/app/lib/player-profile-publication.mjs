@@ -1,6 +1,6 @@
-const MAX_CARRIED_PROFILE_RATIO = 0.05;
+const MAX_CARRIED_PROFILE_RATIO = 0.1;
 const MIN_CARRIED_PROFILE_LIMIT = 3;
-const MAX_CARRIED_PROFILE_LIMIT = 10;
+const MAX_CARRIED_PROFILE_LIMIT = 25;
 
 export function playerProfileCarryLimit(requestCount) {
   if (!Number.isInteger(requestCount) || requestCount < 1) return 0;
