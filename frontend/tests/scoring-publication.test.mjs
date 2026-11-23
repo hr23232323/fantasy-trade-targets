@@ -114,6 +114,10 @@ test("profile expansion preserves prior evidence through transient optional gaps
   assert.match(publisher, /data\?\.stats\?\.derivedStats/);
   assert.match(publisher, /PRESERVE_VALIDATED_SCORING_PROFILES/);
   assert.match(publisher, /preserving the validated cohort/);
+  assert.match(publisher, /resolvePlayerProfileRefresh/);
+  assert.match(publisher, /validatePlayerProfileRefreshBatch/);
+  assert.match(publisher, /Carrying validated player profile/);
+  assert.match(publisher, /playerProfilePublication/);
 });
 
 test("scoring-only backfills preserve validated market identity and classify outcomes", () => {

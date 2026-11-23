@@ -44,8 +44,10 @@ test("scheduled data publication owns refreshes and deploys changed releases", (
   assert.match(dataWorkflow, /concurrent product release changed a generated artifact/);
   assert.match(dataWorkflow, /needs\.refresh\.outputs\.changed == 'true'/);
   assert.match(dataWorkflow, /uses: \.\/\.github\/workflows\/_deploy\.yml/);
-  assert.match(dataWorkflow, /Report preserved upstream feeds/);
-  assert.match(dataWorkflow, /::warning::One or more upstream feeds were unavailable/);
+  assert.match(dataWorkflow, /Fail visibly on preserved upstream feeds/);
+  assert.match(dataWorkflow, /::error::One or more upstream feeds were unavailable/);
+  assert.match(dataWorkflow, /this refresh is degraded/);
+  assert.match(dataWorkflow, /exit 1/);
 });
 
 test("production builds use remote layers and a bounded Docker context", () => {

@@ -187,7 +187,7 @@ jobs:
         exit 1
 
   degraded:
-    name: Report preserved upstream feeds
+    name: Fail visibly on preserved upstream feeds
     needs: refresh
     if: >-
       always() && needs.refresh.result == 'success' &&
@@ -201,5 +201,7 @@ jobs:
        needs.refresh.outputs.playoff_players_outcome != 'success')
     runs-on: ubuntu-latest
     steps:
-    - name: Record a non-blocking data warning
-      run: echo "::warning::One or more upstream feeds were unavailable. The validated prior release was preserved where required."
+    - name: Record a visible data failure
+      run: |
+        echo "::error::One or more upstream feeds were unavailable. The validated prior release was preserved, but this refresh is degraded."
+        exit 1

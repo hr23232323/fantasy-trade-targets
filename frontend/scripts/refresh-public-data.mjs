@@ -22,6 +22,10 @@ import {
   MARKET_PLAYER_POSITIONS,
   normalizePlayerMarketPayload,
 } from "../src/app/lib/market-publication.mjs";
+import {
+  resolvePlayerProfileRefresh,
+  validatePlayerProfileRefreshBatch,
+} from "../src/app/lib/player-profile-publication.mjs";
 
 const API_BASE = "https://api.tradyr.app/v1";
 const formats = ["dynasty", "redraft"];
@@ -245,17 +249,35 @@ const profileResponses = refreshReviewedPlayerProfiles
       profileRequests,
       2,
       async (request, index) => {
-        const payload = await fetchPlayerProfile(
-          request.url,
-          scoringStatsBySlug.get(request.key),
-        );
-        console.log(
-          `Fetched player profile ${index + 1}/${profileRequests.length}: ${request.key}`,
-        );
-        return { ...request, payload };
+        try {
+          const payload = await fetchPlayerProfile(
+            request.url,
+            scoringStatsBySlug.get(request.key),
+          );
+          console.log(
+            `Fetched player profile ${index + 1}/${profileRequests.length}: ${request.key}`,
+          );
+          return {
+            ...request,
+            ...resolvePlayerProfileRefresh({ slug: request.key, payload }),
+          };
+        } catch (error) {
+          const resolved = resolvePlayerProfileRefresh({
+            slug: request.key,
+            priorPayload: priorRelease?.playerProfiles?.[request.key],
+            error,
+          });
+          console.warn(
+            `Carrying validated player profile ${request.key}: ${resolved.reason}`,
+          );
+          return { ...request, ...resolved };
+        }
       },
     )
   : [];
+const playerProfileRefreshSummary = refreshReviewedPlayerProfiles
+  ? validatePlayerProfileRefreshBatch(profileResponses, profileRequests.length)
+  : null;
 const rawPlayerProfiles = refreshReviewedPlayerProfiles
   ? {
       ...(refreshMissingPlayerProfilesOnly
@@ -338,6 +360,23 @@ const scoringProfilePublication = preserveValidatedScoringProfiles
         refreshCursor: priorRefreshCursor,
       }),
     };
+const playerProfilePublication = playerProfileRefreshSummary
+  ? {
+      ...playerProfileRefreshSummary,
+      sourceStatus: playerProfileRefreshSummary.carriedCount > 0
+        ? "partially_available"
+        : "available",
+      lastAttemptedAt: new Date().toISOString(),
+    }
+  : {
+      ...(priorRelease?.playerProfilePublication ?? {}),
+      requestedCount: 0,
+      refreshedCount: 0,
+      carriedCount: 0,
+      carriedSlugs: [],
+      sourceStatus: "reused",
+      lastAttemptedAt: new Date().toISOString(),
+    };
 const playerSnapshotHistory = buildPlayerSnapshotHistory({
   existing: priorSnapshotHistory?.players,
   releases: [
@@ -370,6 +409,7 @@ validateRelease({
   playerMarkets,
   pickMarkets,
   playerProfiles,
+  playerProfilePublication,
   playerScoringProfiles,
   priorScoringProfileCount: Object.keys(carriedScoringProfiles).length,
   priorPlayerMarkets: priorRelease?.playerMarkets,
@@ -389,6 +429,7 @@ const release = {
   playerMarkets,
   pickMarkets,
   playerProfiles,
+  playerProfilePublication,
   playerScoringProfiles,
   scoringProfilePublication,
   playerSnapshotHistory,
@@ -448,7 +489,7 @@ await writeFile(
 );
 
 console.log(
-  `Published ${releaseId}: ${Object.keys(playerMarkets).length} player markets, ${Object.keys(pickMarkets).length} pick markets, ${Object.keys(playerProfiles).length} player profiles, ${Object.keys(playerScoringProfiles).length} scoring profiles.`,
+  `Published ${releaseId}: ${Object.keys(playerMarkets).length} player markets, ${Object.keys(pickMarkets).length} pick markets, ${Object.keys(playerProfiles).length} player profiles (${playerProfilePublication.carriedCount} carried), ${Object.keys(playerScoringProfiles).length} scoring profiles.`,
 );
 
 async function fetchPlayerProfile(playerUrl, suppliedStats) {
