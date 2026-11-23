@@ -93,9 +93,11 @@ const refreshReviewedPlayerProfiles =
   process.env.REFRESH_REVIEWED_PLAYER_PROFILES !== "false" ||
   Object.keys(priorRelease?.playerProfiles ?? {}).length !== playerSlugs.length;
 const stableSlugBySleeperId = new Map(
-  playerSlugs.flatMap((slug) => {
-    const sleeperId = priorRelease?.playerProfiles?.[slug]?.data?.sleeperId;
-    return sleeperId == null ? [] : [[String(sleeperId), slug]];
+  playerPageManifest.flatMap((player) => {
+    const sleeperId =
+      player.sleeperId ??
+      priorRelease?.playerProfiles?.[player.slug]?.data?.sleeperId;
+    return sleeperId == null ? [] : [[String(sleeperId), player.slug]];
   }),
 );
 

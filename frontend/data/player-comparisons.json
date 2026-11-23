@@ -536,12 +536,12 @@
     "decisionFrame": "Rebuilders should anchor to dynasty and contenders to redraft, then use the actual PPR setting to decide whether any measured gap deserves an add."
   },
   {
-    "slug": "malik-davis-vs-chris-rodriguez",
-    "leftSlug": "malik-davis-rb",
+    "slug": "ollie-gordon-vs-chris-rodriguez",
+    "leftSlug": "ollie-gordon-rb",
     "rightSlug": "chris-rodriguez-rb",
     "position": "RB",
-    "editorialLens": "These inexpensive running backs sit in a range where small differences are easy to overstate. The comparison keeps baseline dynasty, redraft, and each reception setting separate, using only validated player evidence relative to the same RB replacement line.",
-    "decisionFrame": "Treat the result as a roster-fit tiebreaker and avoid attaching a meaningful pick unless the displayed league-specific gap clearly leaves the tier."
+    "editorialLens": "This running back comparison separates Ollie Gordon's younger dynasty runway from Chris Rodriguez's nearer-term role. The page keeps baseline dynasty, redraft, and each reception setting separate, using only validated player evidence relative to the same RB replacement line.",
+    "decisionFrame": "Use the dynasty row for long-term roster construction and the redraft row for immediate depth, then keep any add proportional to the displayed league-specific gap."
   },
   {
     "slug": "braelon-allen-vs-tank-bigsby",

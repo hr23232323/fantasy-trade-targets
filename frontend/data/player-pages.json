@@ -3240,18 +3240,19 @@
     }
   },
   {
-    "slug": "malik-davis-rb",
-    "name": "Malik Davis",
-    "editorialLens": "Malik Davis's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
+    "slug": "ollie-gordon-rb",
+    "name": "Ollie Gordon",
+    "sleeperId": "12495",
+    "editorialLens": "Ollie Gordon's dynasty price sits at the intersection of age, workload, and position volatility; the usage and market sections show the evidence behind the current tier.",
     "image": {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Malik_Davis.jpg",
+      "src": "/images/player-file-placeholder.svg",
       "width": 960,
-      "height": 1048,
-      "alt": "Photograph of Malik Davis",
-      "author": "All-Pro Reels",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Malik_Davis.jpg"
+      "height": 960,
+      "alt": "Fantasy Trade Target player file graphic for Ollie Gordon",
+      "author": "Fantasy Trade Target",
+      "license": "Original site artwork",
+      "licenseUrl": "/editorial-policy",
+      "sourceUrl": "/editorial-policy"
     }
   },
   {
