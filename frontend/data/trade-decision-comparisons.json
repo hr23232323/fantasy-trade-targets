@@ -50,11 +50,6 @@
     "rightSlug": "justin-jefferson-wr"
   },
   {
-    "slug": "kyren-williams-for-puka-nacua",
-    "leftSlug": "kyren-williams-rb",
-    "rightSlug": "puka-nacua-wr"
-  },
-  {
     "slug": "malik-nabers-for-zay-flowers",
     "leftSlug": "malik-nabers-wr",
     "rightSlug": "zay-flowers-wr"
@@ -150,19 +145,9 @@
     "rightSlug": "nico-collins-wr"
   },
   {
-    "slug": "amon-ra-st-brown-for-puka-nacua",
-    "leftSlug": "amon-ra-st-brown-wr",
-    "rightSlug": "puka-nacua-wr"
-  },
-  {
     "slug": "amon-ra-st-brown-for-ceedee-lamb",
     "leftSlug": "amon-ra-st-brown-wr",
     "rightSlug": "ceedee-lamb-wr"
-  },
-  {
-    "slug": "ceedee-lamb-for-puka-nacua",
-    "leftSlug": "ceedee-lamb-wr",
-    "rightSlug": "puka-nacua-wr"
   },
   {
     "slug": "christian-watson-for-zay-flowers",
@@ -173,11 +158,6 @@
     "slug": "sam-laporta-for-tyler-warren",
     "leftSlug": "sam-laporta-te",
     "rightSlug": "tyler-warren-te"
-  },
-  {
-    "slug": "brock-purdy-for-drake-maye",
-    "leftSlug": "brock-purdy-qb",
-    "rightSlug": "drake-maye-qb"
   },
   {
     "slug": "ashton-jeanty-for-kyren-williams",
@@ -203,11 +183,6 @@
     "slug": "brock-bowers-for-trey-mcbride",
     "leftSlug": "brock-bowers-te",
     "rightSlug": "trey-mcbride-te"
-  },
-  {
-    "slug": "jamarr-chase-for-puka-nacua",
-    "leftSlug": "jamarr-chase-wr",
-    "rightSlug": "puka-nacua-wr"
   },
   {
     "slug": "nico-collins-for-tetairoa-mcmillan",
@@ -240,13 +215,38 @@
     "rightSlug": "zay-flowers-wr"
   },
   {
-    "slug": "kenneth-walker-for-puka-nacua",
-    "leftSlug": "kenneth-walker-rb",
-    "rightSlug": "puka-nacua-wr"
-  },
-  {
     "slug": "jahmyr-gibbs-for-jaxon-smith-njigba",
     "leftSlug": "jahmyr-gibbs-rb",
     "rightSlug": "jaxon-smith-njigba-wr"
+  },
+  {
+    "slug": "bijan-robinson-for-ceedee-lamb",
+    "leftSlug": "bijan-robinson-rb",
+    "rightSlug": "ceedee-lamb-wr"
+  },
+  {
+    "slug": "ceedee-lamb-for-christian-mccaffrey",
+    "leftSlug": "ceedee-lamb-wr",
+    "rightSlug": "christian-mccaffrey-rb"
+  },
+  {
+    "slug": "ceedee-lamb-for-kenneth-walker",
+    "leftSlug": "ceedee-lamb-wr",
+    "rightSlug": "kenneth-walker-rb"
+  },
+  {
+    "slug": "jamarr-chase-for-jaxon-smith-njigba",
+    "leftSlug": "jamarr-chase-wr",
+    "rightSlug": "jaxon-smith-njigba-wr"
+  },
+  {
+    "slug": "bijan-robinson-for-christian-mccaffrey",
+    "leftSlug": "bijan-robinson-rb",
+    "rightSlug": "christian-mccaffrey-rb"
+  },
+  {
+    "slug": "christian-mccaffrey-for-jamarr-chase",
+    "leftSlug": "christian-mccaffrey-rb",
+    "rightSlug": "jamarr-chase-wr"
   }
 ]
