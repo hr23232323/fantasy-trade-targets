@@ -61,7 +61,11 @@ export function normalizePlayerMarketPayload(payload) {
   };
 }
 
-export function canonicalizePlayerMarketSlugs(payload, stableSlugBySleeperId) {
+export function canonicalizePlayerMarketSlugs(
+  payload,
+  stableSlugBySleeperId,
+  stableNameBySlug = new Map(),
+) {
   if (!Array.isArray(payload?.data)) {
     throw new Error("Player market response is missing its data array");
   }
@@ -77,9 +81,10 @@ export function canonicalizePlayerMarketSlugs(payload, stableSlugBySleeperId) {
       throw new Error(`Player market canonicalization produced duplicate slug ${slug}`);
     }
     seenSlugs.add(slug);
-    if (slug === player.slug) return player;
-    canonicalizedSlugCount += 1;
-    return { ...player, slug };
+    const name = stableNameBySlug.get(slug) ?? player.name;
+    if (slug !== player.slug) canonicalizedSlugCount += 1;
+    if (slug === player.slug && name === player.name) return player;
+    return { ...player, slug, name };
   });
 
   return {

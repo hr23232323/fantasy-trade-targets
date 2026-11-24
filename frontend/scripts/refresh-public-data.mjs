@@ -100,6 +100,9 @@ const stableSlugBySleeperId = new Map(
     return sleeperId == null ? [] : [[String(sleeperId), player.slug]];
   }),
 );
+const stableNameBySlug = new Map(
+  playerPageManifest.map((player) => [player.slug, player.name]),
+);
 
 const headers = {
   Accept: "application/json",
@@ -139,6 +142,7 @@ const playerMarkets = reuseValidatedMarkets
         canonicalizePlayerMarketSlugs(
           normalizePlayerMarketPayload(payload),
           stableSlugBySleeperId,
+          stableNameBySlug,
         ),
       ]),
     )
@@ -150,6 +154,7 @@ const playerMarkets = reuseValidatedMarkets
           canonicalizePlayerMarketSlugs(
             normalizePlayerMarketPayload(response.payload),
             stableSlugBySleeperId,
+            stableNameBySlug,
           ),
         ]),
     );

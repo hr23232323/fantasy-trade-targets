@@ -48,9 +48,11 @@ test("market publication keeps stable FTT URLs when an upstream slug changes", (
       meta: {},
     }),
     new Map([["8138", "james-cook-rb"]]),
+    new Map([["james-cook-rb", "James Cook"]]),
   );
 
   assert.deepEqual(payload.data.map(({ slug }) => slug), ["james-cook-rb", "other-rb"]);
+  assert.equal(payload.data[0].name, "James Cook");
   assert.equal(payload.meta.publication.canonicalizedSlugCount, 1);
   assert.throws(
     () => canonicalizePlayerMarketSlugs(

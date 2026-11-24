@@ -94,14 +94,17 @@ test("the comparisons that publish stay backed by the current market release", (
   // A floor rather than an exact count: routine churn drops a handful of comparisons, but a
   // collapsed or renamed market would drop most of them and must still fail the build.
   assert.ok(
-    publishedComparisons.length >= 90,
+    publishedComparisons.length >= Math.ceil(manifest.length * 0.65),
     `only ${publishedComparisons.length} of ${manifest.length} comparisons are still market-backed`,
   );
   const publishedComparisonPlayers = new Set(
     publishedComparisons.flatMap(({ leftSlug, rightSlug }) => [leftSlug, rightSlug]),
   );
+  const reviewedComparisonPlayers = new Set(
+    manifest.flatMap(({ leftSlug, rightSlug }) => [leftSlug, rightSlug]),
+  );
   assert.ok(
-    publishedComparisonPlayers.size >= 115,
+    publishedComparisonPlayers.size >= Math.ceil(reviewedComparisonPlayers.size * 0.75),
     `only ${publishedComparisonPlayers.size} distinct players remain market-backed`,
   );
 
