@@ -1,11 +1,11 @@
 {
   "schemaVersion": 2,
-  "updatedAt": "2026-11-27T03:44:10.833Z",
+  "updatedAt": "2026-11-27T15:10:54.352Z",
   "week": 12,
   "source": {
     "name": "nflverse weekly injury reports",
     "url": "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_2026.csv.gz",
-    "publishedAt": "2026-11-27T03:44:10.833Z"
+    "publishedAt": "2026-11-27T15:10:54.352Z"
   },
   "updates": [
     {
@@ -51,10 +51,10 @@
       "projectionFactor": 1
     },
     {
-      "slug": "mike-evans-wr",
+      "slug": "tetairoa-mcmillan-wr",
       "status": "Did Not Participate In Practice",
-      "injury": "Achilles",
-      "detail": "Mike Evans is listed did not participate in practice on the Week 12 team report because of an achilles injury. Check the official inactive list before kickoff.",
+      "injury": "Foot",
+      "detail": "Tetairoa McMillan is listed did not participate in practice on the Week 12 team report because of a foot injury. Check the official inactive list before kickoff.",
       "projectionFactor": 1
     },
     {
