@@ -1,11 +1,11 @@
 {
   "schemaVersion": 2,
-  "updatedAt": "2026-11-26T15:19:00.026Z",
+  "updatedAt": "2026-11-27T02:38:54.071Z",
   "week": 12,
   "source": {
     "name": "nflverse weekly injury reports",
     "url": "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_2026.csv.gz",
-    "publishedAt": "2026-11-26T15:19:00.026Z"
+    "publishedAt": "2026-11-27T02:38:54.071Z"
   },
   "updates": [
     {
@@ -51,10 +51,17 @@
       "projectionFactor": 1
     },
     {
-      "slug": "denzel-boston-wr",
+      "slug": "mike-evans-wr",
       "status": "Did Not Participate In Practice",
-      "injury": "Quadricep",
-      "detail": "Denzel Boston is listed did not participate in practice on the Week 12 team report because of a quadricep injury. Check the official inactive list before kickoff.",
+      "injury": "Achilles",
+      "detail": "Mike Evans is listed did not participate in practice on the Week 12 team report because of an achilles injury. Check the official inactive list before kickoff.",
+      "projectionFactor": 1
+    },
+    {
+      "slug": "brock-purdy-qb",
+      "status": "Did Not Participate In Practice",
+      "injury": "Ankle",
+      "detail": "Brock Purdy is listed did not participate in practice on the Week 12 team report because of an ankle injury. Check the official inactive list before kickoff.",
       "projectionFactor": 1
     },
     {
@@ -62,6 +69,13 @@
       "status": "Did Not Participate In Practice",
       "injury": "Hamstring",
       "detail": "A.J. Brown is listed did not participate in practice on the Week 12 team report because of a hamstring injury. Check the official inactive list before kickoff.",
+      "projectionFactor": 1
+    },
+    {
+      "slug": "denzel-boston-wr",
+      "status": "Did Not Participate In Practice",
+      "injury": "Quadricep",
+      "detail": "Denzel Boston is listed did not participate in practice on the Week 12 team report because of a quadricep injury. Check the official inactive list before kickoff.",
       "projectionFactor": 1
     },
     {
@@ -76,20 +90,6 @@
       "status": "Did Not Participate In Practice",
       "injury": "Thumb",
       "detail": "Jordan Addison is listed did not participate in practice on the Week 12 team report because of a thumb injury. Check the official inactive list before kickoff.",
-      "projectionFactor": 1
-    },
-    {
-      "slug": "juwan-johnson-te",
-      "status": "Did Not Participate In Practice",
-      "injury": "Hamstring",
-      "detail": "Juwan Johnson is listed did not participate in practice on the Week 12 team report because of a hamstring injury. Check the official inactive list before kickoff.",
-      "projectionFactor": 1
-    },
-    {
-      "slug": "carson-beck-qb",
-      "status": "Did Not Participate In Practice",
-      "injury": "Back",
-      "detail": "Carson Beck is listed did not participate in practice on the Week 12 team report because of a back injury. Check the official inactive list before kickoff.",
       "projectionFactor": 1
     }
   ]
