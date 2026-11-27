@@ -1,11 +1,11 @@
 {
   "schemaVersion": 2,
-  "updatedAt": "2026-11-27T02:38:54.071Z",
+  "updatedAt": "2026-11-27T03:44:10.833Z",
   "week": 12,
   "source": {
     "name": "nflverse weekly injury reports",
     "url": "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_2026.csv.gz",
-    "publishedAt": "2026-11-27T02:38:54.071Z"
+    "publishedAt": "2026-11-27T03:44:10.833Z"
   },
   "updates": [
     {
