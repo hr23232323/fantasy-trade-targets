@@ -1,15 +1,26 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { buildRestOfSeasonRankings } from "../src/app/lib/rest-of-season-model.mjs";
 
-const TARGET_COUNT = 75;
-const quotas = { QB: 18, RB: 21, WR: 22, TE: 14 };
+const TARGET_COUNT = 100;
+const quotas = { QB: 24, RB: 28, WR: 29, TE: 19 };
 const evidenceSelectedReason = "Two current rest-of-season options close enough in role, projection and remaining schedule to create a meaningful roster or trade decision.";
+const availabilitySelectedReason = "A current availability change makes this a timely rest-of-season roster decision between players with comparable market and role expectations.";
 const seeds = [
   ["sam-darnold-qb", "kyler-murray-qb"],
   ["kyren-williams-rb", "ashton-jeanty-rb"],
   ["zay-flowers-wr", "nico-collins-wr"],
   ["chase-brown-rb", "javonte-williams-rb"],
   ["chase-brown-rb", "james-cook-rb"],
+  ["kenneth-walker-rb", "bucky-irving-rb", availabilitySelectedReason],
+  ["josh-jacobs-rb", "tony-pollard-rb", availabilitySelectedReason],
+  ["dalton-kincaid-te", "tucker-kraft-te", availabilitySelectedReason],
+  ["bhayshul-tuten-rb", "ashton-jeanty-rb", availabilitySelectedReason],
+  ["mike-evans-wr", "davante-adams-wr", availabilitySelectedReason],
+  ["brock-purdy-qb", "trevor-lawrence-qb", availabilitySelectedReason],
+  ["aj-brown-wr", "jaylen-waddle-wr", availabilitySelectedReason],
+  ["denzel-boston-wr", "deebo-samuel-wr", availabilitySelectedReason],
+  ["omar-cooper-wr", "khalil-shakir-wr", availabilitySelectedReason],
+  ["jordan-addison-wr", "tre-tucker-wr", availabilitySelectedReason],
 ];
 
 const [publicRelease, nflverse, teamRelease, playerPages, existingComparisons] = await Promise.all([
@@ -47,7 +58,7 @@ const positionCounts = { QB: 0, RB: 0, WR: 0, TE: 0 };
 // Reserve the observed-demand pairs before filling positional quotas. A player
 // can return to the upstream market after their old pair was replaced; adding
 // seeds after a full existing cohort would silently prevent its restoration.
-for (const [leftSlug, rightSlug] of seeds) addPair(leftSlug, rightSlug, evidenceSelectedReason);
+for (const [leftSlug, rightSlug, selectionReason = evidenceSelectedReason] of seeds) addPair(leftSlug, rightSlug, selectionReason);
 
 for (const comparison of existingComparisons) {
   const selectionReason = /Search Console|DataForSEO|experiment|hypothesis|cohort/i.test(comparison.selectionReason)

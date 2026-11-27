@@ -1,6 +1,6 @@
 import { readFile, writeFile } from "node:fs/promises";
 
-const POSITION_TARGETS = { QB: 10, RB: 12, WR: 12, TE: 6 };
+const POSITION_TARGETS = { QB: 14, RB: 18, WR: 18, TE: 10 };
 const [publicRelease, nflverse, teamRelease, playerPages, existingPages] = await Promise.all([
   readJson("../data/public-release.json"),
   readJson("../data/nflverse-player-release.json"),

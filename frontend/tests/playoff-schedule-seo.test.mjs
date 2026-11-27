@@ -80,7 +80,7 @@ test("the five-page playoff planner is useful, interactive, and answer-first", (
 });
 
 test("player playoff outlooks are bounded, current and position-balanced", () => {
-  assert.equal(playerManifest.length, 40);
+  assert.equal(playerManifest.length, 60);
   assert.equal(new Set(playerManifest.map(({ slug }) => slug)).size, playerManifest.length);
   assert.equal(new Set(playerManifest.map(({ slug }) => slug.replace(/-(qb|rb|wr|te)$/, ""))).size, playerManifest.length, "public player paths must stay unique after position suffixes are removed");
   const market = new Map(publicRelease.playerMarkets["redraft:1:0"].data.map((player) => [player.slug, player]));
@@ -94,8 +94,8 @@ test("player playoff outlooks are bounded, current and position-balanced", () =>
     assert.ok(nflverse.players[slug]?.games?.some((game) => game.season === nflverse.season), `${slug} needs current-season results`);
     counts[player.position] += 1;
   }
-  assert.deepEqual(counts, { QB: 10, RB: 12, WR: 12, TE: 6 });
-  assert.match(playerGenerator, /POSITION_TARGETS = \{ QB: 10, RB: 12, WR: 12, TE: 6 \}/);
+  assert.deepEqual(counts, { QB: 14, RB: 18, WR: 18, TE: 10 });
+  assert.match(playerGenerator, /POSITION_TARGETS = \{ QB: 14, RB: 18, WR: 18, TE: 10 \}/);
   assert.match(playerGenerator, /for \(const page of existingPages\)/);
   assert.doesNotMatch(playerGenerator, /Math\.random/);
 });

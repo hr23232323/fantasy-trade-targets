@@ -21,12 +21,12 @@ const [manifest, playerPages, publicRelease, generator, hub, detail, library, si
 const publishedPlayers = new Set(playerPages.map(({ slug }) => slug));
 const redraftPlayers = new Map(publicRelease.playerMarkets["redraft:1:0"].data.map((player) => [player.slug, player]));
 
-test("the first ROS comparison cohort is bounded, balanced, and current-release backed", () => {
-  assert.equal(manifest.length, 75);
-  assert.equal(new Set(manifest.map(({ slug }) => slug)).size, 75);
+test("the scaled ROS comparison cohort is bounded, balanced, and current-release backed", () => {
+  assert.equal(manifest.length, 100);
+  assert.equal(new Set(manifest.map(({ slug }) => slug)).size, 100);
   assert.deepEqual(
     Object.fromEntries(["QB", "RB", "WR", "TE"].map((position) => [position, manifest.filter((comparison) => comparison.position === position).length])),
-    { QB: 18, RB: 21, WR: 22, TE: 14 },
+    { QB: 24, RB: 28, WR: 29, TE: 19 },
   );
 
   const pairKeys = new Set();
@@ -47,7 +47,7 @@ test("the first ROS comparison cohort is bounded, balanced, and current-release 
   assert.equal(pairKeys.size, manifest.length);
 });
 
-test("observed GSC pair demand is represented exactly once", () => {
+test("observed demand and current availability decisions are represented exactly once", () => {
   const pairs = new Set(manifest.map(({ leftSlug, rightSlug }) => [leftSlug, rightSlug].sort().join("|")));
   for (const pair of [
     ["sam-darnold-qb", "kyler-murray-qb"],
@@ -55,6 +55,12 @@ test("observed GSC pair demand is represented exactly once", () => {
     ["zay-flowers-wr", "nico-collins-wr"],
     ["chase-brown-rb", "javonte-williams-rb"],
     ["chase-brown-rb", "james-cook-rb"],
+    ["kenneth-walker-rb", "bucky-irving-rb"],
+    ["josh-jacobs-rb", "tony-pollard-rb"],
+    ["dalton-kincaid-te", "tucker-kraft-te"],
+    ["bhayshul-tuten-rb", "ashton-jeanty-rb"],
+    ["mike-evans-wr", "davante-adams-wr"],
+    ["aj-brown-wr", "jaylen-waddle-wr"],
   ]) {
     const bothCurrent = pair.every((slug) => redraftPlayers.has(slug));
     if (bothCurrent) assert.ok(pairs.has(pair.sort().join("|")), `${pair.join(" vs ")} should be published`);
@@ -62,8 +68,9 @@ test("observed GSC pair demand is represented exactly once", () => {
 });
 
 test("the generator is deterministic and selects close, evidence-led decisions", () => {
-  assert.match(generator, /TARGET_COUNT = 75/);
-  assert.match(generator, /quotas = \{ QB: 18, RB: 21, WR: 22, TE: 14 \}/);
+  assert.match(generator, /TARGET_COUNT = 100/);
+  assert.match(generator, /quotas = \{ QB: 24, RB: 28, WR: 29, TE: 19 \}/);
+  assert.match(generator, /availabilitySelectedReason/);
   assert.match(generator, /buildRestOfSeasonRankings/);
   assert.match(generator, /currentSeasonGames > 0/);
   assert.match(generator, /for \(const comparison of existingComparisons\)/);

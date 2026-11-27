@@ -79,6 +79,8 @@ test("the 35-page E19 cohort is answer-first, interactive and machine-readable",
   assert.match(trendsHub, /nfl_ats_records_viewed/);
   assert.match(trendsHub, /"@type": "CollectionPage"/);
   assert.match(teamPage, /nfl_team_betting_trends_viewed/);
+  assert.match(teamPage, /Against the Spread/);
+  assert.match(teamPage, /ATS record:.*record\(team\.bettingTrends\.currentSeason\.againstSpread\)/s);
   assert.match(teamPage, /"@type": "SportsTeam"/);
   assert.match(teamPage, /"@type": "FAQPage"/);
   assert.match(oddsPage, /Odds Calculator/);

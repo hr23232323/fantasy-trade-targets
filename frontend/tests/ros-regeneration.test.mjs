@@ -38,12 +38,12 @@ test("weekly ROS publication restores a demand pair when an upstream player retu
     const outputPath = path.join(root, "data/rest-of-season-comparisons.json");
     const output = await readFile(outputPath, "utf8");
     const comparisons = JSON.parse(output);
-    assert.equal(comparisons.length, 75);
+    assert.equal(comparisons.length, 100);
     assert.equal(comparisons.filter(({ leftSlug, rightSlug }) =>
       [leftSlug, rightSlug].sort().join("|") === "kyler-murray-qb|sam-darnold-qb").length, 1);
     assert.deepEqual(Object.fromEntries(["QB", "RB", "WR", "TE"].map((position) =>
       [position, comparisons.filter((row) => row.position === position).length])),
-    { QB: 18, RB: 21, WR: 22, TE: 14 });
+    { QB: 24, RB: 28, WR: 29, TE: 19 });
     generate();
     assert.equal(await readFile(outputPath, "utf8"), output);
   } finally {

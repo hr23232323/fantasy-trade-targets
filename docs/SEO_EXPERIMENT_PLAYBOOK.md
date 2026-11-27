@@ -1,6 +1,6 @@
 # SEO experiment and scale playbook
 
-Last updated: 2026-11-05
+Last updated: 2026-11-27
 Owner: Fantasy Trade Target
 
 ## The operating rule
@@ -30,14 +30,23 @@ Player comparisons are the control. They already earned page-one impressions and
 | E12: buy low / sell high | “Who should I buy low or sell high?” | One stable weekly PPR board | `buy_low_sell_high_viewed` | Initial page shipped; candidates require a measurable gap between redraft market rank and the bounded ROS model |
 | E13: weekly sleepers | “Fantasy football sleepers Week N” | Current-week hub plus QB, RB, WR and TE pages | `weekly_sleepers_viewed` | Initial five-page cohort shipped; candidates must rise above market position with two recorded games and viable recent snaps |
 | E14: player trade answers | “What is Player X worth?” / “Should I trade Player X?” | Shared answer-first upgrade across 220 existing player files | `player_research_viewed` plus `research_cta_clicked` | Depth experiment shipped on URLs already averaging page-one visibility; no duplicate player-outlook URLs added |
-| E15: fantasy playoff schedules | “Who has the best fantasy playoff schedule?” / “What is Player X's playoff schedule?” | Overall planner, four position boards and 40 current-player outlooks | `playoff_schedule_viewed`, `playoff_schedule_filter_changed` and `playoff_player_outlook_viewed` | Proven and expanded after the family earned 258 clicks, 3,396 impressions and 7.60% CTR in the latest complete week |
-| E16: ROS player comparisons | “Player A or Player B rest of season?” | One hub plus 75 curated same-position decisions | `rest_of_season_comparisons_viewed` plus `rest_of_season_comparison_viewed` | Proven and expanded again after 179 clicks, 6,409 impressions, 2.79% CTR and average position 6.45 in the latest complete week |
+| E15: fantasy playoff schedules | “Who has the best fantasy playoff schedule?” / “What is Player X's playoff schedule?” | Overall planner, four position boards and 60 current-player outlooks | `playoff_schedule_viewed`, `playoff_schedule_filter_changed` and `playoff_player_outlook_viewed` | Proven and expanded after 1,095 clicks, 20,019 impressions and 5.47% CTR in the latest final 28-day window |
+| E16: ROS player comparisons | “Player A or Player B rest of season?” | One hub plus 100 curated same-position decisions | `rest_of_season_comparisons_viewed` plus `rest_of_season_comparison_viewed` | Proven and expanded after 1,207 clicks, 39,575 impressions, 3.05% CTR and average position 6.22 in the latest final 28-day window |
 | E22: redraft trade finder | “Should I trade Player A for Player B?” | One finder plus 50 reviewed one-for-one decisions | `trade_finder_viewed`, `trade_finder_submitted` and `trade_decision_viewed` | Expanded after the first six detail pages earned impressions at average position 6.3; new pairs preserve the original URLs and prioritize observed search demand |
 | E17: NFL picks and predictions | “NFL Week N picks / predictions / ATS / over-under” | One hub, three weekly boards and one file per game | `nfl_prediction_hub_viewed`, `nfl_prediction_week_viewed`, `nfl_ats_picks_viewed`, `nfl_totals_picks_viewed`, `nfl_game_prediction_viewed` | First 19-page cohort uses licensed nflverse lines plus a frozen-at-kickoff FTT model; new weeks append automatically |
 | E18: NFL pool and score decisions | “NFL score predictions / straight-up / survivor / confidence pool picks” | Four distinct weekly boards, an early next-week preview, and one evergreen current-week confidence page | `nfl_score_predictions_viewed`, `nfl_straight_up_picks_viewed`, `nfl_survivor_picks_viewed`, `nfl_confidence_pool_picks_viewed` | Weekly archives continue automatically; the proven confidence intent now has a stable “this week” destination without duplicating game evidence |
 | E19: NFL betting utilities and team trends | “odds calculator / NFL score predictor / NFL ATS records” | Two evergreen tools, one ATS hub and 32 team trend files | `odds_calculator_viewed`, `nfl_score_predictor_viewed`, `nfl_ats_records_viewed`, `nfl_team_betting_trends_viewed` | 35-page cohort uses deterministic odds math and completed-game nflverse records; team pages refresh after results publish |
 | E20: betting calculator suite | “parlay / no-vig / hedge / Kelly calculator” | One collection hub plus four distinct interactive tools | `betting_calculators_viewed`, `parlay_calculator_viewed`, `no_vig_calculator_viewed`, `hedge_calculator_viewed`, `kelly_calculator_viewed` | Five-page utility cohort uses only deterministic user-entered math; no live odds, accounts, wagers or affiliate flow |
 | E21: combination and line calculators | “round robin / arbitrage / teaser calculator” | Three distinct interactive tools plus implied-probability depth on the existing odds URL | `round_robin_calculator_viewed`, `arbitrage_calculator_viewed`, `teaser_calculator_viewed` | Three-page expansion uses user-entered prices only; implied-probability demand strengthens the canonical odds calculator instead of creating a duplicate URL |
+
+## November 27 scale and CTR decision
+
+- In the final October 27–November 23 window, the site earned 3,438 clicks from 169,477 impressions at 2.03% CTR. The prior 28 days produced 1,974 clicks from 164,850 impressions at 1.20% CTR, so clicks rose 74% while impressions were nearly flat and average position stayed near the bottom of page one.
+- Rest-of-season comparisons are the strongest scalable decision family: 1,207 clicks from 39,575 impressions at 3.05% CTR and average position 6.22. E16 expands from 75 to 100 same-position decisions. The additional cohort preserves every valid URL and includes current availability-driven choices from the published Week 12 injury board.
+- Fantasy playoff schedule pages earned 1,095 clicks from 20,019 impressions at 5.47% CTR and average position 6.72. E15 expands player outlooks from 40 to 60 while keeping the complete position boards unchanged.
+- Weekly rankings earned 748 impressions at average position 8.3 but one click. Its stable hub receives one snippet revision that puts Week, PPR intent and the current leaders directly in the title and description; the ranking model and URL remain unchanged.
+- NFL ATS team pages earned 8,704 impressions at average position 8.5 but 0.13% CTR. Their titles and H1s now expose each team’s current ATS record. No additional ATS URLs are added until this controlled snippet revision is measured.
+- Start/sit remains indexed at scale but is not expanded in this release. Its 405 detail pages earned 191 clicks from 32,414 impressions at 0.59% CTR; the weekly data refresh continues while the stronger ROS and playoff cohorts receive the acquisition batch.
 
 ## November 5 scale and CTR decision
 

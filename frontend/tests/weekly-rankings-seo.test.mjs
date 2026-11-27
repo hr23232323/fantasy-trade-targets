@@ -17,7 +17,8 @@ const [hub, detail, page, table, model, startSit, sitemap, indexNow, header, gen
 ]);
 
 test("weekly rankings publish one stable hub and four position pages", () => {
-  assert.match(hub, /Week \$\{weeklyRankingsWeek\} Fantasy Football Rankings/);
+  assert.match(hub, /Week \$\{weeklyRankingsWeek\} Fantasy Football Rankings \(PPR\): Top Players/);
+  assert.match(hub, /leaders\.join/);
   assert.match(detail, /generateStaticParams/);
   for (const slug of ["quarterbacks", "running-backs", "wide-receivers", "tight-ends"]) {
     assert.match(model, new RegExp(slug));
