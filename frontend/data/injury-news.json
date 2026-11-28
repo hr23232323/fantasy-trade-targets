@@ -1,11 +1,11 @@
 {
   "schemaVersion": 2,
-  "updatedAt": "2026-11-28T03:24:19.541Z",
+  "updatedAt": "2026-11-28T14:17:56.681Z",
   "week": 12,
   "source": {
     "name": "nflverse weekly injury reports",
     "url": "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_2026.csv.gz",
-    "publishedAt": "2026-11-28T03:24:19.541Z"
+    "publishedAt": "2026-11-28T14:17:56.681Z"
   },
   "updates": [
     {
@@ -16,81 +16,81 @@
       "projectionFactor": 0
     },
     {
-      "slug": "jake-ferguson-te",
-      "status": "Out",
-      "injury": "Knee",
-      "detail": "Jake Ferguson is listed out on the Week 12 team report because of a knee injury. Check the official inactive list before kickoff.",
-      "projectionFactor": 0
-    },
-    {
-      "slug": "terrance-ferguson-te",
-      "status": "Out",
-      "injury": "Ankle",
-      "detail": "Terrance Ferguson is listed out on the Week 12 team report because of an ankle injury. Check the official inactive list before kickoff.",
-      "projectionFactor": 0
-    },
-    {
-      "slug": "josh-jacobs-rb",
-      "status": "Questionable",
-      "injury": "Finger",
-      "detail": "Josh Jacobs is listed questionable on the Week 12 team report because of a finger injury. Check the official inactive list before kickoff.",
-      "projectionFactor": 0.88
-    },
-    {
-      "slug": "dalton-kincaid-te",
-      "status": "Questionable",
-      "injury": "Thumb",
-      "detail": "Dalton Kincaid is listed questionable on the Week 12 team report because of a thumb injury. Check the official inactive list before kickoff.",
-      "projectionFactor": 0.88
-    },
-    {
       "slug": "bhayshul-tuten-rb",
-      "status": "Did Not Participate In Practice",
+      "status": "Out",
       "injury": "Ankle",
-      "detail": "Bhayshul Tuten is listed did not participate in practice on the Week 12 team report because of an ankle injury. Check the official inactive list before kickoff.",
-      "projectionFactor": 1
+      "detail": "Bhayshul Tuten is listed out on the Week 12 team report because of an ankle injury. Check the official inactive list before kickoff.",
+      "projectionFactor": 0
     },
     {
-      "slug": "tetairoa-mcmillan-wr",
-      "status": "Did Not Participate In Practice",
-      "injury": "Foot",
-      "detail": "Tetairoa McMillan is listed did not participate in practice on the Week 12 team report because of a foot injury. Check the official inactive list before kickoff.",
-      "projectionFactor": 1
+      "slug": "parker-washington-wr",
+      "status": "Out",
+      "injury": "Shoulder",
+      "detail": "Parker Washington is listed out on the Week 12 team report because of a shoulder injury. Check the official inactive list before kickoff.",
+      "projectionFactor": 0
     },
     {
       "slug": "brock-purdy-qb",
-      "status": "Did Not Participate In Practice",
+      "status": "Out",
       "injury": "Ankle",
-      "detail": "Brock Purdy is listed did not participate in practice on the Week 12 team report because of an ankle injury. Check the official inactive list before kickoff.",
-      "projectionFactor": 1
+      "detail": "Brock Purdy is listed out on the Week 12 team report because of an ankle injury. Check the official inactive list before kickoff.",
+      "projectionFactor": 0
     },
     {
       "slug": "aj-brown-wr",
-      "status": "Did Not Participate In Practice",
+      "status": "Out",
       "injury": "Hamstring",
-      "detail": "A.J. Brown is listed did not participate in practice on the Week 12 team report because of a hamstring injury. Check the official inactive list before kickoff.",
-      "projectionFactor": 1
-    },
-    {
-      "slug": "denzel-boston-wr",
-      "status": "Did Not Participate In Practice",
-      "injury": "Quadricep",
-      "detail": "Denzel Boston is listed did not participate in practice on the Week 12 team report because of a quadricep injury. Check the official inactive list before kickoff.",
-      "projectionFactor": 1
+      "detail": "A.J. Brown is listed out on the Week 12 team report because of a hamstring injury. Check the official inactive list before kickoff.",
+      "projectionFactor": 0
     },
     {
       "slug": "omar-cooper-wr",
-      "status": "Did Not Participate In Practice",
+      "status": "Out",
       "injury": "Ankle",
-      "detail": "Omar Cooper is listed did not participate in practice on the Week 12 team report because of an ankle injury. Check the official inactive list before kickoff.",
-      "projectionFactor": 1
+      "detail": "Omar Cooper is listed out on the Week 12 team report because of an ankle injury. Check the official inactive list before kickoff.",
+      "projectionFactor": 0
     },
     {
       "slug": "jordan-addison-wr",
-      "status": "Did Not Participate In Practice",
+      "status": "Out",
       "injury": "Thumb",
-      "detail": "Jordan Addison is listed did not participate in practice on the Week 12 team report because of a thumb injury. Check the official inactive list before kickoff.",
-      "projectionFactor": 1
+      "detail": "Jordan Addison is listed out on the Week 12 team report because of a thumb injury. Check the official inactive list before kickoff.",
+      "projectionFactor": 0
+    },
+    {
+      "slug": "justin-herbert-qb",
+      "status": "Out",
+      "injury": "Concussion",
+      "detail": "Justin Herbert is listed out on the Week 12 team report because of concussion. Check the official inactive list before kickoff.",
+      "projectionFactor": 0
+    },
+    {
+      "slug": "juwan-johnson-te",
+      "status": "Out",
+      "injury": "Hamstring",
+      "detail": "Juwan Johnson is listed out on the Week 12 team report because of a hamstring injury. Check the official inactive list before kickoff.",
+      "projectionFactor": 0
+    },
+    {
+      "slug": "romeo-doubs-wr",
+      "status": "Out",
+      "injury": "Shoulder",
+      "detail": "Romeo Doubs is listed out on the Week 12 team report because of a shoulder injury. Check the official inactive list before kickoff.",
+      "projectionFactor": 0
+    },
+    {
+      "slug": "carson-beck-qb",
+      "status": "Out",
+      "injury": "Back",
+      "detail": "Carson Beck is listed out on the Week 12 team report because of a back injury. Check the official inactive list before kickoff.",
+      "projectionFactor": 0
+    },
+    {
+      "slug": "drake-maye-qb",
+      "status": "Out",
+      "injury": "Fibula",
+      "detail": "Drake Maye is listed out on the Week 12 team report because of a fibula injury. Check the official inactive list before kickoff.",
+      "projectionFactor": 0
     }
   ]
 }
